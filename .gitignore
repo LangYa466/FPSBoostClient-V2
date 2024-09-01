@@ -1,2 +1,5 @@
 # Project exclude paths
 /out/
+.idea
+jars
+OptimaMC-master.iml
