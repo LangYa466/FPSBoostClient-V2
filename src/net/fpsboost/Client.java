@@ -3,6 +3,7 @@ package net.fpsboost;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.value.ValueManager;
 
 /**
  * @author LangYa
@@ -13,8 +14,8 @@ public class Client implements Wrapper{
     public static final String version = "1.0";
 
     public static void initClient() {
-        System.out.println(mc.getSession().isOffline() ? "欢迎正版玩家" : "欢迎离线玩家(有条件支持正版为好)");
         ModuleManager.init();
+        ValueManager.init();
         ElementManager.init();
         CommandManager.init();
     }

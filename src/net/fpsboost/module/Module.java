@@ -1,6 +1,9 @@
 package net.fpsboost.module;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.value.Value;
+
+import java.util.ArrayList;
 
 /**
  * @author LangYa
@@ -11,10 +14,20 @@ public class Module implements Wrapper {
     public boolean enable;
     public int keyCode;
 
+    public ArrayList<Value<?>> values;
+
     public Module(String name,String cnName,String description) {
         this.name = name;
         this.cnName = cnName;
         this.description = description;
+        values = new ArrayList<>();
+    }
+
+    public Module(String name,String cnName) {
+        this.name = name;
+        this.cnName = cnName;
+        this.description = "";
+        values = new ArrayList<>();
     }
 
     public void onEnable() { }

@@ -42,7 +42,8 @@ public class KeyStore extends Element {
 
     public void drawKey(KeyBinding key, int x, int y, int width, int height, boolean isSpace) {
         String keyName = Keyboard.getKeyName(key.getKeyCode());
-        RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
+        RenderUtil.drawRoundedRect(x, y, width,height,2,key.isKeyDown() ? pressbgColor : bgColor);
+        //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
         int textX = isSpace ? mc.fontRendererObj.getStringWidth(keyName) : mc.fontRendererObj.getStringWidth(keyName) * 2;
         RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, -1);
     }
