@@ -1,3 +1,6 @@
+# FPSBoostClient
+此客户端一切解释权归LangYa466所有
+
 # OptimaMC
 There are alot of things in the Minecraft 1.8.9 source code that dont need to be there, or no longer need to be there.
 This modification aims to remove those, and add other needed fixes to the code for peak performance and behavior.
