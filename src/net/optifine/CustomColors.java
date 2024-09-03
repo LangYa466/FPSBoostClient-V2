@@ -618,7 +618,7 @@ public class CustomColors
         if (list == null)
         {
             list = new ArrayList();
-            list.set(id, list);
+            if (!list.isEmpty()) list.set(id, list);
         }
 
         list.add(cm);

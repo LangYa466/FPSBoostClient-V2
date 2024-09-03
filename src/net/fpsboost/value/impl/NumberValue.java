@@ -6,13 +6,13 @@ import net.fpsboost.value.Value;
  * @author LangYa
  * @since 2024/9/1 20:12
  */
-public class NumberValue extends Value<Number> {
+public class NumberValue extends Value<Double> {
 
-    public Number maxValue;
-    public Number minValue;
-    public Number incValue;
+    public Double maxValue;
+    public Double minValue;
+    public Double incValue;
 
-    public NumberValue(String name, Number value, Number maxValue, Number minValue, Number incValue) {
+    public NumberValue(String name, Double value, Double maxValue, Double minValue, Double incValue) {
         super(name, value);
         this.maxValue = maxValue;
         this.minValue = minValue;

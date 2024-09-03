@@ -1,6 +1,7 @@
 package net.fpsboost;
 
 import net.fpsboost.command.CommandManager;
+import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.value.ValueManager;
@@ -18,6 +19,7 @@ public class Client implements Wrapper{
         ValueManager.init();
         ElementManager.init();
         CommandManager.init();
+        ConfigManager.init();
     }
 
 }

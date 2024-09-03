@@ -1,6 +1,6 @@
 package net.fpsboost.command;
 
-import net.fpsboost.command.impl.BindCommand;
+import net.fpsboost.command.impl.*;
 
 import java.util.ArrayList;
 
