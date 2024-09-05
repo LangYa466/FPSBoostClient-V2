@@ -16,7 +16,7 @@ public class DrawString extends Element {
 
     @Override
     public void onDraw() {
-        RenderUtil.drawStringWithShadow(Client.name,0,0,-1);
+        RenderUtil.drawString("13",0,0,bgColor);
     }
 
     @Override

@@ -18,9 +18,6 @@ public class KeyStore extends Element {
         super("KeyStore");
     }
 
-    private final Color bgColor = new Color(0, 0, 0, 102);
-    private final Color pressbgColor = new Color(255, 255, 255, 102);
-
     @Override
     public void onDraw() {
         drawKey(mc.gameSettings.keyBindForward,21, 0,false);
@@ -45,6 +42,6 @@ public class KeyStore extends Element {
         RenderUtil.drawRoundedRect(x, y, width,height,2,key.isKeyDown() ? pressbgColor : bgColor);
         //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
         int textX = isSpace ? mc.fontRendererObj.getStringWidth(keyName) : mc.fontRendererObj.getStringWidth(keyName) * 2;
-        RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, -1);
+        RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? bgColor : pressbgColor);
     }
 }

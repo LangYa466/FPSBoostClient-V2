@@ -28,7 +28,7 @@ public class ConfigManager implements Wrapper {
     }
 
     public static void save(String name) {
-        System.out.println("save " + name);
+        System.out.println("[ConfigManager] Saved Config " + name);
         for (Config config : configs) {
             if (config.name.equals(name)) {
                 config.save();
@@ -46,7 +46,7 @@ public class ConfigManager implements Wrapper {
     }
 
     public static void load(String name) {
-        System.out.println("load " + name);
+        System.out.println("[ConfigManager] Loaded Config " + name);
         for (Config config : configs) {
             if (!config.name.equals(name)) continue;
             if (config.file.exists()) {

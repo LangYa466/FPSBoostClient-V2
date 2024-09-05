@@ -1,8 +1,9 @@
 package net.fpsboost.module;
 
-import net.fpsboost.module.impl.TestModule;
+import net.fpsboost.module.impl.*;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * @author LangYa
@@ -13,11 +14,20 @@ public class ModuleManager {
 
     public static void init() {
         modules.add(new TestModule());
+        modules.add(new Sprint());
+
+        modules.sort(Comparator.comparing(module -> module.name));
     }
 
     public static void moduleRender2D() {
         for (Module module : modules) {
             module.onRender2D();
+        }
+    }
+
+    public static void moduleUpdate() {
+        for (Module module : modules) {
+            module.onUpdate();
         }
     }
 

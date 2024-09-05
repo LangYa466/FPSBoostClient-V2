@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
+
+import net.fpsboost.module.ModuleManager;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1525,6 +1527,7 @@ public abstract class EntityLivingBase extends Entity
     public void onUpdate()
     {
         super.onUpdate();
+        ModuleManager.moduleUpdate();
 
         if (!this.worldObj.isRemote)
         {

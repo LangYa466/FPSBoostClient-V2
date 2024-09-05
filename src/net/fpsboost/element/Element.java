@@ -3,8 +3,9 @@ package net.fpsboost.element;
 import net.fpsboost.Wrapper;
 import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.RenderUtil;
+import net.fpsboost.util.ThemeUtil;
 
-public class Element implements Wrapper {
+public class Element extends ThemeUtil implements Wrapper {
     public int xPos;
     public int yPos;
 
@@ -16,7 +17,7 @@ public class Element implements Wrapper {
     public String name;
 
     public boolean enable = true;
-    
+
     public Element(String name) {
         this.name = name;
     }
