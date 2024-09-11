@@ -28,14 +28,14 @@ public class ConfigManager implements Wrapper {
     }
 
     public static void save(String name) {
-        System.out.println("[ConfigManager] Saved Config " + name);
+        System.out.printf("[ConfigManager] Saved %sConfig%n",name);
         for (Config config : configs) {
             if (config.name.equals(name)) {
                 config.save();
                 try {
                     config.data.saveToFile(config.file.getAbsolutePath());
                 } catch (IOException e) {
-                    System.out.printf("Config %s error : %s",config.name,e.getMessage());
+                    System.out.printf("Config %s error : %s%n",config.name,e.getMessage());
                 }
             }
         }
@@ -46,7 +46,7 @@ public class ConfigManager implements Wrapper {
     }
 
     public static void load(String name) {
-        System.out.println("[ConfigManager] Loaded Config " + name);
+        System.out.printf("[ConfigManager] Loaded %sConfig%n",name);
         for (Config config : configs) {
             if (!config.name.equals(name)) continue;
             if (config.file.exists()) {

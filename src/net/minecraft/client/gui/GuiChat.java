@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.List;
 
+import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
+import net.fpsboost.util.HoveringUtil;
 import net.minecraft.network.play.client.C14PacketTabComplete;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.ChatComponentText;
@@ -121,6 +123,7 @@ public class GuiChat extends GuiScreen
                 element.onRelease(state);
             }
         });
+        ElementManager.dragging = false;
         super.mouseReleased(mouseX, mouseY, state);
     }
 
@@ -153,7 +156,7 @@ public class GuiChat extends GuiScreen
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException
     {
         ElementManager.elements.forEach(element -> {
-            if (element.enable) {
+            if (element.enable && !ElementManager.dragging) {
                 element.onClick(mouseX, mouseY, mouseButton);
             }
         });

@@ -14,9 +14,6 @@ import java.awt.*;
  * @since 2024/8/30 21:49
  */
 public class KeyStore extends Element {
-    public KeyStore() {
-        super("KeyStore");
-    }
 
     @Override
     public void onDraw() {
@@ -41,7 +38,8 @@ public class KeyStore extends Element {
         String keyName = Keyboard.getKeyName(key.getKeyCode());
         RenderUtil.drawRoundedRect(x, y, width,height,2,key.isKeyDown() ? pressbgColor : bgColor);
         //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
-        int textX = isSpace ? mc.fontRendererObj.getStringWidth(keyName) : mc.fontRendererObj.getStringWidth(keyName) * 2;
+        int add = isSpace ? 1 : 2;
+        int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
         RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? bgColor : pressbgColor);
     }
 }

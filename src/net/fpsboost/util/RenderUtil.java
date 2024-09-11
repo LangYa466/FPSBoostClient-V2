@@ -13,7 +13,7 @@ import java.awt.*;
  * @author LangYa
  * @since 2024/8/30 21:52
  */
-public class RenderUtil implements Wrapper {
+public class RenderUtil extends ThemeUtil implements Wrapper {
     public static void drawRect(int x,int y,int width,int height,int color) {
         Gui.drawRect(x,y,x + width,y + height,color);
     }
@@ -72,19 +72,38 @@ public class RenderUtil implements Wrapper {
         gui.drawVerticalLine(x + width, y, y + height, color);
     }
 
-    public static void drawString(String text, int x, int y, int color) {
-        mc.fontRendererObj.drawString(text,x,y,color);
+    public static int drawString(String text, int x, int y, int color) {
+        return mc.fontRendererObj.drawString(text,x,y,color);
     }
 
-    public static void drawString(String text, int x, int y, Color color) {
-        drawString(text,x,y,color.getRGB());
+    public static int drawString(String text, int x, int y, Color color) {
+       return drawString(text,x,y,color.getRGB());
     }
 
-    public static void drawStringWithShadow(String text, int x, int y, int color) {
-        mc.fontRendererObj.drawStringWithShadow(text,x,y,color);
+    public static int drawStringWithRounded(String text, int x, int y) {
+        int width = mc.fontRendererObj.getStringWidth(text);
+        int height = mc.fontRendererObj.FONT_HEIGHT;
+        RenderUtil.drawRoundedRect(x, y, width + 4,height,2,bgColor);
+        RenderUtil.drawString(text,x + 1, y, pressbgColor);
+        return width + 4;
     }
 
-    public static void drawStringWithShadow(String text, int x, int y, Color color) {
-        drawStringWithShadow(text,x,y,color.getRGB());
+    public static int drawStringWithShadow(String text, int x, int y, int color) {
+        return mc.fontRendererObj.drawStringWithShadow(text,x,y,color);
     }
+
+    public static int drawStringWithShadow(String text, int x, int y, Color color) {
+        return drawStringWithShadow(text,x,y,color.getRGB());
+    }
+
+    public static int drawStringWithShadowAndRounded(String text, int x, int y) {
+        int width = mc.fontRendererObj.getStringWidth(text);
+        int height = mc.fontRendererObj.FONT_HEIGHT;
+        RenderUtil.drawRoundedRect(x, y, width,height,2,pressbgColor);
+        int textX = mc.fontRendererObj.getStringWidth(text);
+        RenderUtil.drawStringWithShadow(text,x + textX, y + height / 2 + 1, bgColor);
+        return width + 4;
+    }
+
+
 }

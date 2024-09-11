@@ -25,10 +25,21 @@ public class ElementConfig extends Config {
 
     @Override
     public void load() {
+        boolean elementNullConfig = false;
         for (Element element : ElementManager.elements) {
-            element.enable = Boolean.parseBoolean(data.get(element.name + "-Enable"));
-            element.xPos = Integer.parseInt(data.get(element.name + "-XPos"));
-            element.yPos = Integer.parseInt(data.get(element.name + "-YPos"));
+            elementNullConfig = element.name.contains(data.toString());
+            // 还没写ClickGui 所以enable默认是true
+            //            element.enable = Boolean.parseBoolean(data.get(element.name + "-Enable"));
+            int xPos = Integer.parseInt(data.get(element.name + "-XPos"));
+            if (xPos == 0) xPos = 5;
+            element.xPos = xPos;
+            int yPos = Integer.parseInt(data.get(element.name + "-YPos"));
+            if (yPos == 0) yPos = 5;
+            element.yPos = yPos;
+        }
+        if (elementNullConfig) {
+            save();
+            load();
         }
     }
 }

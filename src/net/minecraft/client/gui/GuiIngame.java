@@ -46,6 +46,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
 import net.minecraft.world.border.WorldBorder;
 import net.optifine.CustomColors;
+import org.lwjgl.opengl.GL11;
 
 public class GuiIngame extends Gui
 {
@@ -143,6 +144,7 @@ public class GuiIngame extends Gui
             if (element.enable) {
                 GlStateManager.pushMatrix();
                 GlStateManager.translate(element.xPos,element.yPos,0);
+                GL11.glPointSize(element.size);
                 element.onDraw();
                 GlStateManager.popMatrix();
             }

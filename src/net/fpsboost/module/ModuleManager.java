@@ -1,5 +1,6 @@
 package net.fpsboost.module;
 
+import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
 
 import java.util.ArrayList;
@@ -29,6 +30,7 @@ public class ModuleManager {
         for (Module module : modules) {
             module.onUpdate();
         }
+        AttackHandler.onUpdate();
     }
 
     public static void moduleKeyBind(int inputKeyCode) {

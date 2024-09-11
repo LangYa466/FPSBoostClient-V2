@@ -1,5 +1,6 @@
 package net.minecraft.client.multiplayer;
 
+import net.fpsboost.handler.AttackHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -438,6 +439,7 @@ public class PlayerControllerMP
 
     public void attackEntity(EntityPlayer playerIn, Entity targetEntity)
     {
+        AttackHandler.onAttack(targetEntity);
         this.syncCurrentPlayItem();
         this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
 

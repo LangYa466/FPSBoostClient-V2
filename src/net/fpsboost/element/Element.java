@@ -13,13 +13,14 @@ public class Element extends ThemeUtil implements Wrapper {
     public boolean dragging;
 
     public int width, height;
+    public float size = 1F;
 
     public String name;
 
     public boolean enable = true;
 
-    public Element(String name) {
-        this.name = name;
+    public Element() {
+        this.name = this.getClass().getSimpleName();
     }
 
     public void onHover(int mouseX, int mouseY) {
@@ -38,6 +39,7 @@ public class Element extends ThemeUtil implements Wrapper {
 
     public void onClick(int mouseX, int mouseY, int button) {
         boolean canDrag = HoveringUtil.isHovering(xPos, yPos, width, height, mouseX, mouseY);
+        ElementManager.dragging = canDrag;
         if (button == 0 && canDrag) {
             dragging = true;
             startX = mouseX - xPos;

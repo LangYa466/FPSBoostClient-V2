@@ -1,7 +1,6 @@
 package net.fpsboost.element;
 
-import net.fpsboost.element.impl.DrawString;
-import net.fpsboost.element.impl.KeyStore;
+import net.fpsboost.element.impl.*;
 
 import java.util.ArrayList;
 
@@ -11,9 +10,12 @@ import java.util.ArrayList;
  */
 public class ElementManager {
     public static ArrayList<Element> elements = new ArrayList<>();
+    public static boolean dragging;
 
     public static void init() {
-        elements.add(new DrawString());
+        elements.add(new FPSDisplay());
+        elements.add(new TimeDisplay());
+        elements.add(new ComboDisplay());
         elements.add(new KeyStore());
 
         elements.forEach(Element::init);
