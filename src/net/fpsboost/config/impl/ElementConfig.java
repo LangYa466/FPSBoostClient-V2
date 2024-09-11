@@ -29,7 +29,7 @@ public class ElementConfig extends Config {
         for (Element element : ElementManager.elements) {
             elementNullConfig = element.name.contains(data.toString());
             // 还没写ClickGui 所以enable默认是true
-            //            element.enable = Boolean.parseBoolean(data.get(element.name + "-Enable"));
+            element.enable = Boolean.parseBoolean(data.get(element.name + "-Enable"));
             int xPos = Integer.parseInt(data.get(element.name + "-XPos"));
             if (xPos == 0) xPos = 5;
             element.xPos = xPos;

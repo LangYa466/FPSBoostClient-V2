@@ -15,6 +15,15 @@ public class Module implements Wrapper {
     public int keyCode;
 
     public ArrayList<Value<?>> values;
+    public boolean inArray = true;
+
+    public Module(String name,String cnName,String description,int keyCode) {
+        this.name = name;
+        this.cnName = cnName;
+        this.description = description;
+        this.keyCode = keyCode;
+        values = new ArrayList<>();
+    }
 
     public Module(String name,String cnName,String description) {
         this.name = name;

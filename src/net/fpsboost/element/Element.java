@@ -1,11 +1,11 @@
 package net.fpsboost.element;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.module.Module;
 import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.RenderUtil;
-import net.fpsboost.util.ThemeUtil;
 
-public class Element extends ThemeUtil implements Wrapper {
+public class Element extends Module implements Wrapper {
     public int xPos;
     public int yPos;
 
@@ -15,12 +15,8 @@ public class Element extends ThemeUtil implements Wrapper {
     public int width, height;
     public float size = 1F;
 
-    public String name;
-
-    public boolean enable = true;
-
-    public Element() {
-        this.name = this.getClass().getSimpleName();
+    public Element(String name,String cnName) {
+        super(name,cnName,"");
     }
 
     public void onHover(int mouseX, int mouseY) {

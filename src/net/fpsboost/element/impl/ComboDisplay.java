@@ -11,6 +11,10 @@ import net.minecraft.client.Minecraft;
  */
 public class ComboDisplay extends Element {
 
+    public ComboDisplay() {
+        super("ComboDisplay", "Combo显示");
+    }
+
     @Override
     public void onDraw() {
         String text = AttackHandler.currentCombo + " Combo";

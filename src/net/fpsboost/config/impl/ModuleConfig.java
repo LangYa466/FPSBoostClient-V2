@@ -44,7 +44,8 @@ public class ModuleConfig extends Config {
     public void load() {
         for (Module module : ModuleManager.modules) {
             module.enable = Boolean.parseBoolean(data.get(module.name + "-Enable"));
-            module.keyCode = Integer.parseInt(data.get(module.name + "-KeyCode"));
+            int keyCode = Integer.parseInt(data.get(module.name + "-KeyCode"));
+            if (keyCode != 0) module.keyCode = keyCode;
             if (module.values.isEmpty()) return;
             for (Value<?> value : module.values) {
                 if (value instanceof BooleanValue) {

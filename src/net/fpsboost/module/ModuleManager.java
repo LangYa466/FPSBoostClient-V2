@@ -14,7 +14,7 @@ public class ModuleManager {
     public static final ArrayList<Module> modules = new ArrayList<>();
 
     public static void init() {
-        modules.add(new TestModule());
+        modules.add(new ClickGUI());
         modules.add(new Sprint());
 
         modules.sort(Comparator.comparing(module -> module.name));

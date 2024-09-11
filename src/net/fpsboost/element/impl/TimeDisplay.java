@@ -2,7 +2,6 @@ package net.fpsboost.element.impl;
 
 import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
-import net.minecraft.client.Minecraft;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -12,6 +11,9 @@ import java.time.format.DateTimeFormatter;
  * @since 2024/8/30 21:23
  */
 public class TimeDisplay extends Element {
+    public TimeDisplay() {
+        super("TimeDisplay", "时间显示");
+    }
 
     @Override
     public void onDraw() {

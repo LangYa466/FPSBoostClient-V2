@@ -1,19 +1,21 @@
 package net.fpsboost.element.impl;
 
 import net.fpsboost.element.Element;
-import net.fpsboost.module.Module;
 import net.fpsboost.util.RenderUtil;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
 
-import java.awt.*;
+import static net.fpsboost.util.ThemeUtil.*;
 
 /**
  * @author LangYa
  * @since 2024/8/30 21:49
  */
 public class KeyStore extends Element {
+
+    public KeyStore() {
+        super("KeyStore", "按键显示");
+    }
 
     @Override
     public void onDraw() {

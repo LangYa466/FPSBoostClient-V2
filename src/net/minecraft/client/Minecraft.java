@@ -512,7 +512,7 @@ public class Minecraft implements IThreadListener
     private void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("Minecraft 1.8.9");
+        Display.setTitle("FPSBoost-V2 - Beta || Minecraft 1.8.9");
 
         try
         {

@@ -1,4 +1,4 @@
-package net.fpsboost.sreen;
+package net.fpsboost.screen;
 
 import net.minecraft.client.gui.GuiScreen;
 

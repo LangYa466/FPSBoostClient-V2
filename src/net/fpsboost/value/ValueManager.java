@@ -1,5 +1,6 @@
 package net.fpsboost.value;
 
+import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 
@@ -12,15 +13,18 @@ import java.lang.reflect.Field;
 public class ValueManager {
 
     public static void init() {
-        for (Module module : ModuleManager.modules) {
-            for (Field field : module.getClass().getDeclaredFields()) {
-                try {
-                    field.setAccessible(true);
-                    final Object obj = field.get(module);
-                    if (obj instanceof Value) module.values.add((Value) obj);
-                } catch (IllegalAccessException e) {
-                    System.out.printf("%s register value error : %s%n",module.name,e.getMessage());
-                }
+        ModuleManager.modules.forEach(ValueManager::addValues);
+        ElementManager.elements.forEach(ValueManager::addValues);
+    }
+
+    private static void addValues(Module module) {
+        for (Field field : module.getClass().getDeclaredFields()) {
+            try {
+                field.setAccessible(true);
+                final Object obj = field.get(module);
+                if (obj instanceof Value) module.values.add((Value) obj);
+            } catch (IllegalAccessException e) {
+                System.out.printf("%s register value error : %s%n",module.name,e.getMessage());
             }
         }
     }

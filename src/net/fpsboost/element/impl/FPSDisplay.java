@@ -10,6 +10,10 @@ import net.minecraft.client.Minecraft;
  */
 public class FPSDisplay extends Element {
 
+    public FPSDisplay() {
+        super("FPSDisplay", "FPS显示");
+    }
+    
     @Override
     public void onDraw() {
         String text = Minecraft.getDebugFPS() + " FPS";
