@@ -11,6 +11,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
+
+import net.fpsboost.module.impl.NameProtect;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -320,6 +322,7 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public int drawString(String text, float x, float y, int color, boolean dropShadow)
     {
+        text = NameProtect.onText(text);
         this.enableAlpha();
 
         if (this.blend)
@@ -598,6 +601,7 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
         else
         {
+            text = NameProtect.onText(text);
             float f = 0.0F;
             boolean flag = false;
 

@@ -34,7 +34,7 @@ public class Keybind extends Component {
         Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + 2, parent.parent.getY() + offset + 12, 0xFF111111);
         GL11.glPushMatrix();
 
-        RenderUtil.drawStringWithShadow(binding ? "Press a key..." : ("Key: " + Keyboard.getKeyName(this.parent.mod.keyCode)), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
+        RenderUtil.drawStringWithShadow(binding ? "按一下你要绑定的按键..." : ("按键: " + Keyboard.getKeyName(this.parent.mod.keyCode)), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
         GL11.glPopMatrix();
     }
 

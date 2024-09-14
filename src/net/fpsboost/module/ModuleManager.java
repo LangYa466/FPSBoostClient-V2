@@ -16,18 +16,22 @@ public class ModuleManager {
     public static void init() {
         modules.add(new ClickGUI());
         modules.add(new Sprint());
+        modules.add(new OldAnimation());
+        modules.add(new NameProtect());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
 
     public static void moduleRender2D() {
         for (Module module : modules) {
+            if (!module.enable) continue;
             module.onRender2D();
         }
     }
 
     public static void moduleUpdate() {
         for (Module module : modules) {
+            if (!module.enable) continue;
             module.onUpdate();
         }
         AttackHandler.onUpdate();

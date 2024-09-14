@@ -33,6 +33,7 @@ public class AttackHandler implements Wrapper {
     public static void onWorldLoad() {
         currentCombo = 0;
         target = null;
+
     }
 
     public static void onPacketReceived(Packet<?> packet) {

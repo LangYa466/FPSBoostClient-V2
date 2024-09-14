@@ -16,8 +16,8 @@ public class Client implements Wrapper{
 
     public static void initClient() {
         ModuleManager.init();
-        ValueManager.init();
         ElementManager.init();
+        ValueManager.init();
         CommandManager.init();
         ConfigManager.init();
     }

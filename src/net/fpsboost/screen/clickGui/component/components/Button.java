@@ -25,15 +25,13 @@ public class Button extends Component {
     private boolean isHovered;
     private final ArrayList<Component> subcomponents;
     public boolean open;
-    private final int height;
 
     public Button(Module mod, Frame parent, int offset) {
         this.mod = mod;
         this.parent = parent;
         this.offset = offset;
-        this.subcomponents = new ArrayList<Component>();
+        this.subcomponents = new ArrayList<>();
         this.open = false;
-        height = 12;
         int opY = offset + 12;
         if (!mod.values.isEmpty()) {
             for (Value<?> value : mod.values) {
@@ -54,7 +52,6 @@ public class Button extends Component {
             }
         }
         this.subcomponents.add(new Keybind(this, opY));
-        this.subcomponents.add(new VisibleButton(this, mod, opY));
     }
 
     @Override
@@ -70,6 +67,7 @@ public class Button extends Component {
     @Override
     public void renderComponent() {
         Gui.drawRect(parent.getX(), this.parent.getY() + this.offset, parent.getX() + parent.getWidth(), this.parent.getY() + 12 + this.offset, this.isHovered ? (this.mod.enable ? new Color(0xFF222222).darker().getRGB() : 0xFF222222) : (this.mod.enable ? new Color(14, 14, 14).getRGB() : 0xFF111111));
+        if (this.isHovered && !mod.description.isEmpty()) RenderUtil.drawStringWithShadow(mod.description, parent.getX() + 60, this.parent.getY() + this.offset,-1);
         GL11.glPushMatrix();
         RenderUtil.drawStringWithShadow(this.mod.cnName, (parent.getX() + 2) , (parent.getY() + offset + 2)  , this.mod.enable ? ClickGuiScreen.color : -1);
         if (this.subcomponents.size() > 2)

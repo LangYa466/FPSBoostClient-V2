@@ -2,6 +2,7 @@ package net.fpsboost.util;
 
 import net.fpsboost.Wrapper;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -81,9 +82,13 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     }
 
     public static int drawStringWithRounded(String text, int x, int y) {
+        return drawStringWithRounded(text,x,y,2,true);
+    }
+
+    public static int drawStringWithRounded(String text, int x, int y,int radius, boolean bg) {
         int width = mc.fontRendererObj.getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;
-        RenderUtil.drawRoundedRect(x, y, width + 4,height,2,bgColor);
+        if (bg) RenderUtil.drawRoundedRect(x, y, width + 4,height,radius,bgColor);
         RenderUtil.drawString(text,x + 1, y, pressbgColor);
         return width + 4;
     }
@@ -106,4 +111,11 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     }
 
 
+    public static int getStringWidth(String text) {
+        return mc.fontRendererObj.getStringWidth(text);
+    }
+
+    public static void resetColor() {
+        GlStateManager.resetColor();
+    }
 }

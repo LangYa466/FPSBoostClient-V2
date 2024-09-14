@@ -17,6 +17,7 @@ public class ElementManager {
         elements.add(new TimeDisplay());
         elements.add(new ComboDisplay());
         elements.add(new KeyStore());
+        elements.add(new PotionDisplay());
 
         elements.forEach(Element::init);
     }

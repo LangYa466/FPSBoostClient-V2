@@ -2160,6 +2160,7 @@ public class Minecraft implements IThreadListener
     public void loadWorld(WorldClient worldClientIn, String loadingMessage)
     {
         AttackHandler.onWorldLoad();
+        System.gc();
         if (worldClientIn == null)
         {
             NetHandlerPlayClient nethandlerplayclient = this.getNetHandler();
