@@ -909,7 +909,7 @@ public class Minecraft implements IThreadListener
         try
         {
             logger.info("Stopping!");
-            ConfigManager.saveAll();
+            ConfigManager.saveAllConfig();
 
             try
             {

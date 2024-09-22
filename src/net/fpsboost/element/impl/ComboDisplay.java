@@ -4,8 +4,6 @@ import net.fpsboost.element.Element;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
-import net.fpsboost.value.impl.NumberValue;
-import net.minecraft.client.Minecraft;
 
 /**
  * @author LangYa
@@ -18,12 +16,11 @@ public class ComboDisplay extends Element {
     }
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
-    private final NumberValue backgroundRadiusValue = new NumberValue("背景圆角值", 2D,10D,0D,1D);
 
     @Override
     public void onDraw() {
         String text = AttackHandler.currentCombo + " Combo";
-        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundRadiusValue.value.intValue(),backgroundValue.value);
+        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundValue.value);
     }
 
     @Override

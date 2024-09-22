@@ -1,8 +1,8 @@
 package net.fpsboost.config.impl;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.fpsboost.config.Config;
-import net.fpsboost.element.Element;
-import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.value.Value;
@@ -20,42 +20,62 @@ public class ModuleConfig extends Config {
         super("Module");
     }
 
-    @Override
-    public void save() {
+    public JsonObject saveConfig() {
+        JsonObject object = new JsonObject();
         for (Module module : ModuleManager.modules) {
-            data.put(module.name + "-Enable", String.valueOf(module.enable));
-            data.put(module.name + "-KeyCode", Integer.toString(module.keyCode));
-            if (module.values.isEmpty()) return;
-            for (Value<?> value : module.values) {
-                if (value instanceof BooleanValue) {
-                    data.put(value.name,String.valueOf(((BooleanValue)value).value));
-                }
-                if (value instanceof ModeValue) {
-                    data.put(value.name,String.valueOf(((ModeValue)value).value));
-                }
-                if (value instanceof NumberValue) {
-                    data.put(value.name,Double.toString(((NumberValue)value).value));
-                }
-            }
+            JsonObject moduleObject = new JsonObject();
+            moduleObject.addProperty("enable", module.enable);
+            moduleObject.addProperty("key", module.keyCode);
+            JsonObject valuesObject = getValueJsonObject(module);
+            moduleObject.add("values", valuesObject);
+            object.add(module.name, moduleObject);
         }
+        return object;
     }
 
-    @Override
-    public void load() {
+    private JsonObject getValueJsonObject(Module module) {
+        JsonObject valuesObject = new JsonObject();
+        for (Value<?> value : module.values) {
+            if (value instanceof NumberValue) {
+                valuesObject.addProperty(value.name, ((NumberValue)value).value);
+            }
+            else if (value instanceof BooleanValue) {
+                valuesObject.addProperty(value.name, ((BooleanValue)value).value);
+            }
+            else if (value instanceof ModeValue) {
+                valuesObject.addProperty(value.name, ((ModeValue)value).value);
+            }
+        }
+        return valuesObject;
+    }
+
+    public void loadConfig(JsonObject object) {
         for (Module module : ModuleManager.modules) {
-            module.enable = Boolean.parseBoolean(data.get(module.name + "-Enable"));
-            int keyCode = Integer.parseInt(data.get(module.name + "-KeyCode"));
-            if (keyCode != 0) module.keyCode = keyCode;
-            if (module.values.isEmpty()) return;
-            for (Value<?> value : module.values) {
-                if (value instanceof BooleanValue) {
-                    ((BooleanValue)value).value = Boolean.parseBoolean(data.get(value.name));
+            if (object.has(module.name)) {
+                JsonObject moduleObject = object.get(module.name).getAsJsonObject();
+                if (moduleObject.has("enable")) {
+                    module.enable = moduleObject.get("enable").getAsBoolean();
                 }
-                if (value instanceof ModeValue) {
-                    ((ModeValue)value).value = String.valueOf(data.get(value.name));
+                if (moduleObject.has("key")) {
+                    module.keyCode = moduleObject.get("key").getAsInt();
                 }
-                if (value instanceof NumberValue) {
-                    ((NumberValue)value).value = Double.parseDouble(data.get(value.name));
+                if (!moduleObject.has("values")) {
+                    continue;
+                }
+                JsonObject valuesObject = moduleObject.get("values").getAsJsonObject();
+                for (Value<?> value : module.values) {
+                    if (valuesObject.has(value.name)) {
+                        JsonElement theValue = valuesObject.get(value.name);
+                        if (value instanceof NumberValue) {
+                            ((NumberValue)value).value = theValue.getAsNumber().doubleValue();
+                        }
+                        else if (value instanceof BooleanValue) {
+                            ((BooleanValue)value).value = theValue.getAsBoolean();
+                        }
+                        else if (value instanceof ModeValue) {
+                            ((ModeValue)value).value = theValue.getAsString();
+                        }
+                    }
                 }
             }
         }

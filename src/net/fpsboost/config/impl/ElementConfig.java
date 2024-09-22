@@ -1,5 +1,7 @@
 package net.fpsboost.config.impl;
 
+import com.google.gson.JsonObject;
+import net.fpsboost.Wrapper;
 import net.fpsboost.config.Config;
 import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
@@ -8,37 +10,32 @@ import net.fpsboost.element.ElementManager;
  * @author LangYa
  * @since 2024/9/3 18:21
  */
-public class ElementConfig extends Config {
+public class ElementConfig extends Config implements Wrapper {
 
     public ElementConfig() {
         super("Element");
     }
 
-    @Override
-    public void save() {
-        for (Element element : ElementManager.elements) {
-            data.put(element.name + "-Enable", String.valueOf(element.enable));
-            data.put(element.name + "-XPos", Integer.toString(element.xPos));
-            data.put(element.name + "-YPos", Integer.toString(element.yPos));
+    public JsonObject saveConfig() {
+        final JsonObject object = new JsonObject();
+        for (Element hud : ElementManager.elements) {
+            final JsonObject hudObject = new JsonObject();
+            hudObject.addProperty("x", hud.xPos);
+            hudObject.addProperty("y", hud.yPos);
+            hudObject.addProperty("enable", hud.enable);
+            object.add(hud.name, hudObject);
         }
+        return object;
     }
 
-    @Override
-    public void load() {
-        boolean elementNullConfig = false;
-        for (Element element : ElementManager.elements) {
-            elementNullConfig = element.name.contains(data.toString());
-            element.enable = Boolean.parseBoolean(data.get(element.name + "-Enable"));
-            int xPos = Integer.parseInt(data.get(element.name + "-XPos"));
-            if (xPos == 0) xPos = 5;
-            element.xPos = xPos;
-            int yPos = Integer.parseInt(data.get(element.name + "-YPos"));
-            if (yPos == 0) yPos = 5;
-            element.yPos = yPos;
-        }
-        if (elementNullConfig) {
-            save();
-            load();
+    public void loadConfig(final JsonObject object) {
+        for (Element hud : ElementManager.elements) {
+            if (object.has(hud.name)) {
+                final JsonObject hudObject = object.get(hud.name).getAsJsonObject();
+                hud.xPos = hudObject.get("x").getAsInt();
+                hud.yPos = hudObject.get("y").getAsInt();
+                hud.enable = hudObject.get("enable").getAsBoolean();
+            }
         }
     }
 }

@@ -1,66 +1,77 @@
 package net.fpsboost.config;
 
-import com.google.gson.*;
-import net.fpsboost.Client;
-import net.fpsboost.Wrapper;
-import net.fpsboost.config.impl.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.List;
 
-/**
- * @author LangYa
- * @since 2024/9/3 17:47
- */
+import com.google.gson.JsonParser;
+import net.fpsboost.Client;
+import net.fpsboost.Wrapper;
+import net.fpsboost.config.impl.ElementConfig;
+import net.fpsboost.config.impl.*;
+import org.apache.commons.io.FileUtils;
+
 public class ConfigManager implements Wrapper {
-    public static final ArrayList<Config> configs = new ArrayList<>();
-    public static final File clientDir = new File(mc.mcDataDir, Client.name);
-    public static final File configDir = new File(clientDir,"configs");
-    public static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private static final List<Config> configs = new ArrayList<>();
+    public static final File dir = new File(mc.mcDataDir, Client.name);
+    private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public static void init() {
-        if (!clientDir.exists()) clientDir.mkdir();
-        if (!configDir.exists()) configDir.mkdir();
+        if (!dir.exists()) dir.mkdir();
         configs.add(new ModuleConfig());
         configs.add(new ElementConfig());
-
-        loadAll();
+        loadAllConfig();
     }
 
-    public static void save(String name) {
-        System.out.printf("[ConfigManager] Saved %sConfig%n",name);
-        for (Config config : configs) {
-            if (config.name.equals(name)) {
-                config.save();
+    public static void loadConfig(String name) {
+        File file = new File(dir, name);
+        JsonParser jsonParser = new JsonParser();
+        if (file.exists()) {
+            System.out.println("Loading config: " + name);
+            for (Config config : configs) {
+                if (!config.name.equals(name)) continue;
                 try {
-                    config.data.saveToFile(config.file.getAbsolutePath());
-                } catch (IOException e) {
-                    System.out.printf("Config %s error : %s%n",config.name,e.getMessage());
+                    config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
                 }
+                catch (FileNotFoundException e) {
+                    System.out.println("Failed to load config: " + name);
+                    e.printStackTrace();
+                }
+                break;
             }
+        } else {
+            System.out.println("Config " + name + " doesn't exist, creating a new one...");
+            saveConfig(name);
         }
     }
 
-    public static void saveAll() {
-        configs.forEach(config -> save(config.name));
-    }
-
-    public static void load(String name) {
-        System.out.printf("[ConfigManager] Loaded %sConfig%n",name);
-        for (Config config : configs) {
-            if (!config.name.equals(name)) continue;
-            if (config.file.exists()) {
-                try {
-                    config.data.loadFromFile(config.file.getAbsolutePath());
-                    config.load();
-                } catch (IOException e) {
-                    System.out.printf("Config %s error : %s",config.name,e.getMessage());
-                }
+    public static void saveConfig(String name) {
+        File file = new File(dir, name);
+        try {
+            System.out.println("Saving config: " + name);
+            file.createNewFile();
+            for (Config config : configs) {
+                if (!config.name.equals(name)) continue;
+                FileUtils.writeByteArrayToFile(file, gson.toJson(config.saveConfig()).getBytes(StandardCharsets.UTF_8));
+                break;
             }
+        }
+        catch (IOException e) {
+            System.out.println("Failed to save config: " + name);
         }
     }
 
-    public static void loadAll() {
-       configs.forEach(config -> load(config.name));
+    public static void loadAllConfig() {
+        configs.forEach(it -> loadConfig(it.name));
+        System.out.println("Loaded all configs");
+    }
+
+    public static void saveAllConfig() {
+        configs.forEach(it -> saveConfig(it.name));
+        System.out.println("Saved all configs");
     }
 }
