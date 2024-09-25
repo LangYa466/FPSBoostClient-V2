@@ -56,6 +56,7 @@ public class ValueScreen extends GuiScreen {
         int y = 5;
         int x = 0;
         for (Value<?> value : module.values) {
+            if (value.isHide) return;
             y += 10;
             if (value instanceof BooleanValue) {
                 RenderUtil.drawString(value.name, x, y, -1);
@@ -93,6 +94,7 @@ public class ValueScreen extends GuiScreen {
         int x = 0;
         if (HoveringUtil.isHovering(50,0,RenderUtil.getStringWidth("返回"),mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
         for (Value<?> value : module.values) {
+            if (value.isHide) return;
             y += 10;
             if (value instanceof BooleanValue) {
                 if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(value.name) + 5, y + 3, 5, 5, mouseX, mouseY)) {
