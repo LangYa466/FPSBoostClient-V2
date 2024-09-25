@@ -1,7 +1,7 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
-import net.fpsboost.screen.clickGui.ClickGuiScreen;
+import net.fpsboost.screen.SimpleClickGUI;
 import org.lwjgl.input.Keyboard;
 
 /**
@@ -15,7 +15,7 @@ public class ClickGUI extends Module {
 
     @Override
     public void onEnable() {
-        mc.displayGuiScreen(new ClickGuiScreen());
+        mc.displayGuiScreen(new SimpleClickGUI());
         toggle();
     }
 }

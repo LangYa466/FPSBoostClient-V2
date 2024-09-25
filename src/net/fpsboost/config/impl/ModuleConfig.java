@@ -37,13 +37,13 @@ public class ModuleConfig extends Config {
         JsonObject valuesObject = new JsonObject();
         for (Value<?> value : module.values) {
             if (value instanceof NumberValue) {
-                valuesObject.addProperty(value.name, ((NumberValue)value).value);
+                valuesObject.addProperty(value.name, ((NumberValue)value).getValue());
             }
             else if (value instanceof BooleanValue) {
-                valuesObject.addProperty(value.name, ((BooleanValue)value).value);
+                valuesObject.addProperty(value.name, ((BooleanValue)value).getValue());
             }
             else if (value instanceof ModeValue) {
-                valuesObject.addProperty(value.name, ((ModeValue)value).value);
+                valuesObject.addProperty(value.name, ((ModeValue)value).getValue());
             }
         }
         return valuesObject;
@@ -67,13 +67,13 @@ public class ModuleConfig extends Config {
                     if (valuesObject.has(value.name)) {
                         JsonElement theValue = valuesObject.get(value.name);
                         if (value instanceof NumberValue) {
-                            ((NumberValue)value).value = theValue.getAsNumber().doubleValue();
+                            ((NumberValue)value).setValue(theValue.getAsNumber().doubleValue());
                         }
                         else if (value instanceof BooleanValue) {
-                            ((BooleanValue)value).value = theValue.getAsBoolean();
+                            ((BooleanValue)value).setValue(theValue.getAsBoolean());
                         }
                         else if (value instanceof ModeValue) {
-                            ((ModeValue)value).value = theValue.getAsString();
+                            ((ModeValue)value).setValue(theValue.getAsString());
                         }
                     }
                 }

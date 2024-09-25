@@ -3,10 +3,6 @@ package net.fpsboost.util;
 import net.fpsboost.Wrapper;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.WorldRenderer;
-import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -32,6 +28,12 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         gui.drawVerticalLine(x + width, y, y + height, color);
     }
 
+
+    public static void drawRectWithOutline(int x,int y,int width,int height,int color,int outlineColor) {
+        Gui.drawRect(x,y,x + width,y + height,color);
+        drawOutline(x,y,width,height,outlineColor);
+    }
+
     public static int drawString(String text, int x, int y, int color) {
         return mc.fontRendererObj.drawString(text,x,y,color);
     }
@@ -45,12 +47,20 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     }
 
     public static int drawStringWithRounded(String text, int x, int y, boolean bg) {
-        int width = mc.fontRendererObj.getStringWidth(text);
+        int width = getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;
         if (bg) RenderUtil.drawRect(x, y, width + 4,height,bgColor);
         RenderUtil.drawString(text,x + 1, y, pressbgColor);
         return width + 4;
     }
+    public static int drawStringWithOutline(String text, int x, int y, int bgColor,int color) {
+        int width = getStringWidth(text);
+        int height = mc.fontRendererObj.FONT_HEIGHT;
+        RenderUtil.drawOutline(x, y, width + 4,height,bgColor);
+        RenderUtil.drawString(text,x + 2, y, color);
+        return width + 4;
+    }
+
 
     public static int drawStringWithShadow(String text, int x, int y, int color) {
         return mc.fontRendererObj.drawStringWithShadow(text,x,y,color);
@@ -61,10 +71,10 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     }
 
     public static int drawStringWithShadowAndRounded(String text, int x, int y) {
-        int width = mc.fontRendererObj.getStringWidth(text);
+        int width = getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;
         RenderUtil.drawRect(x, y, width,height,pressbgColor);
-        int textX = mc.fontRendererObj.getStringWidth(text);
+        int textX = getStringWidth(text);
         RenderUtil.drawStringWithShadow(text,x + textX, y + height / 2 + 1, bgColor);
         return width + 4;
     }

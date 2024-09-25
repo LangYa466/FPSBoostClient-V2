@@ -12,4 +12,7 @@ public class BooleanValue extends Value<Boolean> {
         super(name, value);
     }
 
+    public void toggle() {
+        this.setValue(!getValue());
+    }
 }

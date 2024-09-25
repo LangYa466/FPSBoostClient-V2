@@ -24,7 +24,7 @@ public class TimeDisplay extends Element {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
         String formattedTime = now.format(formatter);
         String text = String.format("Time: %s", formattedTime);
-        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundValue.value);
+        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundValue.getValue());
     }
 
     @Override

@@ -20,7 +20,7 @@ public class ComboDisplay extends Element {
     @Override
     public void onDraw() {
         String text = AttackHandler.currentCombo + " Combo";
-        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundValue.value);
+        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundValue.getValue());
     }
 
     @Override

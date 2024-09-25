@@ -8,15 +8,37 @@ import net.fpsboost.value.Value;
  */
 public class NumberValue extends Value<Double> {
 
-    public Double maxValue;
-    public Double minValue;
-    public Double incValue;
+    public double maxValue;
+    public double minValue;
+    public double incValue;
 
-    public NumberValue(String name, Double value, Double maxValue, Double minValue, Double incValue) {
+    public NumberValue(String name, double value, double maxValue, double minValue, double incValue) {
         super(name, value);
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.incValue = incValue;
+    }
+
+    public NumberValue(String name, int value, int maxValue, int minValue, double incValue) {
+        super(name, (double) value);
+        this.maxValue = maxValue;
+        this.minValue = minValue;
+        this.incValue = incValue;
+    }
+
+    public NumberValue(String name, int value, int maxValue, int minValue, int incValue) {
+        super(name, (double) value);
+        this.maxValue = maxValue;
+        this.minValue = minValue;
+        this.incValue = incValue;
+    }
+
+    public void add() {
+        setValue(getValue() + incValue);
+    }
+
+    public void cut() {
+        setValue(getValue() - incValue);
     }
 
 }

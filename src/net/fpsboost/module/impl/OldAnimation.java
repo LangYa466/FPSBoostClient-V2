@@ -22,11 +22,11 @@ public class OldAnimation extends Module {
         if (mc.theWorld == null || mc.thePlayer == null) return;
         ItemStack heldItem = mc.thePlayer.getHeldItem();
         if (this.enable && heldItem != null) {
-            if (blockHit.value && heldItem.getItemUseAction() == EnumAction.BLOCK) {
+            if (blockHit.getValue() && heldItem.getItemUseAction() == EnumAction.BLOCK) {
                 attemptSwing();
-            } else if (oldEat.value && heldItem.getItemUseAction() == EnumAction.DRINK) {
+            } else if (oldEat.getValue() && heldItem.getItemUseAction() == EnumAction.DRINK) {
                 attemptSwing();
-            } else if (oldBow.value && heldItem.getItemUseAction() == EnumAction.BOW) {
+            } else if (oldBow.getValue() && heldItem.getItemUseAction() == EnumAction.BOW) {
                 attemptSwing();
             }
         }

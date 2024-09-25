@@ -6,10 +6,22 @@ package net.fpsboost.value;
  */
 public class Value<T> {
     public String name;
-    public T value;
+    private T value;
+    public boolean isHide = false;
 
     public Value(String name, T value) {
         this.name = name;
         this.value = value;
     }
+
+    public T getValue() {
+        return value;
+    }
+
+    public void setValue(T value) {
+        this.value = value;
+        onEditValue();
+    }
+
+    public void onEditValue() { }
 }

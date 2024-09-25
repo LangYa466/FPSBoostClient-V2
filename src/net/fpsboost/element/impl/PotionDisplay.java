@@ -79,7 +79,8 @@ public class PotionDisplay extends Element {
                     width = allStringWidth + 5;
                 }
 
-                if (backgroundValue.value) RenderUtil.drawRect(0,0,allStringWidth + 13,25,bgColor);
+                if (backgroundValue.getValue()) RenderUtil.drawRect(0,0,allStringWidth + 13,25,bgColor);
+
 
                 // draw potion name with i18n
                 RenderUtil.drawStringWithShadow(s1, 25,3, -1);

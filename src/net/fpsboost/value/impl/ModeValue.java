@@ -16,18 +16,19 @@ public class ModeValue extends Value<String> {
     }
 
     public boolean isMode(String value) {
-        return this.value.equals(value);
+        return this.getValue().equals(value);
+    }
+
+    public void setNextValue() {
+        setValue(getNextValue());
     }
 
     public String getNextValue() {
-        // Find the index of the current value
         for (int i = 0; i < modes.length; i++) {
-            if (modes[i].equals(this.value)) {
-                // Return the next mode in the array, or the first one if at the end
+            if (modes[i].equals(this.getValue())) {
                 return modes[(i + 1) % modes.length];
             }
         }
-        // If the current value is not found in the modes array, return null or handle as needed
         return null;
     }
 }

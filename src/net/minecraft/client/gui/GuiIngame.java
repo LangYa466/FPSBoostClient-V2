@@ -9,6 +9,7 @@ import java.util.Random;
 
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.util.RenderUtil;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -149,6 +150,8 @@ public class GuiIngame extends Gui
                 GlStateManager.popMatrix();
             }
         });
+
+
 
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(icons);

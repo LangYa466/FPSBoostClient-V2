@@ -1,5 +1,6 @@
 package net.fpsboost.module;
 
+import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
 
@@ -20,6 +21,13 @@ public class ModuleManager {
         modules.add(new NameProtect());
 
         modules.sort(Comparator.comparing(module -> module.name));
+    }
+
+    public static ArrayList<Module> getAllModules() {
+        ArrayList<Module> allModules = new ArrayList<>();
+        allModules.addAll(modules);
+        allModules.addAll(ElementManager.elements);
+        return allModules;
     }
 
     public static void moduleRender2D() {
