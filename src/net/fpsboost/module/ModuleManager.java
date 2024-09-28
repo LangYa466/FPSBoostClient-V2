@@ -1,8 +1,10 @@
 package net.fpsboost.module;
 
+import net.fpsboost.Client;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
+import net.fpsboost.util.RenderUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -31,6 +33,7 @@ public class ModuleManager {
     }
 
     public static void moduleRender2D() {
+        if (Client.isOldVersion) RenderUtil.drawStringWithShadow("你正在使用旧版本",5,5,-1);
         for (Module module : modules) {
             if (!module.enable) continue;
             module.onRender2D();

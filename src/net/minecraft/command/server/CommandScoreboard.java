@@ -163,11 +163,11 @@ public class CommandScoreboard extends CommandBase
 
                         this.func_175779_n(sender, args, 2);
                     }
-                    else if (args[1].equalsIgnoreCase("test"))
+                    else if (args[1].equalsIgnoreCase("screenShotHelper"))
                     {
                         if (args.length != 5 && args.length != 6)
                         {
-                            throw new WrongUsageException("commands.scoreboard.players.test.usage", new Object[0]);
+                            throw new WrongUsageException("commands.scoreboard.players.screenShotHelper.usage", new Object[0]);
                         }
 
                         this.func_175781_o(sender, args, 2);
@@ -1005,7 +1005,7 @@ public class CommandScoreboard extends CommandBase
 
             if (!scoreboard.entityHasObjective(s, scoreobjective))
             {
-                throw new CommandException("commands.scoreboard.players.test.notFound", new Object[] {scoreobjective.getName(), s});
+                throw new CommandException("commands.scoreboard.players.screenShotHelper.notFound", new Object[] {scoreobjective.getName(), s});
             }
             else
             {
@@ -1016,11 +1016,11 @@ public class CommandScoreboard extends CommandBase
 
                 if (score.getScorePoints() >= i && score.getScorePoints() <= j)
                 {
-                    notifyOperators(p_175781_1_, this, "commands.scoreboard.players.test.success", new Object[] {Integer.valueOf(score.getScorePoints()), Integer.valueOf(i), Integer.valueOf(j)});
+                    notifyOperators(p_175781_1_, this, "commands.scoreboard.players.screenShotHelper.success", new Object[] {Integer.valueOf(score.getScorePoints()), Integer.valueOf(i), Integer.valueOf(j)});
                 }
                 else
                 {
-                    throw new CommandException("commands.scoreboard.players.test.failed", new Object[] {Integer.valueOf(score.getScorePoints()), Integer.valueOf(i), Integer.valueOf(j)});
+                    throw new CommandException("commands.scoreboard.players.screenShotHelper.failed", new Object[] {Integer.valueOf(score.getScorePoints()), Integer.valueOf(i), Integer.valueOf(j)});
                 }
             }
         }
@@ -1157,7 +1157,7 @@ public class CommandScoreboard extends CommandBase
             {
                 if (args.length == 2)
                 {
-                    return getListOfStringsMatchingLastWord(args, new String[] {"set", "add", "remove", "reset", "list", "enable", "test", "operation"});
+                    return getListOfStringsMatchingLastWord(args, new String[] {"set", "add", "remove", "reset", "list", "enable", "screenShotHelper", "operation"});
                 }
 
                 if (!args[1].equalsIgnoreCase("set") && !args[1].equalsIgnoreCase("add") && !args[1].equalsIgnoreCase("remove") && !args[1].equalsIgnoreCase("reset"))
@@ -1174,7 +1174,7 @@ public class CommandScoreboard extends CommandBase
                             return getListOfStringsMatchingLastWord(args, this.func_175782_e());
                         }
                     }
-                    else if (!args[1].equalsIgnoreCase("list") && !args[1].equalsIgnoreCase("test"))
+                    else if (!args[1].equalsIgnoreCase("list") && !args[1].equalsIgnoreCase("screenShotHelper"))
                     {
                         if (args[1].equalsIgnoreCase("operation"))
                         {
@@ -1211,7 +1211,7 @@ public class CommandScoreboard extends CommandBase
                             return getListOfStringsMatchingLastWord(args, this.getScoreboard().getObjectiveNames());
                         }
 
-                        if (args.length == 4 && args[1].equalsIgnoreCase("test"))
+                        if (args.length == 4 && args[1].equalsIgnoreCase("screenShotHelper"))
                         {
                             return getListOfStringsMatchingLastWord(args, this.func_147184_a(false));
                         }

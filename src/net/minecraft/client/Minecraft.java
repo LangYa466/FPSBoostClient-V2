@@ -37,6 +37,8 @@ import net.fpsboost.Client;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.util.ChatUtil;
+import net.fpsboost.util.screenShotHelper.ScreenshotTaker;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -147,7 +149,6 @@ import net.minecraft.util.MovementInputFromOptions;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.ScreenShotHelper;
 import net.minecraft.util.Session;
 import net.minecraft.util.Timer;
 import net.minecraft.util.Util;
@@ -2727,7 +2728,9 @@ public class Minecraft implements IThreadListener
                     }
                     else if (i == this.gameSettings.keyBindScreenshot.getKeyCode())
                     {
-                        this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc));
+                        ChatUtil.addMessageWithClient(ScreenshotTaker.takeScreenshot());
+
+                       // this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc));
                     }
                 }
             }

@@ -909,7 +909,7 @@ public class ShaderPackParser
             }
         }
 
-        SMCLog.severe("Invalid alpha test: " + str);
+        SMCLog.severe("Invalid alpha screenShotHelper: " + str);
         return null;
     }
 

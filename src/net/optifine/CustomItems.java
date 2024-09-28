@@ -408,7 +408,7 @@ public class CustomItems
             mapPotionIds.put("clear", getPotionId(7, 0));
             mapPotionIds.put("bungling", getPotionId(7, 1));
             mapPotionIds.put("charming", getPotionId(7, 2));
-            mapPotionIds.put("rank", getPotionId(7, 3));
+            mapPotionIds.put("network", getPotionId(7, 3));
             mapPotionIds.put("weakness", getPotionIds(8));
             mapPotionIds.put("damageboost", getPotionIds(9));
             mapPotionIds.put("moveslowdown", getPotionIds(10));
