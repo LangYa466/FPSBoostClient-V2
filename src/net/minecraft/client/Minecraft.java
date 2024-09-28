@@ -38,6 +38,7 @@ import net.fpsboost.config.ConfigManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.util.ChatUtil;
+import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.screenShotHelper.ScreenshotTaker;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -562,30 +563,13 @@ public class Minecraft implements IThreadListener
 
         if (util$enumos != Util.EnumOS.OSX)
         {
-            InputStream inputstream = null;
-            InputStream inputstream1 = null;
-
-            try
-            {
-                inputstream = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_16x16.png"));
-                inputstream1 = this.mcDefaultResourcePack.getInputStreamAssets(new ResourceLocation("icons/icon_32x32.png"));
-
-                if (inputstream != null && inputstream1 != null)
-                {
-                    Display.setIcon(new ByteBuffer[] {this.readImageToBuffer(inputstream), this.readImageToBuffer(inputstream1)});
-                }
-            }
-            catch (IOException ioexception)
-            {
-                logger.error((String)"Couldn\'t set icon", (Throwable)ioexception);
-            }
-            finally
-            {
-                IOUtils.closeQuietly(inputstream);
-                IOUtils.closeQuietly(inputstream1);
+            final ByteBuffer[] clientFavicon = IconUtil.getFavicon();
+            if(clientFavicon != null) {
+                Display.setIcon(clientFavicon);
             }
         }
     }
+
 
     private static boolean isJvm64bit()
     {

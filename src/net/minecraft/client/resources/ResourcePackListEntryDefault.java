@@ -1,7 +1,6 @@
 package net.minecraft.client.resources;
 
 import com.google.gson.JsonParseException;
-import java.io.IOException;
 import net.minecraft.client.gui.GuiScreenResourcePacks;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.TextureUtil;
@@ -11,11 +10,13 @@ import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.IOException;
+
 public class ResourcePackListEntryDefault extends ResourcePackListEntry
 {
     private static final Logger logger = LogManager.getLogger();
     private final IResourcePack field_148320_d;
-    private final ResourceLocation resourcePackIcon;
+    private ResourceLocation resourcePackIcon;
 
     public ResourcePackListEntryDefault(GuiScreenResourcePacks resourcePacksGUIIn)
     {
@@ -25,6 +26,11 @@ public class ResourcePackListEntryDefault extends ResourcePackListEntry
 
         try
         {
+            if (this.field_148320_d.getPackImage() == null) {
+                dynamictexture = TextureUtil.missingTexture;
+                this.resourcePackIcon = this.mc.getTextureManager().getDynamicTextureLocation("texturepackicon", dynamictexture);
+                return;
+            }
             dynamictexture = new DynamicTexture(this.field_148320_d.getPackImage());
         }
         catch (IOException var4)
