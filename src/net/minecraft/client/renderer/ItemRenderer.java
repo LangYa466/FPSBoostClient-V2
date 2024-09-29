@@ -1,5 +1,7 @@
 package net.minecraft.client.renderer;
 
+import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.OldAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -17,10 +19,7 @@ import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Items;
-import net.minecraft.item.EnumAction;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemMap;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.*;
 import net.minecraft.src.Config;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumWorldBlockLayer;
@@ -323,6 +322,20 @@ public class ItemRenderer
 
             if (this.itemToRender != null)
             {
+                if (ModuleManager.isEnabled(OldAnimation.class)) {
+                    if (OldAnimation.oldRod.getValue() && itemToRender.getItem() instanceof ItemCarrotOnAStick) {
+                        GlStateManager.translate(0.08F, -0.027F, -0.33F);
+                        GlStateManager.scale(0.93F, 1.0F, 1.0F);
+                    }
+                    if (OldAnimation.oldRod.getValue() && itemToRender.getItem() instanceof ItemFishingRod) {
+                        GlStateManager.translate(0.08F, -0.027F, -0.33F);
+                        GlStateManager.scale(0.93F, 1.0F, 1.0F);
+                    }
+                    if (OldAnimation.oldSwing.getValue() && f1 != 0.0F && !mc.thePlayer.isBlocking() && !mc.thePlayer.isEating() && !mc.thePlayer.isUsingItem()) {
+                        GlStateManager.scale(0.85F, 0.85F, 0.85F);
+                        GlStateManager.translate(-0.06F, 0.003F, 0.05F);
+                    }
+                }
                 if (this.itemToRender.getItem() instanceof ItemMap)
                 {
                     this.renderItemMap(abstractclientplayer, f2, f, f1);
@@ -344,13 +357,21 @@ public class ItemRenderer
                             break;
 
                         case BLOCK:
-                            this.transformFirstPersonItem(f, 0.0F);
+                            if (OldAnimation.blockHit.getValue()) {
+                                this.transformFirstPersonItem(f, f1);
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                            }
                             this.doBlockTransformations();
                             break;
 
                         case BOW:
-                            this.transformFirstPersonItem(f, 0.0F);
-                            this.doBowTransformations(partialTicks, abstractclientplayer);
+                            if (OldAnimation.oldBow.getValue()) {
+                                this.transformFirstPersonItem(f, f1);
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                            }
+                            this.doBowTransformations(partialTicks, this.mc.thePlayer);
                     }
                 }
                 else

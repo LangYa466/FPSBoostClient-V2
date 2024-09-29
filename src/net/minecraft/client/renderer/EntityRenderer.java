@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.OldAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -926,6 +929,18 @@ public class EntityRenderer implements IResourceManagerReloadListener
             if (this.mc.gameSettings.viewBobbing)
             {
                 this.setupViewBobbing(p_renderHand_1_);
+            }
+
+            if(mc.thePlayer != null && ModuleManager.isEnabled(OldAnimation.class) &&
+                    OldAnimation.oldBlock.getValue()
+                    && mc.objectMouseOver != null
+                    && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
+                    && mc.gameSettings.keyBindAttack.isKeyDown() && mc.gameSettings.keyBindUseItem.isKeyDown()
+                    && mc.thePlayer.getItemInUseCount() > 0 && (!mc.thePlayer.isSwingInProgress
+                    || mc.thePlayer.swingProgressInt >= mc.thePlayer.getArmSwingAnimationEnd()
+                    / 2 || mc.thePlayer.swingProgressInt < 0)) {
+                mc.thePlayer.swingProgressInt = -1;
+                mc.thePlayer.isSwingInProgress = true;
             }
         }
     }

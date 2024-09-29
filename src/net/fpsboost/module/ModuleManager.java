@@ -21,6 +21,8 @@ public class ModuleManager {
         modules.add(new Sprint());
         modules.add(new OldAnimation());
         modules.add(new NameProtect());
+        modules.add(new HideGuiChatRect());
+        modules.add(new NoMissHitDelay());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
@@ -30,6 +32,14 @@ public class ModuleManager {
         allModules.addAll(modules);
         allModules.addAll(ElementManager.elements);
         return allModules;
+    }
+
+    public static boolean isEnabled(Class<?> moduleClass) {
+        for (Module module : modules) {
+            if (module.getClass() == moduleClass) return module.enable;
+        }
+
+        return false;
     }
 
     public static void moduleRender2D() {

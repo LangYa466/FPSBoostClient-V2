@@ -13,8 +13,8 @@ import net.fpsboost.value.ValueManager;
  */
 public class Client implements Wrapper{
     public static final String name = "FPSBoost-V2";
-    public static final String version = "0.5";
-    public static boolean isOldVersion = true;
+    public static final String version = "0.6";
+    public static boolean isOldVersion;
 
     public static void initClient() {
         ModuleManager.init();
@@ -25,9 +25,7 @@ public class Client implements Wrapper{
 
 
         // Version Check
-        String network = WebUtil.get("http://122.51.47.169/versionwithv2.txt");
-        if (network.contains(version)) isOldVersion = false;
-        System.out.printf("new version %s now version %s",network,Client.version);
+        isOldVersion = (WebUtil.get("http://122.51.47.169/versionwithv2.txt").contains(version));
     }
 
 }

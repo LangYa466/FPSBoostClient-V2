@@ -49,7 +49,7 @@ public class SimpleClickGUI extends GuiScreen {
             RenderUtil.drawString(nameText, x, y, -1);
             RenderUtil.drawString(module.description, x + RenderUtil.getStringWidth(nameText) + 5, y, -1);
             RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(nameText + module.description) + 10, y + 2, 5,5,module.enable ? Color.GREEN.getRGB() : Color.RED.getRGB(),-1);
-            if(!module.values.isEmpty()) RenderUtil.drawStringWithShadow("打开设置",x + RenderUtil.getStringWidth(nameText + module.description) + 17, y,-1);
+            if(!module.values.isEmpty()) RenderUtil.drawStringWithShadow("打开设置",x + RenderUtil.getStringWidth(nameText + module.description) + 30, y,-1);
         }
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
@@ -62,7 +62,7 @@ public class SimpleClickGUI extends GuiScreen {
             String nameText = String.format("%s - %s",module.cnName,module.name);
             y += 15;
             if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + module.description) + 10, y, 5,7,mouseX,mouseY)) module.toggle();
-            if (!module.values.isEmpty() && HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + module.description) + 1, y,RenderUtil.getStringWidth("打开设置") + 4,mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new ValueScreen(module));
+            if (!module.values.isEmpty() && HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + module.description) + 30, y,RenderUtil.getStringWidth("打开设置") + 4,mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new ValueScreen(module));
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
