@@ -34,7 +34,7 @@ public class NoMissHitDelay extends Module {
     }
 
     @Override
-    public void onDisable() {
+    public void onUpdate() {
         mc.leftClickCounter = 0;
     }
 }
