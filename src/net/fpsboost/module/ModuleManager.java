@@ -23,6 +23,8 @@ public class ModuleManager {
         modules.add(new NameProtect());
         modules.add(new HideGuiChatRect());
         modules.add(new NoMissHitDelay());
+        modules.add(new HideScoreboardRect());
+        modules.add(new AutoLuGuan());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }

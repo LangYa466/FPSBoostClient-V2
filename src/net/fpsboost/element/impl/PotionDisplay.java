@@ -76,7 +76,7 @@ public class PotionDisplay extends Element {
 
                 allStringWidth = RenderUtil.getStringWidth(s1) + RenderUtil.getStringWidth(s);
                 if (allStringWidth > width) {
-                    width = allStringWidth + 5;
+                    width = allStringWidth + 13;
                 }
 
                 if (backgroundValue.getValue()) RenderUtil.drawRect(0,0,allStringWidth + 13,25,bgColor);
