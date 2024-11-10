@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer;
 
+import net.fpsboost.Client;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.OldAnimation;
 import net.minecraft.block.Block;
@@ -357,8 +358,9 @@ public class ItemRenderer
                             break;
 
                         case BLOCK:
-                            if (OldAnimation.blockHit.getValue()) {
+                            if (OldAnimation.blockHit.getValue() && ModuleManager.isEnabled(OldAnimation.class)) {
                                 this.transformFirstPersonItem(f, f1);
+                                GlStateManager.translate(0, 0.3, 0);
                             } else {
                                 this.transformFirstPersonItem(f, 0.0F);
                             }
