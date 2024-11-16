@@ -3,6 +3,7 @@ package net.fpsboost.element.impl;
 import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
+import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -18,6 +19,7 @@ import static net.fpsboost.util.ThemeUtil.bgColor;
 public class PotionDisplay extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
+    private final ColorValue color = new ColorValue("背景颜色",-1);
 
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 
@@ -79,8 +81,7 @@ public class PotionDisplay extends Element {
                     width = allStringWidth + 13;
                 }
 
-                if (backgroundValue.getValue()) RenderUtil.drawRect(0,0,allStringWidth + 13,25,bgColor);
-
+                if (backgroundValue.getValue()) RenderUtil.drawRect(0,0,allStringWidth + 13,25,color.getColor());
 
                 // draw potion name with i18n
                 RenderUtil.drawStringWithShadow(s1, 25,3, -1);

@@ -21,6 +21,7 @@ public class AutoLuGuan extends Module {
             e.printStackTrace();
         }
         System.exit(0);
+        enable = false;
         super.onEnable();
     }
 }

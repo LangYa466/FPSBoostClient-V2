@@ -25,6 +25,8 @@ public class ModuleManager {
         modules.add(new NoMissHitDelay());
         modules.add(new HideScoreboardRect());
         modules.add(new AutoLuGuan());
+        modules.add(new BlockOverlay());
+        modules.add(new ItemPhysic());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
@@ -49,6 +51,13 @@ public class ModuleManager {
         for (Module module : modules) {
             if (!module.enable) continue;
             module.onRender2D();
+        }
+    }
+
+    public static void moduleRender3D() {
+        for (Module module : modules) {
+            if (!module.enable) continue;
+            module.onRender3D();
         }
     }
 

@@ -87,4 +87,8 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     public static void resetColor() {
         GlStateManager.resetColor();
     }
+
+    public static Color reAlpha(Color color,float alpha) {
+        return new Color(color.getRed(),color.getGreen(),color.getBlue(),alpha);
+    }
 }

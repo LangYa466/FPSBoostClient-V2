@@ -1,12 +1,16 @@
 package net.minecraft.client.renderer.entity;
 
 import java.util.Random;
+
+import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ItemPhysic;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.model.IBakedModel;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
@@ -37,23 +41,38 @@ public class RenderEntityItem extends Render<EntityItem>
         {
             boolean flag = p_177077_9_.isGui3d();
             int i = this.func_177078_a(itemstack);
-            float f = 0.25F;
             float f1 = MathHelper.sin(((float)itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
             float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
-            GlStateManager.translate((float)p_177077_2_, (float)p_177077_4_ + f1 + 0.25F * f2, (float)p_177077_6_);
 
-            if (flag || this.renderManager.options != null)
-            {
-                float f3 = (((float)itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
-                GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
-            }
+            if (ModuleManager.isEnabled(ItemPhysic.class)) {
+                if (!(item instanceof ItemBlock)) {
+                    GlStateManager.translate(p_177077_2_, p_177077_4_ + 0.1F, p_177077_6_);
+                } else {
+                    GlStateManager.translate(p_177077_2_,p_177077_4_ + 0.2F,p_177077_6_);
+                }
 
-            if (!flag)
-            {
-                float f6 = -0.0F * (float)(i - 1) * 0.5F;
-                float f4 = -0.0F * (float)(i - 1) * 0.5F;
-                float f5 = -0.046875F * (float)(i - 1) * 0.5F;
-                GlStateManager.translate(f6, f4, f5);
+                float pitch = itemIn.onGround ? 90 : itemIn.rotationPitch;
+                itemIn.rotationPitch++;
+                if (itemIn.rotationPitch > 180) itemIn.rotationPitch = -180;
+                GlStateManager.rotate(pitch, 1, 0, 0);
+                GlStateManager.rotate(itemIn.rotationYaw, 0, 0, 1);
+
+            } else {
+                GlStateManager.translate((float)p_177077_2_, (float)p_177077_4_ + f1 + 0.25F * f2, (float)p_177077_6_);
+
+                if (flag || this.renderManager.options != null)
+                {
+                    float f3 = (((float)itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
+                    GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
+                }
+
+                if (!flag)
+                {
+                    float f6 = -0.0F * (float)(i - 1) * 0.5F;
+                    float f4 = -0.0F * (float)(i - 1) * 0.5F;
+                    float f5 = -0.046875F * (float)(i - 1) * 0.5F;
+                    GlStateManager.translate(f6, f4, f5);
+                }
             }
 
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -85,6 +104,9 @@ public class RenderEntityItem extends Render<EntityItem>
         return i;
     }
 
+    /**
+     * Renders the desired {@code T} type Entity.
+     */
     public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks)
     {
         ItemStack itemstack = entity.getEntityItem();
@@ -150,6 +172,9 @@ public class RenderEntityItem extends Render<EntityItem>
         super.doRender(entity, x, y, z, entityYaw, partialTicks);
     }
 
+    /**
+     * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
+     */
     protected ResourceLocation getEntityTexture(EntityItem entity)
     {
         return TextureMap.locationBlocksTexture;

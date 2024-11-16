@@ -49,4 +49,5 @@ public class Module implements Wrapper {
 
     public void onRender2D() { }
     public void onUpdate() { }
+    public void onRender3D() { }
 }

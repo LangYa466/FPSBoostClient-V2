@@ -1741,6 +1741,11 @@ public class EntityRenderer implements IResourceManagerReloadListener
         GlStateManager.disableBlend();
         GlStateManager.disableFog();
 
+        GlStateManager.pushMatrix();
+        ModuleManager.moduleRender3D();
+        GlStateManager.popMatrix();
+
+
         if (entity.posY + (double)entity.getEyeHeight() >= 128.0D + (double)(this.mc.gameSettings.ofCloudsHeight * 128.0F))
         {
             this.mc.mcProfiler.endStartSection("aboveClouds");

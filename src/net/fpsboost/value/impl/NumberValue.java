@@ -38,7 +38,9 @@ public class NumberValue extends Value<Double> {
     }
 
     public void cut() {
-        setValue(getValue() - incValue);
+        double cutValue = getValue() - incValue;
+        if (cutValue > minValue) return;
+        setValue(cutValue);
     }
 
 }
