@@ -27,6 +27,7 @@ public class ModuleManager {
         modules.add(new AutoLuGuan());
         modules.add(new BlockOverlay());
         modules.add(new ItemPhysic());
+        modules.add(new MotionBlur());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
