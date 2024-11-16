@@ -28,6 +28,7 @@ public class ModuleManager {
         modules.add(new BlockOverlay());
         modules.add(new ItemPhysic());
         modules.add(new MotionBlur());
+        modules.add(new NoHurtCam());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }

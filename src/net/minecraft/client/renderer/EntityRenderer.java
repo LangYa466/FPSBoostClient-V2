@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.NoHurtCam;
 import net.fpsboost.module.impl.OldAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
@@ -600,6 +601,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
         {
+            if (ModuleManager.isEnabled(NoHurtCam.class)) return;
             EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
             float f = (float)entitylivingbase.hurtTime - partialTicks;
 
