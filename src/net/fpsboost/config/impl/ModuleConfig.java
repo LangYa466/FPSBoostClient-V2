@@ -7,6 +7,7 @@ import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.value.Value;
 import net.fpsboost.value.impl.BooleanValue;
+import net.fpsboost.value.impl.ColorValue;
 import net.fpsboost.value.impl.ModeValue;
 import net.fpsboost.value.impl.NumberValue;
 
@@ -45,6 +46,9 @@ public class ModuleConfig extends Config {
             else if (value instanceof ModeValue) {
                 valuesObject.addProperty(value.name, ((ModeValue)value).getValue());
             }
+            else if (value instanceof ColorValue) {
+                valuesObject.addProperty(value.name, ((ColorValue)value).getValue());
+            }
         }
         return valuesObject;
     }
@@ -74,6 +78,9 @@ public class ModuleConfig extends Config {
                         }
                         else if (value instanceof ModeValue) {
                             ((ModeValue)value).setValue(theValue.getAsString());
+                        }
+                        else if (value instanceof ColorValue) {
+                            ((ColorValue)value).setValue(theValue.getAsInt());
                         }
                     }
                 }
