@@ -19,9 +19,14 @@ public class ConfigManager implements Wrapper {
     private static final List<Config> configs = new ArrayList<>();
     public static final File dir = new File(mc.mcDataDir, Client.name);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    public static boolean isFirst;
 
     public static void init() {
-        if (!dir.exists()) dir.mkdir();
+        if (!dir.exists()) {
+            dir.mkdir();
+            isFirst = true;
+        }
+
         configs.add(new ModuleConfig());
         configs.add(new ElementConfig());
         loadAllConfig();

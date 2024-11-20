@@ -12,6 +12,7 @@ import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 import static net.fpsboost.util.ThemeUtil.bgColor;
@@ -20,6 +21,8 @@ public class PotionDisplay extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
     private final ColorValue color = new ColorValue("背景颜色",-1);
+    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色", Color.white);
+    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色", Color.white);
 
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 
@@ -78,15 +81,15 @@ public class PotionDisplay extends Element {
 
                 allStringWidth = RenderUtil.getStringWidth(s1) + RenderUtil.getStringWidth(s);
                 if (allStringWidth > width) {
-                    width = allStringWidth + 13;
+                    width = allStringWidth + 15;
                 }
 
                 if (backgroundValue.getValue()) RenderUtil.drawRect(0,0,allStringWidth + 13,25,color.getColor());
 
                 // draw potion name with i18n
-                RenderUtil.drawStringWithShadow(s1, 25,3, -1);
+                RenderUtil.drawStringWithShadow(s1, 25,3, textColorValue.getValue());
                 // draw potion duration
-                RenderUtil.drawStringWithShadow(s, 25, 15, -1);
+                RenderUtil.drawStringWithShadow(s, 25, 15, text2ColorValue.getValue());
 
                 RenderUtil.resetColor();
                 if (potion.hasStatusIcon()) {

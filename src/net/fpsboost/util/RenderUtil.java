@@ -53,6 +53,15 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         RenderUtil.drawString(text,x + 1, y, pressbgColor);
         return width + 4;
     }
+
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor) {
+        int width = getStringWidth(text);
+        int height = mc.fontRendererObj.FONT_HEIGHT;
+        if (bg) RenderUtil.drawRect(x - 2, y - 2, width + 8,height + 4,bgColor);
+        RenderUtil.drawString(text,x + 1, y, textColor);
+        return width + 8;
+    }
+
     public static int drawStringWithOutline(String text, int x, int y, int bgColor,int color) {
         int width = getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;

@@ -261,7 +261,7 @@ public class Minecraft implements IThreadListener
     private final Thread mcThread = Thread.currentThread();
     private ModelManager modelManager;
     private BlockRendererDispatcher blockRenderDispatcher;
-    volatile boolean running = true;
+    public volatile boolean running = true;
     public String debug = "";
     public boolean field_175613_B = false;
     public boolean field_175614_C = false;
@@ -516,7 +516,7 @@ public class Minecraft implements IThreadListener
     private void createDisplay() throws LWJGLException
     {
         Display.setResizable(true);
-        Display.setTitle("FPSBoost-V2 - Beta || Minecraft 1.8.9");
+        Display.setTitle(String.format("FPSBoost-V2 - %s || Minecraft 1.8.9",Client.version));
 
         try
         {

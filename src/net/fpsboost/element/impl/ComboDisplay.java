@@ -4,6 +4,9 @@ import net.fpsboost.element.Element;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
+import net.fpsboost.value.impl.ColorValue;
+
+import java.awt.*;
 
 /**
  * @author LangYa
@@ -16,11 +19,13 @@ public class ComboDisplay extends Element {
     }
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色",new Color(0,0,0,80));
+    private final ColorValue textColorValue = new ColorValue("背景颜色",Color.white);
 
     @Override
     public void onDraw() {
         String text = AttackHandler.currentCombo + " Combo";
-        width = RenderUtil.drawStringWithRounded(text,0,0,backgroundValue.getValue());
+        width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue());
     }
 
     @Override

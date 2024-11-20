@@ -25,8 +25,7 @@ public class Element extends Module implements Wrapper {
             yPos = mouseY - startY;
         }
 
-        //TODO draw outline
-        RenderUtil.drawOutline(xPos, yPos, this.width - 1, this.height - 1, -1);
+        RenderUtil.drawOutline(xPos - 2, yPos - 2, this.width , this.height + 3, -1);
     }
 
     public void init() { }

@@ -3,8 +3,11 @@ package net.fpsboost.element.impl;
 import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
+import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.settings.KeyBinding;
 import org.lwjgl.input.Keyboard;
+
+import java.awt.*;
 
 import static net.fpsboost.util.ThemeUtil.*;
 
@@ -19,6 +22,10 @@ public class KeyStore extends Element {
     }
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色",new Color(0,0,0,80));
+    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色",new Color(0,0,0,80));
+    private final ColorValue textColorValue = new ColorValue("文本颜色", Color.white);
+    private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色", Color.black);
 
     @Override
     public void onDraw() {
@@ -41,10 +48,10 @@ public class KeyStore extends Element {
 
     public void drawKey(KeyBinding key, int x, int y, int width, int height, boolean isSpace) {
         String keyName = Keyboard.getKeyName(key.getKeyCode());
-        if(backgroundValue.getValue()) RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
+        if(backgroundValue.getValue()) RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressBgColorValue.getValue() : bgColorValue.getValue());
         //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
         int add = isSpace ? 1 : 2;
         int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
-        RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? bgColor : pressbgColor);
+        RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
     }
 }

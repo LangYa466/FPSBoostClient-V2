@@ -2,7 +2,6 @@ package net.minecraft.client.resources;
 
 import com.google.common.collect.ImmutableSet;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -14,11 +13,10 @@ import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
-import net.optifine.reflect.Reflector;
 
 public class DefaultResourcePack implements IResourcePack
 {
-    public static final Set<String> defaultResourceDomains = ImmutableSet.<String>of("minecraft");
+    public static final Set<String> defaultResourceDomains = ImmutableSet.<String>of("minecraft", "realms");
     private final Map<String, File> mapAssets;
 
     public DefaultResourcePack(Map<String, File> mapAssetsIn)
@@ -55,10 +53,10 @@ public class DefaultResourcePack implements IResourcePack
         return file1 != null && file1.isFile() ? new FileInputStream(file1) : null;
     }
 
-    private InputStream getResourceStream(ResourceLocation location)
-    {
+    private InputStream getResourceStream(ResourceLocation location) {
         String s = "/assets/" + location.getResourceDomain() + "/" + location.getResourcePath();
-        return DefaultResourcePack.class.getResourceAsStream(s);
+        InputStream inputstream = this.getClass().getResourceAsStream(s);
+        return inputstream != null ? inputstream : DefaultResourcePack.class.getResourceAsStream(s);
     }
 
     public boolean resourceExists(ResourceLocation location)
