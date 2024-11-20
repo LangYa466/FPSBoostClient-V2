@@ -2,6 +2,7 @@ package net.fpsboost.module;
 
 import net.fpsboost.Client;
 import net.fpsboost.element.ElementManager;
+import net.fpsboost.element.impl.PingDisplay;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
 import net.fpsboost.util.RenderUtil;
@@ -24,11 +25,12 @@ public class ModuleManager {
         modules.add(new HideGuiChatRect());
         modules.add(new NoMissHitDelay());
         modules.add(new HideScoreboardRect());
-        modules.add(new AutoLuGuan());
+        // modules.add(new AutoLuGuan());
         modules.add(new BlockOverlay());
         modules.add(new ItemPhysic());
         modules.add(new MotionBlur());
         modules.add(new NoHurtCam());
+        modules.add(new PingDisplay());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
