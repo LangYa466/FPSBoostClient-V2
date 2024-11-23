@@ -4,7 +4,6 @@ import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
-import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
 
@@ -14,7 +13,7 @@ import net.fpsboost.value.ValueManager;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.1";
+    public static final String version = "1.2";
     public static boolean isOldVersion;
 
     public static void initClient() {

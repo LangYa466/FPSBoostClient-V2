@@ -2077,7 +2077,6 @@ public class Minecraft implements IThreadListener
 
                     if (ModuleManager.isEnabled(MotionBlur.class)) {
                         if ((getMinecraft().entityRenderer.getShaderGroup() == null)) {
-                            System.out.println("asfafsa");
                             getMinecraft().entityRenderer.loadShader(new ResourceLocation("minecraft", "shaders/post/motion_blur.json"));
                         }
                         float uniform = 1F - Math.min(MotionBlur.blurAmount.getValue().floatValue() / 10F, 0.9f);
