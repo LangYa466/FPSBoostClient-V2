@@ -3,6 +3,7 @@ package net.fpsboost.util;
 import net.fpsboost.Wrapper;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.client.settings.GameSettings;
 
 import java.awt.*;
 
@@ -34,10 +35,12 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         drawOutline(x,y,width,height,outlineColor);
     }
 
+    public static int drawCenterString(String text, int x, int y, int color) {
+        return mc.fontRendererObj.drawString(text,(x - getStringWidth(text) / 2),y,color);
+    }
     public static int drawString(String text, int x, int y, int color) {
         return mc.fontRendererObj.drawString(text,x,y,color);
     }
-
     public static int drawString(String text, int x, int y, Color color) {
        return drawString(text,x,y,color.getRGB());
     }

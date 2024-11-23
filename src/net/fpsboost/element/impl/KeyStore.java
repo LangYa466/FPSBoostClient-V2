@@ -4,7 +4,9 @@ import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
+import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -52,6 +54,10 @@ public class KeyStore extends Element {
         //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
         int add = isSpace ? 1 : 2;
         int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
-        RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+        if (GameSettings.forceUnicodeFont){
+            RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+        }else {
+            RenderUtil.drawCenterString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+        }
     }
 }

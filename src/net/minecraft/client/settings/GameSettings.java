@@ -154,7 +154,7 @@ public class GameSettings
     public int guiScale;
     public int particleSetting;
     public String language;
-    public boolean forceUnicodeFont;
+    public static boolean forceUnicodeFont;
     public int ofFogType = 1;
     public float ofFogStart = 0.8F;
     public int ofMipmapType = 0;
