@@ -45,5 +45,4 @@ public class Element extends Module implements Wrapper {
     public void onRelease(int button) {
         if (button == 0) dragging = false;
     }
-
 }

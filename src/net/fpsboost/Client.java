@@ -14,7 +14,7 @@ import net.fpsboost.value.ValueManager;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.3";
+    public static final String version = "1.35";
     public static boolean isOldVersion;
 
     public static void initClient() {

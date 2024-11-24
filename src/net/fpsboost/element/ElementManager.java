@@ -18,6 +18,7 @@ public class ElementManager {
         elements.add(new ComboDisplay());
         elements.add(new KeyStore());
         elements.add(new PotionDisplay());
+        elements.add(new ArmorDisplay());
 
         elements.forEach(Element::init);
     }
