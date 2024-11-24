@@ -15,8 +15,29 @@ public class IRCUtil implements Wrapper {
         try {
             transport = new IRCTransport("122.51.47.169", 8888, new IRCHandler() {
                 @Override
-                public void onMessage(String sender, String message) {
-                    ChatUtil.addMessageWithClient("[客户端内置聊天]" + EnumChatFormatting.GREEN + "(" + transport.getIgn(sender) + ")" + EnumChatFormatting.RESET + ": " + message);
+                public void onMessage(String rank, String message) {
+                    EnumChatFormatting rankColor;
+                    switch (rank) {
+                        case "Admin":
+                            rankColor = EnumChatFormatting.GOLD;
+                            break;
+                        case "Media":
+                            rankColor = EnumChatFormatting.DARK_RED;
+                            break;
+                        case "MVP++":
+                            rankColor = EnumChatFormatting.RED;
+                            break;
+                        case "SVIP":
+                            rankColor = EnumChatFormatting.DARK_GREEN;
+                            break;
+                        case "VIP":
+                            rankColor = EnumChatFormatting.GREEN;
+                            break;
+                        default:
+                            rankColor = EnumChatFormatting.BLUE;
+                            break;
+                    }
+                    ChatUtil.addMessageWithClient("[客户端内置聊天] " + rankColor + "[" + rank + "] " + EnumChatFormatting.GREEN + "(" + transport.getIgn(rank) + ")" + EnumChatFormatting.RESET + ": " + message);
                 }
 
                 @Override
@@ -40,7 +61,7 @@ public class IRCUtil implements Wrapper {
             e.printStackTrace();
         }
 
-        transport.connect(mc.session.getUsername(), "123");
+        transport.connect("普通用户", "123");
     }
 }
 
