@@ -4,6 +4,7 @@ import net.fpsboost.Wrapper;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 
@@ -38,9 +39,11 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     public static int drawCenterString(String text, int x, int y, int color) {
         return mc.fontRendererObj.drawString(text,(x - getStringWidth(text) / 2),y,color);
     }
+
     public static int drawString(String text, int x, int y, int color) {
         return mc.fontRendererObj.drawString(text,x,y,color);
     }
+
     public static int drawString(String text, int x, int y, Color color) {
        return drawString(text,x,y,color.getRGB());
     }
@@ -61,7 +64,7 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         int width = getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;
         if (bg) RenderUtil.drawRect(x - 2, y - 2, width + 8,height + 4,bgColor);
-        RenderUtil.drawString(text,x + 1, y, textColor);
+        if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text,x + 1, y + 1, textColor); else RenderUtil.drawString(text,x + 1, y, textColor);
         return width + 8;
     }
 
@@ -102,5 +105,12 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static Color reAlpha(Color color,float alpha) {
         return new Color(color.getRed(),color.getGreen(),color.getBlue(),alpha);
+    }
+
+    public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
+        GlStateManager.enableBlend();
+        mc.getTextureManager().bindTexture(resourceLocation);
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
+        GlStateManager.disableBlend();
     }
 }

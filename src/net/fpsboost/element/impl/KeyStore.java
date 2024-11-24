@@ -23,19 +23,19 @@ public class KeyStore extends Element {
         super("KeyStore", "按键显示");
     }
 
-    private final BooleanValue backgroundValue = new BooleanValue("背景",true);
-    private final ColorValue bgColorValue = new ColorValue("背景颜色",new Color(0,0,0,80));
-    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色",new Color(0,0,0,80));
+    private final BooleanValue backgroundValue = new BooleanValue("背景", true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色", new Color(0, 0, 0, 80));
+    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色", new Color(0, 0, 0, 80));
     private final ColorValue textColorValue = new ColorValue("文本颜色", Color.white);
     private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色", Color.black);
 
     @Override
     public void onDraw() {
-        drawKey(mc.gameSettings.keyBindForward,21, 0,false);
-        drawKey(mc.gameSettings.keyBindLeft,0, 21,false);
-        drawKey(mc.gameSettings.keyBindBack,21, 21,false);
-        drawKey(mc.gameSettings.keyBindRight,42, 21,false);
-        drawKey(mc.gameSettings.keyBindJump,0, 42,62,20,true);
+        drawKey(mc.gameSettings.keyBindForward, 21, 0, false);
+        drawKey(mc.gameSettings.keyBindLeft, 0, 21, false);
+        drawKey(mc.gameSettings.keyBindBack, 21, 21, false);
+        drawKey(mc.gameSettings.keyBindRight, 42, 21, false);
+        drawKey(mc.gameSettings.keyBindJump, 0, 42, 62, 20, true);
     }
 
     @Override
@@ -45,19 +45,19 @@ public class KeyStore extends Element {
     }
 
     public void drawKey(KeyBinding key, int x, int y, boolean isSpace) {
-        drawKey(key,x,y,20,20,isSpace);
+        drawKey(key, x, y, 20, 20, isSpace);
     }
 
     public void drawKey(KeyBinding key, int x, int y, int width, int height, boolean isSpace) {
         String keyName = Keyboard.getKeyName(key.getKeyCode());
-        if(backgroundValue.getValue()) RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressBgColorValue.getValue() : bgColorValue.getValue());
+        if (backgroundValue.getValue())
+            RenderUtil.drawRect(x, y, width, height, key.isKeyDown() ? pressBgColorValue.getValue() : bgColorValue.getValue());
         //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
         int add = isSpace ? 1 : 2;
         int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
-        if (GameSettings.forceUnicodeFont){
+        if (GameSettings.forceUnicodeFont)
             RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
-        }else {
-            RenderUtil.drawCenterString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
-        }
+        else
+            RenderUtil.drawCenterString(keyName, x + textX - 1, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
     }
 }

@@ -1,5 +1,8 @@
 package net.minecraft.client.renderer.entity;
 
+import net.fpsboost.util.IRCUtil;
+import net.fpsboost.util.IconUtil;
+import net.fpsboost.util.RenderUtil;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -329,6 +332,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
     protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
     {
+        str = "   " + str;
         double d0 = entityIn.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         if (d0 <= (double)(maxDistance * maxDistance))
@@ -356,7 +360,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                 i = -10;
             }
 
-            int j = fontrenderer.getStringWidth(str) / 2;
+            int j = fontrenderer.getStringWidth(str) / 2 + 5;
             GlStateManager.disableTexture2D();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
             worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
@@ -369,6 +373,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
             fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
+            if (IRCUtil.transport.isUser(entityIn.getName())) RenderUtil.drawImage(IconUtil.icon,-fontrenderer.getStringWidth(str) / 2F, i,7,7);
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);

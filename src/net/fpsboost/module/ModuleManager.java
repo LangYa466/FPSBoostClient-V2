@@ -31,6 +31,8 @@ public class ModuleManager {
         modules.add(new MotionBlur());
         modules.add(new NoHurtCam());
         modules.add(new PingDisplay());
+        modules.add(IRC.INSTANCE);
+        if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
@@ -71,6 +73,13 @@ public class ModuleManager {
             module.onUpdate();
         }
         AttackHandler.onUpdate();
+    }
+
+    public static void moduleWorldLoad() {
+        for (Module module : modules) {
+            if (!module.enable) continue;
+            module.onWorldLoad();
+        }
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
