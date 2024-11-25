@@ -88,10 +88,9 @@ public class GuiOverlayDebug extends Gui
             if (!Strings.isNullOrEmpty(s))
             {
                 int j = this.fontRenderer.FONT_HEIGHT;
-                int k = this.fontRenderer.getStringWidth(s);
-                int l = 2;
+                float k = this.fontRenderer.getStringWidth(s) * 1.1F;
                 int i1 = 2 + j * i;
-                drawRect(1, i1 - 1, 2 + k + 1, i1 + j - 1, -1873784752);
+                drawRect(1, i1 - 1, Math.round(2 + k), i1 + j - 1, -1873784752);
                 this.fontRenderer.drawString(s, 2, i1, 14737632);
             }
         }

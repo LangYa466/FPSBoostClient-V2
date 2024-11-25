@@ -36,7 +36,7 @@ public class ConfigManager implements Wrapper {
         File file = new File(dir, name);
         JsonParser jsonParser = new JsonParser();
         if (file.exists()) {
-            System.out.println("Loading config: " + name);
+            System.out.println("加载客户端配置: " + name);
             for (Config config : configs) {
                 if (!config.name.equals(name)) continue;
                 try {
@@ -57,7 +57,7 @@ public class ConfigManager implements Wrapper {
     public static void saveConfig(String name) {
         File file = new File(dir, name);
         try {
-            System.out.println("Saving config: " + name);
+            System.out.println("保存客户端配置: " + name);
             file.createNewFile();
             for (Config config : configs) {
                 if (!config.name.equals(name)) continue;

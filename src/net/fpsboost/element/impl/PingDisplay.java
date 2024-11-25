@@ -19,7 +19,7 @@ public class PingDisplay extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
     private final ColorValue bgColorValue = new ColorValue("背景颜色",new Color(0,0,0,80));
-    private final ColorValue textColorValue = new ColorValue("背景颜色",Color.white);
+    private final ColorValue textColorValue = new ColorValue("文本颜色",Color.white);
 
     @Override
     public void onDraw() {

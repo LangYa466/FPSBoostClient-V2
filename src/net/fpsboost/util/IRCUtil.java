@@ -1,15 +1,20 @@
 package net.fpsboost.util;
 
+import dev.jnic.annotations.JNICInclude;
 import net.fpsboost.Wrapper;
 import net.minecraft.util.EnumChatFormatting;
 import us.cubk.irc.client.IRCHandler;
 import us.cubk.irc.client.IRCTransport;
 
 import java.io.IOException;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
+@JNICInclude
 public class IRCUtil implements Wrapper {
 
     public static IRCTransport transport = null;
+    public static Map<String,String> capeMap = new ConcurrentHashMap<>();
 
     public static void init() {
         try {
@@ -56,12 +61,17 @@ public class IRCUtil implements Wrapper {
                     if (mc.thePlayer == null) return "未知用户";
                     return mc.thePlayer.getName();
                 }
+
+                @Override
+                public void getCapes(Map<String, String> capeMap) {
+                    IRCUtil.capeMap.putAll(capeMap);
+                }
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        transport.connect("普通用户", "123");
+        transport.connect("Admin", "123");
     }
 }
 

@@ -4,12 +4,10 @@ import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
 import us.cubk.irc.packet.IRCPacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundConnectedPacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundDisconnectPacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundMessagePacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundUpdateUserListPacket;
+import us.cubk.irc.packet.implemention.clientbound.*;
 import us.cubk.irc.packet.implemention.serverbound.ServerBoundHandshakePacket;
 import us.cubk.irc.packet.implemention.serverbound.ServerBoundMessagePacket;
+import us.cubk.irc.packet.implemention.serverbound.ServerBoundUpdateCapePacket;
 import us.cubk.irc.packet.implemention.serverbound.ServerBoundUpdateIgnPacket;
 import us.cubk.irc.processor.IRCProtocol;
 
@@ -26,6 +24,8 @@ public class IRCTransport {
     private IRCHandler handler;
     private final Map<String,String> userToIgnMap = new ConcurrentHashMap<>();
     private final Map<String,String> ignToUserMap = new ConcurrentHashMap<>();
+    private final Map<String,String> userToCapeMap = new ConcurrentHashMap<>();
+    private final Map<String,String> capeURLToUserMap = new ConcurrentHashMap<>();
 
     public IRCTransport(String host, int port,IRCHandler handler) throws IOException {
         this.handler = handler;
@@ -47,6 +47,13 @@ public class IRCTransport {
             }
             if(msg instanceof ClientBoundMessagePacket){
                 handler.onMessage(((ClientBoundMessagePacket) msg).getSender(),((ClientBoundMessagePacket) msg).getMessage());
+            }
+            if(msg instanceof ClientBoundUpdateCapeListPacket){
+                handler.getCapes(((ClientBoundUpdateCapeListPacket) msg).getUserMap());
+                userToCapeMap.clear();
+                userToCapeMap.putAll(((ClientBoundUpdateCapeListPacket) msg).getUserMap());
+                capeURLToUserMap.clear();
+                userToCapeMap.forEach((user, cape) -> capeURLToUserMap.put(cape,user));
             }
         };
         AioQuickClient client = new AioQuickClient(host, port, protocol, processor);
@@ -76,8 +83,16 @@ public class IRCTransport {
         return userToIgnMap.get(name);
     }
 
+    public String getCapeURL(String name){
+        return userToCapeMap.get(name);
+    }
+
     public void sendChat(String message){
         sendPacket(new ServerBoundMessagePacket(message));
+    }
+
+    public void sendCapeURL(String capeURL){
+        sendPacket(new ServerBoundUpdateCapePacket(capeURL));
     }
 
     public void sendInGameUsername(String username){

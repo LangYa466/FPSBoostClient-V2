@@ -2,12 +2,10 @@ package us.cubk.irc.management;
 
 import com.google.gson.JsonObject;
 import us.cubk.irc.packet.IRCPacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundConnectedPacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundDisconnectPacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundMessagePacket;
-import us.cubk.irc.packet.implemention.clientbound.ClientBoundUpdateUserListPacket;
+import us.cubk.irc.packet.implemention.clientbound.*;
 import us.cubk.irc.packet.implemention.serverbound.ServerBoundHandshakePacket;
 import us.cubk.irc.packet.implemention.serverbound.ServerBoundMessagePacket;
+import us.cubk.irc.packet.implemention.serverbound.ServerBoundUpdateCapePacket;
 import us.cubk.irc.packet.implemention.serverbound.ServerBoundUpdateIgnPacket;
 import us.cubk.irc.util.UnsafeReflect;
 
@@ -22,11 +20,11 @@ public class PacketManager {
     public PacketManager(){
         // client bound
 
-        register(ClientBoundDisconnectPacket.class, ClientBoundConnectedPacket.class, ClientBoundUpdateUserListPacket.class, ClientBoundMessagePacket.class);
+        register(ClientBoundDisconnectPacket.class, ClientBoundConnectedPacket.class, ClientBoundUpdateUserListPacket.class, ClientBoundMessagePacket.class, ClientBoundUpdateCapeListPacket.class);
 
         // server bound
 
-        register(ServerBoundHandshakePacket.class,ServerBoundUpdateIgnPacket.class, ServerBoundMessagePacket.class);
+        register(ServerBoundHandshakePacket.class,ServerBoundUpdateIgnPacket.class, ServerBoundMessagePacket.class, ServerBoundUpdateCapePacket.class);
     }
 
     @SafeVarargs

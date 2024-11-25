@@ -2,10 +2,18 @@ package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+
+import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClientCape;
+import net.fpsboost.util.CapeUtil;
+import net.fpsboost.util.IRCUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
+import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -22,6 +30,11 @@ import net.minecraft.world.WorldSettings;
 import net.optifine.player.CapeUtils;
 import net.optifine.player.PlayerConfigurations;
 import net.optifine.reflect.Reflector;
+
+import javax.imageio.ImageIO;
+import javax.swing.*;
+
+import static net.fpsboost.Wrapper.mc;
 
 public abstract class AbstractClientPlayer extends EntityPlayer
 {
@@ -81,12 +94,30 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
     public ResourceLocation getLocationCape()
     {
+        String name = this.getName();
         if (!Config.isShowCapes())
         {
             return null;
-        }
-        else
-        {
+        } else if(CapeUtil.cape != null && this == mc.thePlayer) {
+            return CapeUtil.cape;
+        } else if (IRCUtil.transport.isUser(name)) {
+            String capeURL = IRCUtil.capeMap.get(name);
+
+            if (capeURL != null) {
+                DynamicTexture dt = null;
+                try {
+                    dt = new DynamicTexture(ImageIO.read(new URL(capeURL)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (dt == null) return null;
+                ResourceLocation capeRes = new ResourceLocation(name + "cape");
+                mc.getTextureManager().loadTexture(capeRes, dt);
+                mc.getTextureManager().bindTexture(capeRes);
+
+                return capeRes;
+            }
+        } else {
             if (this.reloadCapeTimeMs != 0L && System.currentTimeMillis() > this.reloadCapeTimeMs)
             {
                 CapeUtils.reloadCape(this);
@@ -103,6 +134,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
                 return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
             }
         }
+        return null;
     }
 
     public static ThreadDownloadImageData getDownloadImageSkin(ResourceLocation resourceLocationIn, String username)

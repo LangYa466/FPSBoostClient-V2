@@ -1,9 +1,11 @@
 package net.fpsboost;
 
+import dev.jnic.annotations.JNICInclude;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.IRCUtil;
 import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
@@ -12,9 +14,10 @@ import net.fpsboost.value.ValueManager;
  * @author LangYa
  * @since 2024/8/30 21:17
  */
+@JNICInclude
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.35";
+    public static final String version = "1.4";
     public static boolean isOldVersion;
 
     public static void initClient() {
@@ -24,6 +27,7 @@ public class Client implements Wrapper {
         CommandManager.init();
         ConfigManager.init();
         IRCUtil.init();
+        CapeUtil.init();
 
         // TODO GuiWelcome
         // if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());

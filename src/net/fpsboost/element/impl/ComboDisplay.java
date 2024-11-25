@@ -20,11 +20,12 @@ public class ComboDisplay extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);
     private final ColorValue bgColorValue = new ColorValue("背景颜色",new Color(0,0,0,80));
-    private final ColorValue textColorValue = new ColorValue("背景颜色",Color.white);
+    private final ColorValue textColorValue = new ColorValue("文本颜色",Color.white);
 
     @Override
     public void onDraw() {
-        String text = AttackHandler.currentCombo + " Combo";
+        String displayText = (AttackHandler.currentCombo > 1) ? "Combos" : "Combo";
+        String text = AttackHandler.currentCombo + " " + displayText;
         width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue());
     }
 

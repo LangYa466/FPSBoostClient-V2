@@ -33,6 +33,7 @@ public class ModuleManager {
         modules.add(new PingDisplay());
         modules.add(IRC.INSTANCE);
         if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
+        modules.add(new ClientCape());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }
@@ -53,7 +54,7 @@ public class ModuleManager {
     }
 
     public static void moduleRender2D() {
-        if (Client.isOldVersion) RenderUtil.drawStringWithShadow("你正在使用旧版本",5,5,-1);
+    //    if (Client.isOldVersion) RenderUtil.drawStringWithShadow("你正在使用旧版本",5,5,-1);
         for (Module module : modules) {
             if (!module.enable) continue;
             module.onRender2D();
