@@ -22,10 +22,10 @@ public class IRCTransport {
     private final IRCProtocol protocol = new IRCProtocol();
     private final AioSession session;
     private IRCHandler handler;
-    private final Map<String,String> userToIgnMap = new ConcurrentHashMap<>();
-    private final Map<String,String> ignToUserMap = new ConcurrentHashMap<>();
-    private final Map<String,String> userToCapeMap = new ConcurrentHashMap<>();
-    private final Map<String,String> capeURLToUserMap = new ConcurrentHashMap<>();
+    public final Map<String,String> userToIgnMap = new ConcurrentHashMap<>();
+    public final Map<String,String> ignToUserMap = new ConcurrentHashMap<>();
+    public final Map<String,String> userToCapeMap = new ConcurrentHashMap<>();
+    public final Map<String,String> capeURLToUserMap = new ConcurrentHashMap<>();
 
     public IRCTransport(String host, int port,IRCHandler handler) throws IOException {
         this.handler = handler;

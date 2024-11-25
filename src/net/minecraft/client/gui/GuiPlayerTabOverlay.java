@@ -185,16 +185,18 @@ public class GuiPlayerTabOverlay extends Gui
 
                 if (networkplayerinfo1.getGameType() == WorldSettings.GameType.SPECTATOR)
                 {
-                    s1 = EnumChatFormatting.ITALIC + s1;
-                    if (IRCUtil.transport.isUser(getPlayerName(networkplayerinfo1))){
-                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.FONT_HEIGHT, (float)k2,mc.fontRendererObj.FONT_HEIGHT,mc.fontRendererObj.FONT_HEIGHT);
-                        j2 = j2 +mc.fontRendererObj.FONT_HEIGHT;
-                        k2 = k2 +mc.fontRendererObj.FONT_HEIGHT;
+                    if (IRCUtil.transport.isUser(s1)){
+                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.FONT_HEIGHT-2f, (float)k2,mc.fontRendererObj.FONT_HEIGHT,mc.fontRendererObj.FONT_HEIGHT);
+                        s1 = EnumChatFormatting.GREEN + s1;
                     }
                     this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1862270977);
                 }
                 else
                 {
+                    if (IRCUtil.transport.isUser(s1)){
+                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.FONT_HEIGHT-2f, (float)k2,mc.fontRendererObj.FONT_HEIGHT,mc.fontRendererObj.FONT_HEIGHT);
+                        s1 = EnumChatFormatting.GREEN + s1;
+                    }
                     this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1);
                 }
 

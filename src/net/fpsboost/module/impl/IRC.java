@@ -1,6 +1,7 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
+import net.fpsboost.util.ChatUtil;
 
 import static net.fpsboost.util.IRCUtil.transport;
 
@@ -21,9 +22,17 @@ public class IRC extends Module {
     }
 
     public static boolean sendIRCMessage(String message) {
+        if (message.equals("-online")) return CheckOnline(message);
         if (message.startsWith("-")) {
             String ircMessage = message.replace("-","");
             if (transport != null) transport.sendChat(ircMessage);
+            return true;
+        }
+        return false;
+    }
+    public static boolean CheckOnline(String message) {
+        if (message.startsWith("-online")) {
+            if (transport != null) ChatUtil.addMessageWithClient("[客户端在线用户列表] : "+transport.userToIgnMap);
             return true;
         }
         return false;
