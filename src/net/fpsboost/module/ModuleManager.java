@@ -1,11 +1,9 @@
 package net.fpsboost.module;
 
-import net.fpsboost.Client;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.element.impl.PingDisplay;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
-import net.fpsboost.util.RenderUtil;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -34,6 +32,8 @@ public class ModuleManager {
         modules.add(IRC.INSTANCE);
         if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
         modules.add(new ClientCape());
+        modules.add(new FullBright());
+        modules.add(new RenderMyNameTag());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }

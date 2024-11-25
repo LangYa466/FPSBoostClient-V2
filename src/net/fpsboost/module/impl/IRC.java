@@ -1,7 +1,6 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
-import net.fpsboost.util.IRCUtil;
 
 import static net.fpsboost.util.IRCUtil.transport;
 
