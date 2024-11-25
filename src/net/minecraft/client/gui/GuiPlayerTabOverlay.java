@@ -5,6 +5,10 @@ import com.google.common.collect.Ordering;
 import com.mojang.authlib.GameProfile;
 import java.util.Comparator;
 import java.util.List;
+
+import net.fpsboost.util.IRCUtil;
+import net.fpsboost.util.IconUtil;
+import net.fpsboost.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -182,6 +186,11 @@ public class GuiPlayerTabOverlay extends Gui
                 if (networkplayerinfo1.getGameType() == WorldSettings.GameType.SPECTATOR)
                 {
                     s1 = EnumChatFormatting.ITALIC + s1;
+                    if (IRCUtil.transport.isUser(getPlayerName(networkplayerinfo1))){
+                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.FONT_HEIGHT, (float)k2,mc.fontRendererObj.FONT_HEIGHT,mc.fontRendererObj.FONT_HEIGHT);
+                        j2 = j2 +mc.fontRendererObj.FONT_HEIGHT;
+                        k2 = k2 +mc.fontRendererObj.FONT_HEIGHT;
+                    }
                     this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1862270977);
                 }
                 else
