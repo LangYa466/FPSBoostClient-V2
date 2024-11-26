@@ -37,7 +37,7 @@ public class Client implements Wrapper {
         // if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
 
         // Version check
-        isOldVersion = true;
+        isOldVersion = !(WebUtil.get("http://122.51.47.169/versionwithv2.txt").contains(version));
 
         // download background
         String url = "https://t.mwm.moe/fj";
