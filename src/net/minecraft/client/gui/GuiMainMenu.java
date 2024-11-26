@@ -62,6 +62,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         }
         if (button.id == 114514) {
             String url = JOptionPane.showInputDialog("输入壁纸获取的网页(带https://)(不能本地) 本地可以找图床上传");
+            if (url == null) return;
             WebUtil.bindTextureWithUrl(url,"ClientBG");
             if (!file.exists()) file.createNewFile();
             FileUtils.writeStringToFile(file,url);
