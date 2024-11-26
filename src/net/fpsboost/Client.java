@@ -17,7 +17,7 @@ import net.fpsboost.value.ValueManager;
 @JNICInclude
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.45";
+    public static final String version = "1.5";
     public static boolean isOldVersion;
 
     public static void initClient() {
