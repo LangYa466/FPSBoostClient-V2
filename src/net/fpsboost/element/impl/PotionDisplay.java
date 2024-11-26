@@ -15,8 +15,6 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 import java.util.ArrayList;
 
-import static net.fpsboost.util.ThemeUtil.bgColor;
-
 public class PotionDisplay extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景",true);

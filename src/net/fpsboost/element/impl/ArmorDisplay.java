@@ -22,10 +22,9 @@ public class ArmorDisplay extends Element {
     }
     @Override
     public void onDraw() {
-        ScaledResolution sr = new ScaledResolution(mc);
         boolean horizontal = mode.isMode("横");
-        
-        int x;
+
+        int x = xPos;
         int y;
         int addHeldItem = heldItem.getValue() ? 16 : 0;
 
@@ -46,7 +45,7 @@ public class ArmorDisplay extends Element {
             if(mc.currentScreen instanceof GuiChat) {
             	this.renderFakeArmorStatus();
             }else {
-                this.renderArmorStatus(sr, i21, is);
+                this.renderArmorStatus(i21, is);
             }
         }
         
@@ -87,7 +86,7 @@ public class ArmorDisplay extends Element {
         mc.getRenderItem().renderItemAndEffectIntoGUI(boots, (int) (xPos + (horizontal ? -16 * 0 + 48 : 0)), (int) (yPos + (horizontal ? 0 : -16 * 0 + 48)));
 	}
 
-    private void renderArmorStatus(final ScaledResolution sr, final int pos, final ItemStack itemStack) {
+    private void renderArmorStatus(final int pos, final ItemStack itemStack) {
 
 
         if (itemStack == null) {
@@ -97,8 +96,6 @@ public class ArmorDisplay extends Element {
         int posXAdd;
         int posYAdd;
         RenderItem itemRender = mc.getRenderItem();
-
-        float prevZ = itemRender.zLevel;
 
         if(mode.isMode("横")) {
             posXAdd = -16 * pos + 48;

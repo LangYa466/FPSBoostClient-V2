@@ -30,8 +30,8 @@ public class SimpleClickGUI extends GuiScreen {
 
         RenderUtil.drawRect(width - 11,1,6,MAX_SCROLL + 11,Color.gray);
         RenderUtil.drawRect(width - 10,scrollOffset,5,10,Color.white);
-        addWidth = RenderUtil.drawText("+",width - 30,1,true, ThemeUtil.bgColor.getRGB(),-1);
-        delWidth = RenderUtil.drawText("-",width - 30,30,true, ThemeUtil.bgColor.getRGB(),-1);
+        addWidth = RenderUtil.drawText("+",width - 30,1,true, ThemeUtil.bgColor.getRGB(),-1,true);
+        delWidth = RenderUtil.drawText("-",width - 30,30,true, ThemeUtil.bgColor.getRGB(),-1,true);
 
         for (Module module : ModuleManager.getAllModules()) {
             y += 15;

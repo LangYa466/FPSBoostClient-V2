@@ -44,6 +44,10 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         return mc.fontRendererObj.drawString(text,x,y,color);
     }
 
+    public static int drawString(String text, int x, int y, int color,boolean textShadow) {
+        return mc.fontRendererObj.drawString(text,x,y,color,textShadow);
+    }
+
     public static int drawString(String text, int x, int y, Color color) {
        return drawString(text,x,y,color.getRGB());
     }
@@ -60,11 +64,11 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         return width + 4;
     }
 
-    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor) {
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
         int width = getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;
         if (bg) RenderUtil.drawRect(x - 2, y - 2, width + 8,height + 4,bgColor);
-        if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text,x + 1, y + 1, textColor); else RenderUtil.drawString(text,x + 1, y, textColor);
+        if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text,x + 1, y + 1, textColor,textShadow); else RenderUtil.drawString(text,x + 1, y, textColor,textShadow);
         return width + 8;
     }
 
