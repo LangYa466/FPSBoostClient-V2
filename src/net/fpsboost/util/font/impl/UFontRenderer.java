@@ -178,6 +178,10 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
         drawString(text, x - stringCache.getStringWidth(text) / 2f, y - stringCache.height / 4f - 1f, color, textShadow);
     }
 
+    public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
+        drawCenteredString(text,x,y,color,true);
+    }
+
     public void drawCenteredStringH(String text, float x, float y, int color) {
         drawString(text, x - stringCache.getStringWidth(text) / 2f, y, color, false);
     }

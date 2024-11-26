@@ -1,5 +1,6 @@
 package net.fpsboost.screen.alt;
 
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -39,10 +40,10 @@ public abstract class GuiAltLogin extends GuiScreen {
         this.drawDefaultBackground();
         drawBackground(0);
         this.username.drawTextBox();
-        mc.fontRendererObj.drawStringWithShadow("离线登录", (float)(this.width / 2), 20.0F, -1);
-        mc.fontRendererObj.drawStringWithShadow(status, (float) (this.width / 2), (this.height / 4 + 24) + 38, -1);
+        FontManager.hanYi().drawCenteredStringWithShadow("离线登录", (float)(this.width / 2), 20.0F, -1);
+        FontManager.hanYi().drawCenteredStringWithShadow(status, (float) (this.width / 2), (this.height / 4 + 24) + 38, -1);
         if (this.username.getText().isEmpty() && !this.username.isFocused()) {
-            mc.fontRendererObj.drawStringWithShadow("用户名", (float)(this.width / 2 - 96), (this.height / 4 + 24) + 72 - 4, -7829368);
+            FontManager.hanYi().drawStringWithShadow("用户名", (float)(this.width / 2 - 96), (this.height / 4 + 24) + 72 - 4, -7829368);
         }
 
         super.drawScreen(x, y, z);

@@ -1,5 +1,6 @@
 package net.fpsboost.screen;
 
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiScreen;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class GuiWelcome extends GuiScreen {
         drawDefaultBackground();
 
         String infoText = "客户端使用教程 按一下RSHIFT进行下一步";
-        mc.fontRendererObj.drawStringWithShadow(infoText,width / 2 - mc.fontRendererObj.getStringWidth(infoText),height / 2,-1);
+        FontManager.hanYi().drawCenteredStringWithShadow(infoText,width / 2 - mc.fontRendererObj.getStringWidth(infoText),height / 2,-1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

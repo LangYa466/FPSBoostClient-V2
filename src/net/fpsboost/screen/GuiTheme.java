@@ -1,6 +1,7 @@
 package net.fpsboost.screen;
 
 import net.fpsboost.util.ThemeUtil;
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 
@@ -21,7 +22,7 @@ public class GuiTheme extends GuiScreen {
         drawWorldBackground(0);
         int x = this.width / 4;
         int y = this.height / 4;
-        mc.fontRendererObj.drawStringWithShadow("您当前的主题为: " + ThemeUtil.themeName, x, y, textColor);
+        FontManager.hanYi().drawCenteredStringWithShadow("您当前的主题为: " + ThemeUtil.themeName, x, y, textColor);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

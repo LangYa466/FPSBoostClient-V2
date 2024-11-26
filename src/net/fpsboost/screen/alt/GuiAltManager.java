@@ -4,6 +4,7 @@ import net.fpsboost.screen.alt.altimpl.MicrosoftAlt;
 import net.fpsboost.screen.alt.microsoft.GuiMicrosoftLogin;
 import net.fpsboost.screen.alt.microsoft.MicrosoftLogin;
 import com.mojang.authlib.exceptions.AuthenticationException;
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -40,8 +41,8 @@ public class GuiAltManager extends GuiScreen {
 
         drawBackground(0);
 
-        mc.fontRendererObj.drawStringWithShadow(EnumChatFormatting.YELLOW + "您当前登录的账号: " + mc.getSession().getUsername(), width / 2.0f, height / 2.0f - 10, -1);
-        mc.fontRendererObj.drawStringWithShadow(status, width / 2.0f, height / 2.0f, -1);
+        FontManager.hanYi().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + "您当前登录的账号: " + mc.getSession().getUsername(), width / 2.0f, height / 2.0f - 10, -1);
+        FontManager.hanYi().drawCenteredStringWithShadow(status, width / 2.0f, height / 2.0f, -1);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

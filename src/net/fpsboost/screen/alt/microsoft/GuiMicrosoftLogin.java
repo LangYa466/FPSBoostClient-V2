@@ -1,5 +1,6 @@
 package net.fpsboost.screen.alt.microsoft;
 
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
@@ -29,7 +30,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
 
                             closed = true;
 
-                            microsoftLogin.setStatus("Login successful! " + microsoftLogin.getUserName());
+                            microsoftLogin.setStatus("登录成功! " + microsoftLogin.getUserName());
 
                             mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
 
@@ -72,7 +73,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
     public void initGui() {
         super.initGui();
 
-        buttonList.add(new GuiButton(0,width / 2 - 100,height / 2 + 50,"Back"));
+        buttonList.add(new GuiButton(0,width / 2 - 100,height / 2 + 50,"返回"));
     }
 
     @Override
@@ -82,9 +83,9 @@ public class GuiMicrosoftLogin extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (microsoftLogin == null) {
-            mc.fontRendererObj.drawStringWithShadow(EnumChatFormatting.YELLOW + "Logging in...",width / 2.0f,height / 2.0f - 5f,-1);
+            FontManager.hanYi().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + "登录中...",width / 2.0f,height / 2.0f - 5f,-1);
         } else {
-            mc.fontRendererObj.drawStringWithShadow(microsoftLogin.getStatus(),width / 2.0f,height / 2.0f - 5f,-1);
+            FontManager.hanYi().drawCenteredStringWithShadow(microsoftLogin.getStatus(),width / 2.0f,height / 2.0f - 5f,-1);
         }
     }
 
