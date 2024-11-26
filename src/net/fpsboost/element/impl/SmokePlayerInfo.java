@@ -88,7 +88,7 @@ public class SmokePlayerInfo extends Element {
             this.Info.add(var10001.append(Minecraft.getDebugFPS()).toString());
         }
         if (Ping.getValue()) {
-            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<延迟> " : "<Ping> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? "%" : PingDisplay.getPing()));
+            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<延迟> " : "<Ping> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? "N/A" : PingDisplay.getPing()));
         }
         if (XYZ.getValue()) {
             this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<坐标> " : "<XYZ> ") + EnumChatFormatting.WHITE + MathHelper.floor_double(mc.thePlayer.posX) + "," + MathHelper.floor_double(mc.thePlayer.posY) + "," + MathHelper.floor_double(mc.thePlayer.posZ));

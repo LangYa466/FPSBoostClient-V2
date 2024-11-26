@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import us.cubk.clickgui.ClickGuiScreen;
 
 import java.io.IOException;
+import java.util.Objects;
 
 /**
  * @author LangYa
@@ -20,8 +21,9 @@ import java.io.IOException;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.52";
+    public static final String version = "1.53";
     public static boolean isOldVersion;
+    public final static boolean isDev = false;
 
     public static void initClient() throws IOException {
         ModuleManager.init();
@@ -37,7 +39,10 @@ public class Client implements Wrapper {
         // if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
 
         // Version check
-        isOldVersion = !(WebUtil.get("http://122.51.47.169/versionwithv2.txt").contains(version));
+        if (!isDev) {
+            String latestVersion = Objects.requireNonNull(WebUtil.get("http://122.51.47.169/versionwithv2.txt")).trim();
+            isOldVersion = version.compareTo(latestVersion) < 0;
+        }
 
         // download background
         String url = "https://t.mwm.moe/fj";
