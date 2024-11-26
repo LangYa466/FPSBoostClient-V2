@@ -103,7 +103,7 @@ public class SmokePlayerInfo extends Element {
             FontManager.hanYi().drawStringWithShadow(str, 2, 5 + 10 * ++index, new Color(255, 160, 0, 160).getRGB());
         }
         this.Info.clear();
-        String clientText = EnumChatFormatting.WHITE + Client.name + " " + Client.version;
+        String clientText = EnumChatFormatting.WHITE + Client.name + " - " + EnumChatFormatting.GRAY + Client.version;
         ScaledResolution sr = new ScaledResolution(mc);
         FontManager.hanYi().drawStringWithShadow(clientText, 4, sr.getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? 22 : 9), new Color(255, 255, 255, 160).getRGB());
         super.onDraw();
