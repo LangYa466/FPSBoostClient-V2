@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.List;
 
+import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.util.HoveringUtil;
@@ -56,6 +57,7 @@ public class GuiChat extends GuiScreen
     {
         Keyboard.enableRepeatEvents(false);
         this.mc.ingameGUI.getChatGUI().resetScroll();
+        ConfigManager.saveConfig("Element.json");
     }
 
     public void updateScreen()

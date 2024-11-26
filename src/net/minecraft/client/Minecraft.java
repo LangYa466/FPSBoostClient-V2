@@ -40,6 +40,7 @@ import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.MotionBlur;
 import net.fpsboost.util.ChatUtil;
+import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.screenShotHelper.ScreenshotTaker;
 import net.minecraft.block.Block;
@@ -1932,7 +1933,6 @@ public class Minecraft implements IThreadListener
 
                 while (this.gameSettings.keyBindAttack.isPressed())
                 {
-                    ;
                 }
 
                 while (this.gameSettings.keyBindUseItem.isPressed())
@@ -1949,11 +1949,13 @@ public class Minecraft implements IThreadListener
             {
                 while (this.gameSettings.keyBindAttack.isPressed())
                 {
+                    CpsUtil.update(0);
                     this.clickMouse();
                 }
 
                 while (this.gameSettings.keyBindUseItem.isPressed())
                 {
+                    CpsUtil.update(1);
                     this.rightClickMouse();
                 }
 

@@ -20,8 +20,8 @@ public class ElementManager {
         elements.add(new PotionDisplay());
         elements.add(new ArmorDisplay());
         elements.add(new PingDisplay());
+        elements.add(new CPSDisplay());
 
         elements.forEach(Element::init);
     }
-
 }

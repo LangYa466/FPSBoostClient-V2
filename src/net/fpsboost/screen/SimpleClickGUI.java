@@ -1,5 +1,6 @@
 package net.fpsboost.screen;
 
+import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.util.HoveringUtil;
@@ -20,6 +21,12 @@ public class SimpleClickGUI extends GuiScreen {
     private static final int MAX_SCROLL = 200;
     private static final int MIN_SCROLL = 0;
     private int addWidth,delWidth;
+
+    @Override
+    public void onGuiClosed() {
+        ConfigManager.saveConfig("Module.json");
+        super.onGuiClosed();
+    }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {

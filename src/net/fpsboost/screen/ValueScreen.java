@@ -22,6 +22,7 @@ package net.fpsboost.screen;
 //         佛祖保佑       永无BUG     永不修改                  //
 ////////////////////////////////////////////////////////////////////
 
+import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.RenderUtil;
@@ -183,5 +184,11 @@ public class ValueScreen extends GuiScreen {
             }
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
+    }
+
+    @Override
+    public void onGuiClosed() {
+        ConfigManager.saveConfig("Module.json");
+        super.onGuiClosed();
     }
 }

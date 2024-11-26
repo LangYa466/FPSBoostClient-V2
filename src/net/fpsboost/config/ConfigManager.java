@@ -72,11 +72,11 @@ public class ConfigManager implements Wrapper {
 
     public static void loadAllConfig() {
         configs.forEach(it -> loadConfig(it.name));
-        System.out.println("Loaded all configs");
+        System.out.println("成功加载全部配置");
     }
 
     public static void saveAllConfig() {
         configs.forEach(it -> saveConfig(it.name));
-        System.out.println("Saved all configs");
+        System.out.println("成功保存全部配置");
     }
 }
