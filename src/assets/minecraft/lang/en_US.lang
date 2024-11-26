@@ -24,6 +24,7 @@ translation.test.args=%s %s
 translation.test.world=world
 
 menu.game=Game menu
+menu.setBG=Edit BackGround
 menu.singleplayer=Singleplayer
 menu.altmanager=AltManager
 menu.multiplayer=Multiplayer

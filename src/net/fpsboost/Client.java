@@ -9,6 +9,10 @@ import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.IRCUtil;
 import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
+import net.minecraft.client.gui.GuiMainMenu;
+import org.apache.commons.io.FileUtils;
+
+import java.io.IOException;
 
 /**
  * @author LangYa
@@ -20,7 +24,7 @@ public class Client implements Wrapper {
     public static final String version = "1.5";
     public static boolean isOldVersion;
 
-    public static void initClient() {
+    public static void initClient() throws IOException {
         ModuleManager.init();
         ElementManager.init();
         ValueManager.init();
@@ -32,8 +36,13 @@ public class Client implements Wrapper {
         // TODO GuiWelcome
         // if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
 
-        // Version Check
+        // Version check
         isOldVersion = !(WebUtil.get("http://122.51.47.169/versionwithv2.txt").contains(version));
+
+        // download background
+        String url = "https://t.mwm.moe/fj";
+        if (GuiMainMenu.file.exists()) url = FileUtils.readFileToString(GuiMainMenu.file);
+        WebUtil.bindTextureWithUrl(url,"ClientBG");
     }
 }
 
