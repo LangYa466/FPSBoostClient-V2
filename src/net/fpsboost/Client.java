@@ -21,7 +21,7 @@ import java.io.IOException;
 @JNICInclude
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.5";
+    public static final String version = "1.51";
     public static boolean isOldVersion;
 
     public static void initClient() throws IOException {
