@@ -1,6 +1,5 @@
 package net.fpsboost.util;
 
-import dev.jnic.annotations.JNICInclude;
 import net.fpsboost.Wrapper;
 import net.fpsboost.config.ConfigManager;
 import net.minecraft.client.renderer.texture.DynamicTexture;
@@ -15,7 +14,6 @@ import java.net.URL;
  * @author LangYa
  * @since 2024/11/24 22:52
  */
-@JNICInclude
 public class CapeUtil implements Wrapper {
     public static ResourceLocation cape = null;
     public static final File oldCapeFile = new File(ConfigManager.dir,"FPSBoostCape.data");

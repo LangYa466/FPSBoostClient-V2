@@ -1,6 +1,5 @@
 package net.fpsboost.util;
 
-import dev.jnic.annotations.JNICInclude;
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.impl.ClientSettings;
 import net.minecraft.util.EnumChatFormatting;
@@ -10,7 +9,6 @@ import us.cubk.irc.client.IRCTransport;
 import java.io.IOException;
 import java.util.Map;
 
-@JNICInclude
 public class IRCUtil implements Wrapper {
 
     public static IRCTransport transport = null;

@@ -1,6 +1,5 @@
 package net.fpsboost;
 
-import dev.jnic.annotations.JNICInclude;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
@@ -18,7 +17,6 @@ import java.io.IOException;
  * @author LangYa
  * @since 2024/8/30 21:17
  */
-@JNICInclude
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
     public static final String version = "1.51";
