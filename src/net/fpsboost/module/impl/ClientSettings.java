@@ -11,10 +11,11 @@ import net.fpsboost.value.impl.BooleanValue;
 public class ClientSettings extends Module {
     public static final ClientSettings INSTANCE = new ClientSettings();
     public ClientSettings() {
-        super("ClientSettings", "客户端优化设置");
+        super("ClientSettings", "客户端设置");
     }
-    public final BooleanValue gc = new BooleanValue("世界内存优化",true);
-    public final BooleanValue mouseFix = new BooleanValue("鼠标手感优化",true);
+    public BooleanValue cnMode = new BooleanValue("中文模式","Chinese mode",true);
+    public final BooleanValue gc = new BooleanValue("世界内存优化","Memory Fix",true);
+    public final BooleanValue mouseFix = new BooleanValue("鼠标手感优化","Mouse Fix",true);
 
     private final RawInputMod rawInputMod = new RawInputMod();
 

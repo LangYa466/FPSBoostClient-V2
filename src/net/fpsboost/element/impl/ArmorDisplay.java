@@ -14,15 +14,14 @@ import net.minecraft.item.ItemStack;
 
 public class ArmorDisplay extends Element {
 
-    private final BooleanValue heldItem = new BooleanValue("显示手持物品",true);
-    private final ModeValue mode = new ModeValue("显示方向","横","横","竖");
+    private final BooleanValue heldItem = new BooleanValue("显示手持物品","Show Held Item",true);
+    private final BooleanValue mode = new BooleanValue("竖向显示","Horizontal",false);
 
     public ArmorDisplay() {
         super("ArmorDisplay","装备显示");
     }
     @Override
     public void onDraw() {
-        boolean horizontal = mode.isMode("横");
 
         int x;
         int y;
@@ -30,7 +29,7 @@ public class ArmorDisplay extends Element {
 
         ItemStack sword = new ItemStack(Items.diamond_sword);
 
-        if(mode.isMode("横")) {
+        if(!mode.getValue()) {
         	x = 65 + addHeldItem;
         	y = 16;
         } else {
@@ -54,9 +53,9 @@ public class ArmorDisplay extends Element {
             RenderHelper.enableGUIStandardItemLighting();
 
             if (mc.currentScreen instanceof GuiChat) {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (horizontal ? (-16 * -1 + 48) : 0), (horizontal ? 0 : (-16 * -1 + 48)));
+                mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (!mode.getValue() ? (-16 * -1 + 48) : 0), (!mode.getValue() ? 0 : (-16 * -1 + 48)));
             } else {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (horizontal ? (-16 * -1 + 48) : 0), (horizontal ? 0 : (-16 * -1 + 48)));
+                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (mode.getValue() ? (-16 * -1 + 48) : 0), (mode.getValue() ? 0 : (-16 * -1 + 48)));
             }
 
             RenderHelper.disableStandardItemLighting();
@@ -68,18 +67,16 @@ public class ArmorDisplay extends Element {
         height =(y);
         super.onDraw();
     }
-	
+
 	private void renderFakeArmorStatus() {
 
-        boolean horizontal;
-        
+        boolean horizontal = !mode.getValue();
+
         ItemStack helmet = new ItemStack(Items.diamond_helmet);
         ItemStack chestPlate = new ItemStack(Items.diamond_chestplate);
         ItemStack leggings = new ItemStack(Items.diamond_leggings);
         ItemStack boots = new ItemStack(Items.diamond_boots);
 
-        horizontal = mode.isMode("横");
-        
         mc.getRenderItem().renderItemAndEffectIntoGUI(helmet, (horizontal ? -16 * 3 + 48 : 0), (horizontal ? 0 : -16 * 3 + 48));
         mc.getRenderItem().renderItemAndEffectIntoGUI(chestPlate, (horizontal ? -16 * 2 + 48 : 0), (horizontal ? 0 : -16 * 2 + 48));
         mc.getRenderItem().renderItemAndEffectIntoGUI(leggings, (horizontal ? -16 + 48 : 0), (horizontal ? 0 : -16 + 48));
@@ -92,7 +89,7 @@ public class ArmorDisplay extends Element {
         int posXAdd;
         int posYAdd;
 
-        if(mode.isMode("横")) {
+        if(!mode.getValue()) {
             posXAdd = -16 * pos + 48;
             posYAdd = 0;
         } else {

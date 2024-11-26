@@ -8,7 +8,7 @@ import net.fpsboost.module.Module;
  */
 public class Sprint extends Module {
     public Sprint() {
-        super("Sprint", "自动疾跑", "自动疾跑");
+        super("Sprint", "自动疾跑", "Auto Sprint","自动疾跑");
     }
 
     @Override

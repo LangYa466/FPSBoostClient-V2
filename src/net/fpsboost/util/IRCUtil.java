@@ -2,6 +2,7 @@ package net.fpsboost.util;
 
 import dev.jnic.annotations.JNICInclude;
 import net.fpsboost.Wrapper;
+import net.fpsboost.module.impl.ClientSettings;
 import net.minecraft.util.EnumChatFormatting;
 import us.cubk.irc.client.IRCHandler;
 import us.cubk.irc.client.IRCTransport;
@@ -51,7 +52,11 @@ public class IRCUtil implements Wrapper {
 
                 @Override
                 public void onConnected() {
-                    System.out.println("已成功链接到客户端服务器");
+                    if (ClientSettings.INSTANCE.cnMode.getValue()){
+                        System.out.println("已成功链接到客户端服务器");
+                    }else{
+                        System.out.println("Connected to client server");
+                    }
                 }
 
                 @Override

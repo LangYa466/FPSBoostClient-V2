@@ -8,6 +8,6 @@ import net.fpsboost.module.Module;
  */
 public class HideScoreboardRect extends Module {
     public HideScoreboardRect() {
-        super("HideScoreboardRect", "记分板背景隐藏", "隐藏记分板的背景");
+        super("HideScoreboardRect", "记分板背景隐藏","Disable the background of the scoreboard", "隐藏记分板的背景");
     }
 }

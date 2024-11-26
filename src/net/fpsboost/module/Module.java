@@ -10,24 +10,26 @@ import java.util.ArrayList;
  * @since 2024/8/30 21:19
  */
 public class Module implements Wrapper {
-    public final String name,cnName,description;
+    public final String name,cnName,description,cnDescription;
     public boolean enable;
     public int keyCode;
 
     public ArrayList<Value<?>> values;
     public boolean inArray = true;
 
-    public Module(String name,String cnName,String description,int keyCode) {
+    public Module(String name,String cnName,String description,String cnDescription,int keyCode) {
         this.name = name;
         this.cnName = cnName;
+        this.cnDescription = cnDescription;
         this.description = description;
         this.keyCode = keyCode;
         values = new ArrayList<>();
     }
 
-    public Module(String name,String cnName,String description) {
+    public Module(String name,String cnName,String description,String cnDescription) {
         this.name = name;
         this.cnName = cnName;
+        this.cnDescription = cnDescription;
         this.description = description;
         values = new ArrayList<>();
     }
@@ -35,6 +37,7 @@ public class Module implements Wrapper {
     public Module(String name,String cnName) {
         this.name = name;
         this.cnName = cnName;
+        this.cnDescription = "";
         this.description = "";
         values = new ArrayList<>();
     }

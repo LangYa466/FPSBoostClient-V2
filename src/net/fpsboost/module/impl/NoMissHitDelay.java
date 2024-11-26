@@ -30,7 +30,7 @@ import net.fpsboost.module.Module;
  */
 public class NoMissHitDelay extends Module {
     public NoMissHitDelay() {
-        super("NoMissHitDelay", "无特殊点击延迟", "去除特殊情况的点击延迟");
+        super("NoMissHitDelay", "无特殊点击延迟","No Click Delay", "去除特殊情况的点击延迟");
     }
 
     @Override

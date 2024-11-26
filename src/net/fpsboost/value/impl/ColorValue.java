@@ -12,13 +12,13 @@ public class ColorValue extends Value<Integer> {
     private int color;
     private boolean hasAlpha = true;
 
-    public ColorValue(String name, int color) {
-        super(name, color);
+    public ColorValue(String cnNmae,String name, int color) {
+        super(cnNmae,name, color);
         this.setColor(color);
     }
 
-    public ColorValue(String name, Color color) {
-        super(name, color.getRGB());
+    public ColorValue(String cnNmae,String name, Color color) {
+        super(cnNmae,name, color.getRGB());
         this.setColor(color.getRGB());
     }
 

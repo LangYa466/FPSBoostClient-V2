@@ -19,19 +19,19 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public class BlockOverlay extends Module {
-    private final ModeValue mode = new ModeValue("模式","边框","填充","边框");
-    private final ColorValue color1 = new ColorValue("边框颜色", new Color(255, 255, 255));
-    private final ColorValue color = new ColorValue("填充颜色", new Color(255, 255, 255, 50)) {
+    private final BooleanValue mode = new BooleanValue("边框模式","Outline Mode", true);
+    private final ColorValue color1 = new ColorValue("边框颜色","Outline Color", new Color(255, 255, 255));
+    private final ColorValue color = new ColorValue("填充颜色","Fill Color", new Color(255, 255, 255, 50)) {
         @Override
         public boolean getHasAlpha() {
             return false;
         }
     };
-    private final BooleanValue chroma = new BooleanValue("彩虹色", false);
-    private final BooleanValue throughBlock = new BooleanValue("边框-立体", true);
+    private final BooleanValue chroma = new BooleanValue("彩虹色","Rainbow", false);
+    private final BooleanValue throughBlock = new BooleanValue("边框-立体","3D Outline", true);
 
     public BlockOverlay() {
-        super("BlockOverlay","方块边框","抄袭FpsMaster的");
+        super("BlockOverlay","方块边框","Display the block outline or fill","抄袭FpsMaster的");
     }
 
     @Override
@@ -59,10 +59,10 @@ public class BlockOverlay extends Module {
             final double minX = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinX();
             final double minY = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinY();
             final double minZ = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinZ();
-            if (mode.isMode("填充")) drawBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005));
+            if (!mode.getValue()) drawBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005));
             GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
             GL11.glLineWidth(1f);
-            if (mode.isMode("边框")) drawOutlinedBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005));
+            if (mode.getValue()) drawOutlinedBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005));
             GL11.glDisable(2848);
             GL11.glEnable(3553);
             if (throughBlock.getValue()) {

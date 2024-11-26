@@ -8,12 +8,14 @@ import lombok.Getter;
  */
 public class Value<T> {
     public String name;
+    public String cnName;
     @Getter
     private T value;
     public boolean isHide = false;
 
-    public Value(String name, T value) {
+    public Value(String cnName,String name, T value) {
         this.name = name;
+        this.cnName = cnName;
         this.value = value;
     }
 

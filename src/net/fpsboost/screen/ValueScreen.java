@@ -24,6 +24,7 @@ package net.fpsboost.screen;
 
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.Module;
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.Value;
@@ -50,20 +51,28 @@ public class ValueScreen extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-        RenderUtil.drawStringWithShadow(module.cnName,1,0,-1);
-        RenderUtil.drawStringWithShadow("返回",50,0,-1);
         int y = 10;
         int x = 0;
         for (Value<?> value : module.values) {
+            String valueName;
+            if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                RenderUtil.drawStringWithShadow("返回", 50+RenderUtil.getStringWidth(module.cnName), 0, -1);
+                RenderUtil.drawStringWithShadow(module.cnName,1,0,-1);
+                valueName = value.cnName;
+            }else {
+                RenderUtil.drawStringWithShadow("Exit", 50+RenderUtil.getStringWidth(module.name), 0, -1);
+                RenderUtil.drawStringWithShadow(module.name,1,0,-1);
+                valueName = value.name;
+            }
             if (value.isHide) return;
             if (value instanceof BooleanValue) {
-                RenderUtil.drawString(value.name, x, y, -1);
-                RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(value.name) + 5,y + 3,5,5,((BooleanValue)value).getValue() ? Color.GREEN.getRGB() : Color.RED.getRGB(),-1);
+                RenderUtil.drawString(valueName, x, y, -1);
+                RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(valueName) + 5,y + 3,5,5,((BooleanValue)value).getValue() ? Color.GREEN.getRGB() : Color.RED.getRGB(),-1);
                 y += 10;
             }
             if (value instanceof ModeValue) {
-                RenderUtil.drawString(value.name, x, y, -1);
-                RenderUtil.drawString(((ModeValue)value).getValue(), x + RenderUtil.getStringWidth(value.name) + 5,y, -1);
+                RenderUtil.drawString(valueName, x, y, -1);
+                RenderUtil.drawString(((ModeValue)value).getValue(), x + RenderUtil.getStringWidth(valueName) + 5,y, -1);
                 y += 10;
             }
             if (value instanceof NumberValue) {
@@ -73,18 +82,18 @@ public class ValueScreen extends GuiScreen {
                 double current = numberValue.getValue();
                 double normalizedValue = (current - min) / (max - min);
 
-                RenderUtil.drawString(value.name, x, y, -1);
-                RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(value.name) + 5, y + 3, 100, 5, Color.GRAY.getRGB(), -1);
+                RenderUtil.drawString(valueName, x, y, -1);
+                RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(valueName) + 5, y + 3, 100, 5, Color.GRAY.getRGB(), -1);
 
                 // 进度
-                RenderUtil.drawRect(x + RenderUtil.getStringWidth(value.name) + 5, y + 3, (int) (normalizedValue * 100), 5, Color.BLUE.getRGB());
-                RenderUtil.drawString(String.valueOf(current), x + RenderUtil.getStringWidth(value.name) + 110, y, -1);
+                RenderUtil.drawRect(x + RenderUtil.getStringWidth(valueName) + 5, y + 3, (int) (normalizedValue * 100), 5, Color.BLUE.getRGB());
+                RenderUtil.drawString(String.valueOf(current), x + RenderUtil.getStringWidth(valueName) + 110, y, -1);
                 y += 30;
             }
             if (value instanceof ColorValue) {
                 ColorValue colorValue = (ColorValue) value;
 
-                RenderUtil.drawString(value.name, x, y, -1);
+                RenderUtil.drawString(valueName, x, y, -1);
 
                 // 红色
                 RenderUtil.drawString("R", x + 5, y + 15, Color.RED.getRGB());
@@ -121,17 +130,26 @@ public class ValueScreen extends GuiScreen {
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         int y = 10;
         int x = 0;
-        if (HoveringUtil.isHovering(50,0,RenderUtil.getStringWidth("返回"),mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
+        String valueName;
+        String Exit;
+        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+            valueName = module.cnName;
+            Exit = "返回";
+        }else {
+            valueName = module.name;
+            Exit = "Exit";
+        }
+            if (HoveringUtil.isHovering(50+RenderUtil.getStringWidth(valueName),0,RenderUtil.getStringWidth(Exit),mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
         for (Value<?> value : module.values) {
             if (value.isHide) return;
             if (value instanceof BooleanValue) {
-                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(value.name) + 5, y + 3, 5, 5, mouseX, mouseY)) {
+                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(valueName) + 5, y + 3, 5, 5, mouseX, mouseY)) {
                     ((BooleanValue) value).toggle();
                 }
                 y += 10;
             }
             if (value instanceof ModeValue) {
-                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(value.name) + 5,y,20,5,mouseX,mouseY)) {
+                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(valueName) + 5,y,20,5,mouseX,mouseY)) {
                     ((ModeValue)value).setNextValue();
                 }
                 y += 10;
@@ -139,12 +157,12 @@ public class ValueScreen extends GuiScreen {
             if (value instanceof NumberValue) {
                 NumberValue numberValue = (NumberValue) value;
 
-                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(value.name) + 5, y + 3, 100, 5, mouseX, mouseY)) {
+                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(valueName) + 5, y + 3, 100, 5, mouseX, mouseY)) {
                     double min = numberValue.minValue;
                     double max = numberValue.maxValue;
 
                     // 世界最强狼牙神的算法
-                    double normalizedValue = (mouseX - (x + RenderUtil.getStringWidth(value.name) + 5)) / 100.0;
+                    double normalizedValue = (mouseX - (x + RenderUtil.getStringWidth(valueName) + 5)) / 100.0;
                     double newValue = min + normalizedValue * (max - min);
 
                     // 防止傻逼弄负数

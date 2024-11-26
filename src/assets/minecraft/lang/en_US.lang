@@ -25,6 +25,7 @@ translation.test.world=world
 
 menu.game=Game menu
 menu.singleplayer=Singleplayer
+menu.altmanager=AltManager
 menu.multiplayer=Multiplayer
 menu.online=Minecraft Realms
 menu.options=Options...

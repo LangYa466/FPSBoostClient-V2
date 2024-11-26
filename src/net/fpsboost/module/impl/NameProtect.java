@@ -10,7 +10,7 @@ public class NameProtect extends Module {
     private static final String target = mc.getSession().getUsername();
 
     public NameProtect() {
-        super("NameProtect", "名称保护", "全局替换你的名字为NameProtect");
+        super("NameProtect", "名称保护","Protect your name and change it to NameProtect", "全局替换你的名字为NameProtect");
     }
 
     private static boolean enable;

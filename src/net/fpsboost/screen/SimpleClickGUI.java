@@ -3,6 +3,7 @@ package net.fpsboost.screen;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.util.ThemeUtil;
@@ -47,14 +48,25 @@ public class SimpleClickGUI extends GuiScreen {
 
             // 可见
             if (displayY >= 0 && displayY <= height - 15) {
-                String nameText = String.format("%s - %s", module.cnName, module.name);
-                RenderUtil.drawRectWithOutline(0, displayY - 1, RenderUtil.getStringWidth(nameText + module.description) + 8, 9, new Color(0, 0, 0, 80).getRGB(), -1);
+                String nameText;
+                String description;
+                String settingsText;
+                if (ClientSettings.INSTANCE.cnMode.getValue()){
+                    nameText = module.cnName;
+                    description = module.cnDescription;
+                    settingsText = "打开设置";
+                }else{
+                    nameText = module.name;
+                    description = module.description;
+                    settingsText = "Settings";
+                }
+                RenderUtil.drawRectWithOutline(0, displayY - 1, RenderUtil.getStringWidth(nameText + description) + 8, 9, new Color(0, 0, 0, 80).getRGB(), -1);
                 RenderUtil.drawString(nameText, x, displayY, -1);
-                RenderUtil.drawString(module.description, x + RenderUtil.getStringWidth(nameText) + 5, displayY, -1);
-                RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(nameText + module.description) + 10, displayY + 2, 5, 5, module.enable ? Color.GREEN.getRGB() : Color.RED.getRGB(), -1);
+                RenderUtil.drawString(description, x + RenderUtil.getStringWidth(nameText) + 5, displayY, -1);
+                RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(nameText + description) + 10, displayY + 2, 5, 5, module.enable ? Color.GREEN.getRGB() : Color.RED.getRGB(), -1);
 
                 if (!module.values.isEmpty())
-                    RenderUtil.drawStringWithShadow("打开设置", x + RenderUtil.getStringWidth(nameText + module.description) + 30, displayY, -1);
+                    RenderUtil.drawStringWithShadow(settingsText, x + RenderUtil.getStringWidth(nameText + description) + 30, displayY, -1);
             }
         }
 
@@ -73,11 +85,22 @@ public class SimpleClickGUI extends GuiScreen {
             int displayY = y - scrollOffset;
 
             if (displayY >= 0 && displayY <= height - 15) {
-                String nameText = String.format("%s - %s", module.cnName, module.name);
-                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + module.description) + 10, displayY, 5, 7, mouseX, mouseY))
+                String nameText;
+                String description;
+                String settingsText;
+                if (ClientSettings.INSTANCE.cnMode.getValue()){
+                    nameText = module.cnName;
+                    description = module.cnDescription;
+                    settingsText = "打开设置";
+                }else{
+                    nameText = module.name;
+                    description = module.description;
+                    settingsText = "Settings";
+                }
+                if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + description) + 10, displayY, 5, 7, mouseX, mouseY))
                     module.toggle();
 
-                if (!module.values.isEmpty() && HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + module.description) + 30, displayY, RenderUtil.getStringWidth("打开设置") + 4, mc.fontRendererObj.FONT_HEIGHT, mouseX, mouseY))
+                if (!module.values.isEmpty() && HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + description) + 30, displayY, RenderUtil.getStringWidth(settingsText) + 4, mc.fontRendererObj.FONT_HEIGHT, mouseX, mouseY))
                     mc.displayGuiScreen(new ValueScreen(module));
             }
         }

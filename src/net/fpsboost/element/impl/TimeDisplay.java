@@ -18,11 +18,11 @@ public class TimeDisplay extends Element {
         super("TimeDisplay", "时间显示");
     }
 
-    private final BooleanValue backgroundValue = new BooleanValue("背景",true);
-    private final BooleanValue textShadowValue = new BooleanValue("字体阴影",true);
-    private final BooleanValue clientFontValue = new BooleanValue("更好的字体",true);
-    private final ColorValue bgColorValue = new ColorValue("背景颜色",new Color(0,0,0,80));
-    private final ColorValue textColorValue = new ColorValue("文本颜色",Color.white);
+    private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
+    private final BooleanValue textShadowValue = new BooleanValue("字体阴影","Text Shadow",true);
+    private final BooleanValue clientFontValue = new BooleanValue("更好的字体","Better Font",true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80));
+    private final ColorValue textColorValue = new ColorValue("文本颜色","Text Color",Color.white);
 
     @Override
     public void onDraw() {

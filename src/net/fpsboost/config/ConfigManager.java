@@ -13,6 +13,7 @@ import net.fpsboost.Client;
 import net.fpsboost.Wrapper;
 import net.fpsboost.config.impl.ElementConfig;
 import net.fpsboost.config.impl.*;
+import net.fpsboost.module.impl.ClientSettings;
 import org.apache.commons.io.FileUtils;
 
 public class ConfigManager implements Wrapper {
@@ -36,14 +37,23 @@ public class ConfigManager implements Wrapper {
         File file = new File(dir, name);
         JsonParser jsonParser = new JsonParser();
         if (file.exists()) {
-            System.out.println("加载客户端配置: " + name);
             for (Config config : configs) {
                 if (!config.name.equals(name)) continue;
                 try {
                     config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
+                    if (ClientSettings.INSTANCE.cnMode.getValue()){
+                        System.out.println("加载客户端配置: " + name);
+                    }else{
+                        System.out.println("Loading client config: " + name);
+                    }
                 }
                 catch (FileNotFoundException e) {
-                    System.out.println("Failed to load config: " + name);
+                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                        System.out.println("配置文件不存在: " + name);
+                    }else {
+                        System.out.println("Failed to load config: " + name);
+
+                    }
                     e.printStackTrace();
                 }
                 break;
@@ -57,7 +67,11 @@ public class ConfigManager implements Wrapper {
     public static void saveConfig(String name) {
         File file = new File(dir, name);
         try {
-            System.out.println("保存客户端配置: " + name);
+            if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                System.out.println("保存客户端配置: " + name);
+            }else {
+                System.out.println("Saving client config: " + name);
+            }
             file.createNewFile();
             for (Config config : configs) {
                 if (!config.name.equals(name)) continue;
@@ -72,11 +86,20 @@ public class ConfigManager implements Wrapper {
 
     public static void loadAllConfig() {
         configs.forEach(it -> loadConfig(it.name));
-        System.out.println("成功加载全部配置");
+        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+            System.out.println("成功加载全部配置");
+        }else {
+            System.out.println("Successfully loaded all configs");
+        }
     }
 
     public static void saveAllConfig() {
         configs.forEach(it -> saveConfig(it.name));
-        System.out.println("成功保存全部配置");
+        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+            System.out.println("成功保存全部配置");
+        }
+        else {
+            System.out.println("Successfully saved all configs");
+        }
     }
 }

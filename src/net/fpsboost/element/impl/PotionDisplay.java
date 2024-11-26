@@ -17,10 +17,10 @@ import java.util.ArrayList;
 
 public class PotionDisplay extends Element {
 
-    private final BooleanValue backgroundValue = new BooleanValue("背景",true);
-    private final ColorValue color = new ColorValue("背景颜色",-1);
-    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色", Color.white);
-    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色", Color.white);
+    private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
+    private final ColorValue color = new ColorValue("背景颜色","Background Color",-1);
+    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色","Potion Name Text Color", Color.white);
+    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色","Potion Duration Text Color", Color.white);
 
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 

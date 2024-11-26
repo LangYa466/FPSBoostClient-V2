@@ -16,7 +16,7 @@ public class Element extends Module implements Wrapper {
     public float size = 1F;
 
     public Element(String name,String cnName) {
-        super(name,cnName,"");
+        super(name,cnName,"","");
     }
 
     public void onHover(int mouseX, int mouseY) {

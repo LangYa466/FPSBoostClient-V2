@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.GuiAltManager;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.resources.I18n;
@@ -14,12 +15,19 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
     public void initGui() {
         int buttonY = this.height / 4 + 48;
-
-        this.buttonList.add(new GuiButton(1, this.width / 2 - 100, buttonY, I18n.format("menu.singleplayer")));
-        this.buttonList.add(new GuiButton(2, this.width / 2 - 100, buttonY + 24, I18n.format("menu.multiplayer")));
-        this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 48, "游戏内切换MC账号"));
-        this.buttonList.add(new GuiButton(0, this.width / 2 - 100, buttonY + 72 + 12, 98, 20, I18n.format("menu.options")));
-        this.buttonList.add(new GuiButton(4, this.width / 2 + 2, buttonY + 72 + 12, 98, 20, I18n.format("menu.quit")));
+        if (!ClientSettings.INSTANCE.cnMode.getValue()) {
+            this.buttonList.add(new GuiButton(1, this.width / 2 - 100, buttonY, I18n.format("menu.singleplayer")));
+            this.buttonList.add(new GuiButton(2, this.width / 2 - 100, buttonY + 24, I18n.format("menu.multiplayer")));
+            this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 48, I18n.format("menu.altmanager")));
+            this.buttonList.add(new GuiButton(0, this.width / 2 - 100, buttonY + 72 + 12, 98, 20, I18n.format("menu.options")));
+            this.buttonList.add(new GuiButton(4, this.width / 2 + 2, buttonY + 72 + 12, 98, 20, I18n.format("menu.quit")));
+        }else {
+            this.buttonList.add(new GuiButton(1, this.width / 2 - 100, buttonY, "单人游戏"));
+            this.buttonList.add(new GuiButton(2, this.width / 2 - 100, buttonY + 24, "多人游戏"));
+            this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 48, "账号管理器"));
+            this.buttonList.add(new GuiButton(0, this.width / 2 - 100, buttonY + 72 + 12, 98, 20, "设置"));
+            this.buttonList.add(new GuiButton(4, this.width / 2 + 2, buttonY + 72 + 12, 98, 20, "退出"));
+        }
         this.buttonList.add(new GuiButtonLanguage(5, this.width / 2 - 124, buttonY + 72 + 12));
     }
 

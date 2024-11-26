@@ -11,9 +11,10 @@ import static net.fpsboost.util.IRCUtil.transport;
  */
 public class IRC extends Module {
     public static final IRC INSTANCE = new IRC();
+    String msg;
 
     public IRC() {
-        super("UserDisplay", "用户显示");
+        super("IRC","在线聊天","Internet Relay Chat","在线即时聊天");
     }
 
     @Override
@@ -24,8 +25,7 @@ public class IRC extends Module {
     public static boolean sendIRCMessage(String message) {
         if (message.equals("-online")) return CheckOnline(message);
         if (message.startsWith("-")) {
-            String ircMessage = message.replace("-","");
-            if (transport != null) transport.sendChat(ircMessage);
+            if (transport != null) transport.sendChat(message);
             return true;
         }
         return false;

@@ -24,12 +24,12 @@ public class KeyStore extends Element {
         super("KeyStore", "按键显示");
     }
 
-    private final BooleanValue backgroundValue = new BooleanValue("背景", true);
-    private final ColorValue bgColorValue = new ColorValue("背景颜色", new Color(0, 0, 0, 80));
-    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色", new Color(255, 255, 255, 80));
-    private final ColorValue textColorValue = new ColorValue("文本颜色", Color.white);
-    private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色", Color.black);
-    private final BooleanValue clientFontValue = new BooleanValue("更好的字体",true);
+    private final BooleanValue backgroundValue = new BooleanValue("背景","Background", true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色","Background Color", new Color(0, 0, 0, 80));
+    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色","Pressed Background Color", new Color(255, 255, 255, 80));
+    private final ColorValue textColorValue = new ColorValue("文本颜色","Text Color", Color.white);
+    private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色","Pressed Text Color", Color.black);
+    private final BooleanValue clientFontValue = new BooleanValue("更好的字体","Better Font",true);
 
     @Override
     public void onDraw() {

@@ -14,7 +14,6 @@ public class GuiWelcome extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
-
         String infoText = "客户端使用教程 按一下RSHIFT进行下一步";
         FontManager.hanYi().drawCenteredStringWithShadow(infoText,width / 2 - mc.fontRendererObj.getStringWidth(infoText),height / 2,-1);
         super.drawScreen(mouseX, mouseY, partialTicks);

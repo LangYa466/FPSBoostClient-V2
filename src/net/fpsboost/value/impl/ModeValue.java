@@ -10,8 +10,8 @@ public class ModeValue extends Value<String> {
 
     public String[] modes;
 
-    public ModeValue(String name,String value, String... modes) {
-        super(name, value);
+    public ModeValue(String cnNmae,String name,String value, String... modes) {
+        super(cnNmae,name, value);
         this.modes = modes;
     }
 

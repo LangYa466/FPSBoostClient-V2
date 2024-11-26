@@ -8,6 +8,6 @@ import net.fpsboost.module.Module;
  */
 public class NoHurtCam extends Module {
     public NoHurtCam() {
-        super("NoHurtCam", "无受伤抖动");
+        super("NoHurtCam", "无受伤抖动","Disable the camera shake when taking damage.","关闭受击动画");
     }
 }

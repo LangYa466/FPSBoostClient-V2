@@ -30,6 +30,6 @@ import net.fpsboost.module.Module;
  */
 public class HideGuiChatRect extends Module {
     public HideGuiChatRect() {
-        super("HideGuiChatRect", "隐藏聊天框背景", "隐藏聊天框背景");
+        super("HideGuiChatRect", "隐藏聊天框背景","Hide Gui Chat Rect Background", "隐藏聊天框背景");
     }
 }
