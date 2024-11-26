@@ -1,6 +1,7 @@
 package net.fpsboost.util;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
@@ -64,12 +65,21 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         return width + 4;
     }
 
-    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow,boolean clientFont) {
         int width = getStringWidth(text);
         int height = mc.fontRendererObj.FONT_HEIGHT;
         if (bg) RenderUtil.drawRect(x - 2, y - 2, width + 8,height + 4,bgColor);
-        if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text,x + 1, y + 1, textColor,textShadow); else RenderUtil.drawString(text,x + 1, y, textColor,textShadow);
+        if (!clientFont) {
+            if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text, x + 1, y + 1, textColor, textShadow);
+            else RenderUtil.drawString(text, x + 1, y, textColor, textShadow);
+        } else {
+            FontManager.hanYi().drawString(text, x + 1, y - 1, textColor, textShadow);
+        }
         return width + 8;
+    }
+
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
+        return drawText(text,x,y,bg,bgColor,textColor,textShadow,false);
     }
 
     public static int drawStringWithOutline(String text, int x, int y, int bgColor,int color) {

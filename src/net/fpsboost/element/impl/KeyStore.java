@@ -2,6 +2,7 @@ package net.fpsboost.element.impl;
 
 import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
+import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.settings.GameSettings;
@@ -28,6 +29,7 @@ public class KeyStore extends Element {
     private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色", new Color(255, 255, 255, 80));
     private final ColorValue textColorValue = new ColorValue("文本颜色", Color.white);
     private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色", Color.black);
+    private final BooleanValue clientFontValue = new BooleanValue("更好的字体",true);
 
     @Override
     public void onDraw() {
@@ -55,9 +57,15 @@ public class KeyStore extends Element {
         //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
         int add = isSpace ? 1 : 2;
         int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
-        if (GameSettings.forceUnicodeFont)
-            RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
-        else
-            RenderUtil.drawCenterString(keyName, x + textX - 1, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+        if (!clientFontValue.getValue()) {
+            if (GameSettings.forceUnicodeFont)
+                RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            else
+                RenderUtil.drawCenterString(keyName, x + textX - 1, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+        } else {
+            int textX1 = FontManager.hanYi().getStringWidth(keyName);
+            if (isSpace) FontManager.hanYi().drawCenteredString(keyName, x + textX1, y + FontManager.hanYi().FONT_HEIGHT, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            else FontManager.hanYi().drawString(keyName,(key != mc.gameSettings.keyBindForward)  ? (x + textX1) : x + (textX1 / 2 + 1), y + (FontManager.hanYi().FONT_HEIGHT / 2), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+        }
     }
 }

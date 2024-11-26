@@ -8,13 +8,11 @@ import us.cubk.irc.client.IRCTransport;
 
 import java.io.IOException;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @JNICInclude
 public class IRCUtil implements Wrapper {
 
     public static IRCTransport transport = null;
-    public static Map<String,String> capeMap = new ConcurrentHashMap<>();
 
     public static void init() {
         try {
@@ -64,14 +62,13 @@ public class IRCUtil implements Wrapper {
 
                 @Override
                 public void getCapes(Map<String, String> capeMap) {
-                    IRCUtil.capeMap.putAll(capeMap);
                 }
             });
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-        transport.connect("Admin", "123");
+        transport.connect("普通用户", "123");
     }
 }
 

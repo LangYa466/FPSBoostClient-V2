@@ -51,7 +51,6 @@ public class CapeUtil implements Wrapper {
         mc.getTextureManager().bindTexture(capeRes);
 
         cape = capeRes;
-        IRCUtil.transport.sendCapeURL(url);
     }
 
     public static boolean writeToFile(File file, String content) {

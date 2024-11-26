@@ -94,29 +94,11 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
     public ResourceLocation getLocationCape()
     {
-        String name = this.getName();
         if (!Config.isShowCapes())
         {
             return null;
         } else if(CapeUtil.cape != null && this == mc.thePlayer) {
             return CapeUtil.cape;
-        } else if (IRCUtil.transport.isUser(name)) {
-            String capeURL = IRCUtil.capeMap.get(name);
-
-            if (capeURL != null) {
-                DynamicTexture dt = null;
-                try {
-                    dt = new DynamicTexture(ImageIO.read(new URL(capeURL)));
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                if (dt == null) return null;
-                ResourceLocation capeRes = new ResourceLocation(name + "cape");
-                mc.getTextureManager().loadTexture(capeRes, dt);
-                mc.getTextureManager().bindTexture(capeRes);
-
-                return capeRes;
-            }
         } else {
             if (this.reloadCapeTimeMs != 0L && System.currentTimeMillis() > this.reloadCapeTimeMs)
             {
@@ -134,7 +116,6 @@ public abstract class AbstractClientPlayer extends EntityPlayer
                 return networkplayerinfo == null ? null : networkplayerinfo.getLocationCape();
             }
         }
-        return null;
     }
 
     public static ThreadDownloadImageData getDownloadImageSkin(ResourceLocation resourceLocationIn, String username)
