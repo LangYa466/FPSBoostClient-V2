@@ -21,6 +21,7 @@ public class ElementManager {
         elements.add(new ArmorDisplay());
         elements.add(new PingDisplay());
         elements.add(new CPSDisplay());
+        elements.add(new SmokePlayerInfo());
 
         elements.forEach(Element::init);
     }

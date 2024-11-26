@@ -31,7 +31,7 @@ public class PingDisplay extends Element {
         width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(),textShadowValue.getValue(), clientFontValue.getValue());
     }
 
-    private long getPing() {
+    public static long getPing() {
         return mc.getCurrentServerData() == null ? 0 : mc.getCurrentServerData().pingToServer;
     }
 

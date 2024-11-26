@@ -66,16 +66,17 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     }
 
     public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow,boolean clientFont) {
-        int width = getStringWidth(text);
-        int height = mc.fontRendererObj.FONT_HEIGHT;
-        if (bg) RenderUtil.drawRect(x - 2, y - 2, width + 8,height + 4,bgColor);
+        int width = clientFont ? FontManager.hanYi().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
+        int height = clientFont ? FontManager.hanYi().getHeight() : mc.fontRendererObj.FONT_HEIGHT;
+        int width1 = clientFont ? width + 6 : width + 8;
+        if (bg) RenderUtil.drawRect(x - 2, y - 2, width1,height + 4,bgColor);
         if (!clientFont) {
             if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text, x + 1, y + 1, textColor, textShadow);
             else RenderUtil.drawString(text, x + 1, y, textColor, textShadow);
         } else {
             FontManager.hanYi().drawString(text, x + 1, y - 1, textColor, textShadow);
         }
-        return width + 8;
+        return width1;
     }
 
     public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
@@ -89,7 +90,6 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         RenderUtil.drawString(text,x + 2, y, color);
         return width + 4;
     }
-
 
     public static int drawStringWithShadow(String text, int x, int y, int color) {
         return mc.fontRendererObj.drawStringWithShadow(text,x,y,color);
@@ -107,7 +107,6 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         RenderUtil.drawStringWithShadow(text,x + textX, y + height / 2 + 1, bgColor);
         return width + 4;
     }
-
 
     public static int getStringWidth(String text) {
         return mc.fontRendererObj.getStringWidth(text);
