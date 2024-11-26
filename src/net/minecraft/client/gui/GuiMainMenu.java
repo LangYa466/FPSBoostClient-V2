@@ -1,8 +1,10 @@
 package net.minecraft.client.gui;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+import net.fpsboost.Client;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.GuiAltManager;
@@ -67,9 +69,17 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         }
     }
 
+    public static Color rainbow(int speed, int index) {
+        int angle = (int) ((System.currentTimeMillis() / speed + index) % 360);
+        float hue = angle / 360f;
+        Color color = new Color(Color.HSBtoRGB(hue, 1, 1));
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 255);
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawClientBackground();
+        if (Client.isOldVersion) FontManager.hanYi().drawStringWithShadow("您的版本不是最新版! 请去群文件下载最新版!",5,5,rainbow(3, (int) partialTicks).getRGB());
         FontManager.hanYi(70).drawCenteredStringWithShadow("FPSBoost",width / 2F,height / 4F,-1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
