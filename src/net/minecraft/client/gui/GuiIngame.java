@@ -550,7 +550,7 @@ public class GuiIngame extends Gui
             String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
             int k = j1 - j * this.getFontRenderer().FONT_HEIGHT;
             int l = scaledRes.getScaledWidth() - k1 + 2;
-            boolean isRect = ModuleManager.isEnabled(HideScoreboardRect.class);
+            boolean isRect = !ModuleManager.isEnabled(HideScoreboardRect.class);
             if(isRect) drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
             this.getFontRenderer().drawString(s1, l1, k, 553648127);
             this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
