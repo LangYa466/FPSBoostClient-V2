@@ -1,7 +1,6 @@
 package net.fpsboost.module;
 
 import net.fpsboost.element.ElementManager;
-import net.fpsboost.element.impl.PingDisplay;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
 
@@ -28,7 +27,6 @@ public class ModuleManager {
         modules.add(new ItemPhysic());
         modules.add(new MotionBlur());
         modules.add(new NoHurtCam());
-        modules.add(new PingDisplay());
         modules.add(IRC.INSTANCE);
         if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
         modules.add(new ClientCape());

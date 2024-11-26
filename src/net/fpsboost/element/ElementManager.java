@@ -19,6 +19,7 @@ public class ElementManager {
         elements.add(new KeyStore());
         elements.add(new PotionDisplay());
         elements.add(new ArmorDisplay());
+        elements.add(new PingDisplay());
 
         elements.forEach(Element::init);
     }
