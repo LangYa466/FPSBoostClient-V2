@@ -5,6 +5,7 @@ import lombok.Setter;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.font.FontManager;
 import us.cubk.clickgui.ClickGuiScreen;
 import us.cubk.clickgui.component.components.Button;
@@ -67,7 +68,12 @@ public class Frame {
     public void renderFrame() {
         Gui.drawRect(this.x, this.y, this.x + this.width, this.y + this.barHeight, ClickGuiScreen.color);
         GL11.glPushMatrix();
-        String name = (i == 1) ? "视觉" : "功能";
+        String name;
+        if (ClientSettings.INSTANCE.cnMode.getValue()){
+             name = (i == 1) ? "视觉" : "功能";
+        }else{
+            name = (i == 1) ? "Visual" : "Function";
+        }
         FontManager.hanYi(18).drawStringWithShadow(name, (this.x + 2)  + 5, (this.y + 2.5f) , 0xFFFFFFFF);
         FontManager.hanYi(18).drawStringWithShadow(this.open ? "-" : "+", (this.x + this.width - 10)  + 3, (this.y + 2.5f) , -1);
         GL11.glPopMatrix();

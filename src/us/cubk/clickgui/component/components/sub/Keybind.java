@@ -1,5 +1,6 @@
 package us.cubk.clickgui.component.components.sub;
 
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.font.FontManager;
 import us.cubk.clickgui.component.Component;
 import us.cubk.clickgui.component.components.Button;
@@ -33,8 +34,13 @@ public class Keybind extends Component {
         Gui.drawRect(parent.parent.getX() + 2, parent.parent.getY() + offset, parent.parent.getX() + (parent.parent.getWidth()), parent.parent.getY() + offset + 12, this.hovered ? 0xFF222222 : 0xFF111111);
         Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + 2, parent.parent.getY() + offset + 12, 0xFF111111);
         GL11.glPushMatrix();
-
-        FontManager.hanYi(18).drawStringWithShadow(binding ? "按一下你要绑定的按键..." : ("绑过的按键: " + Keyboard.getKeyName(this.parent.module.keyCode)), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
+        String key1;
+        if (ClientSettings.INSTANCE.cnMode.getValue()){
+            key1 = binding ? "按一下你要绑定的按键..." : ("绑过的按键: " + Keyboard.getKeyName(this.parent.module.keyCode));
+        }else{
+            key1 = binding ? "Press a key..." : ("Bound key: " + Keyboard.getKeyName(this.parent.module.keyCode));
+        }
+        FontManager.hanYi(18).drawStringWithShadow(key1, (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
         GL11.glPopMatrix();
     }
 

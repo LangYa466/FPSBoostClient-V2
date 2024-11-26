@@ -1,5 +1,6 @@
 package us.cubk.clickgui.component.components.sub;
 
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.ModeValue;
 import us.cubk.clickgui.component.Component;
@@ -34,8 +35,7 @@ public class ModeButton extends Component {
         Gui.drawRect(parent.parent.getX() + 2, parent.parent.getY() + offset, parent.parent.getX() + (parent.parent.getWidth()), parent.parent.getY() + offset + 12, this.hovered ? 0xFF222222 : 0xFF111111);
         Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + 2, parent.parent.getY() + offset + 12, 0xFF111111);
         GL11.glPushMatrix();
-
-        FontManager.hanYi(18).drawStringWithShadow("模式: " + value.getValue(), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
+        FontManager.hanYi(18).drawStringWithShadow(ClientSettings.INSTANCE.cnMode.getValue() ? "Module":"模式: " + value.getValue(), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
         GL11.glPopMatrix();
     }
 

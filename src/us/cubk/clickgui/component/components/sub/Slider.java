@@ -1,5 +1,6 @@
 package us.cubk.clickgui.component.components.sub;
 
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.Value;
 import net.fpsboost.value.impl.ColorValue;
@@ -54,16 +55,16 @@ public class Slider extends Component {
             FontManager.hanYi(18).drawStringWithShadow(this.val.getName() + ": " + this.val.getValue(), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
         } else if (val instanceof ColorValue) {
             if (index == 0) {
-                FontManager.hanYi(18).drawStringWithShadow(String.format("%s-红- %s",val.getName(),((ColorValue) val).getRed()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
+                FontManager.hanYi(18).drawStringWithShadow(String.format(!ClientSettings.INSTANCE.cnMode.getValue() ?"%s-Red- %s":"%s-红- %s",val.getName(),((ColorValue) val).getRed()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
             }
             if (index == 1) {
-                FontManager.hanYi(18).drawStringWithShadow(String.format("%s-绿- %s",val.getName(),((ColorValue) val).getGreen()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
+                FontManager.hanYi(18).drawStringWithShadow(String.format(!ClientSettings.INSTANCE.cnMode.getValue() ?"%s-Green- %s":"%s-绿- %s",val.getName(),((ColorValue) val).getGreen()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
             }
             if (index == 2) {
-                FontManager.hanYi(18).drawStringWithShadow(String.format("%s-蓝- %s",val.getName(),((ColorValue) val).getBlue()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
+                FontManager.hanYi(18).drawStringWithShadow(String.format(!ClientSettings.INSTANCE.cnMode.getValue() ?"%s-Blue- %s":"%s-蓝- %s",val.getName(),((ColorValue) val).getBlue()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
             }
             if (index == 3) {
-                FontManager.hanYi(18).drawStringWithShadow(String.format("%s-透明- %s",val.getName(),((ColorValue) val).getAlpha()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
+                FontManager.hanYi(18).drawStringWithShadow(String.format(!ClientSettings.INSTANCE.cnMode.getValue() ?"%s-Alpha- %s":"%s-透明- %s",val.getName(),((ColorValue) val).getAlpha()), (parent.parent.getX() + 8), (parent.parent.getY() + offset + 2) + 1, -1);
             }
         }
         GL11.glPopMatrix();

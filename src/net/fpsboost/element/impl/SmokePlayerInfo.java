@@ -29,6 +29,7 @@ public class SmokePlayerInfo extends Element {
     public final BooleanValue XYZ = new BooleanValue("XYZ显示", "XYZ", true);
     public final BooleanValue Directions = new BooleanValue("方向显示", "Directions", true);
     public final BooleanValue Server = new BooleanValue("服务器显示", "Server", true);
+    public final BooleanValue INFO = new BooleanValue("客戶端信息", "ClientInfo", true);
     private final List<String> Info = new ArrayList<>();
     private final String[] directions = new String[]{"S", "SW", "W", "NW", "N", "NE", "E", "SE"};
     private String getDirectionsName(String mod) {
@@ -105,7 +106,9 @@ public class SmokePlayerInfo extends Element {
         this.Info.clear();
         String clientText = EnumChatFormatting.WHITE + Client.name + " - " + EnumChatFormatting.GRAY + Client.version;
         ScaledResolution sr = new ScaledResolution(mc);
-        FontManager.hanYi().drawStringWithShadow(clientText, 4, sr.getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? 22 : 9), new Color(255, 255, 255, 160).getRGB());
+        if (!INFO.getValue()) {
+            FontManager.hanYi().drawStringWithShadow(clientText, 4, sr.getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? 22 : 9), new Color(255, 255, 255, 160).getRGB());
+        }
         super.onDraw();
     }
 }
