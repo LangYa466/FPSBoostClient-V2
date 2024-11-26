@@ -24,7 +24,7 @@ public class ArmorDisplay extends Element {
     public void onDraw() {
         boolean horizontal = mode.isMode("横");
 
-        int x = xPos;
+        int x;
         int y;
         int addHeldItem = heldItem.getValue() ? 16 : 0;
 
@@ -54,9 +54,9 @@ public class ArmorDisplay extends Element {
             RenderHelper.enableGUIStandardItemLighting();
 
             if (mc.currentScreen instanceof GuiChat) {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (int) (xPos + (horizontal ? (-16 * -1 + 48) : 0)), (int) (yPos + (horizontal ? 0 : (-16 * -1 + 48))));
+                mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (horizontal ? (-16 * -1 + 48) : 0), (horizontal ? 0 : (-16 * -1 + 48)));
             } else {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (int) (xPos + (horizontal ? (-16 * -1 + 48) : 0)), (int) (yPos + (horizontal ? 0 : (-16 * -1 + 48))));
+                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (horizontal ? (-16 * -1 + 48) : 0), (horizontal ? 0 : (-16 * -1 + 48)));
             }
 
             RenderHelper.disableStandardItemLighting();
@@ -74,28 +74,23 @@ public class ArmorDisplay extends Element {
         boolean horizontal;
         
         ItemStack helmet = new ItemStack(Items.diamond_helmet);
-        ItemStack chestplate = new ItemStack(Items.diamond_chestplate);
+        ItemStack chestPlate = new ItemStack(Items.diamond_chestplate);
         ItemStack leggings = new ItemStack(Items.diamond_leggings);
         ItemStack boots = new ItemStack(Items.diamond_boots);
 
         horizontal = mode.isMode("横");
         
-        mc.getRenderItem().renderItemAndEffectIntoGUI(helmet, (int) (xPos + (horizontal ? -16 * 3 + 48 : 0)), (int) (yPos + (horizontal ? 0 : -16 * 3 + 48)));
-        mc.getRenderItem().renderItemAndEffectIntoGUI(chestplate, (int) (xPos + (horizontal ? -16 * 2 + 48 : 0)), (int) (yPos + (horizontal ? 0 : -16 * 2 + 48)));
-        mc.getRenderItem().renderItemAndEffectIntoGUI(leggings, (int) (xPos + (horizontal ? -16 * 1 + 48 : 0)), (int) (yPos + (horizontal ? 0 : -16 * 1 + 48)));
-        mc.getRenderItem().renderItemAndEffectIntoGUI(boots, (int) (xPos + (horizontal ? -16 * 0 + 48 : 0)), (int) (yPos + (horizontal ? 0 : -16 * 0 + 48)));
+        mc.getRenderItem().renderItemAndEffectIntoGUI(helmet, (horizontal ? -16 * 3 + 48 : 0), (horizontal ? 0 : -16 * 3 + 48));
+        mc.getRenderItem().renderItemAndEffectIntoGUI(chestPlate, (horizontal ? -16 * 2 + 48 : 0), (horizontal ? 0 : -16 * 2 + 48));
+        mc.getRenderItem().renderItemAndEffectIntoGUI(leggings, (horizontal ? -16 + 48 : 0), (horizontal ? 0 : -16 + 48));
+        mc.getRenderItem().renderItemAndEffectIntoGUI(boots, (horizontal ? 48 : 0), (horizontal ? 0 : 48));
 	}
 
     private void renderArmorStatus(final int pos, final ItemStack itemStack) {
-
-
-        if (itemStack == null) {
-            return;
-        }
+        if (itemStack == null) return;
 
         int posXAdd;
         int posYAdd;
-        RenderItem itemRender = mc.getRenderItem();
 
         if(mode.isMode("横")) {
             posXAdd = -16 * pos + 48;
@@ -105,6 +100,6 @@ public class ArmorDisplay extends Element {
             posYAdd = -16 * pos + 48;
         }
 
-        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, (int) (xPos + posXAdd), (int) (yPos + posYAdd));
+        mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, posXAdd, posYAdd);
     }
 }

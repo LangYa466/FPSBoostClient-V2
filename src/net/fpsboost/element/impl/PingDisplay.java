@@ -4,6 +4,8 @@ import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
+import net.fpsboost.value.impl.NumberValue;
+import net.minecraft.client.Minecraft;
 
 import java.awt.*;
 
@@ -24,14 +26,12 @@ public class PingDisplay extends Element {
 
     @Override
     public void onDraw() {
-        String text;
+        String text = getPing() + "ms";
+        width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(),textShadowValue.getValue());
+    }
 
-        if (mc.getCurrentServerData() != null) {
-            text = String.format("%sms",((int) mc.getCurrentServerData().pingToServer));
-        } else {
-            text = "0ms";
-        }
-        width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(), textShadowValue.getValue());
+    private long getPing() {
+        return mc.getCurrentServerData() == null ? 0 : mc.getCurrentServerData().pingToServer;
     }
 
     @Override

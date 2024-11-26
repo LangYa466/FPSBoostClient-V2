@@ -25,8 +25,7 @@ public class ComboDisplay extends Element {
 
     @Override
     public void onDraw() {
-        String displayText = (AttackHandler.currentCombo > 1) ? "Combos" : "Combo";
-        String text = AttackHandler.currentCombo + " " + displayText;
+        String text = AttackHandler.currentCombo + " Combo";
         width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(),textShadowValue.getValue());
     }
 
