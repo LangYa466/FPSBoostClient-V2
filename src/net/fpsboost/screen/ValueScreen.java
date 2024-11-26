@@ -191,4 +191,8 @@ public class ValueScreen extends GuiScreen {
         ConfigManager.saveConfig("Module.json");
         super.onGuiClosed();
     }
+
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
 }

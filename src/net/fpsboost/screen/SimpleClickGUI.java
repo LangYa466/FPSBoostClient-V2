@@ -107,4 +107,8 @@ public class SimpleClickGUI extends GuiScreen {
             scrollOffset = Math.max(MIN_SCROLL, Math.min(scrollOffset, MAX_SCROLL));
         }
     }
+
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
 }
