@@ -1,6 +1,7 @@
 package net.fpsboost.value;
 
 import lombok.Getter;
+import net.fpsboost.module.impl.ClientSettings;
 
 /**
  * @author LangYa
@@ -28,5 +29,9 @@ public class Value<T> {
 
     public void setHide(boolean hide) {
         this.isHide = hide;
+    }
+
+    public String getName() {
+        if (ClientSettings.INSTANCE.cnMode.getValue()) return cnName; else return name;
     }
 }

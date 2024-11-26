@@ -10,6 +10,7 @@ import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
 import net.minecraft.client.gui.GuiMainMenu;
 import org.apache.commons.io.FileUtils;
+import us.cubk.clickgui.ClickGuiScreen;
 
 import java.io.IOException;
 
@@ -30,6 +31,7 @@ public class Client implements Wrapper {
         ConfigManager.init();
         IRCUtil.init();
         CapeUtil.init();
+        ClickGuiScreen.INSTANCE.init();
 
         // TODO GuiWelcome
         // if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());

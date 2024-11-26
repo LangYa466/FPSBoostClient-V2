@@ -40,18 +40,10 @@ import java.io.IOException;
 /**
  * @author LangYa
  * @since 2024/9/25 18:19
- *
- * 用于显示和管理模块的值界面
-*/
+ */
 public class ValueScreen extends GuiScreen {
 
     private final Module module;
-
-    /**
-     * 构造函数，初始化模块
-     *
-     * @param module 需要管理的模块
-    */
     public ValueScreen(Module module) {
         this.module = module;
     }
@@ -61,8 +53,6 @@ public class ValueScreen extends GuiScreen {
         drawDefaultBackground();
         int y = 10;
         int x = 0;
-
-        // 遍历模块的值并绘制
         for (Value<?> value : module.values) {
             String valueName;
             if (ClientSettings.INSTANCE.cnMode.getValue()) {
@@ -75,8 +65,6 @@ public class ValueScreen extends GuiScreen {
                 valueName = value.name;
             }
             if (value.isHide) return;
-
-            // 处理不同类型的值并绘制相应的UI
             if (value instanceof BooleanValue) {
                 RenderUtil.drawString(valueName, x, y, -1);
                 RenderUtil.drawRectWithOutline(x + RenderUtil.getStringWidth(valueName) + 5,y + 3,5,5,((BooleanValue)value).getValue() ? Color.GREEN.getRGB() : Color.RED.getRGB(),-1);
@@ -151,9 +139,7 @@ public class ValueScreen extends GuiScreen {
             valueName = module.name;
             Exit = "Exit";
         }
-            if (HoveringUtil.isHovering(50+RenderUtil.getStringWidth(valueName),0,RenderUtil.getStringWidth(Exit),mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
-
-        // 处理鼠标点击事件，根据值类型进行相应的操作
+        if (HoveringUtil.isHovering(50+RenderUtil.getStringWidth(valueName),0,RenderUtil.getStringWidth(Exit),mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
         for (Value<?> value : module.values) {
             if (value.isHide) return;
             if (value instanceof BooleanValue) {
@@ -220,7 +206,6 @@ public class ValueScreen extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        // 保存配置
         ConfigManager.saveConfig("Module.json");
         super.onGuiClosed();
     }
@@ -229,4 +214,3 @@ public class ValueScreen extends GuiScreen {
         return false;
     }
 }
-

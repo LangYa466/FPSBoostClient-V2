@@ -55,7 +55,7 @@ public class ArmorDisplay extends Element {
             if (mc.currentScreen instanceof GuiChat) {
                 mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (!mode.getValue() ? (-16 * -1 + 48) : 0), (!mode.getValue() ? 0 : (-16 * -1 + 48)));
             } else {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (mode.getValue() ? (-16 * -1 + 48) : 0), (mode.getValue() ? 0 : (-16 * -1 + 48)));
+                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (!mode.getValue() ? (-16 * -1 + 48) : 0), (!mode.getValue() ? 0 : (-16 * -1 + 48)));
             }
 
             RenderHelper.disableStandardItemLighting();

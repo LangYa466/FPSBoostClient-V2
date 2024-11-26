@@ -15,7 +15,7 @@ public class ClientSettings extends Module {
     }
     public BooleanValue cnMode = new BooleanValue("中文模式","Chinese mode",true);
     public final BooleanValue gc = new BooleanValue("世界内存优化","Memory Fix",true);
-    public final BooleanValue mouseFix = new BooleanValue("鼠标手感优化","Mouse Fix",true);
+    public final BooleanValue mouseFix = new BooleanValue("鼠标手感优化(会导致和原版灵敏度不一样)","Mouse Fix",false);
 
     private final RawInputMod rawInputMod = new RawInputMod();
 
