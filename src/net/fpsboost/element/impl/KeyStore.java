@@ -25,7 +25,7 @@ public class KeyStore extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景", true);
     private final ColorValue bgColorValue = new ColorValue("背景颜色", new Color(0, 0, 0, 80));
-    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色", new Color(0, 0, 0, 80));
+    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色", new Color(255, 255, 255, 80));
     private final ColorValue textColorValue = new ColorValue("文本颜色", Color.white);
     private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色", Color.black);
 

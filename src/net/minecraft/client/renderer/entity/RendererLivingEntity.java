@@ -3,9 +3,6 @@ package net.minecraft.client.renderer.entity;
 import com.google.common.collect.Lists;
 import java.nio.FloatBuffer;
 import java.util.List;
-
-import net.fpsboost.module.ModuleManager;
-import net.fpsboost.module.impl.RenderMyNameTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -645,11 +642,9 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     protected boolean canRenderName(T entity)
     {
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
-        boolean rn = Minecraft.isGuiEnabled() && entity != this.renderManager.livingPlayer && !entity.isInvisibleToPlayer(entityplayersp) && entity.riddenByEntity == null;
 
-        if (entity instanceof EntityPlayer)
+        if (entity instanceof EntityPlayer && entity != entityplayersp)
         {
-            if (entity != entityplayersp && !ModuleManager.isEnabled(RenderMyNameTag.class)) return rn;
             Team team = entity.getTeam();
             Team team1 = entityplayersp.getTeam();
 
@@ -677,7 +672,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
             }
         }
 
-        return rn;
+        return Minecraft.isGuiEnabled() && entity != this.renderManager.livingPlayer && !entity.isInvisibleToPlayer(entityplayersp) && entity.riddenByEntity == null;
     }
 
     public void setRenderOutlines(boolean renderOutlinesIn)

@@ -33,8 +33,8 @@ public class ModuleManager {
         if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
         modules.add(new ClientCape());
         modules.add(new FullBright());
-        modules.add(new RenderMyNameTag());
-
+        modules.add(ClientSettings.INSTANCE);
+        ClientSettings.INSTANCE.enable = true;
         modules.sort(Comparator.comparing(module -> module.name));
     }
 

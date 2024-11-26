@@ -37,6 +37,7 @@ import net.fpsboost.Client;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.MotionBlur;
 import net.fpsboost.util.ChatUtil;
 import net.fpsboost.util.IconUtil;
@@ -2098,7 +2099,7 @@ public class Minecraft implements IThreadListener
     public void launchIntegratedServer(String folderName, String worldName, WorldSettings worldSettingsIn)
     {
         this.loadWorld((WorldClient)null);
-        System.gc();
+        if (ClientSettings.INSTANCE.gc.getValue()) System.gc();
         ISaveHandler isavehandler = this.saveLoader.getSaveLoader(folderName, false);
         WorldInfo worldinfo = isavehandler.loadWorldInfo();
 
