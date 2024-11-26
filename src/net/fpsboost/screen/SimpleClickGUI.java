@@ -16,6 +16,7 @@ import java.io.IOException;
 /**
  * @author LangYa
  * @since 2024/9/25 18:48
+ * 简单点击图形用户界面类
  */
 public class SimpleClickGUI extends GuiScreen {
     private int scrollOffset = 2;
@@ -23,12 +24,21 @@ public class SimpleClickGUI extends GuiScreen {
     private static final int MIN_SCROLL = 0;
     private int addWidth,delWidth;
 
+    /**
+     * GUI关闭时保存配置
+     */
     @Override
     public void onGuiClosed() {
         ConfigManager.saveConfig("Module.json");
         super.onGuiClosed();
     }
 
+    /**
+     * 绘制屏幕内容
+     * @param mouseX 鼠标的X坐标
+     * @param mouseY 鼠标的Y坐标
+     * @param partialTicks 渲染的部分刻度
+     */
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawDefaultBackground();
@@ -70,10 +80,16 @@ public class SimpleClickGUI extends GuiScreen {
             }
         }
 
-
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
+    /**
+     * 处理鼠标点击事件
+     * @param mouseX 鼠标的X坐标
+     * @param mouseY 鼠标的Y坐标
+     * @param mouseButton 鼠标按钮索引
+     * @throws IOException 处理输入时可能抛出异常
+     */
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
         int y = 0;
@@ -118,6 +134,10 @@ public class SimpleClickGUI extends GuiScreen {
         super.mouseClicked(mouseX, mouseY, mouseButton);
     }
 
+    /**
+     * 处理鼠标输入事件
+     * @throws IOException 处理输入时可能抛出异常
+     */
     @Override
     public void handleMouseInput() throws IOException {
         super.handleMouseInput();
@@ -131,7 +151,12 @@ public class SimpleClickGUI extends GuiScreen {
         }
     }
 
+    /**
+     * 判断GUI是否暂停游戏
+     * @return 返回false表示不暂停游戏
+     */
     public boolean doesGuiPauseGame() {
         return false;
     }
 }
+

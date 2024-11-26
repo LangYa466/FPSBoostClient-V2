@@ -19,6 +19,7 @@ import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 
+// 处理微软登录的类
 public class MicrosoftLogin implements Closeable {
     private static final String CLIENT_ID = "67b74668-ef33-49c3-a75c-18cbb2481e0c";
     //00000000402b5328
@@ -57,6 +58,7 @@ public class MicrosoftLogin implements Closeable {
     @SuppressWarnings("FieldCanBeLocal")
     private final MicrosoftHttpHandler handler;
 
+    // 构造函数，初始化HTTP服务器并打开登录URL
     public MicrosoftLogin() throws IOException {
         handler = new MicrosoftHttpHandler();
         httpServer = HttpServer.create(new InetSocketAddress("localhost", 3434), 0);
@@ -65,6 +67,7 @@ public class MicrosoftLogin implements Closeable {
         Sys.openURL(URL);
     }
 
+    // 带有刷新令牌的构造函数，用于重新登录
     public MicrosoftLogin(String refreshToken) throws IOException {
         this.refreshToken = refreshToken;
         this.httpServer = null;
@@ -91,6 +94,7 @@ public class MicrosoftLogin implements Closeable {
         MicrosoftLogin.this.logged = true;
     }
 
+    // 关闭HTTP服务器
     @Override
     public void close() {
         if (httpServer != null) {
@@ -98,10 +102,12 @@ public class MicrosoftLogin implements Closeable {
         }
     }
 
+    // 显示登录页面
     public void show() throws Exception {
         Desktop.getDesktop().browse(new URI(URL));
     }
 
+    // 获取访问令牌
     private String getAccessToken(String xstsToken, String uhs) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting access token";
         System.out.println("Getting access token");
@@ -123,6 +129,7 @@ public class MicrosoftLogin implements Closeable {
         return jsonObject.get("access_token").getAsString();
     }
 
+    // 从刷新令牌获取微软令牌
     public String getMicrosoftTokenFromRefreshToken(String refreshToken) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting microsoft token from refresh token";
         System.out.println("Getting microsoft token from refresh token");
@@ -147,6 +154,7 @@ public class MicrosoftLogin implements Closeable {
         return response_obj.get("access_token").getAsString();
     }
 
+    // 根据授权码获取微软令牌和刷新令牌
     public String[] getMicrosoftTokenAndRefreshToken(String code) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting microsoft token";
         System.out.println("Getting microsoft token");
@@ -170,6 +178,7 @@ public class MicrosoftLogin implements Closeable {
     }
 
     @SuppressWarnings("HttpUrlsUsage")
+    // 获取Xbox Live令牌
     public String getXBoxLiveToken(String microsoftToken) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting xbox live token";
         System.out.println("Getting xbox live token");
@@ -198,6 +207,7 @@ public class MicrosoftLogin implements Closeable {
         return response_obj.get("Token").getAsString();
     }
 
+    // 获取XSTS令牌和用户哈希值
     public String[] getXSTSTokenAndUserHash(String xboxLiveToken) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting xsts token and user hash";
         System.out.println("Getting xsts token and user hash");
@@ -229,11 +239,13 @@ public class MicrosoftLogin implements Closeable {
         return new String[]{token, uhs};
     }
 
+    // 将字符串写入输出流
     private void write(BufferedWriter writer, String s) throws IOException {
         writer.write(s);
         writer.close();
     }
 
+    // 从输入流中读取字符串
     private String read(InputStream stream) throws IOException {
         final BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
         final StringBuilder stringBuilder = new StringBuilder();
@@ -248,6 +260,7 @@ public class MicrosoftLogin implements Closeable {
         return stringBuilder.toString();
     }
 
+    // 处理HTTP请求的内部类
     private class MicrosoftHttpHandler implements HttpHandler {
         private boolean got = false;
 
@@ -284,3 +297,4 @@ public class MicrosoftLogin implements Closeable {
         }
     }
 }
+

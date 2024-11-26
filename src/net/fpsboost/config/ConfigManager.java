@@ -16,12 +16,20 @@ import net.fpsboost.config.impl.*;
 import net.fpsboost.module.impl.ClientSettings;
 import org.apache.commons.io.FileUtils;
 
+/**
+ * 配置管理器类，实现了 Wrapper 接口
+ * 负责管理模块的配置加载和保存
+ */
 public class ConfigManager implements Wrapper {
     private static final List<Config> configs = new ArrayList<>();
     public static final File dir = new File(mc.mcDataDir, Client.name);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static boolean isFirst;
 
+    /**
+     * 初始化配置管理器
+     * 创建配置目录并加载所有配置
+     */
     public static void init() {
         if (!dir.exists()) {
             dir.mkdir();
@@ -33,6 +41,11 @@ public class ConfigManager implements Wrapper {
         loadAllConfig();
     }
 
+    /**
+     * 加载指定名称的配置文件
+     *
+     * @param name 配置文件名称
+     */
     public static void loadConfig(String name) {
         File file = new File(dir, name);
         JsonParser jsonParser = new JsonParser();
@@ -64,6 +77,11 @@ public class ConfigManager implements Wrapper {
         }
     }
 
+    /**
+     * 保存指定名称的配置文件
+     *
+     * @param name 配置文件名称
+     */
     public static void saveConfig(String name) {
         File file = new File(dir, name);
         try {
@@ -84,6 +102,9 @@ public class ConfigManager implements Wrapper {
         }
     }
 
+    /**
+     * 加载所有配置文件
+     */
     public static void loadAllConfig() {
         configs.forEach(it -> loadConfig(it.name));
         if (ClientSettings.INSTANCE.cnMode.getValue()) {
@@ -93,6 +114,9 @@ public class ConfigManager implements Wrapper {
         }
     }
 
+    /**
+     * 保存所有配置文件
+     */
     public static void saveAllConfig() {
         configs.forEach(it -> saveConfig(it.name));
         if (ClientSettings.INSTANCE.cnMode.getValue()) {
