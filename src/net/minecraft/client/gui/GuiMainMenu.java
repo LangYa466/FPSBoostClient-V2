@@ -32,7 +32,6 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 72, I18n.format("menu.setBG")));
             this.buttonList.add(new GuiButton(0, this.width / 2 - 100, buttonY + 96 + 12, 98, 20, I18n.format("menu.options")));
             this.buttonList.add(new GuiButton(4, this.width / 2 + 2, buttonY + 96 + 12, 98, 20, I18n.format("menu.quit")));
-            this.buttonList.add(new GuiButton(114514, this.width / 2 + 2, buttonY + 96, 98, 20, I18n.format("menu.setBG")));
         } else {
             this.buttonList.add(new GuiButton(1, this.width / 2 - 100, buttonY, "单人游戏"));
             this.buttonList.add(new GuiButton(2, this.width / 2 - 100, buttonY + 24, "多人游戏"));
@@ -80,7 +79,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawClientBackground();
-        if (Client.isOldVersion) FontManager.hanYi().drawStringWithShadow("您的版本不是最新版! 请去群文件下载最新版!",5,5,rainbow(3, (int) partialTicks).getRGB());
+        if (Client.isOldVersion) FontManager.hanYi().drawStringWithShadow(ClientSettings.INSTANCE.cnMode.getValue()?"Your version is not the latest! Please download the latest version from the group file!":"您的版本不是最新版! 请去群文件下载最新版!",5,5,rainbow(3, (int) partialTicks).getRGB());
         FontManager.hanYi(70).drawCenteredStringWithShadow("FPSBoost",width / 2F,height / 4F,-1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
