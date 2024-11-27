@@ -23,7 +23,7 @@ public class ModuleConfig extends Config {
 
     public JsonObject saveConfig() {
         JsonObject object = new JsonObject();
-        for (Module module : ModuleManager.modules) {
+        for (Module module : ModuleManager.getAllModules()) {
             JsonObject moduleObject = new JsonObject();
             moduleObject.addProperty("enable", module.enable);
             moduleObject.addProperty("key", module.keyCode);
@@ -54,7 +54,7 @@ public class ModuleConfig extends Config {
     }
 
     public void loadConfig(JsonObject object) {
-        for (Module module : ModuleManager.modules) {
+        for (Module module : ModuleManager.getAllModules()) {
             if (object.has(module.name)) {
                 JsonObject moduleObject = object.get(module.name).getAsJsonObject();
                 if (moduleObject.has("enable")) {

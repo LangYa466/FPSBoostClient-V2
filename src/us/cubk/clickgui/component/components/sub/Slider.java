@@ -171,10 +171,10 @@ public class Slider extends Component {
     }
 
     public boolean isMouseOnButtonD(int x, int y) {
-		return x > this.x && x < this.x + (parent.parent.getWidth() / 2 + 1) && y > this.y && y < this.y + 12;
-	}
+        return x > this.x && x < this.x + (parent.parent.getWidth() / 2 + 1) && y > this.y && y < this.y + 12;
+    }
 
     public boolean isMouseOnButtonI(int x, int y) {
-		return x > this.x + parent.parent.getWidth() / 2 && x < this.x + parent.parent.getWidth() && y > this.y && y < this.y + 12;
-	}
+        return x > this.x + parent.parent.getWidth() / 2 && x < this.x + parent.parent.getWidth() && y > this.y && y < this.y + 12;
+    }
 }

@@ -22,7 +22,6 @@ public class ElementConfig extends Config implements Wrapper {
             final JsonObject hudObject = new JsonObject();
             hudObject.addProperty("x", hud.xPos);
             hudObject.addProperty("y", hud.yPos);
-            hudObject.addProperty("enable", hud.enable);
             object.add(hud.name, hudObject);
         }
         return object;
@@ -34,7 +33,6 @@ public class ElementConfig extends Config implements Wrapper {
                 final JsonObject hudObject = object.get(hud.name).getAsJsonObject();
                 hud.xPos = hudObject.get("x").getAsInt();
                 hud.yPos = hudObject.get("y").getAsInt();
-                hud.enable = hudObject.get("enable").getAsBoolean();
             }
         }
     }

@@ -42,6 +42,38 @@ public class WebUtil {
         }
     }
 
+    // 取消缓存
+    public static String getNoCache(String url) {
+        try {
+            HttpURLConnection connection = getHttpURLConnection(url);
+
+            // 禁用缓存
+            connection.setUseCaches(false);
+
+            // 设置请求头，确保没有缓存
+            connection.setRequestProperty("Cache-Control", "no-cache");
+            connection.setRequestProperty("Pragma", "no-cache");
+
+            int responseCode = connection.getResponseCode();
+            if (responseCode == 200) {
+                // 指定字符编码
+                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
+                StringBuilder responseBuilder = new StringBuilder();
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    responseBuilder.append(line).append("\n");
+                }
+                reader.close();
+                return responseBuilder.toString();
+            }
+            throw new IOException("HTTP request failed with response code: " + responseCode);
+        }
+        catch (IOException e) {
+            System.out.println(e.getLocalizedMessage());
+            return null;
+        }
+    }
+
     // 获取 HTTP 连接
     private static HttpURLConnection getHttpURLConnection(String url) throws IOException {
         URL urlObj = new URL(url);
