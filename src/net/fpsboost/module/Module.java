@@ -10,7 +10,10 @@ import java.util.ArrayList;
  * @since 2024/8/30 21:19
  */
 public class Module implements Wrapper {
-    public final String name,cnName,description,cnDescription;
+    public final String name;
+    public final String cnName;
+    public String description;
+    public final String cnDescription;
     public boolean enable;
     public int keyCode;
 

@@ -34,6 +34,7 @@ public class ModuleManager {
         modules.add(ClientSettings.INSTANCE);
         ClientSettings.INSTANCE.enable = true;
         modules.add(new MoreParticles());
+        modules.add(new SmokeCrosshair());
         modules.sort(Comparator.comparing(module -> module.name));
     }
 

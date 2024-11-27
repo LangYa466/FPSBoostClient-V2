@@ -39,6 +39,7 @@ import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.MotionBlur;
+import net.fpsboost.module.impl.SmokeCrosshair;
 import net.fpsboost.util.ChatUtil;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
@@ -1639,6 +1640,7 @@ public class Minecraft implements IThreadListener
 
             while (Mouse.next())
             {
+                SmokeCrosshair.onMouse(Mouse.getEventButton(), Mouse.getEventButtonState());
                 int i = Mouse.getEventButton();
                 KeyBinding.setKeyBindState(i - 100, Mouse.getEventButtonState());
 
