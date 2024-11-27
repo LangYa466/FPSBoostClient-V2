@@ -33,6 +33,7 @@ public class ModuleManager {
         modules.add(new FullBright());
         modules.add(ClientSettings.INSTANCE);
         ClientSettings.INSTANCE.enable = true;
+        modules.add(new MoreParticles());
         modules.sort(Comparator.comparing(module -> module.name));
     }
 
