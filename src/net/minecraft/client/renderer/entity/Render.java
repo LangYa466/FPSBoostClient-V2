@@ -333,7 +333,8 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
     protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
     {
         if (entityIn.getName() == null) return;
-        str = "   " + str;
+        boolean isUser = (IRCUtil.transport.isUser(entityIn.getName()));
+        if(isUser) str = "   " + str;
         double d0 = entityIn.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
         if (d0 <= (double)(maxDistance * maxDistance))
@@ -374,7 +375,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
             fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
-            if (IRCUtil.transport.isUser(entityIn.getName())) RenderUtil.drawImage(IconUtil.icon,-fontrenderer.getStringWidth(str) / 2F, i,7,7);
+            if(isUser) RenderUtil.drawImage(IconUtil.icon,-fontrenderer.getStringWidth(str) / 2F, i,7,7);
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
