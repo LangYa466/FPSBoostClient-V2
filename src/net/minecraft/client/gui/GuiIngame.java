@@ -532,7 +532,12 @@ public class GuiIngame extends Gui
         for (Score score : collection)
         {
             ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
-            String s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
+            String s;
+            if (ModuleManager.isEnabled(HideScoreboardRect.class)&&HideScoreboardRect.rednumber.getValue()){
+                s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
+            }else {
+                s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName());
+            }
             i = Math.max(i, this.getFontRenderer().getStringWidth(s));
         }
 
@@ -553,7 +558,9 @@ public class GuiIngame extends Gui
             boolean isRect = !ModuleManager.isEnabled(HideScoreboardRect.class);
             if(isRect) drawRect(l1 - 2, k, l, k + this.getFontRenderer().FONT_HEIGHT, 1342177280);
             this.getFontRenderer().drawString(s1, l1, k, 553648127);
-            this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
+            if (ModuleManager.isEnabled(HideScoreboardRect.class)&&HideScoreboardRect.rednumber.getValue()) {
+                this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
+            }
 
             if (j == collection.size())
             {
