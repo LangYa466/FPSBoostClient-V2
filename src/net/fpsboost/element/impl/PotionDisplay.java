@@ -35,69 +35,70 @@ public class PotionDisplay extends Element {
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {
             RenderUtil.resetColor();
+
+            // 排序集合，按持续时间和放大器排序
             collection.sort((o1, o2) -> {
-                String os1 = "";
-
-                if (o1.getAmplifier() == 1) {
-                    os1 = os1 + " " + I18n.format("enchantment.level.2");
-                } else if (o1.getAmplifier() == 2) {
-                    os1 = os1 + " " + I18n.format("enchantment.level.3");
-                } else if (o1.getAmplifier() == 3) {
-                    os1 = os1 + " " + I18n.format("enchantment.level.4");
-                }
-
-                String os2 = "";
-
-                if (o2.getAmplifier() == 1) {
-                    os2 = os2 + " " + I18n.format("enchantment.level.2");
-                } else if (o2.getAmplifier() == 2) {
-                    os2 = os2 + " " + I18n.format("enchantment.level.3");
-                } else if (o2.getAmplifier() == 3) {
-                    os2 = os2 + " " + I18n.format("enchantment.level.4");
-                }
-                return Integer.compare(RenderUtil.getStringWidth(Potion.getDurationString(o2) + os2), RenderUtil.getStringWidth(Potion.getDurationString(o1) + os1));
+                String os1 = getAmplifierString(o1);
+                String os2 = getAmplifierString(o2);
+                return Integer.compare(RenderUtil.getStringWidth(Potion.getDurationString(o2) + os2),
+                        RenderUtil.getStringWidth(Potion.getDurationString(o1) + os1));
             });
 
-            int count = 0;
-            for (PotionEffect potioneffect : collection) {
-                count++;
-                GlStateManager.pushMatrix();
-                if (count > 1) GL11.glTranslatef(0F,count * 15F,0F);
-                int allStringWidth;
-                Potion potion = Potion.potionTypes[potioneffect.getPotionID()];
+            // 我们定义一个初始 Y 坐标
+            int initialY = 0;
 
+            for (int i = 0; i < collection.size(); i++) {
+                PotionEffect potioneffect = collection.get(i);
+
+                // 计算当前渲染的 Y 轴位置 - 以递归方式增加
+                float posY = initialY - 30;
+                for (int j = 0; j <= i; j++) {
+                    posY += 30;  // 每个 potion 增加 15 像素的高度
+                }
+
+                Potion potion = Potion.potionTypes[potioneffect.getPotionID()];
                 String s1 = I18n.format(potion.getName());
                 String s = Potion.getDurationString(potioneffect);
 
-                if (potioneffect.getAmplifier() == 1) {
-                    s1 = s1 + " " + I18n.format("enchantment.level.2");
-                } else if (potioneffect.getAmplifier() == 2) {
-                    s1 = s1 + " " + I18n.format("enchantment.level.3");
-                } else if (potioneffect.getAmplifier() == 3) {
-                    s1 = s1 + " " + I18n.format("enchantment.level.4");
-                }
+                // 根据放大器添加等级信息
+                s1 += getAmplifierString(potioneffect);
 
-                allStringWidth = RenderUtil.getStringWidth(s1) + RenderUtil.getStringWidth(s);
+                // 计算文本宽度
+                int allStringWidth = RenderUtil.getStringWidth(s1) + RenderUtil.getStringWidth(s);
                 if (allStringWidth > width) {
                     width = allStringWidth + 15;
                 }
 
-                if (backgroundValue.getValue()) RenderUtil.drawRect(0,0,allStringWidth + 13,25,color.getColor());
+                // 绘制背景矩形
+                if (backgroundValue.getValue())
+                    RenderUtil.drawRect(0, (int) posY, allStringWidth + 13, 25, color.getColor());
 
-                // draw potion name with i18n
-                RenderUtil.drawStringWithShadow(s1, 25,3, textColorValue.getValue());
-                // draw potion duration
-                RenderUtil.drawStringWithShadow(s, 25, 15, text2ColorValue.getValue());
+                // 绘制药水名称和持续时间
+                RenderUtil.drawStringWithShadow(s1, 25, (int) (posY + 3), textColorValue.getValue());
+                RenderUtil.drawStringWithShadow(s, 25, (int) (posY + 15), text2ColorValue.getValue());
 
-                RenderUtil.resetColor();
+                // 绘制状态图标
                 if (potion.hasStatusIcon()) {
                     int i1 = potion.getStatusIconIndex();
                     mc.getTextureManager().bindTexture(res);
-                    Gui.drawTexturedModalRect2(4,4.5F, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
+                    Gui.drawTexturedModalRect2(4, posY + 4.5F, i1 % 8 * 18, 198 + i1 / 8 * 18, 18, 18);
                 }
-                GlStateManager.popMatrix();
             }
         }
         super.onDraw();
+    }
+
+    // 辅助方法，用于获取放大器的字符串表示
+    private String getAmplifierString(PotionEffect effect) {
+        switch (effect.getAmplifier()) {
+            case 1:
+                return " " + I18n.format("enchantment.level.2");
+            case 2:
+                return " " + I18n.format("enchantment.level.3");
+            case 3:
+                return " " + I18n.format("enchantment.level.4");
+            default:
+                return "";
+        }
     }
 }

@@ -21,7 +21,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.53";
+    public static final String version = "1.54";
     public static boolean isOldVersion;
     public final static boolean isDev = false;
 
