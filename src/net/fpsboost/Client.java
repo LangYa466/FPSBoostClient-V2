@@ -4,6 +4,7 @@ import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.IRCUtil;
 import net.fpsboost.util.network.WebUtil;
@@ -41,7 +42,7 @@ public class Client implements Wrapper {
         // Version check
         if (!isDev) {
             String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://122.51.47.169/versionwithv2.txt")).trim();
-            System.out.println(String.format("后端最新版本: " + latestVersion));
+            System.out.println(String.format(ClientSettings.INSTANCE.cnMode.getValue()?"The latest version of FPSBoost is: ":"后端最新版本: " + latestVersion));
             isOldVersion = !version.contains(latestVersion);
         }
 
