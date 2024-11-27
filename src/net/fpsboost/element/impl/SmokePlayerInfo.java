@@ -2,7 +2,10 @@ package net.fpsboost.element.impl;
 
 import net.fpsboost.Client;
 import net.fpsboost.element.Element;
+import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.module.impl.HideScoreboardRect;
+import net.fpsboost.module.impl.NameProtect;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.minecraft.client.Minecraft;
@@ -81,7 +84,7 @@ public class SmokePlayerInfo extends Element {
         text = "_______________";
         FontManager.hanYi().drawStringWithShadow(text, 3, 5, new Color(0, 160, 255, 160).getRGB());
         if (NickName.getValue()) {
-            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<昵称> " : "<NickName> ") + EnumChatFormatting.WHITE + mc.thePlayer.getName());
+            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<昵称> " : "<Username> ") + (ModuleManager.isEnabled(NameProtect.class)?EnumChatFormatting.WHITE +"NameProtect":EnumChatFormatting.WHITE + mc.thePlayer.getName()));
         }
         if (FPS.getValue()) {
             StringBuilder var10001 = new StringBuilder(ClientSettings.INSTANCE.cnMode.getValue() ? "<帧数> " : "<FPS> ").append(EnumChatFormatting.WHITE);
