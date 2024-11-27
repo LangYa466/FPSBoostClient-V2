@@ -13,7 +13,7 @@ public class Module implements Wrapper {
     public final String name;
     public final String cnName;
     public String description;
-    public final String cnDescription;
+    public String cnDescription;
     public boolean enable;
     public int keyCode;
 

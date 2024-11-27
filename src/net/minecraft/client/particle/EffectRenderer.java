@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.Callable;
+
+import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.NoDestroyEffects;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -30,7 +33,6 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ReportedException;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import net.optifine.reflect.Reflector;
 
 public class EffectRenderer
 {
@@ -387,6 +389,7 @@ public class EffectRenderer
 
     public void addBlockDestroyEffects(BlockPos pos, IBlockState state)
     {
+        if (ModuleManager.isEnabled(NoDestroyEffects.class)) return;
         if (state.getBlock().getMaterial() != Material.air)
         {
             state = state.getBlock().getActualState(state, this.worldObj, pos);

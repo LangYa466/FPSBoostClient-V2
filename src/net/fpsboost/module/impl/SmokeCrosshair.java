@@ -27,7 +27,8 @@ public class SmokeCrosshair extends Module {
     // 构造函数，初始化模块的属性
     public SmokeCrosshair() {
         super("Crosshair","自定义准星");
-        description = "我抄袭Smoke客户端的";
+        cnDescription = "我抄袭Smoke客户端的";
+        description = "Skid form SmokeClient";
     }
 
     // 渲染2D图形的方法
