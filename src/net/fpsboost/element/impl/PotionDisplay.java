@@ -70,8 +70,9 @@ public class PotionDisplay extends Element {
                 }
 
                 // 绘制背景矩形
-                if (backgroundValue.getValue())
+                if (backgroundValue.getValue()) {
                     RenderUtil.drawRect(0, (int) posY, allStringWidth + 13, 25, color.getColor());
+                }
 
                 // 绘制药水名称和持续时间
                 RenderUtil.drawStringWithShadow(s1, 25, (int) (posY + 3), textColorValue.getValue());
