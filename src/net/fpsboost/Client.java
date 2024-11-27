@@ -41,7 +41,7 @@ public class Client implements Wrapper {
         // Version check
         if (!isDev) {
             String latestVersion = Objects.requireNonNull(WebUtil.get("http://122.51.47.169/versionwithv2.txt")).trim();
-            isOldVersion = version.compareTo(latestVersion) >= 0;
+            isOldVersion = version.contains(latestVersion);
         }
 
         // download background
