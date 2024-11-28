@@ -8,6 +8,7 @@ import net.fpsboost.Client;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.GuiAltManager;
+import net.fpsboost.util.ColorUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.resources.I18n;
@@ -69,17 +70,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         }
     }
 
-    public static Color rainbow(int speed, int index) {
-        int angle = (int) ((System.currentTimeMillis() / speed + index) % 360);
-        float hue = angle / 360f;
-        Color color = new Color(Color.HSBtoRGB(hue, 1, 1));
-        return new Color(color.getRed(), color.getGreen(), color.getBlue(), 255);
-    }
-
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawClientBackground();
-        if (Client.isOldVersion) FontManager.hanYi().drawStringWithShadow(!ClientSettings.INSTANCE.cnMode.getValue()?"Your version is not the latest! Please download the latest version from the group file!":"您的版本不是最新版! 请去群文件下载最新版!",5,5,rainbow(3, (int) partialTicks).getRGB());
+        if (Client.isOldVersion) FontManager.hanYi().drawStringWithShadow(!ClientSettings.INSTANCE.cnMode.getValue()?"Your version is not the latest! Please download the latest version from the group file!":"您的版本不是最新版! 请去群文件下载最新版!",5,5, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
         FontManager.hanYi(70).drawCenteredStringWithShadow("FPSBoost",width / 2F,height / 4F,-1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

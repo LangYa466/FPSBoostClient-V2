@@ -5,6 +5,7 @@ import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.IRCUtil;
 import net.fpsboost.util.network.WebUtil;
@@ -22,7 +23,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.63";
+    public static final String version = "1.64";
     public static boolean isOldVersion;
     public final static boolean isDev = false;
 
@@ -36,20 +37,19 @@ public class Client implements Wrapper {
         CapeUtil.init();
         ClickGuiScreen.INSTANCE.init();
 
-        // TODO GuiWelcome
-        // if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
+        if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
 
         // Version check
         if (!isDev) {
             String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://122.51.47.169/versionwithv2.txt")).trim();
-            System.out.println(String.format(!ClientSettings.INSTANCE.cnMode.getValue()?"The latest version of FPSBoost is: "+latestVersion:"后端最新版本: " + latestVersion));
+            System.out.printf((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion) + "%n");
             isOldVersion = !version.contains(latestVersion);
         }
 
         // download background
         String url = "https://t.mwm.moe/fj";
         if (GuiMainMenu.file.exists()) url = FileUtils.readFileToString(GuiMainMenu.file);
-        WebUtil.bindTextureWithUrl(url,"ClientBG");
+        WebUtil.bindTextureWithUrl(url, "ClientBG");
     }
 }
 

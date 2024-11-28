@@ -1,5 +1,6 @@
 package net.fpsboost.module.impl;
 
+import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.value.impl.BooleanValue;
@@ -36,14 +37,13 @@ public class BossBar extends Module {
         if (BossStatus.bossName != null && BossStatus.statusBarTime > 0)
         {
             --BossStatus.statusBarTime;
-            FontRenderer fontrenderer = this.mc.fontRendererObj;
-            ScaledResolution scaledresolution = new ScaledResolution(this.mc);
+            ScaledResolution scaledresolution = new ScaledResolution(Wrapper.mc);
             int i;
             int j = 182;
             int i1;
-            if (this.move.getValue()){
-                i1 = -this.y.getValue().intValue();
-                i = this.x.getValue().intValue();
+            if (move.getValue()){
+                i1 = -y.getValue().intValue();
+                i = x.getValue().intValue();
             }else{
                 i = scaledresolution.getScaledWidth();
                 i1 = 12;
@@ -62,12 +62,12 @@ public class BossBar extends Module {
             String s = BossStatus.bossName;
             this.getFontRenderer().drawStringWithShadow(s, (float)(i / 2 - this.getFontRenderer().getStringWidth(s) / 2), (float)(i1 - 10), 16777215);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.mc.getTextureManager().bindTexture(icons);
+            Wrapper.mc.getTextureManager().bindTexture(icons);
         }
     }
     public FontRenderer getFontRenderer()
     {
-        return this.mc.fontRendererObj;
+        return Wrapper.mc.fontRendererObj;
     }
     public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)
     {
