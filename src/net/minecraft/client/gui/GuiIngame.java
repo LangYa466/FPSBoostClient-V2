@@ -167,9 +167,8 @@ public class GuiIngame extends Gui
         GlStateManager.enableAlpha();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         this.mc.mcProfiler.startSection("bossHealth");
-        if (BossBar.INSTANCE.ishide.getValue()){
-            this.renderBossHealth();
-        }
+            BossBar.INSTANCE.renderBossHealth();
+
         this.mc.mcProfiler.endSection();
 
         if (this.mc.playerController.shouldDrawHUD())
@@ -865,40 +864,6 @@ public class GuiIngame extends Gui
         }
     }
 
-    private void renderBossHealth()
-    {
-        if (BossStatus.bossName != null && BossStatus.statusBarTime > 0)
-        {
-            --BossStatus.statusBarTime;
-            FontRenderer fontrenderer = this.mc.fontRendererObj;
-            ScaledResolution scaledresolution = new ScaledResolution(this.mc);
-            int k;
-            int i1;
-            if (ModuleManager.isEnabled(BossBar.class)){
-                k =BossBar.INSTANCE.x.getValue().intValue();
-                i1 = BossBar.INSTANCE.y.getValue().intValue();
-            }else {
-                k = BossBar.INSTANCE.k;
-                i1 = BossBar.INSTANCE.i1;
-            }
-
-            int j = BossBar.INSTANCE.j;
-            int l = BossBar.INSTANCE.l;
-            int i = BossBar.INSTANCE.i;
-            this.drawTexturedModalRect(k, i1, 0, 74, j, 5);
-            this.drawTexturedModalRect(k, i1, 0, 74, j, 5);
-
-            if (l > 0)
-            {
-                this.drawTexturedModalRect(k, i1, 0, 79, l, 5);
-            }
-
-            String s = BossStatus.bossName;
-            this.getFontRenderer().drawStringWithShadow(s, (float)(i / 2 - this.getFontRenderer().getStringWidth(s) / 2), (float)(i1 - 10), 16777215);
-            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            this.mc.getTextureManager().bindTexture(icons);
-        }
-    }
 
     private void renderPumpkinOverlay(ScaledResolution scaledRes)
     {

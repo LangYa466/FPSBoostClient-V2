@@ -42,7 +42,7 @@ public class Client implements Wrapper {
         // Version check
         if (!isDev) {
             String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://122.51.47.169/versionwithv2.txt")).trim();
-            System.out.println(String.format(ClientSettings.INSTANCE.cnMode.getValue()?"The latest version of FPSBoost is: "+latestVersion:"后端最新版本: " + latestVersion));
+            System.out.println(String.format(!ClientSettings.INSTANCE.cnMode.getValue()?"The latest version of FPSBoost is: "+latestVersion:"后端最新版本: " + latestVersion));
             isOldVersion = !version.contains(latestVersion);
         }
 
