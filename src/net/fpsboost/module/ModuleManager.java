@@ -22,6 +22,7 @@ public class ModuleManager {
         modules.add(new HideGuiChatRect());
         modules.add(new NoMissHitDelay());
         modules.add(new HideScoreboardRect());
+        modules.add(new BossBar());
         // modules.add(new AutoLuGuan());
         modules.add(new BlockOverlay());
         modules.add(new ItemPhysic());

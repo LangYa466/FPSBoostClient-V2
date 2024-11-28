@@ -7,6 +7,8 @@ import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.client.settings.GameSettings;
+import net.minecraft.src.Config;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -25,7 +27,7 @@ public class GuiIngameMenu extends GuiScreen
         {
             this.buttonList.get(0).displayString = I18n.format("menu.disconnect");
         }
-        String buttonText = (ClientSettings.INSTANCE.cnMode.getValue()) ? "切换服务器列表" : "Server List";
+        String buttonText = (Config.getGameSettings().language.equals("en_US")) ? "Server List" : "切换服务器列表";
 
         this.buttonList.add(new GuiButton(4, this.width / 2 - 100, this.height / 4 + 24 + i, I18n.format("menu.returnToGame")));
         this.buttonList.add(new GuiButton(2, this.width / 2 - 100, this.height / 4 + 72 + i, buttonText));

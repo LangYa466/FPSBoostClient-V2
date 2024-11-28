@@ -8,6 +8,7 @@ import java.util.Random;
 
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.BossBar;
 import net.fpsboost.module.impl.HideScoreboardRect;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.minecraft.block.material.Material;
@@ -166,7 +167,9 @@ public class GuiIngame extends Gui
         GlStateManager.enableAlpha();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         this.mc.mcProfiler.startSection("bossHealth");
-        this.renderBossHealth();
+        if (BossBar.INSTANCE.ishide.getValue()){
+            this.renderBossHealth();
+        }
         this.mc.mcProfiler.endSection();
 
         if (this.mc.playerController.shouldDrawHUD())
@@ -869,11 +872,19 @@ public class GuiIngame extends Gui
             --BossStatus.statusBarTime;
             FontRenderer fontrenderer = this.mc.fontRendererObj;
             ScaledResolution scaledresolution = new ScaledResolution(this.mc);
-            int i = scaledresolution.getScaledWidth();
-            int j = 182;
-            int k = i / 2 - j / 2;
-            int l = (int)(BossStatus.healthScale * (float)(j + 1));
-            int i1 = 12;
+            int k;
+            int i1;
+            if (ModuleManager.isEnabled(BossBar.class)){
+                k =BossBar.INSTANCE.x.getValue().intValue();
+                i1 = BossBar.INSTANCE.y.getValue().intValue();
+            }else {
+                k = BossBar.INSTANCE.k;
+                i1 = BossBar.INSTANCE.i1;
+            }
+
+            int j = BossBar.INSTANCE.j;
+            int l = BossBar.INSTANCE.l;
+            int i = BossBar.INSTANCE.i;
             this.drawTexturedModalRect(k, i1, 0, 74, j, 5);
             this.drawTexturedModalRect(k, i1, 0, 74, j, 5);
 
