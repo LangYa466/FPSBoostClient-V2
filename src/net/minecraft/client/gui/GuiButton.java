@@ -63,6 +63,7 @@ public class GuiButton extends Gui
 
     public void drawButton(Minecraft mc, int mouseX, int mouseY)
     {
+        this.mouseDragged(mc, mouseX, mouseY);
         if (this.visible)
         {
             this.hovered = mouseX >= this.xPosition && mouseY >= this.yPosition && mouseX < this.xPosition + this.width && mouseY < this.yPosition + this.height;
