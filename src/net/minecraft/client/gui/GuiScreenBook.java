@@ -187,7 +187,7 @@ public class GuiScreenBook extends GuiScreen
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -235,6 +235,7 @@ public class GuiScreenBook extends GuiScreen
 
             this.updateButtons();
         }
+        return null;
     }
 
     private void addNewPage()

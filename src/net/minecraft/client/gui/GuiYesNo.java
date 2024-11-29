@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.List;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiYesNo extends GuiScreen
 {
@@ -44,9 +45,10 @@ public class GuiYesNo extends GuiScreen
         this.field_175298_s.addAll(this.fontRendererObj.listFormattedStringToWidth(this.messageLine2, this.width - 50));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         this.parentScreen.confirmClicked(button.id == 0, this.parentButtonClickedId);
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

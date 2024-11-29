@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiErrorScreen extends GuiScreen
 {
@@ -32,8 +33,9 @@ public class GuiErrorScreen extends GuiScreen
     {
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         this.mc.displayGuiScreen((GuiScreen)null);
+        return null;
     }
 }

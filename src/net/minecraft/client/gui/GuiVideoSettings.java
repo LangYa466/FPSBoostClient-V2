@@ -4,6 +4,7 @@ import java.io.IOException;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.Lang;
 import net.optifine.gui.GuiAnimationSettingsOF;
 import net.optifine.gui.GuiDetailSettingsOF;
@@ -84,10 +85,13 @@ public class GuiVideoSettings extends GuiScreenOF
 
     /**
      * Called by the controls from the buttonList when activated. (Mouse pressed for buttons)
+     *
+     * @return
      */
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         this.actionPerformed(button, 1);
+        return null;
     }
 
     protected void actionPerformedRightClick(GuiButton p_actionPerformedRightClick_1_)

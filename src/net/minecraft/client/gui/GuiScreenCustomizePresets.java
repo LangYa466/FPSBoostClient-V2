@@ -69,7 +69,7 @@ public class GuiScreenCustomizePresets extends GuiScreen
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         switch (button.id)
         {
@@ -81,6 +81,7 @@ public class GuiScreenCustomizePresets extends GuiScreen
             case 1:
                 this.mc.displayGuiScreen(this.field_175314_r);
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

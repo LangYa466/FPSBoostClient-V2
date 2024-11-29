@@ -17,6 +17,7 @@ import net.minecraft.network.handshake.client.C00Handshake;
 import net.minecraft.network.login.client.C00PacketLoginStart;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -125,7 +126,7 @@ public class GuiConnecting extends GuiScreen
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 4 + 120 + 12, I18n.format("gui.cancel", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 0)
         {
@@ -138,6 +139,7 @@ public class GuiConnecting extends GuiScreen
 
             this.mc.displayGuiScreen(this.previousGuiScreen);
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

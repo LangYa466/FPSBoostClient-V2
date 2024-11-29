@@ -6,6 +6,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.Lang;
 
 public class GuiAnimationSettingsOF extends GuiScreen
@@ -47,7 +48,7 @@ public class GuiAnimationSettingsOF extends GuiScreen
         this.buttonList.add(new GuiOptionButton(200, this.width / 2 + 5, this.height / 6 + 168 + 11, I18n.format("gui.done", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton guibutton)
+    protected ResourceLocation actionPerformed(GuiButton guibutton)
     {
         if (guibutton.enabled)
         {
@@ -76,6 +77,7 @@ public class GuiAnimationSettingsOF extends GuiScreen
             ScaledResolution scaledresolution = new ScaledResolution(this.mc);
             this.setWorldAndResolution(this.mc, scaledresolution.getScaledWidth(), scaledresolution.getScaledHeight());
         }
+        return null;
     }
 
     public void drawScreen(int x, int y, float f)

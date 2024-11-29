@@ -456,8 +456,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
+        return null;
     }
 
     public void setWorldAndResolution(Minecraft mc, int width, int height)

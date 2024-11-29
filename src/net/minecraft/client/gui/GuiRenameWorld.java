@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.WorldInfo;
 import org.lwjgl.input.Keyboard;
@@ -42,7 +43,7 @@ public class GuiRenameWorld extends GuiScreen
         Keyboard.enableRepeatEvents(false);
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -57,6 +58,7 @@ public class GuiRenameWorld extends GuiScreen
                 this.mc.displayGuiScreen(this.parentScreen);
             }
         }
+        return null;
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

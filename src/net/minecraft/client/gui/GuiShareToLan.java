@@ -5,6 +5,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldSettings;
 
 public class GuiShareToLan extends GuiScreen
@@ -45,7 +46,7 @@ public class GuiShareToLan extends GuiScreen
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 102)
         {
@@ -94,6 +95,7 @@ public class GuiShareToLan extends GuiScreen
 
             this.mc.ingameGUI.getChatGUI().printChatMessage(ichatcomponent);
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

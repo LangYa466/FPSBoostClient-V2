@@ -3,6 +3,7 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 public class GuiScreenServerList extends GuiScreen
@@ -42,7 +43,7 @@ public class GuiScreenServerList extends GuiScreen
         this.mc.gameSettings.saveOptions();
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -56,6 +57,7 @@ public class GuiScreenServerList extends GuiScreen
                 this.field_146303_a.confirmClicked(true, 0);
             }
         }
+        return null;
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

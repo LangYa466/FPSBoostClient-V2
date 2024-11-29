@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.ChunkProviderSettings;
 
@@ -715,7 +716,7 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -765,7 +766,7 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
                         }
                     }
 
-                    return;
+                    return null;
 
                 case 302:
                     this.field_175349_r.func_178071_h();
@@ -798,6 +799,7 @@ public class GuiCustomizeWorldScreen extends GuiScreen implements GuiSlider.Form
                     this.func_175331_h();
             }
         }
+        return null;
     }
 
     private void func_175326_g()

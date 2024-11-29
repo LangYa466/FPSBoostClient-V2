@@ -16,6 +16,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.FlatGeneratorInfo;
 import net.minecraft.world.gen.FlatLayerInfo;
@@ -78,7 +79,7 @@ public class GuiFlatPresets extends GuiScreen
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 0 && this.func_146430_p())
         {
@@ -89,6 +90,7 @@ public class GuiFlatPresets extends GuiScreen
         {
             this.mc.displayGuiScreen(this.parentScreen);
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

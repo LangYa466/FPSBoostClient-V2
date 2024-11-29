@@ -4,6 +4,7 @@ import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 import org.apache.commons.io.IOUtils;
 
@@ -54,7 +55,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
         super.actionPerformed(button);
 
         if (button.id == 0) {
@@ -67,6 +68,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
 
             mc.displayGuiScreen(parentScreen);
         }
+        return null;
     }
 
     @Override

@@ -118,7 +118,7 @@ public class GuiBeacon extends GuiContainer
         this.beaconConfirmButton.enabled = this.tileBeacon.getStackInSlot(0) != null && j > 0;
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == -2)
         {
@@ -137,7 +137,7 @@ public class GuiBeacon extends GuiContainer
         {
             if (((GuiBeacon.PowerButton)button).func_146141_c())
             {
-                return;
+                return null;
             }
 
             int j = button.id;
@@ -157,6 +157,7 @@ public class GuiBeacon extends GuiContainer
             this.initGui();
             this.updateScreen();
         }
+        return null;
     }
 
     protected void drawGuiContainerForegroundLayer(int mouseX, int mouseY)

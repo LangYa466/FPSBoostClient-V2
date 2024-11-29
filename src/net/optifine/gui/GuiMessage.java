@@ -8,6 +8,7 @@ import net.minecraft.client.gui.GuiOptionButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.src.Config;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiMessage extends GuiScreen
 {
@@ -33,9 +34,10 @@ public class GuiMessage extends GuiScreen
         this.listLines2.addAll(this.fontRendererObj.listFormattedStringToWidth(this.messageLine2, this.width - 50));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         Config.getMinecraft().displayGuiScreen(this.parentScreen);
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

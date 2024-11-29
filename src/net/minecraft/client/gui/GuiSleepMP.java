@@ -4,6 +4,7 @@ import java.io.IOException;
 import net.minecraft.client.network.NetHandlerPlayClient;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.network.play.client.C0BPacketEntityAction;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiSleepMP extends GuiChat
 {
@@ -37,7 +38,7 @@ public class GuiSleepMP extends GuiChat
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 1)
         {
@@ -47,6 +48,7 @@ public class GuiSleepMP extends GuiChat
         {
             super.actionPerformed(button);
         }
+        return null;
     }
 
     private void wakeFromSleep()

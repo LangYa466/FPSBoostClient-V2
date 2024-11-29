@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.64";
+    public static final String version = "1.65";
     public static boolean isOldVersion;
     public static boolean isDev = false;
 
@@ -48,8 +48,16 @@ public class Client implements Wrapper {
 
         // download background
         String url = "https://v2.xxapi.cn/api/random4kPic?type=wallpaper&return=302";
-        if (GuiMainMenu.file.exists()) url = FileUtils.readFileToString(GuiMainMenu.file);
-        WebUtil.bindTextureWithUrl(url, "ClientBG");
+        if (GuiMainMenu.file.exists()){
+            String localImageContent = FileUtils.readFileToString(GuiMainMenu.file);
+            if (localImageContent.equals(url)) {
+                WebUtil.bindTextureWithUrl(url, "ClientBG");
+            } else {
+                WebUtil.bindLocalTexture(FileUtils.readFileToString(GuiMainMenu.file), "ClientBG");
+            }
+        }else{
+            WebUtil.bindTextureWithUrl(url, "ClientBG");
+        }
     }
 }
 

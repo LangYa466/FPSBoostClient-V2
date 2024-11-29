@@ -9,6 +9,7 @@ import net.minecraft.client.AnvilConverterException;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
@@ -113,7 +114,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
         this.recreateButton.enabled = false;
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -158,6 +159,7 @@ public class GuiSelectWorld extends GuiScreen implements GuiYesNoCallback
                 this.availableWorlds.actionPerformed(button);
             }
         }
+        return null;
     }
 
     public void func_146615_e(int p_146615_1_)

@@ -7,6 +7,7 @@ import net.fpsboost.module.impl.ClientSettings;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiDisconnected extends GuiScreen
 {
@@ -37,13 +38,14 @@ public class GuiDisconnected extends GuiScreen
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.FONT_HEIGHT + 24, buttonText));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 0) {
             this.mc.displayGuiScreen(this.parentScreen);
         } else {
             this.mc.displayGuiScreen(new GuiConnecting(this, this.mc, this.mc.getCurrentServerData()));
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

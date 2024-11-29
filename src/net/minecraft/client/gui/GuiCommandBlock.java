@@ -7,6 +7,7 @@ import net.minecraft.command.server.CommandBlockLogic;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.network.play.client.C17PacketCustomPayload;
 import net.minecraft.util.IChatComponent;
+import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -57,7 +58,7 @@ public class GuiCommandBlock extends GuiScreen
         Keyboard.enableRepeatEvents(false);
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -88,6 +89,7 @@ public class GuiCommandBlock extends GuiScreen
                 this.func_175388_a();
             }
         }
+        return null;
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

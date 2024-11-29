@@ -2,15 +2,12 @@ package net.minecraft.client.gui.controls;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.*;
-import net.minecraft.client.gui.controls.SearchType;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ResourceLocation;
 
-import java.awt.*;
 import java.io.IOException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.*;
 import java.util.function.Predicate;
 
@@ -253,7 +250,7 @@ public class GuiNewControls extends GuiControls {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) {
+    protected ResourceLocation actionPerformed(GuiButton button) {
         if (button.id < 100 && button instanceof GuiOptionButton) {
             this.options.setOptionValue(((GuiOptionButton) button).returnEnumOptions(), 1);
             button.displayString = this.options.getKeyBinding(GameSettings.Options.getEnumOptions(button.id));
@@ -263,7 +260,7 @@ public class GuiNewControls extends GuiControls {
             if (!confirmingReset) {
                 confirmingReset = true;
                 button.displayString = I18n.format("options.confirmReset");
-                return;
+                return null;
             }
 
             confirmingReset = false;
@@ -286,6 +283,7 @@ public class GuiNewControls extends GuiControls {
             button.displayString = I18n.format("options.sort") + ": " + sortOrder.getName();
             filterKeys();
         }
+        return null;
     }
 
     @Override

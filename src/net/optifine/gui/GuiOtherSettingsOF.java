@@ -7,6 +7,7 @@ import net.minecraft.client.gui.GuiYesNo;
 import net.minecraft.client.gui.GuiYesNoCallback;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiOtherSettingsOF extends GuiScreen implements GuiYesNoCallback
 {
@@ -47,7 +48,7 @@ public class GuiOtherSettingsOF extends GuiScreen implements GuiYesNoCallback
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168 + 11, I18n.format("gui.done", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton guibutton)
+    protected ResourceLocation actionPerformed(GuiButton guibutton)
     {
         if (guibutton.enabled)
         {
@@ -70,6 +71,7 @@ public class GuiOtherSettingsOF extends GuiScreen implements GuiYesNoCallback
                 this.mc.displayGuiScreen(guiyesno);
             }
         }
+        return null;
     }
 
     public void confirmClicked(boolean flag, int i)

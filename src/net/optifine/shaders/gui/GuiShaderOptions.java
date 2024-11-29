@@ -7,6 +7,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
 import net.minecraft.util.MathHelper;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.Lang;
 import net.optifine.gui.GuiScreenOF;
 import net.optifine.gui.TooltipManager;
@@ -131,7 +132,7 @@ public class GuiShaderOptions extends GuiScreenOF
         }
     }
 
-    protected void actionPerformed(GuiButton guibutton)
+    protected ResourceLocation actionPerformed(GuiButton guibutton)
     {
         if (guibutton.enabled)
         {
@@ -145,7 +146,7 @@ public class GuiShaderOptions extends GuiScreenOF
                     String s = shaderoption.getName();
                     GuiShaderOptions guishaderoptions = new GuiShaderOptions(this, this.settings, s);
                     this.mc.displayGuiScreen(guishaderoptions);
-                    return;
+                    return null;
                 }
 
                 if (isShiftKeyDown())
@@ -187,6 +188,7 @@ public class GuiShaderOptions extends GuiScreenOF
                 this.mc.displayGuiScreen(this.prevScreen);
             }
         }
+        return null;
     }
 
     protected void actionPerformedRightClick(GuiButton btn)

@@ -13,6 +13,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.gen.FlatGeneratorInfo;
 import net.minecraft.world.gen.FlatLayerInfo;
 
@@ -68,7 +69,7 @@ public class GuiCreateFlatWorld extends GuiScreen
         this.createFlatWorldListSlotGui.handleMouseInput();
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         int i = this.theFlatGeneratorInfo.getFlatLayers().size() - this.createFlatWorldListSlotGui.field_148228_k - 1;
 
@@ -93,6 +94,7 @@ public class GuiCreateFlatWorld extends GuiScreen
 
         this.theFlatGeneratorInfo.func_82645_d();
         this.func_146375_g();
+        return null;
     }
 
     public void func_146375_g()

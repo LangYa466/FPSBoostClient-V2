@@ -102,7 +102,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -131,6 +131,7 @@ public class GuiStats extends GuiScreen implements IProgressMeter
                 this.displaySlot.actionPerformed(button);
             }
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

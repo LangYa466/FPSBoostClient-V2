@@ -10,6 +10,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Session;
 
 import java.io.IOException;
@@ -55,7 +56,7 @@ public class GuiAltManager extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
         if (button.id == 0) {
             if (runningThread != null) {
                 runningThread.interrupt();
@@ -176,6 +177,7 @@ public class GuiAltManager extends GuiScreen {
             mc.displayGuiScreen(new GuiMicrosoftLogin(this));
         }
         super.actionPerformed(button);
+        return null;
     }
 
     @Override

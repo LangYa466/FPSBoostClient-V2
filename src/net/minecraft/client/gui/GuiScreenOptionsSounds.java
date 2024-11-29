@@ -44,7 +44,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 168, I18n.format("gui.done", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -54,6 +54,7 @@ public class GuiScreenOptionsSounds extends GuiScreen
                 this.mc.displayGuiScreen(this.field_146505_f);
             }
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

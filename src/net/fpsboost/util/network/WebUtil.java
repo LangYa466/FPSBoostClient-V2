@@ -7,6 +7,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -120,4 +121,20 @@ public class WebUtil {
         }
         return res;
     }
+    public static ResourceLocation bindLocalTexture(String filePath, String name) {
+        DynamicTexture dt;
+        ResourceLocation res = new ResourceLocation(name);
+        try {
+            // 读取本地图片
+            File file = new File(filePath);
+            BufferedImage bufferedImage = ImageIO.read(file);
+            dt = new DynamicTexture(bufferedImage);
+            mc.getTextureManager().loadTexture(res, dt);
+            mc.getTextureManager().bindTexture(res);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return res;
+    }
+
 }

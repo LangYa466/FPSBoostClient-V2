@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.Random;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatAllowedCharacters;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.WorldSettings;
 import net.minecraft.world.WorldType;
 import net.minecraft.world.storage.ISaveFormat;
@@ -164,7 +165,7 @@ public class GuiCreateWorld extends GuiScreen
         Keyboard.enableRepeatEvents(false);
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -178,7 +179,7 @@ public class GuiCreateWorld extends GuiScreen
 
                 if (this.alreadyGenerated)
                 {
-                    return;
+                    return null;
                 }
 
                 this.alreadyGenerated = true;
@@ -319,6 +320,7 @@ public class GuiCreateWorld extends GuiScreen
                 }
             }
         }
+        return null;
     }
 
     private boolean canSelectCurWorldType()

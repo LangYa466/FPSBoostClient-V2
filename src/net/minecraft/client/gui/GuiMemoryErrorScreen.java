@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiMemoryErrorScreen extends GuiScreen
 {
@@ -12,7 +13,7 @@ public class GuiMemoryErrorScreen extends GuiScreen
         this.buttonList.add(new GuiOptionButton(1, this.width / 2 - 155 + 160, this.height / 4 + 120 + 12, I18n.format("menu.quit", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 0)
         {
@@ -22,6 +23,7 @@ public class GuiMemoryErrorScreen extends GuiScreen
         {
             this.mc.shutdown();
         }
+        return null;
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

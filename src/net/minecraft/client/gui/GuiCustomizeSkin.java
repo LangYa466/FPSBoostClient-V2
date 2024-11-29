@@ -3,6 +3,7 @@ package net.minecraft.client.gui;
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EnumPlayerModelParts;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.gui.GuiButtonOF;
 import net.optifine.gui.GuiScreenCapeOF;
 
@@ -37,7 +38,7 @@ public class GuiCustomizeSkin extends GuiScreen
         this.buttonList.add(new GuiButton(200, this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), I18n.format("gui.done", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -58,6 +59,7 @@ public class GuiCustomizeSkin extends GuiScreen
                 button.displayString = this.func_175358_a(enumplayermodelparts);
             }
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

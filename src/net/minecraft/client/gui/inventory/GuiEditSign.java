@@ -13,6 +13,7 @@ import net.minecraft.network.play.client.C12PacketUpdateSign;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.util.ChatAllowedCharacters;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 public class GuiEditSign extends GuiScreen
@@ -53,7 +54,7 @@ public class GuiEditSign extends GuiScreen
         ++this.updateCounter;
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -63,6 +64,7 @@ public class GuiEditSign extends GuiScreen
                 this.mc.displayGuiScreen((GuiScreen)null);
             }
         }
+        return null;
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

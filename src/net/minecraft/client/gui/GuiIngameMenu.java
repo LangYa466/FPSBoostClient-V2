@@ -2,13 +2,11 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import net.fpsboost.module.impl.ClientSettings;
 import net.minecraft.client.gui.achievement.GuiAchievements;
 import net.minecraft.client.gui.achievement.GuiStats;
-import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiIngameMenu extends GuiScreen
 {
@@ -39,7 +37,7 @@ public class GuiIngameMenu extends GuiScreen
         guibutton.enabled = this.mc.isSingleplayer() && !this.mc.getIntegratedServer().getPublic();
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         switch (button.id)
         {
@@ -85,6 +83,7 @@ public class GuiIngameMenu extends GuiScreen
             case 7:
                 this.mc.displayGuiScreen(new GuiShareToLan(this));
         }
+        return null;
     }
 
     public void updateScreen()

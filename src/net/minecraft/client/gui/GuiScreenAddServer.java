@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.net.IDN;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 
 public class GuiScreenAddServer extends GuiScreen
@@ -80,7 +81,7 @@ public class GuiScreenAddServer extends GuiScreen
         Keyboard.enableRepeatEvents(false);
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -100,6 +101,7 @@ public class GuiScreenAddServer extends GuiScreen
                 this.parentScreen.confirmClicked(true, 0);
             }
         }
+        return null;
     }
 
     protected void keyTyped(char typedChar, int keyCode) throws IOException

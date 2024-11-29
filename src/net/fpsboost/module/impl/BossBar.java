@@ -31,6 +31,7 @@ public class BossBar extends Module {
     public static int i1 = 12;
     private static final NumberValue x = new NumberValue("X坐标", "X Position", i, 1920, 0, 1);
     private static final NumberValue y = new NumberValue("Y坐标", "Y Position", i1, 0, -300, 1);
+    private static final BooleanValue moveCenter = new BooleanValue("移动中心", "Move Center",  false);
     public void renderBossHealth()
     {
         if (ishide.getValue()) return;
@@ -41,6 +42,9 @@ public class BossBar extends Module {
             int i;
             int j = 182;
             int i1;
+            if (moveCenter.getValue()){
+                x.setValue(scaledresolution.getScaledWidth_double());
+            }
             if (move.getValue()){
                 i1 = -y.getValue().intValue();
                 i = x.getValue().intValue();

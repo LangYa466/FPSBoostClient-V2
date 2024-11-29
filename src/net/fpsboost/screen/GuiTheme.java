@@ -4,6 +4,7 @@ import net.fpsboost.util.ThemeUtil;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class GuiTheme extends GuiScreen {
     }
 
     @Override
-    protected void actionPerformed(GuiButton button) throws IOException {
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
         if (button.id == 0) {
             Color tempColor = ThemeUtil.pressbgColor;
             Color tempColor2 = ThemeUtil.bgColor;
@@ -51,5 +52,6 @@ public class GuiTheme extends GuiScreen {
             ThemeUtil.themeName = "暗黑主题";
         }
         super.actionPerformed(button);
+        return null;
     }
 }

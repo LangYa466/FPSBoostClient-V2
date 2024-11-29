@@ -5,6 +5,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiControls extends GuiScreen
 {
@@ -52,7 +53,7 @@ public class GuiControls extends GuiScreen
         this.keyBindingList.handleMouseInput();
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 200)
         {
@@ -72,6 +73,7 @@ public class GuiControls extends GuiScreen
             this.options.setOptionValue(((GuiOptionButton)button).returnEnumOptions(), 1);
             button.displayString = this.options.getKeyBinding(GameSettings.Options.getEnumOptions(button.id));
         }
+        return null;
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException

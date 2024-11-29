@@ -5,6 +5,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
 
@@ -17,7 +18,7 @@ public abstract class GuiAltLogin extends GuiScreen {
         this.previousScreen = previousScreen;
     }
 
-    protected void actionPerformed(GuiButton button) {
+    protected ResourceLocation actionPerformed(GuiButton button) {
         switch (button.id) {
             case 0:
                 if (username.getText().length() != 0) {
@@ -32,6 +33,7 @@ public abstract class GuiAltLogin extends GuiScreen {
             case 1145:
                 this.onLogin(StringUtils.randomString(StringUtils.ALPHA_POOL,10), "");
         }
+        return null;
     }
 
     public abstract void onLogin(String account,String password);

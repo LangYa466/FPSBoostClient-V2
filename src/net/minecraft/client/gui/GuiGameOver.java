@@ -5,6 +5,7 @@ import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
 {
@@ -47,7 +48,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
     {
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         switch (button.id)
         {
@@ -68,6 +69,7 @@ public class GuiGameOver extends GuiScreen implements GuiYesNoCallback
                     guiyesno.setButtonDelay(20);
                 }
         }
+        return null;
     }
 
     public void confirmClicked(boolean result, int id)

@@ -10,6 +10,7 @@ import net.minecraft.client.multiplayer.ServerList;
 import net.minecraft.client.network.LanServerDetector;
 import net.minecraft.client.network.OldServerPinger;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.lwjgl.input.Keyboard;
@@ -117,7 +118,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
         this.oldServerPinger.clearPendingNetworks();
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -169,6 +170,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback
                 this.refreshServerList();
             }
         }
+        return null;
     }
 
     private void refreshServerList()

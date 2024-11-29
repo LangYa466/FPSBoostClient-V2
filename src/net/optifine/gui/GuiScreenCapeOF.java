@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.src.Config;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.Lang;
 
 public class GuiScreenCapeOF extends GuiScreenOF
@@ -42,7 +43,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
         this.buttonList.add(new GuiButtonOF(200, this.width / 2 - 100, this.height / 6 + 24 * (i >> 1), I18n.format("gui.done", new Object[0])));
     }
 
-    protected void actionPerformed(GuiButton button)
+    protected ResourceLocation actionPerformed(GuiButton button)
     {
         if (button.enabled)
         {
@@ -108,6 +109,7 @@ public class GuiScreenCapeOF extends GuiScreenOF
                 setClipboardString(this.linkUrl);
             }
         }
+        return null;
     }
 
     private void showMessage(String msg, long timeMs)

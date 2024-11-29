@@ -775,7 +775,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         this.zLevel = 0.0F;
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 0)
         {
@@ -786,6 +786,7 @@ public class GuiContainerCreative extends InventoryEffectRenderer
         {
             this.mc.displayGuiScreen(new GuiStats(this, this.mc.thePlayer.getStatFileWriter()));
         }
+        return null;
     }
 
     public int getSelectedTabIndex()

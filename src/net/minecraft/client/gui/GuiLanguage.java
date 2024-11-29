@@ -9,6 +9,7 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.client.resources.Language;
 import net.minecraft.client.resources.LanguageManager;
 import net.minecraft.client.settings.GameSettings;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiLanguage extends GuiScreen
 {
@@ -40,7 +41,7 @@ public class GuiLanguage extends GuiScreen
         this.list.handleMouseInput();
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -70,6 +71,7 @@ public class GuiLanguage extends GuiScreen
                     this.list.actionPerformed(button);
             }
         }
+        return null;
     }
 
     public void drawScreen(int mouseX, int mouseY, float partialTicks)

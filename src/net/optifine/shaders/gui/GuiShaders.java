@@ -9,6 +9,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
+import net.minecraft.util.ResourceLocation;
 import net.optifine.Lang;
 import net.optifine.gui.GuiScreenOF;
 import net.optifine.gui.TooltipManager;
@@ -97,9 +98,10 @@ public class GuiShaders extends GuiScreenOF
         this.shaderList.handleMouseInput();
     }
 
-    protected void actionPerformed(GuiButton button)
+    protected ResourceLocation actionPerformed(GuiButton button)
     {
         this.actionPerformed(button, false);
+        return null;
     }
 
     protected void actionPerformedRightClick(GuiButton button)

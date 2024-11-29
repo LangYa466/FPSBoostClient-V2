@@ -11,6 +11,7 @@ import net.minecraft.client.resources.ResourcePackListEntry;
 import net.minecraft.client.resources.ResourcePackListEntryDefault;
 import net.minecraft.client.resources.ResourcePackListEntryFound;
 import net.minecraft.client.resources.ResourcePackRepository;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -93,7 +94,7 @@ public class GuiScreenResourcePacks extends GuiScreen
         return this.selectedResourcePacks;
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.enabled)
         {
@@ -108,7 +109,7 @@ public class GuiScreenResourcePacks extends GuiScreen
                     {
                         logger.info(s);
                         Runtime.getRuntime().exec(new String[] {"/usr/bin/open", s});
-                        return;
+                        return null;
                     }
                     catch (IOException ioexception1)
                     {
@@ -122,7 +123,7 @@ public class GuiScreenResourcePacks extends GuiScreen
                     try
                     {
                         Runtime.getRuntime().exec(s1);
-                        return;
+                        return null;
                     }
                     catch (IOException ioexception)
                     {
@@ -186,6 +187,7 @@ public class GuiScreenResourcePacks extends GuiScreen
                 this.mc.displayGuiScreen(this.parentScreen);
             }
         }
+        return null;
     }
 
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException

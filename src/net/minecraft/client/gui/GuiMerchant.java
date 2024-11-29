@@ -68,7 +68,7 @@ public class GuiMerchant extends GuiContainer
         }
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         boolean flag = false;
 
@@ -103,6 +103,7 @@ public class GuiMerchant extends GuiContainer
             packetbuffer.writeInt(this.selectedMerchantRecipe);
             this.mc.getNetHandler().addToSendQueue(new C17PacketCustomPayload("MC|TrSel", packetbuffer));
         }
+        return null;
     }
 
     protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY)

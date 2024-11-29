@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.util.ResourceLocation;
 
 public class GuiConfirmOpenLink extends GuiYesNo
 {
@@ -29,7 +30,7 @@ public class GuiConfirmOpenLink extends GuiYesNo
         this.buttonList.add(new GuiButton(1, this.width / 2 - 50 + 105, this.height / 6 + 96, 100, 20, this.cancelButtonText));
     }
 
-    protected void actionPerformed(GuiButton button) throws IOException
+    protected ResourceLocation actionPerformed(GuiButton button) throws IOException
     {
         if (button.id == 2)
         {
@@ -37,6 +38,7 @@ public class GuiConfirmOpenLink extends GuiYesNo
         }
 
         this.parentScreen.confirmClicked(button.id == 0, this.parentButtonClickedId);
+        return null;
     }
 
     public void copyLinkToClipboard()
