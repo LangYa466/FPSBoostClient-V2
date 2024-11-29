@@ -268,12 +268,15 @@ public class RegionFile
         }
     }
 
-    private void write(int sectorNumber, byte[] data, int length) throws IOException
-    {
-        this.dataFile.seek((long)(sectorNumber * 4096));
-        this.dataFile.writeInt(length + 1);
-        this.dataFile.writeByte(2);
-        this.dataFile.write(data, 0, length);
+    private final Object fileLock = new Object();
+
+    private void write(int sectorNumber, byte[] data, int length) throws IOException {
+        synchronized (fileLock) {
+            this.dataFile.seek((long)(sectorNumber * 4096));
+            this.dataFile.writeInt(length + 1);
+            this.dataFile.writeByte(2);
+            this.dataFile.write(data, 0, length);
+        }
     }
 
     private boolean outOfBounds(int x, int z)
