@@ -37,6 +37,7 @@ public class ModuleManager {
         modules.add(new MoreParticles());
         modules.add(new SmokeCrosshair());
         modules.add(new NoDestroyEffects());
+        modules.add(new TargetCircle());
 
         modules.sort(Comparator.comparing(module -> module.name));
     }

@@ -2,6 +2,7 @@ package net.fpsboost.handler;
 
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.impl.MoreParticles;
+import net.fpsboost.module.impl.TargetCircle;
 import net.minecraft.entity.Entity;
 import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S19PacketEntityStatus;
@@ -24,6 +25,7 @@ public class AttackHandler implements Wrapper {
         sentAttack = target.getEntityId();
         sentAttackTime = System.currentTimeMillis();
         MoreParticles.onAttack(targetEntity);
+        TargetCircle.onAttack(targetEntity);
     }
 
     public static void onUpdate() {

@@ -48,14 +48,14 @@ public class Client implements Wrapper {
 
         // download background
         String url = "https://v2.xxapi.cn/api/random4kPic?type=wallpaper&return=302";
-        if (GuiMainMenu.file.exists()){
+        if (GuiMainMenu.file.exists()) {
             String localImageContent = FileUtils.readFileToString(GuiMainMenu.file);
-            if (localImageContent.equals(url)) {
+            if (localImageContent.contains("http") && localImageContent.contains("://")) {
                 WebUtil.bindTextureWithUrl(url, "ClientBG");
             } else {
                 WebUtil.bindLocalTexture(FileUtils.readFileToString(GuiMainMenu.file), "ClientBG");
             }
-        }else{
+        } else {
             WebUtil.bindTextureWithUrl(url, "ClientBG");
         }
     }

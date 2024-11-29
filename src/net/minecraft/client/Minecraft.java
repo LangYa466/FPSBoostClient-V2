@@ -200,7 +200,7 @@ public class Minecraft implements IThreadListener
     private CrashReport crashReporter;
     public int displayWidth;
     public int displayHeight;
-    private Timer timer = new Timer(20.0F);
+    public Timer timer = new Timer(20.0F);
     public WorldClient theWorld;
     public RenderGlobal renderGlobal;
     private RenderManager renderManager;
