@@ -47,7 +47,7 @@ public class Client implements Wrapper {
         }
 
         // download background
-        String url = "https://t.mwm.moe/fj";
+        String url = "https://v2.xxapi.cn/api/random4kPic?type=wallpaper&return=302";
         if (GuiMainMenu.file.exists()) url = FileUtils.readFileToString(GuiMainMenu.file);
         WebUtil.bindTextureWithUrl(url, "ClientBG");
     }
