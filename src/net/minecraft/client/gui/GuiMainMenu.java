@@ -30,7 +30,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             this.buttonList.add(new GuiButton(1, this.width / 2 - 100, buttonY, I18n.format("menu.singleplayer")));
             this.buttonList.add(new GuiButton(2, this.width / 2 - 100, buttonY + 24, I18n.format("menu.multiplayer")));
             this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 48, I18n.format("menu.altmanager")));
-            this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 72, I18n.format("menu.setBG")));
+            this.buttonList.add(new GuiButton(114514, this.width / 2 - 100, buttonY + 72, I18n.format("menu.setBG")));
             this.buttonList.add(new GuiButton(0, this.width / 2 - 100, buttonY + 96 + 12, 98, 20, I18n.format("menu.options")));
             this.buttonList.add(new GuiButton(4, this.width / 2 + 2, buttonY + 96 + 12, 98, 20, I18n.format("menu.quit")));
         } else {
