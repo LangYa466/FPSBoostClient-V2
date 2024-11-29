@@ -25,7 +25,7 @@ public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
     public static final String version = "1.64";
     public static boolean isOldVersion;
-    public final static boolean isDev = false;
+    public static boolean isDev = false;
 
     public static void initClient() throws IOException {
         ModuleManager.init();
