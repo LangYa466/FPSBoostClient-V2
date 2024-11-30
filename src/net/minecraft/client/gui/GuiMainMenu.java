@@ -12,6 +12,7 @@ import net.fpsboost.util.ColorUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.FileUtils;
 
@@ -30,7 +31,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
     public void initGui() {
         int buttonY = this.height / 4 + 48;
-        if (!ClientSettings.INSTANCE.cnMode.getValue()) {
+        if ((Config.getGameSettings().language.equals("en_US"))) {
             this.buttonList.add(new GuiButton(1, this.width / 2 - 100, buttonY, I18n.format("menu.singleplayer")));
             this.buttonList.add(new GuiButton(2, this.width / 2 - 100, buttonY + 24, I18n.format("menu.multiplayer")));
             this.buttonList.add(new GuiButton(3, this.width / 2 - 100, buttonY + 48, I18n.format("menu.altmanager")));
