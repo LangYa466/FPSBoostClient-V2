@@ -32,6 +32,13 @@ public class BossBar extends Module {
     private static final NumberValue x = new NumberValue("X坐标", "X Position", i, 1920, 0, 1);
     private static final NumberValue y = new NumberValue("Y坐标", "Y Position", i1, 0, -300, 1);
     private static final BooleanValue moveCenter = new BooleanValue("移动中心", "Move Center",  false);
+    @Override
+    public void onEnable() {
+        if (moveCenter.getValue()){
+            moveCenter.setValue(false);
+        }
+        super.onEnable();
+    }
     public void renderBossHealth()
     {
         if (ishide.getValue()) return;
