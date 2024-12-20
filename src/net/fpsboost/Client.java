@@ -47,7 +47,7 @@ public class Client implements Wrapper {
         }
 
         // download background
-        String url = "https://v2.xxapi.cn/api/random4kPic?type=wallpaper&return=302";
+        String url = "https://www.dmoe.cc/random.php";
         if (GuiMainMenu.file.exists()) {
             String localImageContent = FileUtils.readFileToString(GuiMainMenu.file);
             if (localImageContent.contains("http") && localImageContent.contains("://")) {

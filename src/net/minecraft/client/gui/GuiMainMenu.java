@@ -66,7 +66,7 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             this.mc.shutdown();
         }
         if (button.id == 114514) {
-            String[] options = {!ClientSettings.INSTANCE.cnMode.getValue()?"Online": "在线", !ClientSettings.INSTANCE.cnMode.getValue()?"Local":"本地", !ClientSettings.INSTANCE.cnMode.getValue()?"Cancel":"取消"};
+            String[] options = {!ClientSettings.INSTANCE.cnMode.getValue()?"Online": "在线",!ClientSettings.INSTANCE.cnMode.getValue()?"Random": "随机", !ClientSettings.INSTANCE.cnMode.getValue()?"Local":"本地", !ClientSettings.INSTANCE.cnMode.getValue()?"Cancel":"取消"};
             int result = JOptionPane.showOptionDialog(
                     null,                         // 父组件
                     !ClientSettings.INSTANCE.cnMode.getValue()?"Switch to Online mode?":"请选择一个选项",             // 消息
@@ -94,6 +94,13 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             if (ClientSettings.INSTANCE.cnMode.getValue()) System.out.println("切换背景图成功"); else System.out.println("Background changed successfully");
             }
             if (result == 1){
+                String url = "https://www.dmoe.cc/random.php";
+                WebUtil.bindTextureWithUrl(url,"ClientBG");
+                if (!file.exists()) file.createNewFile();
+                FileUtils.writeStringToFile(file,url);
+                if (ClientSettings.INSTANCE.cnMode.getValue()) System.out.println("切换背景图成功"); else System.out.println("Background changed successfully");
+            }
+            if (result == 2){
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setDialogTitle("选择本地图片文件");
 
