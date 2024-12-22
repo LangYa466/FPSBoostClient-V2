@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.64";
+    public static final String version = "1.7";
     public static boolean isOldVersion;
     public static boolean isDev = false;
 
@@ -47,7 +47,7 @@ public class Client implements Wrapper {
         }
 
         // download background
-        String url = "https://www.dmoe.cc/random.php";
+        String url = "https://api.langya.ink/fj";
         if (GuiMainMenu.file.exists()) {
             String localImageContent = FileUtils.readFileToString(GuiMainMenu.file);
             if (localImageContent.contains("http") && localImageContent.contains("://")) {
