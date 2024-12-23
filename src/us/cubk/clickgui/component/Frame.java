@@ -37,7 +37,7 @@ public class Frame {
 
     public Frame(int i) {
         this.components = new ArrayList<>();
-        this.width = 88;
+        this.width = 110;
         this.x = 5;
         this.y = 5;
         this.barHeight = 13;

@@ -4,6 +4,7 @@ import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.GlStateManager;
+import net.minecraft.util.IChatComponent;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.BufferUtils;
 import net.minecraft.client.renderer.OpenGlHelper;
@@ -13,7 +14,7 @@ public class ScreenshotTaker {
     private static IntBuffer pixelBuffer;
     private static int[] pixelValues;
     
-    public static String takeScreenshot() {
+    public static IChatComponent takeScreenshot() {
         final Minecraft client = Minecraft.getMinecraft();
         final Framebuffer func_147110_a = client.getFramebuffer();
         int width = client.displayWidth;

@@ -2743,7 +2743,7 @@ public class Minecraft implements IThreadListener
                     }
                     else if (i == this.gameSettings.keyBindScreenshot.getKeyCode())
                     {
-                        ChatUtil.addMessageWithClient(ScreenshotTaker.takeScreenshot());
+                        this.ingameGUI.getChatGUI().printChatMessage(ScreenshotTaker.takeScreenshot());
 
                        // this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc));
                     }

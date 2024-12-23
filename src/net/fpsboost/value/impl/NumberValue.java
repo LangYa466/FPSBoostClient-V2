@@ -42,5 +42,4 @@ public class NumberValue extends Value<Double> {
         if (cutValue > minValue) return;
         setValue(cutValue);
     }
-
 }

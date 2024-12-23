@@ -6,6 +6,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
+import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
@@ -125,5 +126,41 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         mc.getTextureManager().bindTexture(resourceLocation);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
         GlStateManager.disableBlend();
+    }
+
+    public static void color(int color) {
+        float f = (float) (color >> 24 & 255) / 255.0f;
+        float f1 = (float) (color >> 16 & 255) / 255.0f;
+        float f2 = (float) (color >> 8 & 255) / 255.0f;
+        float f3 = (float) (color & 255) / 255.0f;
+        GL11.glColor4f(f1, f2, f3, f);
+    }
+
+    public static void enableRender3D(boolean disableDepth) {
+        if (disableDepth) {
+            GL11.glDepthMask(false);
+            GL11.glDisable(2929);
+        }
+
+        GL11.glDisable(3008);
+        GL11.glEnable(3042);
+        GL11.glDisable(3553);
+        GL11.glBlendFunc(770, 771);
+        GL11.glEnable(2848);
+        GL11.glHint(3154, 4354);
+        GL11.glLineWidth(1.0F);
+    }
+
+    public static void disableRender3D(boolean enableDepth) {
+        if (enableDepth) {
+            GL11.glDepthMask(true);
+            GL11.glEnable(2929);
+        }
+
+        GL11.glEnable(3553);
+        GL11.glDisable(3042);
+        GL11.glEnable(3008);
+        GL11.glDisable(2848);
+        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
     }
 }

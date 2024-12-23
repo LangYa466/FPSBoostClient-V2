@@ -23,7 +23,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.7";
+    public static final String version = "1.71";
     public static boolean isOldVersion;
     public static boolean isDev = false;
 
@@ -41,7 +41,7 @@ public class Client implements Wrapper {
 
         // Version check
         if (!isDev) {
-            String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://122.51.47.169/versionwithv2.txt")).trim();
+            String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://113.45.185.125/versionwithv2.txt")).trim();
             System.out.printf((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion) + "%n");
             isOldVersion = !version.contains(latestVersion);
         }

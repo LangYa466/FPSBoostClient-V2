@@ -80,8 +80,9 @@ public class Slider extends Component {
         this.hovered = isMouseOnButtonD(mouseX, mouseY) || isMouseOnButtonI(mouseX, mouseY);
         this.y = parent.parent.getY() + offset;
         this.x = parent.parent.getX();
+        int width = parent.parent.getWidth();
 
-        double diff = Math.min(88, Math.max(0, mouseX - this.x));
+        double diff = Math.min(width, Math.max(0, mouseX - this.x));
 
         double min = 0;
         double max = 255;
@@ -91,25 +92,25 @@ public class Slider extends Component {
             min = val1.minValue;
             max = val1.maxValue;
             inc = val1.incValue;
-            renderWidth = (88) * (val1.getValue() - min) / (max - min);
+            renderWidth = (width) * (val1.getValue() - min) / (max - min);
         } else if (val instanceof ColorValue) {
             ColorValue val1 = (ColorValue) val;
             if (index == 0) {
-                renderWidth = (88) * (val1.getRed() - min) / (max - min);
+                renderWidth = (width) * (val1.getRed() - min) / (max - min);
             }
             if (index == 1) {
-                renderWidth = (88) * (val1.getGreen() - min) / (max - min);
+                renderWidth = (width) * (val1.getGreen() - min) / (max - min);
             }
             if (index == 2) {
-                renderWidth = (88) * (val1.getBlue() - min) / (max - min);
+                renderWidth = (width) * (val1.getBlue() - min) / (max - min);
             }
             if (index == 3) {
-                renderWidth = (88) * (val1.getAlpha() - min) / (max - min);
+                renderWidth = (width) * (val1.getAlpha() - min) / (max - min);
             }
         }
 
         if (dragging) {
-            double a = ((diff / 88) * (max - min) + min) * (1.0D / inc);
+            double a = ((diff / width) * (max - min) + min) * (1.0D / inc);
 
             if (val instanceof NumberValue) {
                 if (diff == 0) {

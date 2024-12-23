@@ -10,6 +10,10 @@ import net.minecraft.client.renderer.OpenGlHelper;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.event.ClickEvent;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.ChatComponentTranslation;
+import net.minecraft.util.IChatComponent;
 
 public class ScreenshotSaver implements Runnable {
     private int width;
@@ -17,17 +21,18 @@ public class ScreenshotSaver implements Runnable {
     private String captureTime;
     private int[] pixels;
     private Framebuffer frameBuffer;
-    private static String message;
+    private IChatComponent icc;
     
-    public static String saveScreenshotAsync(final int width, final int height, final int[] pixels, final Framebuffer frameBuffer) {
+    public static IChatComponent saveScreenshotAsync(final int width, final int height, final int[] pixels, final Framebuffer frameBuffer) {
         final ScreenshotSaver screenshotSaver = new ScreenshotSaver();
         screenshotSaver.width = width;
         screenshotSaver.height = height;
         screenshotSaver.captureTime = new SimpleDateFormat("yyyy-MM-dd_HH.mm.ss").format(new Date());
         screenshotSaver.pixels = pixels;
         screenshotSaver.frameBuffer = frameBuffer;
-        new Thread(screenshotSaver).start();
-        return message;
+        // 千万别改成start 改成start synchronized的阻塞会导致空指针然后崩溃
+        new Thread(screenshotSaver).run();
+        return screenshotSaver.icc;
     }
     
     @Override
@@ -54,11 +59,13 @@ public class ScreenshotSaver implements Runnable {
         try {
             file.mkdirs();
             ImageIO.write(bufferedImage, "png", ssFile);
-            message = "已将截图保存至: " + ssFile.getAbsolutePath();
+            IChatComponent ichatcomponent = new ChatComponentText(ssFile.getName());
+            ichatcomponent.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, ssFile.getAbsolutePath()));
+            ichatcomponent.getChatStyle().setUnderlined(true);
+            icc = new ChatComponentTranslation("screenshot.success", ichatcomponent);
         }
         catch (final IOException ex) {
-            ex.printStackTrace();
-            message = I18n.format("screenshot.failure");
+            icc = new ChatComponentTranslation("screenshot.failure", ex.getMessage());;
         }
     }
 }

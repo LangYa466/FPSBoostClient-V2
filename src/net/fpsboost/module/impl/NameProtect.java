@@ -10,7 +10,7 @@ public class NameProtect extends Module {
     private static final String target = mc.getSession().getUsername();
 
     public NameProtect() {
-        super("NameProtect", "名称保护","Protect your name and change it to NameProtect", "全局替换你的名字为NameProtect");
+        super("NameProtect", "名称保护","Protect your name and change it to 我是狼牙的狗", "全局替换你的名字为我是狼牙的狗");
     }
 
     private static boolean enable;
@@ -33,7 +33,7 @@ public class NameProtect extends Module {
         int index = sb.indexOf(target);
 
         while (index != -1) {
-            String replacement = "NameProtect";
+            String replacement = "我是狼牙的狗";
             sb.replace(index, index + target.length(), replacement);
             index += replacement.length();
             index = sb.indexOf(target, index);
