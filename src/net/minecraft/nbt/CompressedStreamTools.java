@@ -12,17 +12,24 @@ public class CompressedStreamTools {
     /**
      * Load the gzipped compound from the inputstream.
      */
-    public static NBTTagCompound readCompressed(InputStream is) throws IOException {
-        DataInputStream datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(is)));
-        NBTTagCompound nbttagcompound;
-
+    public static NBTTagCompound readCompressed(InputStream is) {
+        DataInputStream datainputstream = null;
         try {
-            nbttagcompound = read(datainputstream, NBTSizeTracker.INFINITE);
+            datainputstream = new DataInputStream(new BufferedInputStream(new GZIPInputStream(is)));
+            return read(datainputstream, NBTSizeTracker.INFINITE);
+        } catch (IOException e) {
+            // 不打印错误日志或记录
+            // 返回一个空的 NBTTagCompound，避免程序中断
+            return new NBTTagCompound();
         } finally {
-            datainputstream.close();
+            if (datainputstream != null) {
+                try {
+                    datainputstream.close();
+                } catch (IOException e) {
+                    System.err.println("Failed to close input stream: " + e.getMessage());
+                }
+            }
         }
-
-        return nbttagcompound;
     }
 
     /**

@@ -10,6 +10,7 @@ import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.BossBar;
 import net.fpsboost.module.impl.HideScoreboardRect;
+import net.fpsboost.module.impl.MotionBlur;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -342,6 +343,8 @@ public class GuiIngame extends Gui
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableLighting();
         GlStateManager.enableAlpha();
+
+        MotionBlur.INSTANCE.renderOverlay();
     }
 
     protected void renderTooltip(ScaledResolution sr, float partialTicks)

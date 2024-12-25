@@ -5,6 +5,7 @@ import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.IRCUtil;
@@ -23,7 +24,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.71";
+    public static final String version = "1.72";
     public static boolean isOldVersion;
     public static boolean isDev = false;
 
@@ -58,6 +59,8 @@ public class Client implements Wrapper {
         } else {
             WebUtil.bindTextureWithUrl(url, "ClientBG");
         }
+
+        mc.displayGuiScreen(new GuiI18n());
     }
 }
 

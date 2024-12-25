@@ -26,7 +26,7 @@ public class ModuleManager {
         // modules.add(new AutoLuGuan());
         modules.add(new BlockOverlay());
         modules.add(new ItemPhysic());
-        modules.add(new MotionBlur());
+        modules.add(MotionBlur.INSTANCE);
         modules.add(new NoHurtCam());
         modules.add(IRC.INSTANCE);
         if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();

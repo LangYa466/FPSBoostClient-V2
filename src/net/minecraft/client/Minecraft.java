@@ -38,9 +38,7 @@ import net.fpsboost.config.ConfigManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
-import net.fpsboost.module.impl.MotionBlur;
 import net.fpsboost.module.impl.SmokeCrosshair;
-import net.fpsboost.util.ChatUtil;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.screenShotHelper.ScreenshotTaker;
@@ -165,7 +163,6 @@ import net.minecraft.world.chunk.storage.AnvilSaveConverter;
 import net.minecraft.world.storage.ISaveFormat;
 import net.minecraft.world.storage.ISaveHandler;
 import net.minecraft.world.storage.WorldInfo;
-import net.optifine.shaders.Shaders;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.logging.log4j.LogManager;
@@ -181,8 +178,7 @@ import org.lwjgl.opengl.OpenGLException;
 import org.lwjgl.opengl.PixelFormat;
 import org.lwjgl.util.glu.GLU;
 
-public class Minecraft implements IThreadListener
-{
+public class Minecraft implements IThreadListener {
     private static final Logger logger = LogManager.getLogger();
     private static final ResourceLocation locationMojangPng = new ResourceLocation("textures/gui/title/mojang.png");
     public static final boolean isRunningOnMac = Util.getOSType() == Util.EnumOS.OSX;
@@ -2075,29 +2071,6 @@ public class Minecraft implements IThreadListener
 
         this.mcProfiler.endSection();
         this.systemTime = getSystemTime();
-
-        try {
-            {
-                if (getMinecraft().thePlayer != null && getMinecraft().theWorld != null && getMinecraft().thePlayer.ticksExisted > 10 && Shaders.configAntialiasingLevel == 0) {
-
-                    if (ModuleManager.isEnabled(MotionBlur.class)) {
-                        if ((getMinecraft().entityRenderer.getShaderGroup() == null)) {
-                            getMinecraft().entityRenderer.loadShader(new ResourceLocation("minecraft", "shaders/post/motion_blur.json"));
-                        }
-                        float uniform = 1F - Math.min(MotionBlur.blurAmount.getValue().floatValue() / 10F, 0.9f);
-                        if (getMinecraft().entityRenderer.getShaderGroup() != null) {
-                            getMinecraft().entityRenderer.getShaderGroup().listShaders.get(0).getShaderManager().getShaderUniform("Phosphor").set(uniform, 0F, 0F);
-                        }
-                    } else {
-                        if (getMinecraft().entityRenderer.isShaderActive())
-                            getMinecraft().entityRenderer.stopUseShader();
-                    }
-
-                }
-            }
-        } catch (Exception a) {
-            a.printStackTrace();
-        }
     }
 
     public void launchIntegratedServer(String folderName, String worldName, WorldSettings worldSettingsIn)
