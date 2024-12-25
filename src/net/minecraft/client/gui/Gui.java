@@ -105,12 +105,12 @@ public class Gui
 
     public void drawCenteredString(FontRenderer fontRendererIn, String text, int x, int y, int color)
     {
-        fontRendererIn.drawStringWithShadow(text, (float)(x - fontRendererIn.getStringWidth(text) / 2), (float)y, color);
+        fontRendererIn.drawStringWithShadow(text, (float)(x - fontRendererIn.getStringWidth(text) / 2), (float)y, color, true);
     }
 
     public void drawString(FontRenderer fontRendererIn, String text, int x, int y, int color)
     {
-        fontRendererIn.drawStringWithShadow(text, (float)x, (float)y, color);
+        fontRendererIn.drawStringWithShadow(text, (float)x, (float)y, color, true);
     }
 
     public void drawTexturedModalRect(int x, int y, int textureX, int textureY, int width, int height)

@@ -12,7 +12,9 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 
+import net.fpsboost.module.impl.BetterFont;
 import net.fpsboost.module.impl.NameProtect;
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -37,13 +39,13 @@ public class FontRenderer implements IResourceManagerReloadListener
     private final int[] charWidth = new int[256];
     public int FONT_HEIGHT = 9;
     public Random fontRandom = new Random();
-    private byte[] glyphWidth = new byte[65536];
+    protected byte[] glyphWidth = new byte[65536];
     private int[] colorCode = new int[32];
     private ResourceLocation locationFontTexture;
     private final TextureManager renderEngine;
     private float posX;
     private float posY;
-    private boolean unicodeFlag;
+    protected boolean unicodeFlag;
     private boolean bidiFlag;
     private float red;
     private float blue;
@@ -58,7 +60,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     public GameSettings gameSettings;
     public ResourceLocation locationFontTextureBase;
     public float offsetBold = 1.0F;
-    private float[] charWidthFloat = new float[256];
+    protected float[] charWidthFloat = new float[256];
     private boolean blend = false;
     private GlBlendState oldBlendState = new GlBlendState();
 
@@ -310,6 +312,11 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
     }
 
+    public int drawStringWithShadow(String text, float x, float y, int color, boolean isMC)
+    {
+        return this.drawString(text, x, y, color, true, isMC);
+    }
+
     public int drawStringWithShadow(String text, float x, float y, int color)
     {
         return this.drawString(text, x, y, color, true);
@@ -320,9 +327,14 @@ public class FontRenderer implements IResourceManagerReloadListener
         return this.drawString(text, (float)x, (float)y, color, false);
     }
 
-    public int drawString(String text, float x, float y, int color, boolean dropShadow)
+    public int drawString(String text, float x, float y, int color, boolean dropShadow) {
+        return drawString(text,x,y,color,dropShadow,false);
+    }
+
+    public int drawString(String text, float x, float y, int color, boolean dropShadow, boolean isMC)
     {
         text = NameProtect.onText(text);
+        if (!isMC) if (BetterFont.enable) return FontManager.hanYi().drawString(text, x, y, color, dropShadow);
         this.enableAlpha();
 
         if (this.blend)
@@ -602,6 +614,7 @@ public class FontRenderer implements IResourceManagerReloadListener
         else
         {
             text = NameProtect.onText(text);
+            if (BetterFont.enable) return FontManager.hanYi().getStringWidth(text);
             float f = 0.0F;
             boolean flag = false;
 
@@ -647,7 +660,8 @@ public class FontRenderer implements IResourceManagerReloadListener
         return Math.round(this.getCharWidthFloat(character));
     }
 
-    private float getCharWidthFloat(char character) {
+    protected float getCharWidthFloat(char character) {
+        if (BetterFont.enable) return FontManager.hanYi().getCharWidthFloat(character);
         // 颜色符号
         if (character == 167) {
             return -1.0F;
@@ -684,11 +698,13 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public String trimStringToWidth(String text, int width)
     {
+        if (BetterFont.enable) FontManager.hanYi().trimString(text,width,false,false);
         return this.trimStringToWidth(text, width, false);
     }
 
     public String trimStringToWidth(String text, int width, boolean reverse)
     {
+        if (BetterFont.enable) FontManager.hanYi().trimString(text,width,false,reverse);
         StringBuilder stringbuilder = new StringBuilder();
         float f = 0.0F;
         int i = reverse ? text.length() - 1 : 0;
@@ -761,7 +777,11 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public void drawSplitString(String str, int x, int y, int wrapWidth, int textColor)
     {
-        if (this.blend)
+        if (BetterFont.enable) {
+            FontManager.hanYi().drawSplitString(str, x, y, wrapWidth, textColor);
+            return;
+        }
+            if (this.blend)
         {
             GlStateManager.getBlendState(this.oldBlendState);
             GlStateManager.enableBlend();

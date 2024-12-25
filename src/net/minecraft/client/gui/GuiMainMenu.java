@@ -65,6 +65,9 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         if (button.id == 4) {
             this.mc.shutdown();
         }
+        if (button.id == 5) {
+            this.mc.displayGuiScreen(new GuiLanguage(this,mc.gameSettings,mc.getLanguageManager()));
+        }
         if (button.id == 114514) {
             String[] options = {!ClientSettings.INSTANCE.cnMode.getValue()?"Online": "在线", !ClientSettings.INSTANCE.cnMode.getValue()?"Local":"本地", !ClientSettings.INSTANCE.cnMode.getValue()?"Cancel":"取消"};
             int result = JOptionPane.showOptionDialog(

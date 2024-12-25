@@ -7,11 +7,7 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="lombok-1.18.34" level="project" />
-    <orderEntry type="library" name="ircLibs" level="project" />
-    <orderEntry type="library" name="client" level="project" />
     <orderEntry type="library" name="minecraft" level="project" />
-    <orderEntry type="library" name="mc" level="project" />
     <orderEntry type="library" name="client" level="project" />
   </component>
 </module>

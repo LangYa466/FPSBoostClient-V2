@@ -81,13 +81,13 @@ public class GuiNewChat extends Gui
                             if (l1 > 3)
                             {
                                 int i2 = 0;
-                                int j2 = -i1 * 9;
+                                int j2 = -i1 * 11;
                                 if (!ModuleManager.isEnabled(HideGuiChatRect.class)) {
-                                    drawRect(i2, j2 - 9, i2 + l + 4, j2, l1 / 2 << 24);
+                                    drawRect(i2, j2 - 11, i2 + l + 4, j2, l1 / 2 << 24);
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 9), 16777215 + (l1 << 24));
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -346,6 +346,6 @@ public class GuiNewChat extends Gui
 
     public int getLineCount()
     {
-        return this.getChatHeight() / 9;
+        return this.getChatHeight() / 10;
     }
 }

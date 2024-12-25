@@ -58,7 +58,7 @@ public class ModuleConfig extends Config {
             if (object.has(module.name)) {
                 JsonObject moduleObject = object.get(module.name).getAsJsonObject();
                 if (moduleObject.has("enable")) {
-                    module.enable = moduleObject.get("enable").getAsBoolean();
+                    module.setEnable(moduleObject.get("enable").getAsBoolean());
                 }
                 if (moduleObject.has("key")) {
                     module.keyCode = moduleObject.get("key").getAsInt();

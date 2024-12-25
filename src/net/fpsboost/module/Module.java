@@ -49,7 +49,11 @@ public class Module implements Wrapper {
     public void onDisable() { }
 
     public void toggle() {
-        this.enable = !enable;
+        setEnable(!enable);
+    }
+
+    public void setEnable(boolean enable) {
+        this.enable = enable;
         if (enable) onEnable(); else onDisable();
     }
 

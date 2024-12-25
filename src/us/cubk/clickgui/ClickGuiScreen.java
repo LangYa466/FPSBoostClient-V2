@@ -1,5 +1,6 @@
 package us.cubk.clickgui;
 
+import net.fpsboost.config.ConfigManager;
 import us.cubk.clickgui.component.Component;
 import us.cubk.clickgui.component.Frame;
 import net.minecraft.client.gui.GuiScreen;
@@ -23,6 +24,12 @@ public class ClickGuiScreen extends GuiScreen {
             frames.add(frame);
             frameX += frame.getWidth() + 1;
         }
+    }
+
+    @Override
+    public void onGuiClosed() {
+        ConfigManager.saveConfig("Module");
+        super.onGuiClosed();
     }
 
     @Override
