@@ -38,6 +38,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
     private final int[] charWidth = new int[256];
     public int FONT_HEIGHT = 9;
+    public int FONT_HEIGHT2 = 9;
     public Random fontRandom = new Random();
     protected byte[] glyphWidth = new byte[65536];
     private int[] colorCode = new int[32];

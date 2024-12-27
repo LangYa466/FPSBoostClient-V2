@@ -15,6 +15,7 @@ import net.minecraft.client.gui.GuiMainMenu;
 import org.apache.commons.io.FileUtils;
 import us.cubk.clickgui.ClickGuiScreen;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -24,9 +25,14 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.72";
+    public static final String version = "1.73";
     public static boolean isOldVersion;
     public static boolean isDev = false;
+
+    public static boolean isWindows() {
+        String os = System.getProperty("os.name").toLowerCase();
+        return os.contains("win");
+    }
 
     public static void initClient() throws IOException {
         ModuleManager.init();
@@ -45,6 +51,13 @@ public class Client implements Wrapper {
             String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://113.45.185.125/versionwithv2.txt")).trim();
             System.out.printf((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion) + "%n");
             isOldVersion = !version.contains(latestVersion);
+            if (isOldVersion && isWindows()) {
+                File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");
+                String path = autoUpdateJarFile.getAbsolutePath();
+                System.out.println(path);
+                Runtime.getRuntime().exec("java -jar " + path);
+                System.exit(0);
+            }
         }
 
         // download background

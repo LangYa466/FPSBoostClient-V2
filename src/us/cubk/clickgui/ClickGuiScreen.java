@@ -28,7 +28,7 @@ public class ClickGuiScreen extends GuiScreen {
 
     @Override
     public void onGuiClosed() {
-        ConfigManager.saveConfig("Module");
+        ConfigManager.saveConfig("Module.json");
         super.onGuiClosed();
     }
 

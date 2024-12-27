@@ -330,6 +330,14 @@ public class GuiChat extends GuiScreen
         }
     }
 
+    // 抵消
+    @Override
+    public void fontFixInit() { }
+
+    // 抵消
+    @Override
+    public void fontFixEnd() { }
+
     public boolean doesGuiPauseGame()
     {
         return false;

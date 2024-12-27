@@ -35,6 +35,6 @@ public class TimeDisplay extends Element {
 
     @Override
     public void init() {
-        height = mc.fontRendererObj.FONT_HEIGHT;
+        height = mc.fontRendererObj.FONT_HEIGHT2;
     }
 }
