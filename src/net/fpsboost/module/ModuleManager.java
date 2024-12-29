@@ -1,5 +1,6 @@
 package net.fpsboost.module;
 
+import net.fpsboost.Wrapper;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
@@ -11,7 +12,7 @@ import java.util.Comparator;
  * @author LangYa
  * @since 2024/8/30 21:19
  */
-public class ModuleManager {
+public class ModuleManager implements Wrapper {
     public static final ArrayList<Module> modules = new ArrayList<>();
 
     public static void init() {
@@ -38,7 +39,7 @@ public class ModuleManager {
         modules.add(new SmokeCrosshair());
         modules.add(new NoDestroyEffects());
         modules.add(new Projectile());
-        modules.add(new BetterFont());
+        // modules.add(new BetterFont());
         // modules.add(new TargetCircle()); 这个模块有点bug
 
         modules.sort(Comparator.comparing(module -> module.name));
@@ -60,6 +61,7 @@ public class ModuleManager {
     }
 
     public static void moduleRender2D() {
+        if (mc.currentScreen != null) return;
     //    if (Client.isOldVersion) RenderUtil.drawStringWithShadow("你正在使用旧版本",5,5,-1);
         for (Module module : modules) {
             if (!module.enable) continue;

@@ -22,7 +22,6 @@ import org.lwjgl.input.Mouse;
 
 public class GuiChat extends GuiScreen
 {
-    private static final Logger logger = LogManager.getLogger();
     private String historyBuffer = "";
     private int sentHistoryCursor = -1;
     private boolean playerNamesFound;
@@ -58,6 +57,7 @@ public class GuiChat extends GuiScreen
         Keyboard.enableRepeatEvents(false);
         this.mc.ingameGUI.getChatGUI().resetScroll();
         ConfigManager.saveConfig("Element.json");
+        super.onGuiClosed();
     }
 
     public void updateScreen()
@@ -329,14 +329,6 @@ public class GuiChat extends GuiScreen
             }
         }
     }
-
-    // 抵消
-    @Override
-    public void fontFixInit() { }
-
-    // 抵消
-    @Override
-    public void fontFixEnd() { }
 
     public boolean doesGuiPauseGame()
     {

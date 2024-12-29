@@ -190,6 +190,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
         drawString(text, x, y - stringCache.height / 4f - 1f, color, false);
     }
 
+    @Override
     public int getHeight() {
         return stringCache.height / 2;
     }

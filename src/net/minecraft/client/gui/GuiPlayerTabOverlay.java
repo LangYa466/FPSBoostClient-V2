@@ -132,13 +132,13 @@ public class GuiPlayerTabOverlay extends Gui
 
         if (list1 != null)
         {
-            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list1.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
+            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list1.size() * this.mc.fontRendererObj.getHeight(), Integer.MIN_VALUE);
 
             for (String s3 : list1)
             {
                 int i2 = this.mc.fontRendererObj.getStringWidth(s3);
                 this.mc.fontRendererObj.drawStringWithShadow(s3, (float)(width / 2 - i2 / 2), (float)k1, -1);
-                k1 += this.mc.fontRendererObj.FONT_HEIGHT;
+                k1 += this.mc.fontRendererObj.getHeight();
             }
 
             ++k1;
@@ -186,7 +186,7 @@ public class GuiPlayerTabOverlay extends Gui
                 if (networkplayerinfo1.getGameType() == WorldSettings.GameType.SPECTATOR)
                 {
                     if (IRCUtil.transport.isUser(s1)){
-                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.FONT_HEIGHT-2f, (float)k2,mc.fontRendererObj.FONT_HEIGHT,mc.fontRendererObj.FONT_HEIGHT);
+                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.getHeight()-2f, (float)k2,mc.fontRendererObj.getHeight(),mc.fontRendererObj.getHeight());
                         s1 = EnumChatFormatting.GREEN + s1;
                     }
                     this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1862270977);
@@ -194,7 +194,7 @@ public class GuiPlayerTabOverlay extends Gui
                 else
                 {
                     if (IRCUtil.transport.isUser(s1)){
-                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.FONT_HEIGHT-2f, (float)k2,mc.fontRendererObj.FONT_HEIGHT,mc.fontRendererObj.FONT_HEIGHT);
+                        RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.getHeight()-2f, (float)k2,mc.fontRendererObj.getHeight(),mc.fontRendererObj.getHeight());
                         s1 = EnumChatFormatting.GREEN + s1;
                     }
                     this.mc.fontRendererObj.drawStringWithShadow(s1, (float)j2, (float)k2, -1);
@@ -218,13 +218,13 @@ public class GuiPlayerTabOverlay extends Gui
         if (list2 != null)
         {
             k1 = k1 + i4 * 9 + 1;
-            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list2.size() * this.mc.fontRendererObj.FONT_HEIGHT, Integer.MIN_VALUE);
+            drawRect(width / 2 - l1 / 2 - 1, k1 - 1, width / 2 + l1 / 2 + 1, k1 + list2.size() * this.mc.fontRendererObj.getHeight(), Integer.MIN_VALUE);
 
             for (String s4 : list2)
             {
                 int j5 = this.mc.fontRendererObj.getStringWidth(s4);
                 this.mc.fontRendererObj.drawStringWithShadow(s4, (float)(width / 2 - j5 / 2), (float)k1, -1);
-                k1 += this.mc.fontRendererObj.FONT_HEIGHT;
+                k1 += this.mc.fontRendererObj.getHeight();
             }
         }
     }

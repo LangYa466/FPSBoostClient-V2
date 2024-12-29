@@ -59,13 +59,13 @@ public class KeyStore extends Element {
         int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
         if (!clientFontValue.getValue()) {
             if (GameSettings.forceUnicodeFont)
-                RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+                RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.getHeight() / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
             else
-                RenderUtil.drawCenterString(keyName, x + textX - 1, y + mc.fontRendererObj.FONT_HEIGHT / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+                RenderUtil.drawCenterString(keyName, x + textX - 1, y + mc.fontRendererObj.getHeight() / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
         } else {
             int textX1 = FontManager.hanYi().getStringWidth(keyName);
-            if (isSpace) FontManager.hanYi().drawCenteredString(keyName, x + textX1, y + FontManager.hanYi().FONT_HEIGHT, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
-            else FontManager.hanYi().drawString(keyName,(key != mc.gameSettings.keyBindForward)  ? (x + textX1) : x + (textX1 / 2 + 1), y + (FontManager.hanYi().FONT_HEIGHT / 2), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            if (isSpace) FontManager.hanYi().drawCenteredString(keyName, x + textX1, y + FontManager.hanYi().getHeight(), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            else FontManager.hanYi().drawString(keyName,(key != mc.gameSettings.keyBindForward)  ? (x + textX1) : x + (textX1 / 2 + 1), y + (FontManager.hanYi().getHeight() / 2), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
         }
     }
 }

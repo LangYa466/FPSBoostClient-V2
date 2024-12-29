@@ -60,7 +60,7 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static int drawStringWithRounded(String text, int x, int y, boolean bg) {
         int width = getStringWidth(text);
-        int height = mc.fontRendererObj.FONT_HEIGHT;
+        int height = mc.fontRendererObj.getHeight();
         if (bg) RenderUtil.drawRect(x, y, width + 4,height,bgColor);
         RenderUtil.drawString(text,x + 1, y, pressbgColor);
         return width + 4;
@@ -68,7 +68,7 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow,boolean clientFont) {
         int width = clientFont ? FontManager.hanYi().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
-        int height = clientFont ? FontManager.hanYi().getHeight() : mc.fontRendererObj.FONT_HEIGHT;
+        int height = clientFont ? FontManager.hanYi().getHeight() : mc.fontRendererObj.getHeight();
         int width1 = clientFont ? width + 6 : width + 8;
         if (bg) RenderUtil.drawRect(x - 2, y - 2, width1,height + 4,bgColor);
         if (!clientFont) {
@@ -86,7 +86,7 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static int drawStringWithOutline(String text, int x, int y, int bgColor,int color) {
         int width = getStringWidth(text);
-        int height = mc.fontRendererObj.FONT_HEIGHT;
+        int height = mc.fontRendererObj.getHeight();
         RenderUtil.drawOutline(x, y, width + 4,height,bgColor);
         RenderUtil.drawString(text,x + 2, y, color);
         return width + 4;
@@ -102,7 +102,7 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static int drawStringWithShadowAndRounded(String text, int x, int y) {
         int width = getStringWidth(text);
-        int height = mc.fontRendererObj.FONT_HEIGHT;
+        int height = mc.fontRendererObj.getHeight();
         RenderUtil.drawRect(x, y, width,height,pressbgColor);
         int textX = getStringWidth(text);
         RenderUtil.drawStringWithShadow(text,x + textX, y + height / 2 + 1, bgColor);

@@ -450,12 +450,12 @@ public class GuiScreenBook extends GuiScreen
             }
             else
             {
-                int k1 = Math.min(128 / this.fontRendererObj.FONT_HEIGHT, this.field_175386_A.size());
+                int k1 = Math.min(128 / this.fontRendererObj.getHeight(), this.field_175386_A.size());
 
                 for (int l1 = 0; l1 < k1; ++l1)
                 {
                     IChatComponent ichatcomponent2 = (IChatComponent)this.field_175386_A.get(l1);
-                    this.fontRendererObj.drawString(ichatcomponent2.getUnformattedText(), i + 36, j + 16 + 16 + l1 * this.fontRendererObj.FONT_HEIGHT, 0);
+                    this.fontRendererObj.drawString(ichatcomponent2.getUnformattedText(), i + 36, j + 16 + 16 + l1 * this.fontRendererObj.getHeight(), 0);
                 }
 
                 IChatComponent ichatcomponent1 = this.func_175385_b(mouseX, mouseY);
@@ -541,11 +541,11 @@ public class GuiScreenBook extends GuiScreen
 
             if (i >= 0 && j >= 0)
             {
-                int k = Math.min(128 / this.fontRendererObj.FONT_HEIGHT, this.field_175386_A.size());
+                int k = Math.min(128 / this.fontRendererObj.getHeight(), this.field_175386_A.size());
 
-                if (i <= 116 && j < this.mc.fontRendererObj.FONT_HEIGHT * k + k)
+                if (i <= 116 && j < this.mc.fontRendererObj.getHeight() * k + k)
                 {
-                    int l = j / this.mc.fontRendererObj.FONT_HEIGHT;
+                    int l = j / this.mc.fontRendererObj.getHeight();
 
                     if (l >= 0 && l < this.field_175386_A.size())
                     {

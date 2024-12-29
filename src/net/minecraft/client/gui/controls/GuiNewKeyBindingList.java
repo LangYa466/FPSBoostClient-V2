@@ -107,7 +107,7 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
             mc.fontRendererObj.drawString(
                 this.labelText,
                 mc.currentScreen.width / 2 - this.labelWidth / 2,
-                y + slotHeight - mc.fontRendererObj.FONT_HEIGHT - 1,
+                y + slotHeight - mc.fontRendererObj.getHeight() - 1,
                 16777215
             );
         }
@@ -152,7 +152,7 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
             mc.fontRendererObj.drawString(
                 this.keyDesc,
                 x + 90 - maxListLabelWidth,
-                y + slotHeight / 2 - mc.fontRendererObj.FONT_HEIGHT / 2,
+                y + slotHeight / 2 - mc.fontRendererObj.getHeight() / 2,
                 16777215
             );
             this.btnResetKeyBinding.xPosition = x + 190 + 20;

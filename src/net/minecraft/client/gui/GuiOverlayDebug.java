@@ -87,7 +87,7 @@ public class GuiOverlayDebug extends Gui
 
             if (!Strings.isNullOrEmpty(s))
             {
-                int j = this.fontRenderer.FONT_HEIGHT;
+                int j = this.fontRenderer.getHeight();
                 float k = this.fontRenderer.getStringWidth(s) * 1.1F;
                 int i1 = 2 + j * i;
                 drawRect(1, i1 - 1, Math.round(2 + k), i1 + j - 1, -1873784752);
@@ -113,7 +113,7 @@ public class GuiOverlayDebug extends Gui
 
             if (!Strings.isNullOrEmpty(s))
             {
-                int j = this.fontRenderer.FONT_HEIGHT;
+                int j = this.fontRenderer.getHeight();
                 int k = this.fontRenderer.getStringWidth(s);
                 int l = scaledRes.getScaledWidth() - 2 - k;
                 int i1 = 2 + j * i;

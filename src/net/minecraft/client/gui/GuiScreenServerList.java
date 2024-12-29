@@ -2,7 +2,6 @@ package net.minecraft.client.gui;
 
 import java.io.IOException;
 
-import net.fpsboost.module.impl.BetterFont;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ResourceLocation;

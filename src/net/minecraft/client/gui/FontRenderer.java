@@ -12,9 +12,7 @@ import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 
-import net.fpsboost.module.impl.BetterFont;
 import net.fpsboost.module.impl.NameProtect;
-import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -37,11 +35,9 @@ public class FontRenderer implements IResourceManagerReloadListener
 {
     private static final ResourceLocation[] unicodePageLocations = new ResourceLocation[256];
     private final int[] charWidth = new int[256];
-    public int FONT_HEIGHT = 9;
-    public int FONT_HEIGHT2 = 9;
     public Random fontRandom = new Random();
     protected byte[] glyphWidth = new byte[65536];
-    private int[] colorCode = new int[32];
+    private final int[] colorCode = new int[32];
     private ResourceLocation locationFontTexture;
     private final TextureManager renderEngine;
     private float posX;
@@ -80,7 +76,7 @@ public class FontRenderer implements IResourceManagerReloadListener
             int j = (i >> 3 & 1) * 85;
             int k = (i >> 2 & 1) * 170 + j;
             int l = (i >> 1 & 1) * 170 + j;
-            int i1 = (i >> 0 & 1) * 170 + j;
+            int i1 = (i & 1) * 170 + j;
 
             if (i == 6)
             {
@@ -114,10 +110,7 @@ public class FontRenderer implements IResourceManagerReloadListener
     {
         this.locationFontTexture = FontUtils.getHdFontLocation(this.locationFontTextureBase);
 
-        for (int i = 0; i < unicodePageLocations.length; ++i)
-        {
-            unicodePageLocations[i] = null;
-        }
+        Arrays.fill(unicodePageLocations, null);
 
         this.readFontTexture();
         this.readGlyphSizes();
@@ -335,7 +328,6 @@ public class FontRenderer implements IResourceManagerReloadListener
     public int drawString(String text, float x, float y, int color, boolean dropShadow, boolean isMC)
     {
         text = NameProtect.onText(text);
-        if (!isMC) if (BetterFont.enable) return FontManager.hanYi().drawString(text, x, y, color, dropShadow);
         this.enableAlpha();
 
         if (this.blend)
@@ -534,10 +526,10 @@ public class FontRenderer implements IResourceManagerReloadListener
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             GlStateManager.disableTexture2D();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
-            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2)), 0.0D).endVertex();
-            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
-            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.FONT_HEIGHT / 2) - 1.0F), 0.0D).endVertex();
+            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.getHeight() / 2)), 0.0D).endVertex();
+            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.getHeight() / 2)), 0.0D).endVertex();
+            worldrenderer.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)(this.getHeight() / 2) - 1.0F), 0.0D).endVertex();
+            worldrenderer.pos((double)this.posX, (double)(this.posY + (float)(this.getHeight() / 2) - 1.0F), 0.0D).endVertex();
             tessellator.draw();
             GlStateManager.enableTexture2D();
         }
@@ -549,10 +541,10 @@ public class FontRenderer implements IResourceManagerReloadListener
             GlStateManager.disableTexture2D();
             worldrenderer1.begin(7, DefaultVertexFormats.POSITION);
             int i = this.underlineStyle ? -1 : 0;
-            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
-            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT), 0.0D).endVertex();
-            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
-            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.FONT_HEIGHT - 1.0F), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.getHeight()), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.getHeight()), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + p_doDraw_1_), (double)(this.posY + (float)this.getHeight() - 1.0F), 0.0D).endVertex();
+            worldrenderer1.pos((double)(this.posX + (float)i), (double)(this.posY + (float)this.getHeight() - 1.0F), 0.0D).endVertex();
             tessellator1.draw();
             GlStateManager.enableTexture2D();
         }
@@ -615,7 +607,6 @@ public class FontRenderer implements IResourceManagerReloadListener
         else
         {
             text = NameProtect.onText(text);
-            if (BetterFont.enable) return FontManager.hanYi().getStringWidth(text);
             float f = 0.0F;
             boolean flag = false;
 
@@ -662,7 +653,6 @@ public class FontRenderer implements IResourceManagerReloadListener
     }
 
     protected float getCharWidthFloat(char character) {
-        if (BetterFont.enable) return FontManager.hanYi().getCharWidthFloat(character);
         // 颜色符号
         if (character == 167) {
             return -1.0F;
@@ -699,13 +689,11 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public String trimStringToWidth(String text, int width)
     {
-        if (BetterFont.enable) FontManager.hanYi().trimString(text,width,false,false);
         return this.trimStringToWidth(text, width, false);
     }
 
     public String trimStringToWidth(String text, int width, boolean reverse)
     {
-        if (BetterFont.enable) FontManager.hanYi().trimString(text,width,false,reverse);
         StringBuilder stringbuilder = new StringBuilder();
         float f = 0.0F;
         int i = reverse ? text.length() - 1 : 0;
@@ -778,10 +766,6 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public void drawSplitString(String str, int x, int y, int wrapWidth, int textColor)
     {
-        if (BetterFont.enable) {
-            FontManager.hanYi().drawSplitString(str, x, y, wrapWidth, textColor);
-            return;
-        }
             if (this.blend)
         {
             GlStateManager.getBlendState(this.oldBlendState);
@@ -805,13 +789,13 @@ public class FontRenderer implements IResourceManagerReloadListener
         for (String s : this.listFormattedStringToWidth(str, wrapWidth))
         {
             this.renderStringAligned(s, x, y, wrapWidth, this.textColor, addShadow);
-            y += this.FONT_HEIGHT;
+            y += this.getHeight();
         }
     }
 
     public int splitStringWidth(String str, int maxLength)
     {
-        return this.FONT_HEIGHT * this.listFormattedStringToWidth(str, maxLength).size();
+        return this.getHeight() * this.listFormattedStringToWidth(str, maxLength).size();
     }
 
     public void setUnicodeFlag(boolean unicodeFlagIn)
@@ -1005,5 +989,9 @@ public class FontRenderer implements IResourceManagerReloadListener
     protected InputStream getResourceInputStream(ResourceLocation p_getResourceInputStream_1_) throws IOException
     {
         return Minecraft.getMinecraft().getResourceManager().getResource(p_getResourceInputStream_1_).getInputStream();
+    }
+
+    public int getHeight() {
+        return 9;
     }
 }

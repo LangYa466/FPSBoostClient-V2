@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
-import net.fpsboost.module.impl.BetterFont;
 import net.fpsboost.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
@@ -471,11 +470,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         this.height = height;
         this.buttonList.clear();
         this.initGui();
-        fontFixInit();
-    }
-
-    public void fontFixInit() {
-        BetterFont.isGUI(true);
     }
 
     public void setGuiSize(int w, int h)
@@ -554,12 +548,9 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     }
 
     public void onGuiClosed() {
-        fontFixEnd();
     }
 
-    public void fontFixEnd() {
-        BetterFont.isGUI(false);
-    }
+
 
     public void drawDefaultBackground()
     {

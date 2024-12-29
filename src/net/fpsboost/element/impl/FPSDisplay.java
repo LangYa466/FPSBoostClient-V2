@@ -33,6 +33,6 @@ public class FPSDisplay extends Element {
 
     @Override
     public void init() {
-        height = mc.fontRendererObj.FONT_HEIGHT2;
+        height = mc.fontRendererObj.getHeight();
     }
 }

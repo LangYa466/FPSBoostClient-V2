@@ -87,7 +87,7 @@ public class GuiNewChat extends Gui
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 9), 16777215 + (l1 << 24));
+                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, j2 - 8.8F, 16777215 + (l1 << 24));
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -97,7 +97,7 @@ public class GuiNewChat extends Gui
 
                 if (flag)
                 {
-                    int k2 = this.mc.fontRendererObj.FONT_HEIGHT;
+                    int k2 = this.mc.fontRendererObj.getHeight();
                     GlStateManager.translate(-3.0F, 0.0F, 0.0F);
                     int l2 = k * k2 + k;
                     int i3 = j * k2 + j;
@@ -225,61 +225,51 @@ public class GuiNewChat extends Gui
         }
     }
 
-    public IChatComponent getChatComponent(int mouseX, int mouseY)
-    {
-        if (!this.getChatOpen())
-        {
-            return null;
-        }
-        else
-        {
+    public IChatComponent getChatComponent(int mouseX, int mouseY) {
+        if (this.getChatOpen()) {
             ScaledResolution scaledresolution = new ScaledResolution(this.mc);
             int i = scaledresolution.getScaleFactor();
+
+            // 缩放因子check
+            if (i == 0) {
+                return null;
+            }
+
             float f = this.getChatScale();
             int j = mouseX / i - 3;
             int k = mouseY / i - 27;
-            j = MathHelper.floor_float((float)j / f);
-            k = MathHelper.floor_float((float)k / f);
+            j = MathHelper.floor_float((float) j / f);
+            k = MathHelper.floor_float((float) k / f);
 
-            if (j >= 0 && k >= 0)
-            {
+            if (j >= 0 && k >= 0) {
                 int l = Math.min(this.getLineCount(), this.drawnChatLines.size());
 
-                if (j <= MathHelper.floor_float((float)this.getChatWidth() / this.getChatScale()) && k < this.mc.fontRendererObj.FONT_HEIGHT * l + l)
-                {
-                    int i1 = k / this.mc.fontRendererObj.FONT_HEIGHT + this.scrollPos;
+                if (j <= MathHelper.floor_float((float) this.getChatWidth() / this.getChatScale())
+                        && k < this.mc.fontRendererObj.getHeight() * l + l) {
+                    int i1 = k / this.mc.fontRendererObj.getHeight() + this.scrollPos;
 
-                    if (i1 >= 0 && i1 < this.drawnChatLines.size())
-                    {
-                        ChatLine chatline = (ChatLine)this.drawnChatLines.get(i1);
+                    if (i1 >= 0 && i1 < this.drawnChatLines.size()) {
+                        ChatLine chatline = (ChatLine) this.drawnChatLines.get(i1);
                         int j1 = 0;
 
-                        for (IChatComponent ichatcomponent : chatline.getChatComponent())
-                        {
-                            if (ichatcomponent instanceof ChatComponentText)
-                            {
-                                j1 += this.mc.fontRendererObj.getStringWidth(GuiUtilRenderComponents.func_178909_a(((ChatComponentText)ichatcomponent).getChatComponentText_TextValue(), false));
+                        for (IChatComponent ichatcomponent : chatline.getChatComponent()) {
+                            if (ichatcomponent instanceof ChatComponentText) {
+                                j1 += this.mc.fontRendererObj.getStringWidth(
+                                        GuiUtilRenderComponents.func_178909_a(
+                                                ((ChatComponentText) ichatcomponent).getChatComponentText_TextValue(),
+                                                false));
 
-                                if (j1 > j)
-                                {
+                                if (j1 > j) {
                                     return ichatcomponent;
                                 }
                             }
                         }
                     }
 
-                    return null;
                 }
-                else
-                {
-                    return null;
-                }
-            }
-            else
-            {
-                return null;
             }
         }
+        return null;
     }
 
     public boolean getChatOpen()

@@ -116,7 +116,7 @@ public class SimpleClickGUI extends GuiScreen {
                 if (HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + description) + 10, displayY, 5, 7, mouseX, mouseY))
                     module.toggle();
 
-                if (!module.values.isEmpty() && HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + description) + 30, displayY, RenderUtil.getStringWidth(settingsText) + 4, mc.fontRendererObj.FONT_HEIGHT, mouseX, mouseY))
+                if (!module.values.isEmpty() && HoveringUtil.isHovering(x + RenderUtil.getStringWidth(nameText + description) + 30, displayY, RenderUtil.getStringWidth(settingsText) + 4, mc.fontRendererObj.getHeight(), mouseX, mouseY))
                     mc.displayGuiScreen(new ValueScreen(module));
             }
         }

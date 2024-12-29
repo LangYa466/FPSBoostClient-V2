@@ -139,7 +139,7 @@ public class ValueScreen extends GuiScreen {
             valueName = module.name;
             Exit = "Exit";
         }
-        if (HoveringUtil.isHovering(50+RenderUtil.getStringWidth(valueName),0,RenderUtil.getStringWidth(Exit),mc.fontRendererObj.FONT_HEIGHT,mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
+        if (HoveringUtil.isHovering(50+RenderUtil.getStringWidth(valueName),0,RenderUtil.getStringWidth(Exit),mc.fontRendererObj.getHeight(),mouseX,mouseY)) mc.displayGuiScreen(new SimpleClickGUI());
         for (Value<?> value : module.values) {
             if (value.isHide) return;
             if (value instanceof BooleanValue) {
