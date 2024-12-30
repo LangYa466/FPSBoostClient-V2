@@ -44,7 +44,7 @@ public class RenderEntityItem extends Render<EntityItem>
             float f1 = MathHelper.sin(((float)itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
             float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
 
-            if (ModuleManager.isEnabled(ItemPhysic.class)) {
+            if (ItemPhysic.isEnable) {
                 if (!(item instanceof ItemBlock)) {
                     GlStateManager.translate(p_177077_2_, p_177077_4_ + 0.1F, p_177077_6_);
                 } else {

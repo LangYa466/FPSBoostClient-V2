@@ -1,6 +1,7 @@
 package net.fpsboost.handler;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.element.impl.ReachDisplay;
 import net.fpsboost.module.impl.MoreParticles;
 import net.fpsboost.module.impl.TargetCircle;
 import net.minecraft.entity.Entity;
@@ -26,6 +27,7 @@ public class AttackHandler implements Wrapper {
         sentAttackTime = System.currentTimeMillis();
         MoreParticles.onAttack(targetEntity);
         TargetCircle.onAttack(targetEntity);
+        ReachDisplay.onAttack();
     }
 
     public static void onUpdate() {

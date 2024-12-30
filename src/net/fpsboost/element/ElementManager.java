@@ -22,6 +22,8 @@ public class ElementManager {
         elements.add(new PingDisplay());
         elements.add(new CPSDisplay());
         elements.add(new SmokePlayerInfo());
+        elements.add(new ReachDisplay());
+        elements.add(new SprintDisplay());
 
         elements.forEach(Element::init);
     }

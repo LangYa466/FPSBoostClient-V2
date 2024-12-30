@@ -9,6 +9,8 @@ import net.fpsboost.module.Module;
 public class Sprint extends Module {
     public Sprint() {
         super("Sprint", "自动疾跑", "Auto Sprint","自动疾跑");
+        // left ctrl key-code
+        keyCode = 29;
     }
 
     @Override

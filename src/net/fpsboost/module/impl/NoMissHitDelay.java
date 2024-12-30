@@ -35,6 +35,10 @@ public class NoMissHitDelay extends Module {
 
     @Override
     public void onUpdate() {
-        mc.leftClickCounter = 0;
+        if (mc.theWorld != null && mc.thePlayer != null) {
+            if (!mc.inGameHasFocus) return;
+
+            mc.leftClickCounter = 0;
+        }
     }
 }

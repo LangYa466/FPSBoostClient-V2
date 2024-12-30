@@ -1,15 +1,19 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
+import net.fpsboost.value.impl.ColorValue;
 
 /**
  * @author LangYa
- * @since 2024/11/16 15:35
+ * @since 2024/8/26 22:12
  */
-public class NoHurtCam extends Module {
-    public NoHurtCam() {
-        super("NoHurtCam", "无受伤抖动","Disable the camera shake when taking damage.","关闭受击动画");
+public class CustomEnchantmentColor extends Module {
+
+    public CustomEnchantmentColor() {
+        super("CustomEnchantmentColor","自定义附魔颜色");
     }
+
+    public static final ColorValue color = new ColorValue("自定义颜色","Custom Color",-8372020);
 
     //如果直接在mc里面的方法里面直接获取会浪费性能
     public static boolean isEnable;
@@ -18,7 +22,6 @@ public class NoHurtCam extends Module {
     public void onEnable() {
         isEnable = true;
     }
-
     @Override
     public void onDisable() {
         isEnable = false;

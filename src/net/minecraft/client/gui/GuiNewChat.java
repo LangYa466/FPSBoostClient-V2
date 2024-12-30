@@ -82,7 +82,7 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 11;
-                                if (!ModuleManager.isEnabled(HideGuiChatRect.class)) {
+                                if (!HideGuiChatRect.isEnable) {
                                     drawRect(i2, j2 - 11, i2 + l + 4, j2, l1 / 2 << 24);
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();

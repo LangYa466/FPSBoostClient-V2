@@ -17,8 +17,21 @@ public class MoreParticles extends Module {
         super("MoreParticles","更多粒子");
     }
 
+    //如果直接在mc里面的方法里面直接获取会浪费性能
+    private static boolean isEnable;
+
+    @Override
+    public void onEnable() {
+        isEnable = true;
+    }
+
+    @Override
+    public void onDisable() {
+        isEnable = false;
+    }
+
     public static void onAttack(Entity entity) {
-        if (!ModuleManager.isEnabled(MoreParticles.class)) return;
+        if (!isEnable) return;
         if (entity.isDead || !(entity instanceof EntityLiving) || ((EntityLiving) entity).getHealth() == 0) return;
         for (int index = 0; index < crackSize.getValue().intValue(); ++index) {
             if (mode1.getValue()) mc.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);

@@ -14,4 +14,16 @@ public class OldAnimation extends Module {
         super("1.7Animation", "1.7动画","Animation for 1.7 version", "旧版本动画");
     }
 
+    //如果直接在mc里面的方法里面直接获取会浪费性能
+    public static boolean isEnabled;
+
+    @Override
+    public void onEnable() {
+        isEnabled = true;
+    }
+
+    @Override
+    public void onDisable() {
+        isEnabled = false;
+    }
 }

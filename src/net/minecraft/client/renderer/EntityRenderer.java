@@ -601,7 +601,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     {
         if (this.mc.getRenderViewEntity() instanceof EntityLivingBase)
         {
-            if (ModuleManager.isEnabled(NoHurtCam.class)) return;
+            if (NoHurtCam.isEnable) return;
             EntityLivingBase entitylivingbase = (EntityLivingBase)this.mc.getRenderViewEntity();
             float f = (float)entitylivingbase.hurtTime - partialTicks;
 

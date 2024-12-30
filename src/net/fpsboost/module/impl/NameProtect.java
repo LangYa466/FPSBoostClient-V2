@@ -13,7 +13,8 @@ public class NameProtect extends Module {
         super("NameProtect", "名称保护","Protect your name and change it to 我是狼牙的狗", "全局替换你的名字为我是狼牙的狗");
     }
 
-    private static boolean enable;
+    public static boolean enable;
+
     @Override
     public void onEnable() {
         enable = true;

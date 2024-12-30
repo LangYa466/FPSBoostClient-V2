@@ -311,19 +311,19 @@ public class ItemRenderer
         if (!Config.isShaders() || !Shaders.isSkipRenderHand())
         {
             float f = 1.0F - (this.prevEquippedProgress + (this.equippedProgress - this.prevEquippedProgress) * partialTicks);
-            AbstractClientPlayer abstractclientplayer = this.mc.thePlayer;
+            EntityPlayerSP abstractclientplayer = this.mc.thePlayer;
             float f1 = abstractclientplayer.getSwingProgress(partialTicks);
             float f2 = abstractclientplayer.prevRotationPitch + (abstractclientplayer.rotationPitch - abstractclientplayer.prevRotationPitch) * partialTicks;
             float f3 = abstractclientplayer.prevRotationYaw + (abstractclientplayer.rotationYaw - abstractclientplayer.prevRotationYaw) * partialTicks;
             this.rotateArroundXAndY(f2, f3);
             this.setLightMapFromPlayer(abstractclientplayer);
-            this.rotateWithPlayerRotations((EntityPlayerSP)abstractclientplayer, partialTicks);
+            this.rotateWithPlayerRotations(abstractclientplayer, partialTicks);
             GlStateManager.enableRescaleNormal();
             GlStateManager.pushMatrix();
 
             if (this.itemToRender != null)
             {
-                if (ModuleManager.isEnabled(OldAnimation.class)) {
+                if (OldAnimation.isEnabled) {
                     if (OldAnimation.oldRod.getValue() && itemToRender.getItem() instanceof ItemCarrotOnAStick) {
                         GlStateManager.translate(0.08F, -0.027F, -0.33F);
                         GlStateManager.scale(0.93F, 1.0F, 1.0F);
@@ -358,7 +358,7 @@ public class ItemRenderer
                             break;
 
                         case BLOCK:
-                            if (OldAnimation.blockHit.getValue() && ModuleManager.isEnabled(OldAnimation.class)) {
+                            if (OldAnimation.isEnabled && OldAnimation.blockHit.getValue()) {
                                 this.transformFirstPersonItem(f, f1);
                                 GlStateManager.translate(0, 0.3, 0);
                             } else {
@@ -368,7 +368,7 @@ public class ItemRenderer
                             break;
 
                         case BOW:
-                            if (OldAnimation.oldBow.getValue()) {
+                            if (OldAnimation.isEnabled && OldAnimation.oldBow.getValue()) {
                                 this.transformFirstPersonItem(f, f1);
                             } else {
                                 this.transformFirstPersonItem(f, 0.0F);

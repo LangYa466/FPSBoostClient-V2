@@ -32,4 +32,17 @@ public class HideGuiChatRect extends Module {
     public HideGuiChatRect() {
         super("HideGuiChatRect", "隐藏聊天框背景","Hide Gui Chat Rect Background", "隐藏聊天框背景");
     }
+
+    //如果直接在mc里面的方法里面直接获取会浪费性能
+    public static boolean isEnable;
+
+    @Override
+    public void onEnable() {
+        isEnable = true;
+    }
+
+    @Override
+    public void onDisable() {
+        isEnable = false;
+    }
 }

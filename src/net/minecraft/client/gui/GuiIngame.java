@@ -484,7 +484,7 @@ public class GuiIngame extends Gui
 
     protected boolean showCrosshair()
     {
-        if (ModuleManager.isEnabled(SmokeCrosshair.class)) return false;
+        if (SmokeCrosshair.isEnable) return false;
         if (this.mc.gameSettings.showDebugInfo && !this.mc.thePlayer.hasReducedDebug() && !this.mc.gameSettings.reducedDebugInfo)
         {
             return false;
@@ -537,7 +537,7 @@ public class GuiIngame extends Gui
         {
             ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
             String s;
-            if (ModuleManager.isEnabled(HideScoreboardRect.class)&&HideScoreboardRect.rednumber.getValue()){
+            if (HideScoreboardRect.isEnable && HideScoreboardRect.rednumber.getValue()){
                 s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
             }else {
                 s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName());
@@ -559,17 +559,17 @@ public class GuiIngame extends Gui
             String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
             int k = j1 - j * this.getFontRenderer().getHeight();
             int l = scaledRes.getScaledWidth() - k1 + 2;
-            boolean isRect = !ModuleManager.isEnabled(HideScoreboardRect.class);
-            if(isRect) drawRect(l1 - 2, k, l, k + this.getFontRenderer().getHeight(), 1342177280);
+            boolean enable = !HideScoreboardRect.isEnable;
+            if(!enable) drawRect(l1 - 2, k, l, k + this.getFontRenderer().getHeight(), 1342177280);
             this.getFontRenderer().drawString(s1, l1, k, 553648127);
-            if (ModuleManager.isEnabled(HideScoreboardRect.class)&&HideScoreboardRect.rednumber.getValue()) {
+            if (enable && HideScoreboardRect.rednumber.getValue()) {
                 this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
             }
 
             if (j == collection.size())
             {
                 String s3 = objective.getDisplayName();
-                if (isRect) {
+                if (!enable) {
                     drawRect(l1 - 2, k - this.getFontRenderer().getHeight() - 1, l, k - 1, 1610612736);
                     drawRect(l1 - 2, k - 1, l, k, 1342177280);
                 }

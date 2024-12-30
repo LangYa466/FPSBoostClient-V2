@@ -4,7 +4,6 @@ import net.fpsboost.Client;
 import net.fpsboost.element.Element;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
-import net.fpsboost.module.impl.HideScoreboardRect;
 import net.fpsboost.module.impl.NameProtect;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
@@ -84,7 +83,7 @@ public class SmokePlayerInfo extends Element {
         text = "_______________";
         FontManager.hanYi().drawStringWithShadow(text, 3, 5, new Color(0, 160, 255, 160).getRGB());
         if (NickName.getValue()) {
-            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<昵称> " : "<Username> ") + (ModuleManager.isEnabled(NameProtect.class)?EnumChatFormatting.WHITE +"NameProtect":EnumChatFormatting.WHITE + mc.thePlayer.getName()));
+            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<昵称> " : "<Username> ") + (EnumChatFormatting.WHITE + mc.thePlayer.getName()));
         }
         if (FPS.getValue()) {
             StringBuilder var10001 = new StringBuilder(ClientSettings.INSTANCE.cnMode.getValue() ? "<帧数> " : "<FPS> ").append(EnumChatFormatting.WHITE);
@@ -100,7 +99,7 @@ public class SmokePlayerInfo extends Element {
             this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<方向> " : "<Directions> ") + EnumChatFormatting.WHITE + getDirectionsName(this.directions[wrapAngleToDirection(mc.thePlayer.rotationYaw, this.directions.length)]));
         }
         if (Server.getValue()) {
-            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<服务器> " : "<Server> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? ((ClientSettings.INSTANCE.cnMode.getValue()).booleanValue() ? "单人世界" : "SingleWorld") : mc.getCurrentServerData().serverIP));
+            this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<服务器> " : "<Server> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? (ClientSettings.INSTANCE.cnMode.getValue() ? "单人世界" : "SingleWorld") : mc.getCurrentServerData().serverIP));
         }
         int index = 0;
         for (String str : this.Info) {
