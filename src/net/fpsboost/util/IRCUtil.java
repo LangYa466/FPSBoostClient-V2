@@ -15,7 +15,7 @@ public class IRCUtil implements Wrapper {
 
     public static void init() {
         try {
-            transport = new IRCTransport("127.0.0.1", 11451, new IRCHandler() {
+            transport = new IRCTransport("103.79.187.250", 11451, new IRCHandler() {
                 @Override
                 public void onMessage(String rank, String message) {
                     EnumChatFormatting rankColor;
