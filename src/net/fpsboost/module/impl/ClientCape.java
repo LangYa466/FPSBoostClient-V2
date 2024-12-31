@@ -2,6 +2,7 @@ package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
 import net.fpsboost.util.CapeUtil;
+import net.fpsboost.util.ClientInputGUI;
 
 import javax.swing.*;
 
@@ -17,7 +18,9 @@ public class ClientCape extends Module {
     @Override
     public void onEnable() {
         enable = false;
-        String cape = JOptionPane.showInputDialog("输入你的披风网址(包括https://):");
+        ClientInputGUI clientInputGUI = new ClientInputGUI(mc.displayWidth / 4, mc.displayHeight / 4);
+        mc.displayGuiScreen(clientInputGUI);
+        String cape = clientInputGUI.text;
         if (cape == null)return;
         CapeUtil.setCape(cape);
         super.onEnable();

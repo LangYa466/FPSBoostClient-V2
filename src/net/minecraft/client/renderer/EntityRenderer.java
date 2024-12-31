@@ -12,6 +12,7 @@ import java.util.Random;
 import java.util.concurrent.Callable;
 
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.MinimizedBobbing;
 import net.fpsboost.module.impl.NoHurtCam;
 import net.fpsboost.module.impl.OldAnimation;
 import net.minecraft.block.Block;
@@ -799,8 +800,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
         this.hurtCameraEffect(partialTicks);
 
-        if (this.mc.gameSettings.viewBobbing)
-        {
+        if (this.mc.gameSettings.viewBobbing && !MinimizedBobbing.isEnable) {
             this.setupViewBobbing(partialTicks);
         }
 

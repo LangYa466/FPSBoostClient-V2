@@ -39,6 +39,7 @@ public class ModuleManager implements Wrapper {
         modules.add(new SmokeCrosshair());
         modules.add(new NoDestroyEffects());
         modules.add(new Projectile());
+        modules.add(new MinimizedBobbing());
         // modules.add(new BetterFont());这个模块有点bug
         // modules.add(new TargetCircle()); 这个模块有点bug
 
