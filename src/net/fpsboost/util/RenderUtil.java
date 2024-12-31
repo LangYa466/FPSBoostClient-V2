@@ -10,6 +10,8 @@ import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 
+import static org.lwjgl.opengl.GL11.*;
+
 /**
  * @author LangYa
  * @since 2024/8/30 21:52
@@ -162,5 +164,17 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         GL11.glEnable(3008);
         GL11.glDisable(2848);
         GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+    }
+
+    // Scales the data that you put in the runnable
+    public static void scaleStart(float x, float y, float scale) {
+        glPushMatrix();
+        glTranslatef(x, y, 0);
+        glScalef(scale, scale, 1);
+        glTranslatef(-x, -y, 0);
+    }
+
+    public static void scaleEnd() {
+        glPopMatrix();
     }
 }

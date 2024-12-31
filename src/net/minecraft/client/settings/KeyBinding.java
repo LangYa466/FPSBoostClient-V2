@@ -4,6 +4,9 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import java.util.List;
 import java.util.Set;
+
+import net.fpsboost.util.animation.Animation;
+import net.fpsboost.util.animation.impl.SmoothStepAnimation;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.IntHashMap;
 
@@ -15,6 +18,7 @@ public class KeyBinding implements Comparable<KeyBinding>
     private final String keyDescription;
     private final int keyCodeDefault;
     private final String keyCategory;
+    public Animation clickAnimation = new SmoothStepAnimation(125, 1);
     private int keyCode;
     private boolean pressed;
     private int pressTime;
