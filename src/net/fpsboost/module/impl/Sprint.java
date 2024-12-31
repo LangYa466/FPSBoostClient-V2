@@ -17,4 +17,16 @@ public class Sprint extends Module {
     public void onUpdate() {
         mc.gameSettings.keyBindSprint.setKeyDown(true);
     }
+
+    public static boolean isEnable;
+
+    @Override
+    public void onEnable() {
+        isEnable = true;
+    }
+
+    @Override
+    public void onDisable() {
+        isEnable = false;
+    }
 }

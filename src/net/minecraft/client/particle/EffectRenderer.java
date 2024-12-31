@@ -389,7 +389,7 @@ public class EffectRenderer
 
     public void addBlockDestroyEffects(BlockPos pos, IBlockState state)
     {
-        if (ModuleManager.isEnabled(NoDestroyEffects.class)) return;
+        if (NoDestroyEffects.isEnable) return;
         if (state.getBlock().getMaterial() != Material.air)
         {
             state = state.getBlock().getActualState(state, this.worldObj, pos);

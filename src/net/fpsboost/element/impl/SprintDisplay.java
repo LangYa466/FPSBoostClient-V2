@@ -1,13 +1,11 @@
 package net.fpsboost.element.impl;
 
 import net.fpsboost.element.Element;
-import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.Sprint;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 
-import javax.swing.*;
 import java.awt.*;
 
 /**
@@ -28,12 +26,8 @@ public class SprintDisplay extends Element {
 
     @Override
     public void onDraw() {
-        String text = "Sprint: " + (isSprinting() ? "Toggled" : "Vanilla");
+        String text = "Sprint: " + (Sprint.isEnable ? "Toggled" : "Vanilla");
         width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(),textShadowValue.getValue(), clientFontValue.getValue());
-    }
-
-    private boolean isSprinting() {
-        return ModuleManager.isEnabled(Sprint.class);
     }
 
     @Override

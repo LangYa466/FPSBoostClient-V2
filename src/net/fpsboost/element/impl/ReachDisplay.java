@@ -4,6 +4,7 @@ import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
+import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.Vec3;
 
@@ -19,6 +20,7 @@ public class ReachDisplay extends Element {
         super("ReachDisplay", "距离显示");
     }
 
+    private final NumberValue customLengthValue = new NumberValue("保留小数点位数","Reserved digits",1,10,0,1);
     private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
     private final BooleanValue textShadowValue = new BooleanValue("字体阴影","Text Shadow",true);
     private final BooleanValue clientFontValue = new BooleanValue("更好的字体","Better Font",true);
@@ -36,7 +38,9 @@ public class ReachDisplay extends Element {
 
     @Override
     public void onDraw() {
-        String text = String.format("%s Blocks", range);
+        int decimalPlaces = customLengthValue.getValue().intValue();
+        String format = "%." + decimalPlaces + "f Blocks";
+        String text = String.format(format, range);
         width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(), textShadowValue.getValue(), clientFontValue.getValue());
     }
 

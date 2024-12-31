@@ -933,7 +933,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 this.setupViewBobbing(p_renderHand_1_);
             }
 
-            if(mc.thePlayer != null && ModuleManager.isEnabled(OldAnimation.class) &&
+            if(mc.thePlayer != null && OldAnimation.isEnabled &&
                     OldAnimation.oldBlock.getValue()
                     && mc.objectMouseOver != null
                     && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK
