@@ -1,6 +1,10 @@
 package us.cubk.clickgui;
 
+import net.fpsboost.Client;
 import net.fpsboost.config.ConfigManager;
+import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.util.ColorUtil;
+import net.fpsboost.util.font.FontManager;
 import us.cubk.clickgui.component.Component;
 import us.cubk.clickgui.component.Frame;
 import net.minecraft.client.gui.GuiScreen;
@@ -42,6 +46,8 @@ public class ClickGuiScreen extends GuiScreen {
                 comp.updateComponent(mouseX, mouseY);
             }
         }
+        String displayText = !ClientSettings.INSTANCE.cnMode.getValue()?"Press T or / to drag UI":"按 T 或 / 即可拖动UI";
+        FontManager.hanYi().drawStringWithShadow(displayText,width - FontManager.hanYi().getStringWidth(displayText) * 1.5F,height - 18, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
     }
 
     @Override
