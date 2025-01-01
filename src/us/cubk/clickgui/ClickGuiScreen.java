@@ -1,6 +1,5 @@
 package us.cubk.clickgui;
 
-import net.fpsboost.Client;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.util.ColorUtil;

@@ -12,6 +12,7 @@ import us.cubk.clickgui.component.components.Button;
 import net.minecraft.client.gui.Gui;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Frame {
@@ -34,6 +35,8 @@ public class Frame {
     public int dragX;
     public int dragY;
     public int i;
+
+    private int height = 0;
 
     public Frame(int i) {
         this.components = new ArrayList<>();
@@ -77,8 +80,18 @@ public class Frame {
         FontManager.hanYi(18).drawStringWithShadow(name, (this.x + 2)  + 5, (this.y + 2.5f) , 0xFFFFFFFF);
         FontManager.hanYi(18).drawStringWithShadow(this.open ? "-" : "+", (this.x + this.width - 10)  + 3, (this.y + 2.5f) , -1);
         GL11.glPopMatrix();
+        height = 0;
+
         if (this.open) {
             if (!this.components.isEmpty()) {
+                for (Component component : components) {
+                    height += component.getHeight();
+                }
+
+                Gui.drawRect(this.x, this.y + Button.HEIGHT,
+                        this.x + this.width, this.y + this.barHeight + height,
+                        new Color(0xFF222222).darker().getRGB());
+
                 for (Component component : components) {
                     component.renderComponent();
                 }

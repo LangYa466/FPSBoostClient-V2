@@ -17,10 +17,6 @@ public class Component {
     public void mouseReleased(int mouseX, int mouseY, int mouseButton) {
     }
 
-    public int getParentHeight() {
-        return 0;
-    }
-
     public void keyTyped(char typedChar, int key) {
 
     }
