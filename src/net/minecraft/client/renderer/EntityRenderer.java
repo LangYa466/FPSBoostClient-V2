@@ -598,7 +598,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             if (screenScale == -1) screenScale = f;
 
             if (SmoothGUIZoom.isEnable && SmoothGUIZoom.isKeyDown) {
-                screenScale = SmoothGUIZoom.decreasedSpeed(screenScale, f, f / 4.0F, SmoothGUIZoom.speedValue.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
+                screenScale = SmoothGUIZoom.decreasedSpeed(screenScale, f / 4F, f, SmoothGUIZoom.speedValue.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
             } else {
                 screenScale = f;
             }

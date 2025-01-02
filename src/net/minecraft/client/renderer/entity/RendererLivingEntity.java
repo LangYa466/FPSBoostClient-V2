@@ -5,6 +5,7 @@ import java.nio.FloatBuffer;
 import java.util.List;
 
 import net.fpsboost.module.impl.HitColor;
+import net.fpsboost.module.impl.RenderMyNameTag;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.FontRenderer;
@@ -652,8 +653,7 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     {
         EntityPlayerSP entityplayersp = Minecraft.getMinecraft().thePlayer;
 
-        if (entity instanceof EntityPlayer && entity != entityplayersp)
-        {
+        if (entity instanceof EntityPlayer && entity != entityplayersp) {
             Team team = entity.getTeam();
             Team team1 = entityplayersp.getTeam();
 
@@ -680,6 +680,8 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
                 }
             }
         }
+
+        if (RenderMyNameTag.isEnable) return true;
 
         return Minecraft.isGuiEnabled() && entity != this.renderManager.livingPlayer && !entity.isInvisibleToPlayer(entityplayersp) && entity.riddenByEntity == null;
     }
