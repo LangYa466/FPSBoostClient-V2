@@ -12,6 +12,7 @@ import java.util.Map;
 public class IRCUtil implements Wrapper {
 
     public static IRCTransport transport = null;
+    public static int error = 0;
 
     public static void init() {
         try {

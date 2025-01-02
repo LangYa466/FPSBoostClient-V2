@@ -1,5 +1,7 @@
 package us.cubk.irc.client;
 
+import net.fpsboost.util.ChatUtil;
+import net.fpsboost.util.IRCUtil;
 import org.smartboot.socket.MessageProcessor;
 import org.smartboot.socket.transport.AioQuickClient;
 import org.smartboot.socket.transport.AioSession;
@@ -66,8 +68,14 @@ public class IRCTransport {
             session.writeBuffer().writeInt(data.length);
             session.writeBuffer().write(data);
             session.writeBuffer().flush();
-        }catch (Exception e){
-            throw new RuntimeException(e);
+        } catch (Exception e){
+            if (IRCUtil.error >= 3) {
+                ChatUtil.addMessageWithClient("[IRC] 链接失败次数超过3 已关闭链接!");
+                return;
+            }
+            ChatUtil.addMessageWithClient("[IRC] 链接服务器失败!");
+            IRCUtil.error++;
+            IRCUtil.init();
         }
     }
 
