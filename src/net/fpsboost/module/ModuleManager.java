@@ -42,6 +42,7 @@ public class ModuleManager implements Wrapper {
         modules.add(new MinimizedBobbing());
         modules.add(new HitColor());
         modules.add(new AttackEffects());
+        modules.add(FreeLook.INSTANCE);
         // modules.add(new BetterFont());这个模块有点bug
         // modules.add(new TargetCircle()); 这个模块有点bug
 
@@ -95,6 +96,7 @@ public class ModuleManager implements Wrapper {
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
+        FreeLook.INSTANCE.onKey();
         for (Module module : modules) {
             if (inputKeyCode == module.keyCode) {
                 module.toggle();

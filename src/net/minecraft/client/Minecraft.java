@@ -38,6 +38,7 @@ import net.fpsboost.config.ConfigManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.module.impl.FreeLook;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
@@ -1308,6 +1309,7 @@ public class Minecraft implements IThreadListener {
 
     private void sendClickBlockToController(boolean leftClick)
     {
+        if (FreeLook.cameraToggled) return;
         if (!leftClick)
         {
             this.leftClickCounter = 0;
@@ -1334,10 +1336,12 @@ public class Minecraft implements IThreadListener {
 
     private void clickMouse()
     {
-    	//leftClickCounter = 0;
+        //leftClickCounter = 0;
         if (this.leftClickCounter <= 0)
         {
             this.thePlayer.swingItem();
+
+            if (FreeLook.cameraToggled) return;
 
             if (this.objectMouseOver == null)
             {
@@ -1379,6 +1383,7 @@ public class Minecraft implements IThreadListener {
     @SuppressWarnings("incomplete-switch")
     private void rightClickMouse()
     {
+        if (FreeLook.cameraToggled) return;
         if (!this.playerController.getIsHittingBlock())
         {
             this.rightClickDelayTimer = 4;

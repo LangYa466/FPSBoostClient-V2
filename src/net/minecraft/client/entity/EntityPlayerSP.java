@@ -1,6 +1,7 @@
 package net.minecraft.client.entity;
 
 import net.fpsboost.command.CommandManager;
+import net.fpsboost.module.impl.FreeLook;
 import net.fpsboost.module.impl.IRC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -163,11 +164,16 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (this.isCurrentViewEntity())
         {
+            float[] rotations = FreeLook.getServerRotations();
+            float rotationYaw = FreeLook.cameraToggled ? rotations[0] : this.rotationYaw;
+            float rotationPitch = FreeLook.cameraToggled ? rotations[1] : this.rotationPitch;
+            mc.thePlayer.renderYawOffset = rotationYaw;
+            mc.thePlayer.rotationYawHead = rotationYaw;
             double d0 = this.posX - this.lastReportedPosX;
             double d1 = this.getEntityBoundingBox().minY - this.lastReportedPosY;
             double d2 = this.posZ - this.lastReportedPosZ;
-            double d3 = (double)(this.rotationYaw - this.lastReportedYaw);
-            double d4 = (double)(this.rotationPitch - this.lastReportedPitch);
+            double d3 = (double)(rotationYaw - this.lastReportedYaw);
+            double d4 = (double)(rotationPitch - this.lastReportedPitch);
             boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || this.positionUpdateTicks >= 20;
             boolean flag3 = d3 != 0.0D || d4 != 0.0D;
 
@@ -175,7 +181,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             {
                 if (flag2 && flag3)
                 {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.posX, this.getEntityBoundingBox().minY, this.posZ, rotationYaw, rotationPitch, this.onGround));
                 }
                 else if (flag2)
                 {
@@ -183,7 +189,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
                 }
                 else if (flag3)
                 {
-                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(this.rotationYaw, this.rotationPitch, this.onGround));
+                    this.sendQueue.addToSendQueue(new C03PacketPlayer.C05PacketPlayerLook(rotationYaw, rotationPitch, this.onGround));
                 }
                 else
                 {
@@ -192,7 +198,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
             }
             else
             {
-                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, this.rotationYaw, this.rotationPitch, this.onGround));
+                this.sendQueue.addToSendQueue(new C03PacketPlayer.C06PacketPlayerPosLook(this.motionX, -999.0D, this.motionZ, rotationYaw, rotationPitch, this.onGround));
                 flag2 = false;
             }
 
@@ -208,8 +214,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
             if (flag3)
             {
-                this.lastReportedYaw = this.rotationYaw;
-                this.lastReportedPitch = this.rotationPitch;
+                this.lastReportedYaw = rotationYaw;
+                this.lastReportedPitch = rotationPitch;
             }
         }
     }

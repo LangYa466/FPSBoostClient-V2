@@ -3,6 +3,7 @@ package net.fpsboost.handler;
 import net.fpsboost.Wrapper;
 import net.fpsboost.element.impl.ReachDisplay;
 import net.fpsboost.module.impl.AttackEffects;
+import net.fpsboost.module.impl.FreeLook;
 import net.fpsboost.module.impl.MoreParticles;
 import net.fpsboost.module.impl.TargetCircle;
 import net.minecraft.entity.Entity;

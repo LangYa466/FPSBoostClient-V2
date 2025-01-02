@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
+
+import net.fpsboost.module.impl.FreeLook;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -12,6 +14,7 @@ import net.minecraft.block.BlockWall;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockPattern;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.command.CommandResultStats;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.crash.CrashReport;
@@ -46,6 +49,8 @@ import net.minecraft.util.Vec3;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldServer;
+
+import static net.fpsboost.Wrapper.mc;
 
 public abstract class Entity implements ICommandSender
 {
@@ -1009,10 +1014,39 @@ public abstract class Entity implements ICommandSender
 
     public void moveFlying(float strafe, float forward, float friction)
     {
+        float rotationYaw = FreeLook.cameraToggled ? FreeLook.rotationYaw : this.rotationYaw;
+        if (FreeLook.cameraToggled) {
+            if (!(this instanceof EntityPlayerSP)) return;
+            final float yaw = (float) MathHelper.wrapAngleTo180_double(Math.toDegrees(FreeLook.direction(rotationYaw, forward, strafe)));
+
+            if (forward == 0 && strafe == 0) {
+                return;
+            }
+
+            float closestForward = 0, closestStrafe = 0, closestDifference = Float.MAX_VALUE;
+
+            for (float predictedForward = -1F; predictedForward <= 1F; predictedForward += 1F) {
+                for (float predictedStrafe = -1F; predictedStrafe <= 1F; predictedStrafe += 1F) {
+                    if (predictedStrafe == 0 && predictedForward == 0) continue;
+
+                    final double predictedAngle = MathHelper.wrapAngleTo180_double(Math.toDegrees(FreeLook.direction(yaw, predictedForward, predictedStrafe)));
+                    final double difference = Math.abs(yaw - predictedAngle);
+
+                    if (difference < closestDifference) {
+                        closestDifference = (float) difference;
+                        closestForward = predictedForward;
+                        closestStrafe = predictedStrafe;
+                    }
+                }
+            }
+
+            forward = closestForward;
+            strafe = closestStrafe;
+        }
+
         float f = strafe * strafe + forward * forward;
 
-        if (f >= 1.0E-4F)
-        {
+        if (f >= 1.0E-4F) {
             f = MathHelper.sqrt_float(f);
 
             if (f < 1.0F)
@@ -1023,8 +1057,8 @@ public abstract class Entity implements ICommandSender
             f = friction / f;
             strafe = strafe * f;
             forward = forward * f;
-            float f1 = MathHelper.sin(this.rotationYaw * (float)Math.PI / 180.0F);
-            float f2 = MathHelper.cos(this.rotationYaw * (float)Math.PI / 180.0F);
+            float f1 = MathHelper.sin(rotationYaw * (float)Math.PI / 180.0F);
+            float f2 = MathHelper.cos(rotationYaw * (float)Math.PI / 180.0F);
             this.motionX += (double)(strafe * f2 - forward * f1);
             this.motionZ += (double)(forward * f2 + strafe * f1);
         }

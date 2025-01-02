@@ -11,6 +11,7 @@ import java.util.Random;
 import java.util.UUID;
 
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.FreeLook;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -1336,7 +1337,8 @@ public abstract class EntityLivingBase extends Entity
 
         if (this.isSprinting())
         {
-            float f = this.rotationYaw * 0.017453292F;
+            float rotationYaw = FreeLook.cameraToggled ? FreeLook.rotationYaw : this.rotationYaw;
+            float f = rotationYaw * 0.017453292F;
             this.motionX -= (double)(MathHelper.sin(f) * 0.2F);
             this.motionZ += (double)(MathHelper.cos(f) * 0.2F);
         }
