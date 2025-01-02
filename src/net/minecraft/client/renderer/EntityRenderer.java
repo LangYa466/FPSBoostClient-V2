@@ -15,6 +15,7 @@ import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.MinimizedBobbing;
 import net.fpsboost.module.impl.NoHurtCam;
 import net.fpsboost.module.impl.OldAnimation;
+import net.fpsboost.module.impl.SmoothGUIZoom;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -173,6 +174,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
     private float avgServerTickDiff = 0.0F;
     private ShaderGroup[] fxaaShaders = new ShaderGroup[10];
     private boolean loadVisibleChunks = false;
+    private float screenScale = -1;
 
     public EntityRenderer(Minecraft mcIn, IResourceManager resourceManagerIn)
     {
@@ -553,7 +555,6 @@ public class EntityRenderer implements IResourceManagerReloadListener
 
             if (this.mc.currentScreen == null)
             {
-                GameSettings gamesettings = this.mc.gameSettings;
                 flag = GameSettings.isKeyDown(this.mc.gameSettings.ofKeyBindZoom);
             }
 
@@ -594,7 +595,15 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 f = f * 60.0F / 70.0F;
             }
 
-            return f;
+            if (screenScale == -1) screenScale = f;
+
+            if (SmoothGUIZoom.isEnable && SmoothGUIZoom.isKeyDown) {
+                screenScale = SmoothGUIZoom.decreasedSpeed(screenScale, f, f / 4.0F, SmoothGUIZoom.speedValue.getValue().floatValue() / (float) Minecraft.getDebugFPS() * 150.0f);
+            } else {
+                screenScale = f;
+            }
+
+            return screenScale;
         }
     }
 

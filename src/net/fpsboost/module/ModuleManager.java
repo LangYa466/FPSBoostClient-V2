@@ -43,6 +43,8 @@ public class ModuleManager implements Wrapper {
         modules.add(new HitColor());
         modules.add(new AttackEffects());
         modules.add(FreeLook.INSTANCE);
+        modules.add(new ZoomChatAnimation());
+        modules.add(new SmoothGUIZoom());
         // modules.add(new BetterFont());这个模块有点bug
         // modules.add(new TargetCircle()); 这个模块有点bug
 
