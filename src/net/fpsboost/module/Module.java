@@ -61,4 +61,12 @@ public class Module implements Wrapper {
     public void onUpdate() { }
     public void onRender3D() { }
     public void onWorldLoad() { }
+
+    public boolean isEnabled() {
+        return enable;
+    }
+
+    public String name() {
+        return name;
+    }
 }

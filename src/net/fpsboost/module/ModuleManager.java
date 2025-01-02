@@ -5,51 +5,53 @@ import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author LangYa
  * @since 2024/8/30 21:19
  */
 public class ModuleManager implements Wrapper {
-    public static final ArrayList<Module> modules = new ArrayList<>();
+    public static List<Module> modules = new ArrayList<>();
 
     public static void init() {
-        modules.add(new ClickGUI());
-        modules.add(new Sprint());
-        modules.add(new OldAnimation());
-        modules.add(new NameProtect());
-        modules.add(new HideGuiChatRect());
-        modules.add(new NoMissHitDelay());
-        modules.add(new HideScoreboardRect());
-        modules.add(new BossBar());
-        // modules.add(new AutoLuGuan());
-        modules.add(new BlockOverlay());
-        modules.add(new ItemPhysic());
-        modules.add(MotionBlur.INSTANCE);
-        modules.add(new NoHurtCam());
-        modules.add(IRC.INSTANCE);
+        addModule(new ClickGUI());
+        addModule(new Sprint());
+        addModule(new OldAnimation());
+        addModule(new NameProtect());
+        addModule(new HideGuiChatRect());
+        addModule(new NoMissHitDelay());
+        addModule(new HideScoreboardRect());
+        addModule(new BossBar());
+        // addModule(new AutoLuGuan());
+        addModule(new BlockOverlay());
+        addModule(new ItemPhysic());
+        addModule(MotionBlur.INSTANCE);
+        addModule(new NoHurtCam());
+        addModule(IRC.INSTANCE);
         if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
-        modules.add(new ClientCape());
-        modules.add(new FullBright());
-        modules.add(ClientSettings.INSTANCE);
+        addModule(new ClientCape());
+        addModule(new FullBright());
+        addModule(ClientSettings.INSTANCE);
         ClientSettings.INSTANCE.enable = true;
-        modules.add(new MoreParticles());
-        modules.add(new SmokeCrosshair());
-        modules.add(new NoDestroyEffects());
-        modules.add(new Projectile());
-        modules.add(new MinimizedBobbing());
-        modules.add(new HitColor());
-        modules.add(new AttackEffects());
-        modules.add(FreeLook.INSTANCE);
-        modules.add(new ZoomChatAnimation());
-        modules.add(new SmoothGUIZoom());
-        modules.add(new RenderMyNameTag());
-        // modules.add(new BetterFont());这个模块有点bug
-        // modules.add(new TargetCircle()); 这个模块有点bug
+        addModule(new MoreParticles());
+        addModule(new SmokeCrosshair());
+        addModule(new NoDestroyEffects());
+        addModule(new Projectile());
+        addModule(new MinimizedBobbing());
+        addModule(new HitColor());
+        addModule(new AttackEffects());
+        addModule(FreeLook.INSTANCE);
+        addModule(new ZoomChatAnimation());
+        addModule(new SmoothGUIZoom());
+        addModule(new RenderMyNameTag());
+        // addModule(new BetterFont());这个模块有点bug
+        // addModule(new TargetCircle()); 这个模块有点bug
 
-        modules.sort(Comparator.comparing(module -> module.name));
+        modules = moduleMap.values().stream()
+                .sorted(Comparator.comparing(module -> module.name)) // 排序
+                .collect(Collectors.toList());
     }
 
     public static ArrayList<Module> getAllModules() {
@@ -59,43 +61,33 @@ public class ModuleManager implements Wrapper {
         return allModules;
     }
 
-    public static boolean isEnabled(Class<?> moduleClass) {
-        for (Module module : modules) {
-            if (module.getClass() == moduleClass) return module.enable;
-        }
+    private static final Map<Class<?>, Module> moduleMap = new HashMap<>();
 
-        return false;
+    private static void addModule(Module module) {
+        moduleMap.put(module.getClass(), module);
+    }
+
+    public static boolean isEnabled(Class<?> moduleClass) {
+        Module module = moduleMap.get(moduleClass);
+        return module != null && module.enable;
     }
 
     public static void moduleRender2D() {
         if (mc.currentScreen != null) return;
-    //    if (Client.isOldVersion) RenderUtil.drawStringWithShadow("你正在使用旧版本",5,5,-1);
-        for (Module module : modules) {
-            if (!module.enable) continue;
-            module.onRender2D();
-        }
+        modules.stream().filter(Module::isEnabled).forEach(Module::onRender2D);
     }
 
     public static void moduleRender3D() {
-        for (Module module : modules) {
-            if (!module.enable) continue;
-            module.onRender3D();
-        }
+        modules.stream().filter(Module::isEnabled).forEach(Module::onRender3D);
     }
 
     public static void moduleUpdate() {
-        for (Module module : modules) {
-            if (!module.enable) continue;
-            module.onUpdate();
-        }
+        modules.stream().filter(Module::isEnabled).forEach(Module::onUpdate);
         AttackHandler.onUpdate();
     }
 
     public static void moduleWorldLoad() {
-        for (Module module : modules) {
-            if (!module.enable) continue;
-            module.onWorldLoad();
-        }
+        modules.stream().filter(Module::isEnabled).forEach(Module::onWorldLoad);
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
