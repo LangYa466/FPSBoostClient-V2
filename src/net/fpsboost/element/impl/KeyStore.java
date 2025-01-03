@@ -59,8 +59,12 @@ public class KeyStore extends Element {
         boolean pressAnimation = pressBgAnimationValue.getValue();
         boolean background = backgroundValue.getValue();
         Animation clickAnimation = key.clickAnimation;
+
+        // Draw background with animation if enabled
         if (background && pressAnimation) {
-            if (!key.isKeyDown()) RenderUtil.drawRect(x, y, width, height, bgColorValue.getValue());
+            if (!key.isKeyDown()) {
+                RenderUtil.drawRect(x, y, width, height, bgColorValue.getValue());
+            }
             clickAnimation.setDirection(key.isKeyDown() ? Direction.FORWARDS : Direction.BACKWARDS);
             if (!clickAnimation.finished(Direction.BACKWARDS)) {
                 RenderUtil.scaleStart(x + width / 2f, y + height / 2f, clickAnimation.getOutput().floatValue());
@@ -70,18 +74,25 @@ public class KeyStore extends Element {
         } else if (background) {
             RenderUtil.drawRect(x, y, width, height, key.isKeyDown() ? pressBgColorValue.getValue() : bgColorValue.getValue());
         }
-        //         RenderUtil.drawRect(x, y, width,height,key.isKeyDown() ? pressbgColor : bgColor);
-        int add = isSpace ? 1 : 2;
-        int textX = mc.fontRendererObj.getStringWidth(keyName) * add;
+
+        // Calculate the correct X position for centered text
+        int textWidth = mc.fontRendererObj.getStringWidth(keyName);
+        int textX = x + (width - textWidth) / 2; // Center the text
+
+        // Render text
         if (!clientFontValue.getValue()) {
-            if (GameSettings.forceUnicodeFont)
-                RenderUtil.drawString(keyName, x + textX, y + mc.fontRendererObj.getHeight() / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
-            else
-                RenderUtil.drawCenterString(keyName, x + textX - 1, y + mc.fontRendererObj.getHeight() / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            if (isSpace) {
+                RenderUtil.drawString(keyName, textX, y + mc.fontRendererObj.getHeight() / 2 + 2, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            } else {
+                RenderUtil.drawCenterString(keyName, textX + 2, y + mc.fontRendererObj.getHeight() / 2 + 1, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            }
         } else {
-            int textX1 = FontManager.hanYi().getStringWidth(keyName);
-            if (isSpace) FontManager.hanYi().drawCenteredString(keyName, x + textX1, y + FontManager.hanYi().getHeight(), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
-            else FontManager.hanYi().drawString(keyName,(key != mc.gameSettings.keyBindForward)  ? (x + textX1) : x + (textX1 / 2 + 1), y + (FontManager.hanYi().getHeight() / 2), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            if (isSpace) {
+                int textX1 = FontManager.hanYi().getStringWidth(keyName);
+                FontManager.hanYi().drawString(keyName, x + (width - textX1) / 2, y + (height / 2 - (FontManager.hanYi().getHeight() / 1.5F)), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            } else {
+                FontManager.hanYi().drawCenteredString(keyName, x + (width / 2) - 0.8F, y + FontManager.hanYi().getHeight() + 2, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+            }
         }
     }
 }
