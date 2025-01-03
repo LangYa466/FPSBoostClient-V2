@@ -45,7 +45,7 @@ public class FreeLook extends Module {
     @Override
     public void onDisable() {
         if (mc.thePlayer == null) return;
-        ChatUtil.addMessageWithClient("[FreeLook] 已开启");
+        ChatUtil.addMessageWithClient("[FreeLook] 已关闭");
         super.onDisable();
     }
 
