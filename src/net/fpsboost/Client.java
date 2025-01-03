@@ -9,6 +9,7 @@ import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.IRCUtil;
+import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -42,6 +43,7 @@ public class Client implements Wrapper {
         ConfigManager.init();
         IRCUtil.init();
         CapeUtil.init();
+        FontManager.init();
         ClickGuiScreen.INSTANCE.init();
 
         if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());

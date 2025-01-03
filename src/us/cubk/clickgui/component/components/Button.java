@@ -91,9 +91,9 @@ public class Button extends Component {
         } else {
             name = module.name;
         }
-        FontManager.hanYi(18).drawStringWithShadow(name, (parent.getX() + 2) , (parent.getY() + offset + 2)  , module.enable ? ClickGuiScreen.color : 0xFFFFFFFF);
+        FontManager.client(18).drawStringWithShadow(name, (parent.getX() + 2) , (parent.getY() + offset + 2)  , module.enable ? ClickGuiScreen.color : 0xFFFFFFFF);
         if (this.subcomponents.size() > 2)
-            FontManager.hanYi(18).drawStringWithShadow(this.open ? "-" : "+", (parent.getX() + parent.getWidth() - 10) , (parent.getY() + offset + 2)  , 0xFFFFFFFF);
+            FontManager.client(18).drawStringWithShadow(this.open ? "-" : "+", (parent.getX() + parent.getWidth() - 10) , (parent.getY() + offset + 2)  , 0xFFFFFFFF);
         GL11.glPopMatrix();
         if (this.open) {
             if (!this.subcomponents.isEmpty()) {

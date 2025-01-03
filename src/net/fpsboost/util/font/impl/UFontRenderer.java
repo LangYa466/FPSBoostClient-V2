@@ -2,18 +2,16 @@ package net.fpsboost.util.font.impl;
 
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.impl.NameProtect;
-import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 
 import java.awt.*;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class UFontRenderer extends FontRenderer implements Wrapper {
     private StringCache stringCache;
 
-    public UFontRenderer(String name, int size) {
+    public UFontRenderer(Font font, int size) {
         super(
                 mc.gameSettings,
                 new ResourceLocation("textures/font/ascii.png"),
@@ -21,15 +19,6 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
                 false
         );
         boolean antiAlias = true;
-        Font font = null;
-        try {
-            InputStream is = FontManager.class.getResourceAsStream("/assets/minecraft/client/fonts/" + name + ".ttf");
-            if (is != null) font = Font.createFont(0, is);
-            if (font != null) font = font.deriveFont(Font.PLAIN, size);
-        } catch (Exception ex) {
-            System.out.printf("Error loading font %s%n",name);
-            font = new Font("Arial", Font.PLAIN, size);
-        }
 
         ResourceLocation res = new ResourceLocation("textures/font/ascii.png");
         int[] colorCode = new int[32];

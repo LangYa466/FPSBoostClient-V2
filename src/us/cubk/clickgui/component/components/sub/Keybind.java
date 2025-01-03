@@ -40,7 +40,7 @@ public class Keybind extends Component {
         }else{
             key1 = binding ? "Press a key..." : ("Bound key: " + Keyboard.getKeyName(this.parent.module.keyCode));
         }
-        FontManager.hanYi(18).drawStringWithShadow(key1, (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
+        FontManager.client(18).drawStringWithShadow(key1, (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
         GL11.glPopMatrix();
     }
 

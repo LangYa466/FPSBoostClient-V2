@@ -31,7 +31,7 @@ public class Checkbox extends Component {
         Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + 2, parent.parent.getY() + offset + 12, 0xFF111111);
         GL11.glPushMatrix();
 
-        FontManager.hanYi(18).drawStringWithShadow(this.op.getName(), (parent.parent.getX() + 10 + 4)  + 5, (parent.parent.getY() + offset + 2)  , -1);
+        FontManager.client(18).drawStringWithShadow(this.op.getName(), (parent.parent.getX() + 10 + 4)  + 5, (parent.parent.getY() + offset + 2)  , -1);
         GL11.glPopMatrix();
         Gui.drawRect(parent.parent.getX() + 3 + 4, parent.parent.getY() + offset + 3, parent.parent.getX() + 9 + 4, parent.parent.getY() + offset + 9, 0xFF999999);
         if (this.op.getValue())

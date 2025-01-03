@@ -23,7 +23,7 @@ public class GuiTheme extends GuiScreen {
         drawWorldBackground(0);
         int x = this.width / 4;
         int y = this.height / 4;
-        FontManager.hanYi().drawCenteredStringWithShadow("您当前的主题为: " + ThemeUtil.themeName, x, y, textColor);
+        FontManager.client().drawCenteredStringWithShadow("您当前的主题为: " + ThemeUtil.themeName, x, y, textColor);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

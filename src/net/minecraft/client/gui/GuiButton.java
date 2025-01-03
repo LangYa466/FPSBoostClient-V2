@@ -70,7 +70,7 @@ public class GuiButton extends Gui
             Color color;
             if (hovered) color = c1; else color = c;
             RenderUtil.drawRect(xPosition,yPosition,width,height,color);
-            var fr = FontManager.hanYi();
+            var fr = FontManager.client();
             fr.drawCenteredString(this.displayString, this.xPosition + (width / 2F), this.yPosition + (this.height / 2), -1);
         }
     }

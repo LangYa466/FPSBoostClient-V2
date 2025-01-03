@@ -35,7 +35,7 @@ public class ModeButton extends Component {
         Gui.drawRect(parent.parent.getX() + 2, parent.parent.getY() + offset, parent.parent.getX() + (parent.parent.getWidth()), parent.parent.getY() + offset + 12, this.hovered ? 0xFF222222 : 0xFF111111);
         Gui.drawRect(parent.parent.getX(), parent.parent.getY() + offset, parent.parent.getX() + 2, parent.parent.getY() + offset + 12, 0xFF111111);
         GL11.glPushMatrix();
-        FontManager.hanYi(18).drawStringWithShadow(ClientSettings.INSTANCE.cnMode.getValue() ? "Module":"模式: " + value.getValue(), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
+        FontManager.client(18).drawStringWithShadow(ClientSettings.INSTANCE.cnMode.getValue() ? "Module":"模式: " + value.getValue(), (parent.parent.getX() + 7) , (parent.parent.getY() + offset + 2)  + 1, -1);
         GL11.glPopMatrix();
     }
 

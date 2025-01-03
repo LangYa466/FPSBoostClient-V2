@@ -46,7 +46,7 @@ public class ClickGuiScreen extends GuiScreen {
             }
         }
         String displayText = !ClientSettings.INSTANCE.cnMode.getValue()?"Press T or / to drag UI":"按 T 或 / 即可拖动UI";
-        FontManager.hanYi().drawStringWithShadow(displayText,width - FontManager.hanYi().getStringWidth(displayText) * 1.5F,height - 18, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
+        FontManager.client().drawStringWithShadow(displayText,width - FontManager.client().getStringWidth(displayText) * 1.5F,height - 18, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
     }
 
     @Override

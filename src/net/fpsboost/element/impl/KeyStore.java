@@ -88,10 +88,10 @@ public class KeyStore extends Element {
             }
         } else {
             if (isSpace) {
-                int textX1 = FontManager.hanYi().getStringWidth(keyName);
-                FontManager.hanYi().drawString(keyName, x + (width - textX1) / 2, y + (height / 2 - (FontManager.hanYi().getHeight() / 1.5F)), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+                int textX1 = FontManager.client().getStringWidth(keyName);
+                FontManager.client().drawString(keyName, x + (width - textX1) / 2, y + (height / 2 - (FontManager.client().getHeight() / 1.5F)), key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
             } else {
-                FontManager.hanYi().drawCenteredString(keyName, x + (width / 2) - 0.8F, y + FontManager.hanYi().getHeight() + 2, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
+                FontManager.client().drawCenteredString(keyName, x + (width / 2) - 0.8F, y + FontManager.client().getHeight() + 2, key.isKeyDown() ? pressTextColorValue.getValue() : textColorValue.getValue());
             }
         }
     }

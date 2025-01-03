@@ -49,8 +49,8 @@ public class GuiAltManager extends GuiScreen {
 
         drawDefaultBackground();
         drawBackground(0);
-        FontManager.hanYi().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + info + mc.getSession().getUsername(), width / 2.0f, height / 2.0f - 10, -1);
-        FontManager.hanYi().drawCenteredStringWithShadow(status, width / 2.0f, height / 2.0f, -1);
+        FontManager.client().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + info + mc.getSession().getUsername(), width / 2.0f, height / 2.0f - 10, -1);
+        FontManager.client().drawCenteredStringWithShadow(status, width / 2.0f, height / 2.0f, -1);
 
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

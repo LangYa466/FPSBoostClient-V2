@@ -77,8 +77,8 @@ public class Frame {
         }else{
             name = (i == 1) ? "Visual" : "Function";
         }
-        FontManager.hanYi(18).drawStringWithShadow(name, (this.x + 2)  + 5, (this.y + 2.5f) , 0xFFFFFFFF);
-        FontManager.hanYi(18).drawStringWithShadow(this.open ? "-" : "+", (this.x + this.width - 10)  + 3, (this.y + 2.5f) , -1);
+        FontManager.client(18).drawStringWithShadow(name, (this.x + 2)  + 5, (this.y + 2.5f) , 0xFFFFFFFF);
+        FontManager.client(18).drawStringWithShadow(this.open ? "-" : "+", (this.x + this.width - 10)  + 3, (this.y + 2.5f) , -1);
         GL11.glPopMatrix();
         height = 0;
 

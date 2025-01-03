@@ -32,7 +32,7 @@ public class GuiWelcome extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawClientBackground();
         int y = 0;
-        var fr = FontManager.hanYi(24);
+        var fr = FontManager.client(24);
         for (String str : infos) {
             fr.drawStringWithShadow(str,width / 2 - (fr.getStringWidth(str) / 2),height / 4 + y, ColorUtil.rainbow(1, (int) partialTicks).getRGB());
             y += 20;

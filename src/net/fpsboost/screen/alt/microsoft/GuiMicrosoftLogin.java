@@ -85,9 +85,9 @@ public class GuiMicrosoftLogin extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (microsoftLogin == null) {
-            FontManager.hanYi().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + "登录中...",width / 2.0f,height / 2.0f - 5f,-1);
+            FontManager.client().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + "登录中...",width / 2.0f,height / 2.0f - 5f,-1);
         } else {
-            FontManager.hanYi().drawCenteredStringWithShadow(microsoftLogin.getStatus(),width / 2.0f,height / 2.0f - 5f,-1);
+            FontManager.client().drawCenteredStringWithShadow(microsoftLogin.getStatus(),width / 2.0f,height / 2.0f - 5f,-1);
         }
     }
 

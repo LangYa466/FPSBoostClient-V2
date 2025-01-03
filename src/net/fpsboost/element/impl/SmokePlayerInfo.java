@@ -79,9 +79,9 @@ public class SmokePlayerInfo extends Element {
             return;
         }
         String text = ClientSettings.INSTANCE.cnMode.getValue() ? "显示信息" : "Hud Info";
-        FontManager.hanYi().drawStringWithShadow(text, 3, 3, new Color(0, 160, 255, 160).getRGB());
+        FontManager.client().drawStringWithShadow(text, 3, 3, new Color(0, 160, 255, 160).getRGB());
         text = "_______________";
-        FontManager.hanYi().drawStringWithShadow(text, 3, 5, new Color(0, 160, 255, 160).getRGB());
+        FontManager.client().drawStringWithShadow(text, 3, 5, new Color(0, 160, 255, 160).getRGB());
         if (NickName.getValue()) {
             this.Info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<昵称> " : "<Username> ") + (EnumChatFormatting.WHITE + mc.thePlayer.getName()));
         }
@@ -103,13 +103,13 @@ public class SmokePlayerInfo extends Element {
         }
         int index = 0;
         for (String str : this.Info) {
-            FontManager.hanYi().drawStringWithShadow(str, 2, 5 + 10 * ++index, new Color(255, 160, 0, 160).getRGB());
+            FontManager.client().drawStringWithShadow(str, 2, 5 + 10 * ++index, new Color(255, 160, 0, 160).getRGB());
         }
         this.Info.clear();
         String clientText = EnumChatFormatting.WHITE + Client.name + " - " + EnumChatFormatting.GRAY + Client.version;
         ScaledResolution sr = new ScaledResolution(mc);
         if (INFO.getValue()) {
-            FontManager.hanYi().drawStringWithShadow(clientText, 4, sr.getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? 24 : 11), new Color(255, 255, 255, 160).getRGB());
+            FontManager.client().drawStringWithShadow(clientText, 4, sr.getScaledHeight() - (mc.ingameGUI.getChatGUI().getChatOpen() ? 24 : 11), new Color(255, 255, 255, 160).getRGB());
         }
         super.onDraw();
     }

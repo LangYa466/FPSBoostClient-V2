@@ -69,15 +69,15 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
     }
 
     public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow,boolean clientFont) {
-        int width = clientFont ? FontManager.hanYi().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
-        int height = clientFont ? FontManager.hanYi().getHeight() : mc.fontRendererObj.getHeight();
+        int width = clientFont ? FontManager.client().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
+        int height = clientFont ? FontManager.client().getHeight() : mc.fontRendererObj.getHeight();
         int width1 = clientFont ? width + 6 : width + 8;
         if (bg) RenderUtil.drawRect(x - 2, y - 2, width1,height + 4,bgColor);
         if (!clientFont) {
             if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text, x + 1, y + 1, textColor, textShadow);
             else RenderUtil.drawString(text, x + 1, y, textColor, textShadow);
         } else {
-            FontManager.hanYi().drawString(text, x + 1, y - 1, textColor, textShadow);
+            FontManager.client().drawString(text, x + 1, y - 1, textColor, textShadow);
         }
         return width1;
     }
