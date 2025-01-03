@@ -1,7 +1,6 @@
 package net.minecraft.client.entity;
 
 import net.fpsboost.command.CommandManager;
-import net.fpsboost.module.impl.FreeLook;
 import net.fpsboost.module.impl.IRC;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
@@ -164,11 +163,6 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
         if (this.isCurrentViewEntity())
         {
-            float[] rotations = FreeLook.getServerRotations();
-            float rotationYaw = FreeLook.cameraToggled ? rotations[0] : this.rotationYaw;
-            float rotationPitch = FreeLook.cameraToggled ? rotations[1] : this.rotationPitch;
-            mc.thePlayer.renderYawOffset = rotationYaw;
-            mc.thePlayer.rotationYawHead = rotationYaw;
             double d0 = this.posX - this.lastReportedPosX;
             double d1 = this.getEntityBoundingBox().minY - this.lastReportedPosY;
             double d2 = this.posZ - this.lastReportedPosZ;

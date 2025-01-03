@@ -4,9 +4,7 @@ import com.google.common.collect.Lists;
 import java.util.Iterator;
 import java.util.List;
 
-import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.HideGuiChatRect;
-import net.fpsboost.module.impl.ZoomChatAnimation;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -83,9 +81,6 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 11;
-                                if (ZoomChatAnimation.isEnable) {
-                                    j2 -= (int)(11 * d0);
-                                }
                                 if (!HideGuiChatRect.isEnable) {
                                     drawRect(i2, j2 - 11, i2 + l + 4, j2, l1 / 2 << 24);
                                 }

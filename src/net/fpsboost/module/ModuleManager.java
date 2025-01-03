@@ -42,8 +42,6 @@ public class ModuleManager implements Wrapper {
         addModule(new MinimizedBobbing());
         addModule(new HitColor());
         addModule(new AttackEffects());
-        addModule(FreeLook.INSTANCE);
-        addModule(new ZoomChatAnimation());
         addModule(new SmoothGUIZoom());
         addModule(new RenderMyNameTag());
         // addModule(new BetterFont());这个模块有点bug
@@ -91,7 +89,6 @@ public class ModuleManager implements Wrapper {
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
-        FreeLook.INSTANCE.onKey();
         for (Module module : modules) {
             if (inputKeyCode == module.keyCode) {
                 module.toggle();

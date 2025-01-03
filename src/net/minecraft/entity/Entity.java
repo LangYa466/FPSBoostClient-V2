@@ -5,7 +5,6 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
-import net.fpsboost.module.impl.FreeLook;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -1014,35 +1013,6 @@ public abstract class Entity implements ICommandSender
 
     public void moveFlying(float strafe, float forward, float friction)
     {
-        float rotationYaw = FreeLook.cameraToggled ? FreeLook.rotationYaw : this.rotationYaw;
-        if (FreeLook.cameraToggled) {
-            if (!(this instanceof EntityPlayerSP)) return;
-            final float yaw = (float) MathHelper.wrapAngleTo180_double(Math.toDegrees(FreeLook.direction(rotationYaw, forward, strafe)));
-
-            if (forward == 0 && strafe == 0) {
-                return;
-            }
-
-            float closestForward = 0, closestStrafe = 0, closestDifference = Float.MAX_VALUE;
-
-            for (float predictedForward = -1F; predictedForward <= 1F; predictedForward += 1F) {
-                for (float predictedStrafe = -1F; predictedStrafe <= 1F; predictedStrafe += 1F) {
-                    if (predictedStrafe == 0 && predictedForward == 0) continue;
-
-                    final double predictedAngle = MathHelper.wrapAngleTo180_double(Math.toDegrees(FreeLook.direction(yaw, predictedForward, predictedStrafe)));
-                    final double difference = Math.abs(yaw - predictedAngle);
-
-                    if (difference < closestDifference) {
-                        closestDifference = (float) difference;
-                        closestForward = predictedForward;
-                        closestStrafe = predictedStrafe;
-                    }
-                }
-            }
-
-            forward = closestForward;
-            strafe = closestStrafe;
-        }
 
         float f = strafe * strafe + forward * forward;
 

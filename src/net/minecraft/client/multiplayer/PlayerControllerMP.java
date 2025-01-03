@@ -1,7 +1,6 @@
 package net.minecraft.client.multiplayer;
 
 import net.fpsboost.handler.AttackHandler;
-import net.fpsboost.module.impl.FreeLook;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -442,7 +441,6 @@ public class PlayerControllerMP
     {
         AttackHandler.onAttack(targetEntity);
         this.syncCurrentPlayItem();
-        if (FreeLook.cameraToggled) return;
         this.netClientHandler.addToSendQueue(new C02PacketUseEntity(targetEntity, C02PacketUseEntity.Action.ATTACK));
 
         if (this.currentGameType != WorldSettings.GameType.SPECTATOR)
