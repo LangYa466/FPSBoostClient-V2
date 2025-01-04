@@ -4,6 +4,7 @@ import net.fpsboost.Wrapper;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.*;
+import net.fpsboost.socket.ClientIRC;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -29,8 +30,8 @@ public class ModuleManager implements Wrapper {
         addModule(new ItemPhysic());
         addModule(MotionBlur.INSTANCE);
         addModule(new NoHurtCam());
-        addModule(IRC.INSTANCE);
-        if (!IRC.INSTANCE.enable) IRC.INSTANCE.toggle();
+        addModule(ClientIRC.INSTANCE);
+        if (!ClientIRC.INSTANCE.enable) ClientIRC.INSTANCE.toggle();
         addModule(new ClientCape());
         addModule(new FullBright());
         addModule(ClientSettings.INSTANCE);

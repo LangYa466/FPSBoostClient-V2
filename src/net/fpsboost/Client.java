@@ -1,5 +1,6 @@
 package net.fpsboost;
 
+import cn.langya.Logger;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
@@ -7,8 +8,8 @@ import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
+import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.CapeUtil;
-import net.fpsboost.util.IRCUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
@@ -26,9 +27,10 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.83";
+    public static final String version = "1.84";
     public static boolean isOldVersion;
     public static boolean isDev = false;
+    public static final String web = "https://api.fpsboost.cn:444/";
 
     public static boolean isWindows() {
         String os = System.getProperty("os.name").toLowerCase();
@@ -36,12 +38,15 @@ public class Client implements Wrapper {
     }
 
     public static void initClient() throws IOException {
+        File logFile = new File(ConfigManager.dir, "error.log");
+        if (isDev) logFile = new File(ConfigManager.dir, "debug.log");
+        Logger.setLogFile(logFile.getAbsolutePath());
         ModuleManager.init();
         ElementManager.init();
         ValueManager.init();
         CommandManager.init();
         ConfigManager.init();
-        IRCUtil.init();
+        ClientIRC.init();
         CapeUtil.init();
         FontManager.init();
         ClickGuiScreen.INSTANCE.init();
@@ -50,20 +55,20 @@ public class Client implements Wrapper {
 
         // Version check
         if (!isDev) {
-            String latestVersion = Objects.requireNonNull(WebUtil.getNoCache("http://113.45.185.125/versionwithv2.txt")).trim();
-            System.out.printf((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion) + "%n");
+            String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "versionwithv2.txt")).trim();
+            Logger.info((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
             isOldVersion = !version.contains(latestVersion);
             if (isOldVersion && isWindows()) {
                 File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");
                 String path = autoUpdateJarFile.getAbsolutePath();
-                System.out.println(path);
+                Logger.info("Auto-update jar file: " + path);
                 Runtime.getRuntime().exec("java -jar " + path);
                 System.exit(0);
             }
         }
 
         // download background
-        String url = "https://api.langya.ink/fj";
+        String url = web + "fj";
         if (GuiMainMenu.file.exists()) {
             String localImageContent = FileUtils.readFileToString(GuiMainMenu.file);
             if (localImageContent.contains("http") && localImageContent.contains("://")) {
@@ -76,6 +81,11 @@ public class Client implements Wrapper {
         }
 
         mc.displayGuiScreen(new GuiI18n());
+    }
+
+    public static void stopClient() {
+        ConfigManager.saveAllConfig();
+        Logger.shutdown();
     }
 }
 

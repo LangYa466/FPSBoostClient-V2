@@ -1,5 +1,6 @@
 package net.fpsboost.value;
 
+import cn.langya.Logger;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
@@ -24,7 +25,7 @@ public class ValueManager {
                 final Object obj = field.get(module);
                 if (obj instanceof Value) module.values.add((Value) obj);
             } catch (IllegalAccessException e) {
-                System.out.printf("%s register value error : %s%n",module.name,e.getMessage());
+                Logger.error("{} register value error : {}",module.name,e.getMessage());
             }
         }
     }

@@ -1,10 +1,10 @@
 package net.fpsboost.util.network;
 
+import cn.langya.Logger;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
-import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
@@ -38,7 +38,7 @@ public class WebUtil {
             throw new IOException("HTTP request failed with response code: " + responseCode);
         }
         catch (IOException e) {
-            System.out.println(e.getLocalizedMessage());
+            Logger.info(e.getLocalizedMessage());
             return null;
         }
     }
@@ -70,7 +70,7 @@ public class WebUtil {
             throw new IOException("HTTP request failed with response code: " + responseCode);
         }
         catch (IOException e) {
-            System.out.println(e.getLocalizedMessage());
+            Logger.error(e.getLocalizedMessage());
             return null;
         }
     }
@@ -117,7 +117,7 @@ public class WebUtil {
             mc.getTextureManager().loadTexture(res, dt);
             mc.getTextureManager().bindTexture(res);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
         return res;
     }
@@ -132,7 +132,7 @@ public class WebUtil {
             mc.getTextureManager().loadTexture(res, dt);
             mc.getTextureManager().bindTexture(res);
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         }
         return res;
     }

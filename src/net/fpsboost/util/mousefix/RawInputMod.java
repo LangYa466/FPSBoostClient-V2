@@ -1,5 +1,6 @@
 package net.fpsboost.util.mousefix;
 
+import cn.langya.Logger;
 import net.java.games.input.Controller;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Mouse;
@@ -40,7 +41,7 @@ public class RawInputMod {
                     try {
                         Thread.sleep(1);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Logger.error(e.getMessage());
                     }
 
                 }

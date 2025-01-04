@@ -1,5 +1,6 @@
 package net.fpsboost.config;
 
+import cn.langya.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -54,25 +55,24 @@ public class ConfigManager implements Wrapper {
                 if (!config.name.equals(name)) continue;
                 try {
                     config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
-                    if (ClientSettings.INSTANCE.cnMode.getValue()){
-                        System.out.println("加载客户端配置: " + name);
-                    }else{
-                        System.out.println("Loading client config: " + name);
-                    }
-                }
-                catch (FileNotFoundException e) {
                     if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                        System.out.println("配置文件不存在: " + name);
-                    }else {
-                        System.out.println("Failed to load config: " + name);
+                        Logger.info("加载客户端配置: " + name);
+                    } else {
+                        Logger.info("Loading client config: " + name);
+                    }
+                } catch (FileNotFoundException e) {
+                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                        Logger.error("配置文件不存在: " + name);
+                    } else {
+                        Logger.error("Failed to load config: " + name);
 
                     }
-                    e.printStackTrace();
+                    Logger.error(e.getMessage());
                 }
                 break;
             }
         } else {
-            System.out.println("Config " + name + " doesn't exist, creating a new one...");
+            Logger.warn("Config " + name + " doesn't exist, creating a new one...");
             saveConfig(name);
         }
     }
@@ -86,9 +86,9 @@ public class ConfigManager implements Wrapper {
         File file = new File(dir, name);
         try {
             if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                System.out.println("保存客户端配置: " + name);
-            }else {
-                System.out.println("Saving client config: " + name);
+                Logger.info("保存客户端配置: " + name);
+            } else {
+                Logger.info("Saving client config: " + name);
             }
             file.createNewFile();
             for (Config config : configs) {
@@ -96,9 +96,8 @@ public class ConfigManager implements Wrapper {
                 FileUtils.writeByteArrayToFile(file, gson.toJson(config.saveConfig()).getBytes(StandardCharsets.UTF_8));
                 break;
             }
-        }
-        catch (IOException e) {
-            System.out.println("Failed to save config: " + name);
+        } catch (IOException e) {
+            Logger.error("Failed to save config: " + name);
         }
     }
 
@@ -108,9 +107,9 @@ public class ConfigManager implements Wrapper {
     public static void loadAllConfig() {
         configs.forEach(it -> loadConfig(it.name));
         if (ClientSettings.INSTANCE.cnMode.getValue()) {
-            System.out.println("成功加载全部配置");
-        }else {
-            System.out.println("Successfully loaded all configs");
+            Logger.info("成功加载全部配置");
+        } else {
+            Logger.info("Successfully loaded all configs");
         }
     }
 
@@ -120,10 +119,9 @@ public class ConfigManager implements Wrapper {
     public static void saveAllConfig() {
         configs.forEach(it -> saveConfig(it.name));
         if (ClientSettings.INSTANCE.cnMode.getValue()) {
-            System.out.println("成功保存全部配置");
-        }
-        else {
-            System.out.println("Successfully saved all configs");
+            Logger.info("成功保存全部配置");
+        } else {
+            Logger.info("Successfully saved all configs");
         }
     }
 }

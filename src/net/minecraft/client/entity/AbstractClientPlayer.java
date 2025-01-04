@@ -2,18 +2,12 @@ package net.minecraft.client.entity;
 
 import com.mojang.authlib.GameProfile;
 import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 
-import net.fpsboost.module.ModuleManager;
-import net.fpsboost.module.impl.ClientCape;
 import net.fpsboost.util.CapeUtil;
-import net.fpsboost.util.IRCUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
 import net.minecraft.client.renderer.ImageBufferDownload;
 import net.minecraft.client.renderer.ThreadDownloadImageData;
-import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
@@ -29,10 +23,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 import net.optifine.player.CapeUtils;
 import net.optifine.player.PlayerConfigurations;
-import net.optifine.reflect.Reflector;
-
-import javax.imageio.ImageIO;
-import javax.swing.*;
 
 import static net.fpsboost.Wrapper.mc;
 

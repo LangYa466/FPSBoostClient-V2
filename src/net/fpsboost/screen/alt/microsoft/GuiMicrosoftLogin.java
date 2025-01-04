@@ -1,5 +1,6 @@
 package net.fpsboost.screen.alt.microsoft;
 
+import cn.langya.Logger;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
@@ -41,7 +42,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
                 } catch (Throwable e) {
                     closed = true;
 
-                    e.printStackTrace();
+                    Logger.error(e.getMessage());
 
                     IOUtils.closeQuietly(microsoftLogin);
 

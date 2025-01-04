@@ -1,5 +1,6 @@
 package net.fpsboost.screen;
 
+import cn.langya.Logger;
 import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -77,7 +78,7 @@ public class GuiBackgroundSettings extends GuiScreen {
                 FileUtils.writeStringToFile(file, url);
                 JOptionPane.showMessageDialog(null, cnMode ? "切换背景图成功" : "Background changed successfully");
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.error(e.getMessage());
             }
         } else if (button.id == 1) {
             JFileChooser fileChooser = new JFileChooser();
@@ -95,7 +96,7 @@ public class GuiBackgroundSettings extends GuiScreen {
                     WebUtil.bindLocalTexture(localImgPath, "ClientBG");
                     JOptionPane.showMessageDialog(null, cnMode ? "切换背景图成功" : "Background changed successfully");
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    Logger.error(e.getMessage());
                 }
             }
         } else if (button.id == 2) {

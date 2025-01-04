@@ -1,5 +1,6 @@
 package net.fpsboost.screen.alt.microsoft;
 
+import cn.langya.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -110,7 +111,7 @@ public class MicrosoftLogin implements Closeable {
     // 获取访问令牌
     private String getAccessToken(String xstsToken, String uhs) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting access token";
-        System.out.println("Getting access token");
+        Logger.info("Getting access token");
         final URL url = new URL("https://api.minecraftservices.com/authentication/login_with_xbox");
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("POST");
@@ -132,7 +133,7 @@ public class MicrosoftLogin implements Closeable {
     // 从刷新令牌获取微软令牌
     public String getMicrosoftTokenFromRefreshToken(String refreshToken) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting microsoft token from refresh token";
-        System.out.println("Getting microsoft token from refresh token");
+        Logger.info("Getting microsoft token from refresh token");
 
         final URL url = new URL("https://login.live.com/oauth20_token.srf");
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -157,7 +158,7 @@ public class MicrosoftLogin implements Closeable {
     // 根据授权码获取微软令牌和刷新令牌
     public String[] getMicrosoftTokenAndRefreshToken(String code) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting microsoft token";
-        System.out.println("Getting microsoft token");
+        Logger.info("Getting microsoft token");
         final URL url = new URL("https://login.live.com/oauth20_token.srf");
         final HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         final String param = "client_id=" + CLIENT_ID +
@@ -181,7 +182,7 @@ public class MicrosoftLogin implements Closeable {
     // 获取Xbox Live令牌
     public String getXBoxLiveToken(String microsoftToken) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting xbox live token";
-        System.out.println("Getting xbox live token");
+        Logger.info("Getting xbox live token");
         final URL connectUrl = new URL("https://user.auth.xboxlive.com/user/authenticate");
         final String param;
         final JsonObject xbl_param = new JsonObject();
@@ -210,7 +211,7 @@ public class MicrosoftLogin implements Closeable {
     // 获取XSTS令牌和用户哈希值
     public String[] getXSTSTokenAndUserHash(String xboxLiveToken) throws IOException {
         status = EnumChatFormatting.YELLOW + "Getting xsts token and user hash";
-        System.out.println("Getting xsts token and user hash");
+        Logger.info("Getting xsts token and user hash");
         final URL ConnectUrl = new URL("https://xsts.auth.xboxlive.com/xsts/authorize");
         final String param;
         final ArrayList<String> tokens = new ArrayList<>();

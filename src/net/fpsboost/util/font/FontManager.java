@@ -1,5 +1,6 @@
 package net.fpsboost.util.font;
 
+import cn.langya.Logger;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.util.font.impl.UFontRenderer;
 
@@ -26,11 +27,11 @@ public class FontManager {
             try {
                 // 如果文件不存在，创建文件
                 if (!fontFile.createNewFile()) {
-                    System.err.println("Failed to create font file.");
+                    Logger.error("Failed to create font file: " + fontFile.getAbsolutePath());
                     return;
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.error(e.getMessage());
                 return;
             }
         }
@@ -43,13 +44,13 @@ public class FontManager {
                 os.write(buffer, 0, length);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
         } finally {
             try {
                 assert is != null;
                 is.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                Logger.error(e.getMessage());
             }
         }
     }
@@ -61,7 +62,7 @@ public class FontManager {
             font = Font.createFont(Font.TRUETYPE_FONT, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {
-            System.out.printf("Error loading font %s: %s%n", fontName, ex.getMessage());
+            Logger.error("Failed to load font: " + fontName + ", using default font.\n Error: {}",ex.getMessage());
             font = new Font("Arial", Font.PLAIN, size); // 使用默认字体作为后备
         }
         return font;

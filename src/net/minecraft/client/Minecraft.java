@@ -34,7 +34,6 @@ import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
 
 import net.fpsboost.Client;
-import net.fpsboost.config.ConfigManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
@@ -895,7 +894,7 @@ public class Minecraft implements IThreadListener {
         try
         {
             logger.info("Stopping!");
-            ConfigManager.saveAllConfig();
+            Client.stopClient();
 
             try
             {

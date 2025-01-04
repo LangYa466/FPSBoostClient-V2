@@ -6,7 +6,7 @@ import com.mojang.authlib.GameProfile;
 import java.util.Comparator;
 import java.util.List;
 
-import net.fpsboost.util.IRCUtil;
+import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.RenderUtil;
 import net.minecraft.client.Minecraft;
@@ -185,7 +185,7 @@ public class GuiPlayerTabOverlay extends Gui
 
                 if (networkplayerinfo1.getGameType() == WorldSettings.GameType.SPECTATOR)
                 {
-                    if (IRCUtil.transport.isUser(s1)){
+                    if (ClientIRC.isUser(s1)){
                         RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.getHeight()-2f, (float)k2,mc.fontRendererObj.getHeight(),mc.fontRendererObj.getHeight());
                         s1 = EnumChatFormatting.GREEN + s1;
                     }
@@ -193,7 +193,7 @@ public class GuiPlayerTabOverlay extends Gui
                 }
                 else
                 {
-                    if (IRCUtil.transport.isUser(s1)){
+                    if (ClientIRC.isUser(s1)){
                         RenderUtil.drawImage(IconUtil.icon,(float)j2-mc.fontRendererObj.getHeight()-2f, (float)k2,mc.fontRendererObj.getHeight(),mc.fontRendererObj.getHeight());
                         s1 = EnumChatFormatting.GREEN + s1;
                     }

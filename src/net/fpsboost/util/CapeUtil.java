@@ -1,5 +1,6 @@
 package net.fpsboost.util;
 
+import cn.langya.Logger;
 import net.fpsboost.Wrapper;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.impl.ClientSettings;
@@ -30,7 +31,7 @@ public class CapeUtil implements Wrapper {
                 oldCapeFile.createNewFile();
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Create cape verification failed":"创建披风验证失败"));
-                e.printStackTrace();
+                Logger.error(e.getMessage());
                 JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Take a screenshot and send it to the administrator":"截图给群主 让他给你补卡密 因为客户端写入出现了验证错误!!"));
                 return;
             }
@@ -41,7 +42,7 @@ public class CapeUtil implements Wrapper {
             dt = new DynamicTexture(ImageIO.read(new URL(url)));
         } catch (IOException e) {
             JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Failed to load cape image and input again: ":"读取披风图片失败 请重新输入 按确定重新输入"));
-            e.printStackTrace();
+            Logger.error(e.getMessage());
             setCape(JOptionPane.showInputDialog((ClientSettings.INSTANCE.cnMode.getValue() ?"New cape image link":"新的披风图片链接")));
             return;
         }

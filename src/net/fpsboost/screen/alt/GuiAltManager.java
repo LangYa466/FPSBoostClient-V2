@@ -1,10 +1,12 @@
 package net.fpsboost.screen.alt;
 
+import cn.langya.Logger;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.altimpl.MicrosoftAlt;
 import net.fpsboost.screen.alt.microsoft.GuiMicrosoftLogin;
 import net.fpsboost.screen.alt.microsoft.MicrosoftLogin;
 import com.mojang.authlib.exceptions.AuthenticationException;
+import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -68,7 +70,7 @@ public class GuiAltManager extends GuiScreen {
                 final Thread thread = new Thread(() -> {
                     if (ClientSettings.INSTANCE.cnMode.getValue()) {
                         status = EnumChatFormatting.YELLOW + "登录中...";
-                    }else {
+                    } else {
                         status = EnumChatFormatting.GREEN + "Logging in...";
                     }
                     switch (selectAlt.getAccountType()) {
@@ -76,7 +78,7 @@ public class GuiAltManager extends GuiScreen {
                             Minecraft.getMinecraft().session = new Session(selectAlt.getUserName(), "", "", "mojang");
                             if (ClientSettings.INSTANCE.cnMode.getValue()) {
                                 status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
-                            }else {
+                            } else {
                                 status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
                             }
                             break;
@@ -86,21 +88,20 @@ public class GuiAltManager extends GuiScreen {
 
                                 while (Minecraft.getMinecraft().running) {
                                     if (microsoftLogin.logged) {
-                                        System.out.print("");
                                         mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
                                         if (ClientSettings.INSTANCE.cnMode.getValue()) {
                                             status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
-                                        }else {
+                                        } else {
                                             status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
                                         }
                                         break;
                                     }
                                 }
                             } catch (Throwable e) {
-                                e.printStackTrace();
+                                Logger.error(e.getMessage());
                                 if (ClientSettings.INSTANCE.cnMode.getValue()) {
                                     status = EnumChatFormatting.RED + "登录失败! " + e.getClass().getName() + ": " + e.getMessage();
-                                }else {
+                                } else {
                                     status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
                                 }
                             }
@@ -131,10 +132,10 @@ public class GuiAltManager extends GuiScreen {
                         public void run() {
                             final AltManager.LoginStatus loginStatus;
                             try {
-                                if (ClientSettings.INSTANCE.cnMode.getValue()){
+                                if (ClientSettings.INSTANCE.cnMode.getValue()) {
                                     status = EnumChatFormatting.YELLOW + "登录中...";
-                                }else {
-                                     status = EnumChatFormatting.GREEN + "Logging in...";
+                                } else {
+                                    status = EnumChatFormatting.GREEN + "Logging in...";
                                 }
                                 loginStatus = AltManager.loginAlt(account, password);
 
@@ -142,23 +143,24 @@ public class GuiAltManager extends GuiScreen {
                                     case FAILED:
                                         if (ClientSettings.INSTANCE.cnMode.getValue()) {
                                             status = EnumChatFormatting.RED + "登录失败!";
-                                        }else {
+                                        } else {
                                             status = EnumChatFormatting.RED + "Login failed!";
                                         }
                                         break;
                                     case SUCCESS:
+                                        String ign = mc.session.getUsername();
                                         if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                                            status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
-                                        }else {
-                                            status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
+                                            status = EnumChatFormatting.GREEN + "登录成功! " + ign;
+                                        } else {
+                                            status = EnumChatFormatting.GREEN + "Logged in! " + ign;
                                         }
                                         break;
                                 }
                             } catch (AuthenticationException e) {
-                                e.printStackTrace();
+                                Logger.error(e.getMessage());
                                 if (ClientSettings.INSTANCE.cnMode.getValue()) {
                                     status = EnumChatFormatting.RED + "登录失败! " + e.getClass().getName() + ": " + e.getMessage();
-                                }else {
+                                } else {
                                     status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
                                 }
                             }

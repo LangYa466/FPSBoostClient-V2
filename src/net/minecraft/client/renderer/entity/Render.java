@@ -1,6 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
-import net.fpsboost.util.IRCUtil;
+import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.RenderUtil;
 import net.minecraft.block.Block;
@@ -333,7 +333,7 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
     protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
     {
         if (entityIn.getName() == null) return;
-        boolean isUser = (IRCUtil.transport.isUser(entityIn.getName()));
+        boolean isUser = (ClientIRC.isUser(entityIn.getName()));
         if(isUser) str = "   " + str;
         double d0 = entityIn.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
