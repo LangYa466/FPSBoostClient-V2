@@ -47,7 +47,7 @@ public class ModuleConfig extends Config {
                 valuesObject.addProperty(value.name, ((ModeValue)value).getValue());
             }
             else if (value instanceof ColorValue) {
-                valuesObject.addProperty(value.name, ((ColorValue)value).getValue());
+                valuesObject.addProperty(value.name, ((ColorValue)value).getValue().toString());
             }
         }
         return valuesObject;
@@ -80,7 +80,7 @@ public class ModuleConfig extends Config {
                             ((ModeValue)value).setValue(theValue.getAsString());
                         }
                         else if (value instanceof ColorValue) {
-                            ((ColorValue)value).setValue(theValue.getAsInt());
+                            ((ColorValue)value).setValue2(theValue.getAsString());
                         }
                     }
                 }

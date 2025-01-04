@@ -1,5 +1,6 @@
 package net.fpsboost.module;
 
+import cn.imflowow.MessageManager;
 import net.fpsboost.Wrapper;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
@@ -41,10 +42,11 @@ public class ModuleManager implements Wrapper {
         addModule(new NoDestroyEffects());
         addModule(new Projectile());
         addModule(new MinimizedBobbing());
-        addModule(new HitColor());
+        addModule(HitColor.INSTANCE);
         addModule(new AttackEffects());
         addModule(new SmoothGUIZoom());
         addModule(new RenderMyNameTag());
+        addModule(CustomEnchantmentColor.INSTANCE);
         // addModule(new BetterFont());这个模块有点bug
         // addModule(new TargetCircle()); 这个模块有点bug
 
@@ -73,6 +75,7 @@ public class ModuleManager implements Wrapper {
 
     public static void moduleRender2D() {
         if (mc.currentScreen != null) return;
+        MessageManager.onRender2D();
         modules.stream().filter(Module::isEnabled).forEach(Module::onRender2D);
     }
 

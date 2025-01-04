@@ -20,13 +20,8 @@ import java.awt.*;
 
 public class BlockOverlay extends Module {
     private final BooleanValue mode = new BooleanValue("边框模式","Outline Mode", true);
-    private final ColorValue color1 = new ColorValue("边框颜色","Outline Color", new Color(255, 255, 255));
-    private final ColorValue color = new ColorValue("填充颜色","Fill Color", new Color(255, 255, 255, 50)) {
-        @Override
-        public boolean getHasAlpha() {
-            return false;
-        }
-    };
+    private final ColorValue color1 = new ColorValue("边框颜色","Outline Color", new Color(255, 255, 255),this);
+    private final ColorValue color = new ColorValue("填充颜色","Fill Color", new Color(255, 255, 255, 50),this);
     private final BooleanValue chroma = new BooleanValue("彩虹色","Rainbow", false);
     private final BooleanValue throughBlock = new BooleanValue("边框-立体","3D Outline", true);
 
@@ -53,8 +48,8 @@ public class BlockOverlay extends Module {
             GL11.glEnable(2848);
             if (throughBlock.getValue()) GL11.glDisable(2929);
             GL11.glDepthMask(false);
-            int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getColorC().getAlpha() / 255f);
-            Color c = chroma.getValue() ? intToColor(chromaColor) : color1.getColorC();
+            int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getValue().getAlpha() / 255f);
+            Color c = chroma.getValue() ? intToColor(chromaColor) : color1.getValue().getColor();
             GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
             final double minX = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinX();
             final double minY = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinY();

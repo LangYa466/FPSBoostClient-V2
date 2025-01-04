@@ -18,7 +18,7 @@ public class TargetCircle extends Module {
         super("TargetCircle", "目标光环", "Add an aura to the person you attack", "给你攻击的人加上光环");
     }
 
-    private final ColorValue colorValue = new ColorValue("颜色","Color",-1);
+    private final ColorValue colorValue = new ColorValue("颜色","Color",Color.white,this);
 
     private double easeInOutQuad(double d) {
         return d < 0.5 ? 2.0 * d * d : 1.0 - Math.pow(-2.0 * d + 2.0, 2.0) / 2.0;
@@ -63,7 +63,7 @@ public class TargetCircle extends Module {
         double d8 = target.lastTickPosZ + (target.posZ - target.lastTickPosZ) * (double)mc.timer.renderPartialTicks - mc.getRenderManager().viewerPosZ;
         double d9 = d5 / 3.0 * (d3 > 0.5 ? 1.0 - d3 : d3) * (double)(bl ? -1 : 1);
         for (int i = 0; i < 360; i += 5) {
-            Color color = colorValue.getColorC();
+            Color color = colorValue.getValue().getColor();
             double d10 = d6 - Math.sin((double)i * Math.PI / 180.0) * d4;
             double d11 = d8 + Math.cos((double)i * Math.PI / 180.0) * d4;
             double d12 = d6 - Math.sin((double)(i - 5) * Math.PI / 180.0) * d4;

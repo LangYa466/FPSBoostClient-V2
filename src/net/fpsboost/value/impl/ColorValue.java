@@ -1,5 +1,66 @@
 package net.fpsboost.value.impl;
 
+import cn.imflowow.clickgui.utils.HSBColor;
+import lombok.Getter;
+import lombok.Setter;
+import net.fpsboost.module.Module;
+import net.fpsboost.value.Value;
+
+import java.awt.*;
+
+@Getter
+@Setter
+public class ColorValue extends Value<HSBColor> {
+
+    BooleanValue rainbow;
+    NumberValue rainbowspeed;
+    Module module;
+
+    public ColorValue(String cnNmae, String name, Color value, Module m) {
+        super(cnNmae,name,new HSBColor(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()));
+        module = m;
+        init();
+    }
+
+    public void setValue2(String input) {
+        String[] split = input.split(":");
+        if (split.length < 4)
+            return;
+        this.setValue(new HSBColor(Float.parseFloat(split[0]), Float.parseFloat(split[1]), Float.parseFloat(split[2]),
+                Integer.parseInt(split[3])));
+    }
+
+    public void init() {
+        this.rainbow = new BooleanValue((this.getName()) + ("彩虹色"), (this.getName()) + ("Rainbow"), false);
+        this.rainbowspeed = new NumberValue(
+                (this.getName())
+                        + ("彩虹速度"),
+                this.getName()
+                + ("RainbowSpeed"),
+                3, 1, 10, 1);
+        module.values.add(this.rainbow);
+        module.values.add(this.rainbowspeed);
+    }
+
+    @Override
+    public HSBColor getValue() {
+        if (this.rainbow.getValue()) {
+            float speed = this.rainbowspeed.getValue().floatValue();
+            float hue = System.currentTimeMillis() % (int) ((1 - speed / 15.0) * 2000);
+            hue /= (int) ((1 - speed / 15.0) * 2000);
+            super.getValue().setHue(hue);
+        }
+        return super.getValue();
+    }
+
+    public Integer getValueC() {
+        return getValue().getColor().getRGB();
+    }
+
+}
+/*
+package net.fpsboost.value.impl;
+
 import lombok.Getter;
 import lombok.Setter;
 import net.fpsboost.value.Value;
@@ -66,3 +127,5 @@ public class ColorValue extends Value<Integer> {
         return new Color(color);
     }
 }
+
+ */

@@ -224,7 +224,7 @@ public class RenderItem implements IResourceManagerReloadListener
                     ShadersRender.renderEnchantedGlintBegin();
                 }
                 int color = -8372020;
-                if (CustomEnchantmentColor.isEnable) color = CustomEnchantmentColor.color.getValue();
+                if (CustomEnchantmentColor.isEnable) color = CustomEnchantmentColor.INSTANCE.color.getValueC();
                 GlStateManager.matrixMode(5890);
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(8.0F, 8.0F, 8.0F);

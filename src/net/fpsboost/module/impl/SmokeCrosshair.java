@@ -7,13 +7,15 @@ import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.ScaledResolution;
 
+import java.awt.*;
+
 // 该类定义了自定义准星模块的功能
 public class SmokeCrosshair extends Module {
     double curCord;
     static double cord;
     int curDynamicValues = 0;
     int DynamicValues = 0;
-    public static ColorValue color = new ColorValue("颜色","color",-1);
+    public ColorValue color = new ColorValue("颜色","color", Color.white, this);
     public static BooleanValue dot = new BooleanValue("点", "Dot", true);
     public static NumberValue size = new NumberValue("大小", "size", 0.0, 50.0, 0.0, 0.1);
     public static NumberValue gap = new NumberValue("间隔", "gap", 0.0, 50.0, 0.0, 0.1);
@@ -62,7 +64,7 @@ public class SmokeCrosshair extends Module {
 
         if (mc.currentScreen == null) {
             ScaledResolution sr = new ScaledResolution(mc);
-            int Color2 = color.getColor();
+            int Color2 = color.getValueC();
 
             if (dot.getValue()) {
                 drawCenteredDot(sr, Color2);

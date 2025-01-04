@@ -1,5 +1,6 @@
 package net.fpsboost;
 
+import cn.imflowow.clickgui.ClickGui;
 import cn.langya.Logger;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
@@ -15,7 +16,6 @@ import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.value.ValueManager;
 import net.minecraft.client.gui.GuiMainMenu;
 import org.apache.commons.io.FileUtils;
-import us.cubk.clickgui.ClickGuiScreen;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.84";
+    public static final String version = "1.9";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static final String web = "https://api.fpsboost.cn:444/";
@@ -49,7 +49,6 @@ public class Client implements Wrapper {
         ClientIRC.init();
         CapeUtil.init();
         FontManager.init();
-        ClickGuiScreen.INSTANCE.init();
 
         if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
 

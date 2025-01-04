@@ -24,8 +24,8 @@ public class ReachDisplay extends Element {
     private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
     private final BooleanValue textShadowValue = new BooleanValue("字体阴影","Text Shadow",true);
     private final BooleanValue clientFontValue = new BooleanValue("更好的字体","Better Font",true);
-    private final ColorValue bgColorValue = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80));
-    private final ColorValue textColorValue = new ColorValue("文本颜色","Text Color",Color.white);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80),this);
+    private final ColorValue textColorValue = new ColorValue("文本颜色","Text Color",Color.white, this);
 
     private static double range;
 
@@ -41,7 +41,7 @@ public class ReachDisplay extends Element {
         int decimalPlaces = customLengthValue.getValue().intValue();
         String format = "%." + decimalPlaces + "f Blocks";
         String text = String.format(format, range);
-        width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValue(),textColorValue.getValue(), textShadowValue.getValue(), clientFontValue.getValue());
+        width = RenderUtil.drawText(text,0,0,backgroundValue.getValue(),bgColorValue.getValueC(),textColorValue.getValueC(), textShadowValue.getValue(), clientFontValue.getValue());
     }
 
     @Override

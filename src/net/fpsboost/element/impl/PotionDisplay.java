@@ -18,9 +18,9 @@ import java.util.ArrayList;
 public class PotionDisplay extends Element {
 
     private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
-    private final ColorValue color = new ColorValue("背景颜色","Background Color",-1);
-    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色","Potion Name Text Color", Color.white);
-    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色","Potion Duration Text Color", Color.white);
+    private final ColorValue color = new ColorValue("背景颜色","Background Color",Color.white, this);
+    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色","Potion Name Text Color", Color.white, this);
+    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色","Potion Duration Text Color", Color.white, this);
 
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 
@@ -71,12 +71,12 @@ public class PotionDisplay extends Element {
 
                 // 绘制背景矩形
                 if (backgroundValue.getValue()) {
-                    RenderUtil.drawRect(0, (int) posY, allStringWidth + 13, 25, color.getColor());
+                    RenderUtil.drawRect(0, (int) posY, allStringWidth + 13, 25, color.getValueC());
                 }
 
                 // 绘制药水名称和持续时间
-                RenderUtil.drawStringWithShadow(s1, 25, (int) (posY + 3), textColorValue.getValue());
-                RenderUtil.drawStringWithShadow(s, 25, (int) (posY + 15), text2ColorValue.getValue());
+                RenderUtil.drawStringWithShadow(s1, 25, (int) (posY + 3), textColorValue.getValueC());
+                RenderUtil.drawStringWithShadow(s, 25, (int) (posY + 15), text2ColorValue.getValueC());
 
                 // 绘制状态图标
                 if (potion.hasStatusIcon()) {

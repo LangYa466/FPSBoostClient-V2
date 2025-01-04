@@ -95,6 +95,7 @@ public class ValueScreen extends GuiScreen {
 
                 RenderUtil.drawString(valueName, x, y, -1);
 
+                /*
                 // 红色
                 RenderUtil.drawString("R", x + 5, y + 15, Color.RED.getRGB());
                 RenderUtil.drawRectWithOutline(x + 20, y + 18, 100, 5, Color.GRAY.getRGB(), -1);
@@ -117,9 +118,13 @@ public class ValueScreen extends GuiScreen {
                     RenderUtil.drawRect(x + 20, y + 63, (int) (colorValue.getAlpha() / 255.0 * 100), 5, Color.WHITE.getRGB());
                 }
 
+
+
                 // 颜色预览
                 RenderUtil.drawRectWithOutline(x + 130, y + 18, 50, 50, colorValue.getColor(), -1);
                 y += 90;
+
+                 */
             }
         }
 
@@ -175,6 +180,7 @@ public class ValueScreen extends GuiScreen {
             if (value instanceof ColorValue) {
                 ColorValue colorValue = (ColorValue) value;
 
+                /*
                 // 红色
                 int min = Math.min(255, Math.max(0, (mouseX - (x + 20)) * 255 / 100));
 
@@ -198,6 +204,8 @@ public class ValueScreen extends GuiScreen {
                         colorValue.setAlpha(min);
                     }
                 }
+
+                 */
                 y += 90;
             }
         }

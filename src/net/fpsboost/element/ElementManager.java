@@ -3,13 +3,14 @@ package net.fpsboost.element;
 import net.fpsboost.element.impl.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author LangYa
  * @since 2024/8/30 22:38
  */
 public class ElementManager {
-    public static ArrayList<Element> elements = new ArrayList<>();
+    public static List<Element> elements = new ArrayList<>();
     public static boolean dragging;
 
     public static void init() {

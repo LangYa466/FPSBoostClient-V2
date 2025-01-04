@@ -316,13 +316,27 @@ public class FontRenderer implements IResourceManagerReloadListener
         return this.drawString(text, x, y, color, true);
     }
 
+    public int drawStringWithShadow(String text, double x, double y, int color)
+    {
+        return this.drawString(text, x, y, color, true);
+    }
+
     public int drawString(String text, int x, int y, int color)
+    {
+        return this.drawString(text, (float)x, (float)y, color, false);
+    }
+
+    public int drawString(String text, double x, double y, int color)
     {
         return this.drawString(text, (float)x, (float)y, color, false);
     }
 
     public int drawString(String text, float x, float y, int color, boolean dropShadow) {
         return drawString(text,x,y,color,dropShadow,false);
+    }
+
+    public int drawString(String text, double x, double y, int color, boolean dropShadow) {
+        return drawString(text, (float) x, (float) y,color,dropShadow,false);
     }
 
     public int drawString(String text, float x, float y, int color, boolean dropShadow, boolean isMC)
@@ -993,5 +1007,13 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public int getHeight() {
         return 9;
+    }
+
+    public float drawCenteredString(String text, float x, float y, int color) {
+        return drawString(text, x - getStringWidth(text) / 2F, y, color);
+    }
+
+    public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
+        drawStringWithShadow(text, (x - getStringWidth(text) / 2F), y, color);
     }
 }
