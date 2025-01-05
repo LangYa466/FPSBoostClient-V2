@@ -9,7 +9,7 @@ import cn.imflowow.clickgui.utils.Rect;
 import cn.imflowow.clickgui.utils.Scissor;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.Module;
-import net.fpsboost.module.impl.ClickGUI;
+import net.fpsboost.module.impl.ClickGUIModule;
 import net.fpsboost.util.font.FontManager;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -20,7 +20,6 @@ import cn.imflowow.clickgui.components.ModuleList;
 import cn.imflowow.clickgui.components.ValueList;
 import cn.imflowow.clickgui.components.Window;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.ScaledResolution;
 
 public class ClickGui extends GuiScreen {
 	public static final ClickGui INSTANCE = new ClickGui();
@@ -185,7 +184,7 @@ public class ClickGui extends GuiScreen {
 	}
 
 	public int getColor(int type) {
-		switch (ClickGUI.theme) {
+		switch (ClickGUIModule.theme) {
 		case Dark:
 			switch (type) {
 			case 0:
@@ -317,7 +316,7 @@ public class ClickGui extends GuiScreen {
 	}
 
 	public String getResource(int type) {
-		switch (ClickGUI.theme) {
+		switch (ClickGUIModule.theme) {
 		case Dark:
 			switch (type) {
 			case 0:

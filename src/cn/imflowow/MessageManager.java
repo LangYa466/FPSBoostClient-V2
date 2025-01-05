@@ -9,9 +9,8 @@ import cn.imflowow.clickgui.utils.MsTimer;
 import cn.imflowow.clickgui.utils.Rect;
 import cn.imflowow.clickgui.utils.Translate;
 import net.fpsboost.Wrapper;
-import net.fpsboost.module.impl.ClickGUI;
+import net.fpsboost.module.impl.ClickGUIModule;
 import net.fpsboost.util.font.FontManager;
-import net.fpsboost.util.font.impl.UFontRenderer;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.ScaledResolution;
 
@@ -42,7 +41,7 @@ public class MessageManager implements Wrapper {
 	}
 
 	public static int getColor(int type) {
-		switch (ClickGUI.theme) {
+		switch (ClickGUIModule.theme) {
 		case Dark:
 			switch (type) {
 			case 0:

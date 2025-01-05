@@ -9,8 +9,8 @@ import org.lwjgl.input.Keyboard;
  * @author LangYa
  * @since 2024/9/11 21:21
  */
-public class ClickGUI extends Module {
-    public ClickGUI() {
+public class ClickGUIModule extends Module {
+    public ClickGUIModule() {
         super("ClickGUI", "点击页面", "The Screen ClickGUI","你看见的这个页面", Keyboard.KEY_RSHIFT);
     }
 

@@ -18,7 +18,7 @@ public class ModuleManager implements Wrapper {
     public static List<Module> modules = new ArrayList<>();
 
     public static void init() {
-        addModule(new ClickGUI());
+        addModule(new ClickGUIModule());
         addModule(new Sprint());
         addModule(new OldAnimation());
         addModule(new NameProtect());

@@ -89,22 +89,22 @@ public class StringArrayEntity extends ValueEntity {
         this.rect.setX(positionX + 131 - this.getWidth());
         this.rect.setY(positionY);
         this.rect.setWidth(this.getWidth());
-        this.rect.setHeight(10);
+        this.rect.setHeight(15);
         this.rect.draw();
 
         fr.drawString(this.getValue().getValue(), positionX + 132 - (getWidth() / 2F + width / 2F), positionY + 3.5, this.getColor(20));
-        int y = 10;
+        int y = 15;
         for (StringButton button : values) {
             if (button.getValue().equals(this.getValue().getValue()))
                 continue;
             button.draw(mouseX, mouseY, positionX + 131 - this.getWidth(), positionY + y);
-            y += 10;
+            y += 15;
         }
 
         if (this.isOpen) {
-            this.animation.interpolate(this.getWidth(), values.size() * 10, 0.3f);
+            this.animation.interpolate(this.getWidth(), values.size() * 15, 0.3f);
         } else {
-            this.animation.interpolate(this.getWidth(), 10, 0.3f);
+            this.animation.interpolate(this.getWidth(), 15, 0.3f);
         }
 
         this.getClickGui().getWholeScreenScissor().doScissor();
