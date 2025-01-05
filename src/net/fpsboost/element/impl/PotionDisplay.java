@@ -2,8 +2,10 @@ package net.fpsboost.element.impl;
 
 import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
+import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
@@ -17,8 +19,9 @@ import java.util.ArrayList;
 
 public class PotionDisplay extends Element {
 
+    private final BooleanValue betterFont = new BooleanValue("更好的字体","BetterFont",true);
     private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
-    private final ColorValue color = new ColorValue("背景颜色","Background Color",Color.white, this);
+    private final ColorValue color = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80), this);
     private final ColorValue textColorValue = new ColorValue("药水名字文本颜色","Potion Name Text Color", Color.white, this);
     private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色","Potion Duration Text Color", Color.white, this);
 
@@ -32,6 +35,12 @@ public class PotionDisplay extends Element {
     public void onDraw() {
         ArrayList<PotionEffect> collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
 
+        FontRenderer fr;
+        if (betterFont.getValue()) {
+            fr = FontManager.client();
+        } else {
+            fr = mc.fontRendererObj;
+        }
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {
             RenderUtil.resetColor();
@@ -40,8 +49,8 @@ public class PotionDisplay extends Element {
             collection.sort((o1, o2) -> {
                 String os1 = getAmplifierString(o1);
                 String os2 = getAmplifierString(o2);
-                return Integer.compare(RenderUtil.getStringWidth(Potion.getDurationString(o2) + os2),
-                        RenderUtil.getStringWidth(Potion.getDurationString(o1) + os1));
+                return Integer.compare(fr.getStringWidth(Potion.getDurationString(o2) + os2),
+                        fr.getStringWidth(Potion.getDurationString(o1) + os1));
             });
 
             // 我们定义一个初始 Y 坐标
@@ -64,7 +73,7 @@ public class PotionDisplay extends Element {
                 s1 += getAmplifierString(potioneffect);
 
                 // 计算文本宽度
-                int allStringWidth = RenderUtil.getStringWidth(s1) + RenderUtil.getStringWidth(s);
+                int allStringWidth = fr.getStringWidth(s1) + fr.getStringWidth(s);
                 if (allStringWidth > width) {
                     width = allStringWidth + 15;
                 }
@@ -75,8 +84,8 @@ public class PotionDisplay extends Element {
                 }
 
                 // 绘制药水名称和持续时间
-                RenderUtil.drawStringWithShadow(s1, 25, (int) (posY + 3), textColorValue.getValueC());
-                RenderUtil.drawStringWithShadow(s, 25, (int) (posY + 15), text2ColorValue.getValueC());
+                fr.drawStringWithShadow(s1, 25, (int) (posY + 3), textColorValue.getValueC());
+                fr.drawStringWithShadow(s, 25, (int) (posY + 15), text2ColorValue.getValueC());
 
                 // 绘制状态图标
                 if (potion.hasStatusIcon()) {

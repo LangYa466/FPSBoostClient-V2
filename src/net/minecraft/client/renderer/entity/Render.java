@@ -1,8 +1,12 @@
 package net.minecraft.client.renderer.entity;
 
+import lombok.Getter;
+import lombok.Setter;
+import net.fpsboost.module.impl.BetterNameTag;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.RenderUtil;
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -31,10 +35,15 @@ import org.lwjgl.opengl.GL11;
 public abstract class Render<T extends Entity> implements IEntityRenderer
 {
     private static final ResourceLocation shadowTextures = new ResourceLocation("textures/misc/shadow.png");
+    @Getter
     protected final RenderManager renderManager;
     public float shadowSize;
     protected float shadowOpaque = 1.0F;
+    @Setter
+    @Getter
     private Class entityClass = null;
+    @Setter
+    @Getter
     private ResourceLocation locationTextureCustom = null;
 
     protected Render(RenderManager renderManager)
@@ -330,10 +339,9 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         return this.renderManager.getFontRenderer();
     }
 
-    protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance)
-    {
+    protected void renderLivingLabel(T entityIn, String str, double x, double y, double z, int maxDistance) {
         if (entityIn.getName() == null) return;
-        boolean isUser = (ClientIRC.isUser(entityIn.getName()));
+        boolean isUser = (ClientIRC.isUser(entityIn.getName())) && str.contains(entityIn.getName());
         if(isUser) str = "   " + str;
         double d0 = entityIn.getDistanceSqToEntity(this.renderManager.livingPlayer);
 
@@ -362,30 +370,43 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
                 i = -10;
             }
 
-            int j = fontrenderer.getStringWidth(str) / 2 + 5;
-            GlStateManager.disableTexture2D();
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
-            worldrenderer.pos((double)(-j - 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos((double)(-j - 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos((double)(j + 1), (double)(8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            worldrenderer.pos((double)(j + 1), (double)(-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
-            tessellator.draw();
-            GlStateManager.enableTexture2D();
-            fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, 553648127);
+            if (BetterNameTag.isEnable) {
+                if (!BetterNameTag.hideRect.getValue()) {
+                    int j = fontrenderer.getStringWidth(str) / 2 + 5;
+                    GlStateManager.disableTexture2D();
+                    worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                    worldrenderer.pos((double) (-j - 1), (double) (-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos((double) (-j - 1), (double) (8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos((double) (j + 1), (double) (8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    worldrenderer.pos((double) (j + 1), (double) (-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                    tessellator.draw();
+                    GlStateManager.enableTexture2D();
+                }
+            } else {
+                int j = fontrenderer.getStringWidth(str) / 2 + 5;
+                GlStateManager.disableTexture2D();
+                worldrenderer.begin(7, DefaultVertexFormats.POSITION_COLOR);
+                worldrenderer.pos((double) (-j - 1), (double) (-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                worldrenderer.pos((double) (-j - 1), (double) (8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                worldrenderer.pos((double) (j + 1), (double) (8 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                worldrenderer.pos((double) (j + 1), (double) (-1 + i), 0.0D).color(0.0F, 0.0F, 0.0F, 0.25F).endVertex();
+                tessellator.draw();
+                GlStateManager.enableTexture2D();
+            }
+
             GlStateManager.enableDepth();
             GlStateManager.depthMask(true);
-            fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i, -1);
+            if (BetterNameTag.isEnable && BetterNameTag.textShadow.getValue()) {
+                fontrenderer.drawStringWithShadow(str, -fontrenderer.getStringWidth(str) / 2, i - 1, -1);
+            } else {
+                fontrenderer.drawString(str, -fontrenderer.getStringWidth(str) / 2, i - 1, -1);
+            }
             if(isUser) RenderUtil.drawImage(IconUtil.icon,-fontrenderer.getStringWidth(str) / 2F, i,7,7);
             GlStateManager.enableLighting();
             GlStateManager.disableBlend();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
             GlStateManager.popMatrix();
         }
-    }
-
-    public RenderManager getRenderManager()
-    {
-        return this.renderManager;
     }
 
     public boolean isMultipass()
@@ -395,26 +416,6 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
 
     public void renderMultipass(T p_renderMultipass_1_, double p_renderMultipass_2_, double p_renderMultipass_4_, double p_renderMultipass_6_, float p_renderMultipass_8_, float p_renderMultipass_9_)
     {
-    }
-
-    public Class getEntityClass()
-    {
-        return this.entityClass;
-    }
-
-    public void setEntityClass(Class p_setEntityClass_1_)
-    {
-        this.entityClass = p_setEntityClass_1_;
-    }
-
-    public ResourceLocation getLocationTextureCustom()
-    {
-        return this.locationTextureCustom;
-    }
-
-    public void setLocationTextureCustom(ResourceLocation p_setLocationTextureCustom_1_)
-    {
-        this.locationTextureCustom = p_setLocationTextureCustom_1_;
     }
 
     public static void setModelBipedMain(RenderBiped p_setModelBipedMain_0_, ModelBiped p_setModelBipedMain_1_)

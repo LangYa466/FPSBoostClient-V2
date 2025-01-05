@@ -47,6 +47,7 @@ public class ModuleManager implements Wrapper {
         addModule(new SmoothGUIZoom());
         addModule(new RenderMyNameTag());
         addModule(CustomEnchantmentColor.INSTANCE);
+        addModule(new BetterNameTag());
         // addModule(new BetterFont());这个模块有点bug
         // addModule(new TargetCircle()); 这个模块有点bug
 

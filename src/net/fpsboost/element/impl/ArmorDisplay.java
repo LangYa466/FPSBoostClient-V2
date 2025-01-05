@@ -1,21 +1,24 @@
 package net.fpsboost.element.impl;
 
 import net.fpsboost.element.Element;
+import net.fpsboost.util.RenderUtil;
+import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ModeValue;
 import net.minecraft.client.gui.GuiChat;
+import net.minecraft.item.*;
 import org.lwjgl.opengl.GL11;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.init.Items;
-import net.minecraft.item.ItemStack;
 
 public class ArmorDisplay extends Element {
 
     private final BooleanValue heldItem = new BooleanValue("显示手持物品","Show Held Item",true);
     private final BooleanValue mode = new BooleanValue("竖向显示","Horizontal",false);
+    private final BooleanValue displayDamage = new BooleanValue("显示耐久","Display Damage",true);
 
     public ArmorDisplay() {
         super("ArmorDisplay","装备显示");
@@ -55,7 +58,22 @@ public class ArmorDisplay extends Element {
             if (mc.currentScreen instanceof GuiChat) {
                 mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (!mode.getValue() ? (-16 * -1 + 48) : 0), (!mode.getValue() ? 0 : (-16 * -1 + 48)));
             } else {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(mc.thePlayer.getHeldItem(), (!mode.getValue() ? (-16 * -1 + 48) : 0), (!mode.getValue() ? 0 : (-16 * -1 + 48)));
+                int itemX = (!mode.getValue() ? (-16 * -1 + 48) : 0);
+                int itemY = (!mode.getValue() ? 0 : (-16 * -1 + 48));
+                ItemStack itemStack = mc.thePlayer.getHeldItem();
+                if (itemStack == null) return;
+                mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, itemX, itemY);
+                if (displayDamage.getValue()) {
+                    Item item = itemStack.getItem();
+                    if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow) {
+                        int strX = itemX;
+                        int strY = itemY;
+                        if (mode.getValue()) strX += 16;
+                        else strY += 16;
+                        int durability = itemStack.getMaxDamage() - itemStack.getItemDamage();
+                        FontManager.client().drawStringWithShadow(String.valueOf(durability), strX, strY, -1);
+                    }
+                }
             }
 
             RenderHelper.disableStandardItemLighting();
@@ -98,5 +116,12 @@ public class ArmorDisplay extends Element {
         }
 
         mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, posXAdd, posYAdd);
+        if (!displayDamage.getValue()) return;
+        int durability = itemStack.getMaxDamage() - itemStack.getItemDamage();
+
+        int strX = posXAdd;
+        int strY = posYAdd;
+        if(mode.getValue()) strX += 16; else strY += 16;
+        FontManager.client().drawStringWithShadow(String.valueOf(durability), strX, strY,-1);
     }
 }

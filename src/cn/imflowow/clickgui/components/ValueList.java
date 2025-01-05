@@ -2,6 +2,8 @@ package cn.imflowow.clickgui.components;
 
 import cn.imflowow.clickgui.components.values.*;
 import cn.imflowow.clickgui.utils.*;
+import lombok.Getter;
+import lombok.Setter;
 import net.fpsboost.module.Module;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.Value;
@@ -15,11 +17,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ValueList extends UIComponent {
-	private Translate rectanim = new Translate(0, 0);
+	@Setter
+    @Getter
+    private Translate rectanim = new Translate(0, 0);
 	private Scissor scissor;
-	private ClickEntity clickarea;
-	private boolean clickable;
-	private boolean locked;
+	@Setter
+    @Getter
+    private ClickEntity clickarea;
+	@Setter
+    private boolean clickable;
+	@Setter
+    @Getter
+    private boolean locked;
 
 	private Rect background;
 
@@ -29,9 +38,13 @@ public class ValueList extends UIComponent {
 
 //	private Translate animation = new Translate(0, 0);
 	private double tarY;
-	private double curY;
+	@Getter
+    @Setter
+    private double curY;
 
-	private boolean open;
+	@Setter
+    @Getter
+    private boolean open;
 
 	private List<ValueEntity> values = new ArrayList();
 
@@ -165,7 +178,7 @@ public class ValueList extends UIComponent {
 				this.scissor.setHeight(272);
 				this.scissor.doScissor();
 				entity.draw(mouseX, mouseY, positionX + 250 + 8, positionY + 20 + y + curY);
-				y += 5 + entity.getHeight();
+				y += (int) (5 + entity.getHeight());
 			}
 			this.setLocked(false);
 
@@ -177,57 +190,13 @@ public class ValueList extends UIComponent {
 	public int getValuesHeight() {
 		int height = 0;
 		for (ValueEntity ve : this.values) {
-			height += 5 + ve.getHeight();
+			height += (int) (5 + ve.getHeight());
 		}
 		return height;
 	}
 
-	public boolean isOpen() {
-		return open;
-	}
-
-	public void setOpen(boolean open) {
-		this.open = open;
-	}
-
-	public boolean isClickable() {
+    public boolean isClickable() {
 		return this.clickable && !this.locked;
-	}
-
-	public void setClickable(boolean clickable) {
-		this.clickable = clickable;
-	}
-
-	public Translate getRectanim() {
-		return rectanim;
-	}
-
-	public void setRectanim(Translate rectanim) {
-		this.rectanim = rectanim;
-	}
-
-	public double getCurY() {
-		return curY;
-	}
-
-	public void setCurY(double curY) {
-		this.curY = curY;
-	}
-
-	public ClickEntity getClickarea() {
-		return clickarea;
-	}
-
-	public void setClickarea(ClickEntity clickarea) {
-		this.clickarea = clickarea;
-	}
-
-	public boolean isLocked() {
-		return locked;
-	}
-
-	public void setLocked(boolean locked) {
-		this.locked = locked;
 	}
 
 }

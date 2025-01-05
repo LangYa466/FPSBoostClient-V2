@@ -24,7 +24,8 @@ public class Window extends UIComponent {
 	public MenuButton modules;
 	public MenuButton global;
 	public ClickableString edit;
-	private boolean hover;
+	@Setter
+    private boolean hover;
 
 	@Setter
     @Getter
@@ -39,9 +40,7 @@ public class Window extends UIComponent {
 		this.onChosen = 0;
 		this.top_ = false;
 		this.top = new ClickableRect(this.positionX, this.positionY, 100, 40, this.getColor(0), Rect.RenderType.Expand,
-				() -> {
-					this.top_ = true;
-				}, () -> {
+				() -> this.top_ = true, () -> {
 				}, () -> {
 				}, () -> {
 				}, () -> {
@@ -58,9 +57,9 @@ public class Window extends UIComponent {
 
 		this.menu = new Rect(positionX, positionY + 40, 100, 260, this.getColor(2), Rect.RenderType.Expand);
 		this.main = new Rect(positionX + 100, positionY, 150, 300, this.getColor(4), Rect.RenderType.Expand);
-		this.modules = new MenuButton(0, "e", "辅助功能", positionX + 40, positionY + 102, true);
+		this.modules = new MenuButton(0, "e", "辅助功能", positionX + 40, positionY + 98, true);
 		this.modules.init(positionX, positionY);
-		this.global = new MenuButton(1, "f", "视觉UI", positionX + 40, positionY + 162, false);
+		this.global = new MenuButton(1, "f", "视觉UI", positionX + 40, positionY + 158, false);
 		this.global.init(positionX, positionY);
 	}
 
@@ -84,7 +83,6 @@ public class Window extends UIComponent {
 		this.global.setX(positionX + 40);
 		this.global.setY(positionY + 162);
 		this.global.draw(mouseX, mouseY, positionX + 40, positionY + 140);
-
 
 		this.edit.setX(positionX + 40);
 		this.edit.setY(positionY + 260);

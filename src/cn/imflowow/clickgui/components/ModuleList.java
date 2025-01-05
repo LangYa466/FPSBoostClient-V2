@@ -51,7 +51,7 @@ public class ModuleList extends UIComponent {
 		this.curY = 0;
 		this.tarY = 0;
 		this.onHover_width = 0;
-		this.lists = new ArrayList();
+		this.lists = new ArrayList<>();
 		this.refreshList(0);
 		this.clickarea = new ClickEntity(positionX + 110, positionY + 10, 130, 280, MouseBounds.CallType.Expand, () -> {
 		}, () -> {
@@ -112,7 +112,8 @@ public class ModuleList extends UIComponent {
 		if (this.onHover != null || anim_onhover.getX() != 0) {
 			if (this.onHover != null)
 				this.lastOnHover = this.onHover;
-			String text = this.lastOnHover.description;
+			String text = this.lastOnHover.cnDescription;
+			if (text.isEmpty()) text = "无";
 			float width = FontManager.client(16).getStringWidth(text);
 			this.onHover_width = width;
 			this.scissor.setX(2);
@@ -125,7 +126,7 @@ public class ModuleList extends UIComponent {
 			this.onHover_rect.setY(this.getScaledHeight() - 2 - 10);
 			this.onHover_rect.draw();
 
-			FontManager.client(16).drawString(text, 3, this.getScaledHeight() - 9, this.getColor(14));
+			FontManager.client(16).drawString(text, 3, this.getScaledHeight() - 12, this.getColor(14));
 		}
 
 		ClickGui.INSTANCE.getWholeScreenScissor().doScissor();

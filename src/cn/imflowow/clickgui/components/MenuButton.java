@@ -9,8 +9,8 @@ import java.awt.*;
 
 public class MenuButton extends UIComponent {
     private ClickEntity clickentity;
-    private String icon;
-    private String text;
+    private final String icon;
+    private final String text;
     @Setter
     @Getter
     private double x;
@@ -20,10 +20,10 @@ public class MenuButton extends UIComponent {
     @Setter
     @Getter
     private boolean chosen;
-    private int id;
+    private final int id;
 
-    private Translate anim = new Translate(0, 0);
-    private Translate alpha = new Translate(0, 0);
+    private final Translate anim = new Translate(0, 0);
+    private final Translate alpha = new Translate(0, 0);
 
     private RoundedRect frame;
     private RoundedRect chosenFrame;

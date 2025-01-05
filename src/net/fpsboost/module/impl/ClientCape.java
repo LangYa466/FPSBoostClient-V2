@@ -12,7 +12,7 @@ import javax.swing.*;
  */
 public class ClientCape extends Module {
     public ClientCape() {
-        super("ClientCape", "切换客户端披风","You can switch your client cape here","没有卡密的别开");
+        super("ClientCape", "切换客户端披风");
     }
 
     @Override

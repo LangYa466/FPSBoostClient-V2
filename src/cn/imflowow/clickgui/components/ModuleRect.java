@@ -59,9 +59,7 @@ public class ModuleRect extends UIComponent {
 				return;
 			this.setting_rect.setColor(this.getColor(12));
 		}, () -> {
-		}, () -> {
-			this.setting_rect.setColor(this.getColor(11));
-		});
+		}, () -> this.setting_rect.setColor(this.getColor(11)));
 		this.rect = new ClickableRect(0, 0, this.hasValues ? 120 : 130, 20, this.getColor(8), Rect.RenderType.Expand,
 				() -> {
 					if (!this.getClickGui().getModuleList().isClickable())

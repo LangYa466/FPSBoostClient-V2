@@ -7,10 +7,15 @@ import cn.imflowow.MessageManager;
 import cn.imflowow.clickgui.utils.Opacity;
 import cn.imflowow.clickgui.utils.Rect;
 import cn.imflowow.clickgui.utils.Scissor;
+import cn.langya.Logger;
+import lombok.Getter;
+import lombok.Setter;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.impl.ClickGUIModule;
+import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.font.FontManager;
+import net.minecraft.client.gui.FontRenderer;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
@@ -23,26 +28,42 @@ import net.minecraft.client.gui.GuiScreen;
 
 public class ClickGui extends GuiScreen {
 	public static final ClickGui INSTANCE = new ClickGui();
-	private double positionX, positionY;
+    @Setter
+    @Getter
+    private double positionX, positionY;
 
-	private int alpha;
+	@Setter
+    @Getter
+    private int alpha;
 	private Opacity alpha_animation = new Opacity(0);
 
 	private boolean hasInited;
 	private boolean hasClosed;
 
-	private Scissor wholeScreenScissor;
+	@Setter
+    @Getter
+    private Scissor wholeScreenScissor;
 
-	private Window mainWindow;
-	private ModuleList moduleList;
-	private ValueList valueList;
+	@Setter
+    @Getter
+    private Window mainWindow;
+	@Setter
+    @Getter
+    private ModuleList moduleList;
+	@Setter
+    @Getter
+    private ValueList valueList;
 
 	private final CommandBox commandBox;
 	private boolean onCommandBox;
 
-	private Module onBindingModule;
+	@Setter
+    @Getter
+    private Module onBindingModule;
 
-	private int wheel;
+	@Getter
+    @Setter
+    private int wheel;
 
 	public ClickGui() {
 		this.alpha = 0;
@@ -73,10 +94,12 @@ public class ClickGui extends GuiScreen {
 
 	@Override
 	public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-//		this.setPositionX((sr.getScaledWidth_double() - 400.0) / 2);
+//		this.setPositionX((sr.getScaledWidth_double() - 400.0) / 2);S
 //		this.setPositionY((sr.getScaledHeight_double() - 300.0) / 2);
 
 		this.wheel = Mouse.getDWheel() / 10;
+
+		// Logger.debug(String.valueOf(wheel));
 
 		this.wholeScreenScissor.setX(0);
 		this.wholeScreenScissor.setY(0);
@@ -93,14 +116,14 @@ public class ClickGui extends GuiScreen {
 		mainWindow.draw(mouseX, mouseY, this.getPositionX(), this.getPositionY());
 		moduleList.draw(mouseX, mouseY, this.getPositionX(), this.getPositionY());
 		valueList.draw(mouseX, mouseY, this.getPositionX(), this.getPositionY());
-		
+
 		if (moduleList.getOnHover() != null) {
-            String text = "Bind:" + Keyboard.getKeyName(moduleList.getOnHover().keyCode);;
-            if (moduleList.getOnHover().keyCode == 0) {
-                text = "This module has not been bound.(middle click on it to bind)";
-            }
-            int width = FontManager.client(16).getStringWidth(text);
-            new Rect(mouseX, mouseY - 12, width + 4, 11, new Color(40, 40, 40, this.getAlpha()).getRGB(),
+			String text = "绑定按键：" + Keyboard.getKeyName(moduleList.getOnHover().keyCode);
+			if (moduleList.getOnHover().keyCode == 0) {
+				text = "此模块尚未绑定按键. (中键点击进行绑定)";
+			}
+			int width = FontManager.client(16).getStringWidth(text);
+            new Rect(mouseX, mouseY - 12, width + 4, 16, new Color(40, 40, 40, this.getAlpha()).getRGB(),
                     Rect.RenderType.Expand).draw();
             FontManager.client(16).drawString(text, mouseX + 2, mouseY - 8, -1);
         }
@@ -117,13 +140,12 @@ public class ClickGui extends GuiScreen {
 		}
 		this.alpha = (int) alpha_animation.getOpacity();
 		if (this.alpha == 0) {
-			this.mc.displayGuiScreen((GuiScreen) null);
+			this.mc.displayGuiScreen(null);
 
-			if (this.mc.currentScreen == null) {
-				this.mc.setIngameFocus();
-			}
+			if (this.mc.currentScreen == null) this.mc.setIngameFocus();
 		}
 	}
+
 
 	@Override
 	public void keyTyped(char typedChar, int keyCode) throws IOException {
@@ -318,85 +340,11 @@ public class ClickGui extends GuiScreen {
 	public String getResource(int type) {
 		switch (ClickGUIModule.theme) {
 		case Dark:
-			switch (type) {
-			case 0:
-				return "d";
-			}
+            if (type == 0) {
+                return "d";
+            }
 		case Light:
 		}
 		return "";
 	}
-
-	public double getPositionX() {
-		return positionX;
-	}
-
-	public void setPositionX(double positionX) {
-		this.positionX = positionX;
-	}
-
-	public double getPositionY() {
-		return positionY;
-	}
-
-	public void setPositionY(double positionY) {
-		this.positionY = positionY;
-	}
-
-	public Window getMainWindow() {
-		return mainWindow;
-	}
-
-	public void setMainWindow(Window mainWindow) {
-		this.mainWindow = mainWindow;
-	}
-
-	public int getAlpha() {
-		return alpha;
-	}
-
-	public void setAlpha(int alpha) {
-		this.alpha = alpha;
-	}
-
-	public int getWheel() {
-		return wheel;
-	}
-
-	public void setWheel(int wheel) {
-		this.wheel = wheel;
-	}
-
-	public Scissor getWholeScreenScissor() {
-		return wholeScreenScissor;
-	}
-
-	public void setWholeScreenScissor(Scissor wholeScreenScissor) {
-		this.wholeScreenScissor = wholeScreenScissor;
-	}
-
-	public ModuleList getModuleList() {
-		return moduleList;
-	}
-
-	public void setModuleList(ModuleList moduleList) {
-		this.moduleList = moduleList;
-	}
-
-	public ValueList getValueList() {
-		return valueList;
-	}
-
-	public void setValueList(ValueList valueList) {
-		this.valueList = valueList;
-	}
-
-	public Module getOnBindingModule() {
-		return onBindingModule;
-	}
-
-	public void setOnBindingModule(Module onBindingModule) {
-		this.onBindingModule = onBindingModule;
-	}
-
 }

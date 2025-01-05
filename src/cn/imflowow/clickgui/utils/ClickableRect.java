@@ -1,7 +1,7 @@
 package cn.imflowow.clickgui.utils;
 
 public class ClickableRect extends ClickEntity {
-    private Rect rect;
+    private final Rect rect;
 
     public ClickableRect(double x, double y, double x1, double y1, int color,
                          Rect.RenderType type, Runnable click, Runnable hold, Runnable focus, Runnable release, Runnable onBlur) {

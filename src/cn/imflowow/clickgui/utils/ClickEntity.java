@@ -1,5 +1,7 @@
 package cn.imflowow.clickgui.utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.lwjgl.input.Mouse;
 
 public class ClickEntity extends RenderEntity {
@@ -8,13 +10,25 @@ public class ClickEntity extends RenderEntity {
 	private int clicktick_right;
 	private int clicktick_middle;
 	private MouseBounds mousebounds;
-	private Runnable click;
-	private Runnable hold;
-	private Runnable focus;
-	private Runnable onBlur;
-	private Runnable release;
+	@Setter
+    @Getter
+    private Runnable click;
+	@Setter
+    @Getter
+    private Runnable hold;
+	@Setter
+    @Getter
+    private Runnable focus;
+	@Setter
+    @Getter
+    private Runnable onBlur;
+	@Setter
+    @Getter
+    private Runnable release;
 	
-	private boolean inArea;
+	@Setter
+    @Getter
+    private boolean inArea;
 
 	public ClickEntity(double x, double y, double x1, double y1, MouseBounds.CallType type, Runnable click, Runnable hold,
 					   Runnable focus, Runnable release, Runnable onBlur) {
@@ -139,55 +153,7 @@ public class ClickEntity extends RenderEntity {
 		mousebounds.setY1(y1);
 	}
 
-	public Runnable getClick() {
-		return click;
-	}
-
-	public void setClick(Runnable click) {
-		this.click = click;
-	}
-
-	public Runnable getHold() {
-		return hold;
-	}
-
-	public void setHold(Runnable hold) {
-		this.hold = hold;
-	}
-
-	public Runnable getFocus() {
-		return focus;
-	}
-
-	public void setFocus(Runnable focus) {
-		this.focus = focus;
-	}
-
-	public Runnable getRelease() {
-		return release;
-	}
-
-	public void setRelease(Runnable release) {
-		this.release = release;
-	}
-
-	public Runnable getOnBlur() {
-		return onBlur;
-	}
-
-	public void setOnBlur(Runnable onBlur) {
-		this.onBlur = onBlur;
-	}
-
-	public boolean isInArea() {
-		return inArea;
-	}
-
-	public void setInArea(boolean inArea) {
-		this.inArea = inArea;
-	}
-
-//	public CallType getType() {
+    //	public CallType getType() {
 //		return mousebounds.getType();
 //	}
 //
