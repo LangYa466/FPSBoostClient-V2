@@ -1,7 +1,6 @@
 package net.fpsboost.config.impl;
 
 import com.google.gson.JsonObject;
-import net.fpsboost.Wrapper;
 import net.fpsboost.config.Config;
 import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
@@ -10,7 +9,7 @@ import net.fpsboost.element.ElementManager;
  * @author LangYa
  * @since 2024/9/3 18:21
  */
-public class ElementConfig extends Config implements Wrapper {
+public class ElementConfig extends Config {
 
     public ElementConfig() {
         super("Element");
