@@ -239,7 +239,7 @@ public class FaceBakery
         Vector3f.sub(vector3f, vector3f1, vector3f3);
         Vector3f.sub(vector3f2, vector3f1, vector3f4);
         Vector3f.cross(vector3f4, vector3f3, vector3f5);
-        float f = (float)Math.sqrt((double)(vector3f5.x * vector3f5.x + vector3f5.y * vector3f5.y + vector3f5.z * vector3f5.z));
+        float f = (float)Math.sqrt(vector3f5.x * vector3f5.x + vector3f5.y * vector3f5.y + vector3f5.z * vector3f5.z);
         vector3f5.x /= f;
         vector3f5.y /= f;
         vector3f5.z /= f;
@@ -416,7 +416,7 @@ public class FaceBakery
         }
 
         int k = p_178401_4_.func_178345_c(p_178401_1_) * i;
-        p_178401_2_[k + 4] = Float.floatToRawIntBits(p_178401_5_.getInterpolatedU((double)f3));
-        p_178401_2_[k + 4 + 1] = Float.floatToRawIntBits(p_178401_5_.getInterpolatedV((double)f4));
+        p_178401_2_[k + 4] = Float.floatToRawIntBits(p_178401_5_.getInterpolatedU(f3));
+        p_178401_2_[k + 4 + 1] = Float.floatToRawIntBits(p_178401_5_.getInterpolatedV(f4));
     }
 }

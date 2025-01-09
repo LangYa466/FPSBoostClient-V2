@@ -28,8 +28,8 @@ public class GuiEnchantment extends GuiContainer
     private static final ResourceLocation ENCHANTMENT_TABLE_BOOK_TEXTURE = new ResourceLocation("textures/entity/enchanting_table_book.png");
     private static final ModelBook MODEL_BOOK = new ModelBook();
     private final InventoryPlayer playerInventory;
-    private Random random = new Random();
-    private ContainerEnchantment container;
+    private final Random random = new Random();
+    private final ContainerEnchantment container;
     public int field_147073_u;
     public float field_147071_v;
     public float field_147069_w;
@@ -110,8 +110,8 @@ public class GuiEnchantment extends GuiContainer
         GlStateManager.rotate(180.0F, 1.0F, 0.0F, 0.0F);
         float f3 = this.field_147069_w + (this.field_147071_v - this.field_147069_w) * partialTicks + 0.25F;
         float f4 = this.field_147069_w + (this.field_147071_v - this.field_147069_w) * partialTicks + 0.75F;
-        f3 = (f3 - (float)MathHelper.truncateDoubleToInt((double)f3)) * 1.6F - 0.3F;
-        f4 = (f4 - (float)MathHelper.truncateDoubleToInt((double)f4)) * 1.6F - 0.3F;
+        f3 = (f3 - (float)MathHelper.truncateDoubleToInt(f3)) * 1.6F - 0.3F;
+        f4 = (f4 - (float)MathHelper.truncateDoubleToInt(f4)) * 1.6F - 0.3F;
 
         if (f3 < 0.0F)
         {
@@ -134,7 +134,7 @@ public class GuiEnchantment extends GuiContainer
         }
 
         GlStateManager.enableRescaleNormal();
-        MODEL_BOOK.render((Entity)null, 0.0F, f3, f4, f2, 0.0F, 0.0625F);
+        MODEL_BOOK.render(null, 0.0F, f3, f4, f2, 0.0F, 0.0625F);
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.matrixMode(5889);
@@ -144,7 +144,7 @@ public class GuiEnchantment extends GuiContainer
         GlStateManager.popMatrix();
         RenderHelper.disableStandardItemLighting();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        EnchantmentNameParts.getInstance().reseedRandomGenerator((long)this.container.xpSeed);
+        EnchantmentNameParts.getInstance().reseedRandomGenerator(this.container.xpSeed);
         int k = this.container.getLapisAmount();
 
         for (int l = 0; l < 3; ++l)
@@ -153,7 +153,7 @@ public class GuiEnchantment extends GuiContainer
             int j1 = i1 + 20;
             int k1 = 86;
             String s = EnchantmentNameParts.getInstance().generateNewRandomName();
-            this.zLevel = 0.0F;
+            zLevel = 0.0F;
             this.mc.getTextureManager().bindTexture(ENCHANTMENT_TABLE_GUI_TEXTURE);
             int l1 = this.container.enchantLevels[l];
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -215,12 +215,12 @@ public class GuiEnchantment extends GuiContainer
 
             if (this.isPointInRegion(60, 14 + 19 * j, 108, 17, mouseX, mouseY) && k > 0 && l >= 0)
             {
-                List<String> list = Lists.<String>newArrayList();
+                List<String> list = Lists.newArrayList();
 
                 if (l >= 0 && Enchantment.getEnchantmentById(l & 255) != null)
                 {
                     String s = Enchantment.getEnchantmentById(l & 255).getTranslatedName((l & 65280) >> 8);
-                    list.add(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.ITALIC.toString() + I18n.format("container.enchant.clue", new Object[] {s}));
+                    list.add(EnumChatFormatting.WHITE.toString() + EnumChatFormatting.ITALIC + I18n.format("container.enchant.clue", s));
                 }
 
                 if (!flag)
@@ -232,7 +232,7 @@ public class GuiEnchantment extends GuiContainer
 
                     if (this.mc.thePlayer.experienceLevel < k)
                     {
-                        list.add(EnumChatFormatting.RED.toString() + "Level Requirement: " + this.container.enchantLevels[j]);
+                        list.add(EnumChatFormatting.RED + "Level Requirement: " + this.container.enchantLevels[j]);
                     }
                     else
                     {
@@ -240,32 +240,32 @@ public class GuiEnchantment extends GuiContainer
 
                         if (i1 == 1)
                         {
-                            s1 = I18n.format("container.enchant.lapis.one", new Object[0]);
+                            s1 = I18n.format("container.enchant.lapis.one");
                         }
                         else
                         {
-                            s1 = I18n.format("container.enchant.lapis.many", new Object[] {Integer.valueOf(i1)});
+                            s1 = I18n.format("container.enchant.lapis.many", Integer.valueOf(i1));
                         }
 
                         if (i >= i1)
                         {
-                            list.add(EnumChatFormatting.GRAY.toString() + "" + s1);
+                            list.add(EnumChatFormatting.GRAY + s1);
                         }
                         else
                         {
-                            list.add(EnumChatFormatting.RED.toString() + "" + s1);
+                            list.add(EnumChatFormatting.RED + s1);
                         }
 
                         if (i1 == 1)
                         {
-                            s1 = I18n.format("container.enchant.level.one", new Object[0]);
+                            s1 = I18n.format("container.enchant.level.one");
                         }
                         else
                         {
-                            s1 = I18n.format("container.enchant.level.many", new Object[] {Integer.valueOf(i1)});
+                            s1 = I18n.format("container.enchant.level.many", Integer.valueOf(i1));
                         }
 
-                        list.add(EnumChatFormatting.GRAY.toString() + "" + s1);
+                        list.add(EnumChatFormatting.GRAY + s1);
                     }
                 }
 
@@ -301,9 +301,9 @@ public class GuiEnchantment extends GuiContainer
 
         for (int i = 0; i < 3; ++i)
         {
-            if (this.container.enchantLevels[i] != 0)
-            {
+            if (this.container.enchantLevels[i] != 0) {
                 flag = true;
+                break;
             }
         }
 

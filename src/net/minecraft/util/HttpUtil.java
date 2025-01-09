@@ -47,7 +47,7 @@ public class HttpUtil
 
             try
             {
-                stringbuilder.append(URLEncoder.encode((String)entry.getKey(), "UTF-8"));
+                stringbuilder.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
             }
             catch (UnsupportedEncodingException unsupportedencodingexception1)
             {
@@ -117,7 +117,7 @@ public class HttpUtil
         {
             if (!skipLoggingErrors)
             {
-                logger.error((String)("Could not post to " + url), (Throwable)exception);
+                logger.error("Could not post to " + url, exception);
             }
 
             return "";
@@ -148,11 +148,11 @@ public class HttpUtil
                         URL url = new URL(packUrl);
                         httpurlconnection = (HttpURLConnection)url.openConnection(p_180192_5_);
                         float f = 0.0F;
-                        float f1 = (float)p_180192_2_.entrySet().size();
+                        float f1 = (float) p_180192_2_.size();
 
                         for (Entry<String, String> entry : p_180192_2_.entrySet())
                         {
-                            httpurlconnection.setRequestProperty((String)entry.getKey(), (String)entry.getValue());
+                            httpurlconnection.setRequestProperty(entry.getKey(), entry.getValue());
 
                             if (p_180192_4_ != null)
                             {
@@ -166,7 +166,7 @@ public class HttpUtil
 
                         if (p_180192_4_ != null)
                         {
-                            p_180192_4_.displayLoadingString(String.format("Downloading file (%.2f MB)...", new Object[] {Float.valueOf(f1 / 1000.0F / 1000.0F)}));
+                            p_180192_4_.displayLoadingString(String.format("Downloading file (%.2f MB)...", Float.valueOf(f1 / 1000.0F / 1000.0F)));
                         }
 
                         if (saveFile.exists())
@@ -242,7 +242,6 @@ public class HttpUtil
                         if (p_180192_4_ != null)
                         {
                             p_180192_4_.setDoneWorking();
-                            return;
                         }
                     }
                     catch (Throwable throwable)
@@ -266,7 +265,6 @@ public class HttpUtil
                         if (p_180192_4_ != null)
                         {
                             p_180192_4_.setDoneWorking();
-                            return;
                         }
                     }
                 }
@@ -301,7 +299,6 @@ public class HttpUtil
             }
             catch (IOException var8)
             {
-                ;
             }
         }
 

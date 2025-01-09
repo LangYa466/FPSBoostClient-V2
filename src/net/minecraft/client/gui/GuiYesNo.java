@@ -10,8 +10,8 @@ public class GuiYesNo extends GuiScreen
 {
     protected GuiYesNoCallback parentScreen;
     protected String messageLine1;
-    private String messageLine2;
-    private final List<String> field_175298_s = Lists.<String>newArrayList();
+    private final String messageLine2;
+    private final List<String> field_175298_s = Lists.newArrayList();
     protected String confirmButtonText;
     protected String cancelButtonText;
     protected int parentButtonClickedId;
@@ -23,8 +23,8 @@ public class GuiYesNo extends GuiScreen
         this.messageLine1 = p_i1082_2_;
         this.messageLine2 = p_i1082_3_;
         this.parentButtonClickedId = p_i1082_4_;
-        this.confirmButtonText = I18n.format("gui.yes", new Object[0]);
-        this.cancelButtonText = I18n.format("gui.no", new Object[0]);
+        this.confirmButtonText = I18n.format("gui.yes");
+        this.cancelButtonText = I18n.format("gui.no");
     }
 
     public GuiYesNo(GuiYesNoCallback p_i1083_1_, String p_i1083_2_, String p_i1083_3_, String p_i1083_4_, String p_i1083_5_, int p_i1083_6_)

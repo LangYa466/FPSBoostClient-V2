@@ -9,7 +9,7 @@ public class ModelResourceLocation extends ResourceLocation
 
     protected ModelResourceLocation(int p_i46078_1_, String... p_i46078_2_)
     {
-        super(0, new String[] {p_i46078_2_[0], p_i46078_2_[1]});
+        super(0, p_i46078_2_[0], p_i46078_2_[1]);
         this.variant = StringUtils.isEmpty(p_i46078_2_[2]) ? "normal" : p_i46078_2_[2].toLowerCase();
     }
 
@@ -36,7 +36,7 @@ public class ModelResourceLocation extends ResourceLocation
 
         if (i >= 0)
         {
-            astring[2] = p_177517_0_.substring(i + 1, p_177517_0_.length());
+            astring[2] = p_177517_0_.substring(i + 1);
 
             if (i > 1)
             {

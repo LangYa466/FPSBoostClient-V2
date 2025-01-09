@@ -90,7 +90,7 @@ public class CustomGuiProperties
         this.levels = connectedparser.parseRangeListInt(props.getProperty("levels"));
         this.professions = connectedparser.parseProfessions(props.getProperty("professions"));
         CustomGuiProperties.EnumVariant[] acustomguiproperties$enumvariant = getContainerVariants(this.container);
-        this.variants = (CustomGuiProperties.EnumVariant[])((CustomGuiProperties.EnumVariant[])connectedparser.parseEnums(props.getProperty("variants"), acustomguiproperties$enumvariant, "variants", VARIANTS_INVALID));
+        this.variants = (CustomGuiProperties.EnumVariant[]) connectedparser.parseEnums(props.getProperty("variants"), acustomguiproperties$enumvariant, "variants", VARIANTS_INVALID);
         this.colors = parseEnumDyeColors(props.getProperty("colors"));
     }
 
@@ -389,7 +389,7 @@ public class CustomGuiProperties
 
     private static IWorldNameable getWorldNameable(GuiScreen screen)
     {
-        return (IWorldNameable)(screen instanceof GuiBeacon ? getWorldNameable(screen, Reflector.GuiBeacon_tileBeacon) : (screen instanceof GuiBrewingStand ? getWorldNameable(screen, Reflector.GuiBrewingStand_tileBrewingStand) : (screen instanceof GuiChest ? getWorldNameable(screen, Reflector.GuiChest_lowerChestInventory) : (screen instanceof GuiDispenser ? ((GuiDispenser)screen).dispenserInventory : (screen instanceof GuiEnchantment ? getWorldNameable(screen, Reflector.GuiEnchantment_nameable) : (screen instanceof GuiFurnace ? getWorldNameable(screen, Reflector.GuiFurnace_tileFurnace) : (screen instanceof GuiHopper ? getWorldNameable(screen, Reflector.GuiHopper_hopperInventory) : null)))))));
+        return screen instanceof GuiBeacon ? getWorldNameable(screen, Reflector.GuiBeacon_tileBeacon) : (screen instanceof GuiBrewingStand ? getWorldNameable(screen, Reflector.GuiBrewingStand_tileBrewingStand) : (screen instanceof GuiChest ? getWorldNameable(screen, Reflector.GuiChest_lowerChestInventory) : (screen instanceof GuiDispenser ? ((GuiDispenser)screen).dispenserInventory : (screen instanceof GuiEnchantment ? getWorldNameable(screen, Reflector.GuiEnchantment_nameable) : (screen instanceof GuiFurnace ? getWorldNameable(screen, Reflector.GuiFurnace_tileFurnace) : (screen instanceof GuiHopper ? getWorldNameable(screen, Reflector.GuiHopper_hopperInventory) : null))))));
     }
 
     private static IWorldNameable getWorldNameable(GuiScreen screen, ReflectorField fieldInventory)
@@ -416,10 +416,7 @@ public class CustomGuiProperties
                 tileentitybeacon.writeToNBT(nbttagcompound);
                 int i = nbttagcompound.getInteger("Levels");
 
-                if (!this.levels.isInRange(i))
-                {
-                    return false;
-                }
+                return this.levels.isInRange(i);
             }
 
             return true;
@@ -462,7 +459,7 @@ public class CustomGuiProperties
 
     private boolean matchesChest(boolean isLarge, boolean isTrapped, boolean isChristmas, boolean isEnder)
     {
-        return this.large != null && this.large.booleanValue() != isLarge ? false : (this.trapped != null && this.trapped.booleanValue() != isTrapped ? false : (this.christmas != null && this.christmas.booleanValue() != isChristmas ? false : this.ender == null || this.ender.booleanValue() == isEnder));
+        return (this.large == null || this.large.booleanValue() == isLarge) && ((this.trapped == null || this.trapped.booleanValue() == isTrapped) && ((this.christmas == null || this.christmas.booleanValue() == isChristmas) && (this.ender == null || this.ender.booleanValue() == isEnder)));
     }
 
     private boolean matchesDispenser(BlockPos pos, IBlockAccess blockAccess)
@@ -481,10 +478,7 @@ public class CustomGuiProperties
             {
                 CustomGuiProperties.EnumVariant customguiproperties$enumvariant = this.getDispenserVariant(tileentitydispenser);
 
-                if (!Config.equalsOne(customguiproperties$enumvariant, this.variants))
-                {
-                    return false;
-                }
+                return Config.equalsOne(customguiproperties$enumvariant, this.variants);
             }
 
             return true;
@@ -561,10 +555,7 @@ public class CustomGuiProperties
                     }
                 }
 
-                if (!flag)
-                {
-                    return false;
-                }
+                return flag;
             }
 
             return true;
@@ -585,10 +576,7 @@ public class CustomGuiProperties
             {
                 CustomGuiProperties.EnumVariant customguiproperties$enumvariant = this.getHorseVariant(entityhorse);
 
-                if (!Config.equalsOne(customguiproperties$enumvariant, this.variants))
-                {
-                    return false;
-                }
+                return Config.equalsOne(customguiproperties$enumvariant, this.variants);
             }
 
             return true;
@@ -622,7 +610,7 @@ public class CustomGuiProperties
 
     public ResourceLocation getTextureLocation(ResourceLocation loc)
     {
-        ResourceLocation resourcelocation = (ResourceLocation)this.textureLocations.get(loc);
+        ResourceLocation resourcelocation = this.textureLocations.get(loc);
         return resourcelocation == null ? loc : resourcelocation;
     }
 
@@ -631,7 +619,7 @@ public class CustomGuiProperties
         return "name: " + this.fileName + ", container: " + this.container + ", textures: " + this.textureLocations;
     }
 
-    public static enum EnumContainer
+    public enum EnumContainer
     {
         ANVIL,
         BEACON,
@@ -651,13 +639,13 @@ public class CustomGuiProperties
         public static final CustomGuiProperties.EnumContainer[] VALUES = values();
     }
 
-    private static enum EnumVariant
+    private enum EnumVariant
     {
         HORSE,
         DONKEY,
         MULE,
         LLAMA,
         DISPENSER,
-        DROPPER;
+        DROPPER
     }
 }

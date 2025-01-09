@@ -10,7 +10,7 @@ public class GuiScreenWorking extends GuiScreen implements IProgressUpdate
     private String field_146589_f = "";
     private int progress;
     private boolean doneWorking;
-    private CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
+    private final CustomLoadingScreen customLoadingScreen = CustomLoadingScreens.getCustomLoadingScreen();
 
     public void displaySavingString(String message)
     {
@@ -43,7 +43,7 @@ public class GuiScreenWorking extends GuiScreen implements IProgressUpdate
     {
         if (this.doneWorking)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
         else
         {

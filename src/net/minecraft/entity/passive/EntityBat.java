@@ -117,7 +117,7 @@ public class EntityBat extends EntityAmbientCreature
             if (!this.worldObj.getBlockState(blockpos1).getBlock().isNormalCube())
             {
                 this.setIsBatHanging(false);
-                this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1015, blockpos, 0);
+                this.worldObj.playAuxSFXAtEntity(null, 1015, blockpos, 0);
             }
             else
             {
@@ -129,7 +129,7 @@ public class EntityBat extends EntityAmbientCreature
                 if (this.worldObj.getClosestPlayerToEntity(this, 4.0D) != null)
                 {
                     this.setIsBatHanging(false);
-                    this.worldObj.playAuxSFXAtEntity((EntityPlayer)null, 1015, blockpos, 0);
+                    this.worldObj.playAuxSFXAtEntity(null, 1015, blockpos, 0);
                 }
             }
         }
@@ -140,7 +140,7 @@ public class EntityBat extends EntityAmbientCreature
                 this.spawnPosition = null;
             }
 
-            if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((double)((int)this.posX), (double)((int)this.posY), (double)((int)this.posZ)) < 4.0D)
+            if (this.spawnPosition == null || this.rand.nextInt(30) == 0 || this.spawnPosition.distanceSq((int)this.posX, (int)this.posY, (int)this.posZ) < 4.0D)
             {
                 this.spawnPosition = new BlockPos((int)this.posX + this.rand.nextInt(7) - this.rand.nextInt(7), (int)this.posY + this.rand.nextInt(6) - 2, (int)this.posZ + this.rand.nextInt(7) - this.rand.nextInt(7));
             }
@@ -232,7 +232,7 @@ public class EntityBat extends EntityAmbientCreature
                 return false;
             }
 
-            return i > this.rand.nextInt(j) ? false : super.getCanSpawnHere();
+            return i <= this.rand.nextInt(j) && super.getCanSpawnHere();
         }
     }
 

@@ -42,7 +42,7 @@ public class RapeMasterFontManager extends FontRenderer {
     }
 
     public final float drawCenteredString(String text, float x, float y, int color) {
-        return drawString(text, (float) (x - getStringWidth(text) / 2), y, color);
+        return drawString(text, x - getStringWidth(text) / 2, y, color);
     }
 
     public final float drawCenteredStringNoFormat(String text, float x, float y, int color) {
@@ -56,13 +56,13 @@ public class RapeMasterFontManager extends FontRenderer {
     private final byte[][] charwidth = new byte[256][];
     private final int[] textures = new int[256];
     private final FontRenderContext context = new FontRenderContext(new AffineTransform(), true, true);
-    private Font font;
+    private final Font font;
 
-    private float size;
-    private int fontWidth;
-    private int fontHeight;
-    private int textureWidth;
-    private int textureHeight;
+    private final float size;
+    private final int fontWidth;
+    private final int fontHeight;
+    private final int textureWidth;
+    private final int textureHeight;
 
     public RapeMasterFontManager(Font font,float size) {
         super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"),

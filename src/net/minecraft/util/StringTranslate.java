@@ -15,8 +15,8 @@ public class StringTranslate
 {
     private static final Pattern numericVariablePattern = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
     private static final Splitter equalSignSplitter = Splitter.on('=').limit(2);
-    private static StringTranslate instance = new StringTranslate();
-    private final Map<String, String> languageList = Maps.<String, String>newHashMap();
+    private static final StringTranslate instance = new StringTranslate();
+    private final Map<String, String> languageList = Maps.newHashMap();
     private long lastUpdateTimeInMilliseconds;
 
     public StringTranslate()
@@ -29,7 +29,7 @@ public class StringTranslate
             {
                 if (!s.isEmpty() && s.charAt(0) != 35)
                 {
-                    String[] astring = (String[])Iterables.toArray(equalSignSplitter.split(s), String.class);
+                    String[] astring = Iterables.toArray(equalSignSplitter.split(s), String.class);
 
                     if (astring != null && astring.length == 2)
                     {
@@ -44,7 +44,6 @@ public class StringTranslate
         }
         catch (IOException var7)
         {
-            ;
         }
     }
 
@@ -81,7 +80,7 @@ public class StringTranslate
 
     private String tryTranslateKey(String key)
     {
-        String s = (String)this.languageList.get(key);
+        String s = this.languageList.get(key);
         return s == null ? key : s;
     }
 

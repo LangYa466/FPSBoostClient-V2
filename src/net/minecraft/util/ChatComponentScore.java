@@ -44,7 +44,7 @@ public class ChatComponentScore extends ChatComponentStyle
             if (scoreboard.entityHasObjective(this.name, scoreobjective))
             {
                 Score score = scoreboard.getValueFromObjective(this.name, scoreobjective);
-                this.setValue(String.format("%d", new Object[] {Integer.valueOf(score.getScorePoints())}));
+                this.setValue(String.format("%d", Integer.valueOf(score.getScorePoints())));
             }
             else
             {
@@ -88,6 +88,6 @@ public class ChatComponentScore extends ChatComponentStyle
 
     public String toString()
     {
-        return "ScoreComponent{name=\'" + this.name + '\'' + "objective=\'" + this.objective + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
+        return "ScoreComponent{name='" + this.name + '\'' + "objective='" + this.objective + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
     }
 }

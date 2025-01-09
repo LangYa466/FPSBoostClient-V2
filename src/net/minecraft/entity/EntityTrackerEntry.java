@@ -80,13 +80,13 @@ public class EntityTrackerEntry
     private double lastTrackedEntityPosY;
     private double lastTrackedEntityPosZ;
     private boolean firstUpdateDone;
-    private boolean sendVelocityUpdates;
+    private final boolean sendVelocityUpdates;
     private int ticksSinceLastForcedTeleport;
     private Entity field_85178_v;
     private boolean ridingEntity;
     private boolean onGround;
     public boolean playerEntitiesUpdated;
-    public Set<EntityPlayerMP> trackingPlayers = Sets.<EntityPlayerMP>newHashSet();
+    public Set<EntityPlayerMP> trackingPlayers = Sets.newHashSet();
 
     public EntityTrackerEntry(Entity trackedEntityIn, int trackingDistanceThresholdIn, int updateFrequencyIn, boolean sendVelocityUpdatesIn)
     {
@@ -105,7 +105,7 @@ public class EntityTrackerEntry
 
     public boolean equals(Object p_equals_1_)
     {
-        return p_equals_1_ instanceof EntityTrackerEntry ? ((EntityTrackerEntry)p_equals_1_).trackedEntity.getEntityId() == this.trackedEntity.getEntityId() : false;
+        return p_equals_1_ instanceof EntityTrackerEntry && ((EntityTrackerEntry) p_equals_1_).trackedEntity.getEntityId() == this.trackedEntity.getEntityId();
     }
 
     public int hashCode()
@@ -599,7 +599,7 @@ public class EntityTrackerEntry
         }
         else
         {
-            throw new IllegalArgumentException("Don\'t know how to add " + this.trackedEntity.getClass() + "!");
+            throw new IllegalArgumentException("Don't know how to add " + this.trackedEntity.getClass() + "!");
         }
     }
 

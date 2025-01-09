@@ -1,6 +1,6 @@
 package net.fpsboost.module.impl;
 
-import cn.imflowow.clickgui.ClickGui;
+import net.fpsboost.screen.clickgui.ClickGui;
 import net.fpsboost.module.Module;
 import net.fpsboost.value.impl.ModeValue;
 import org.lwjgl.input.Keyboard;

@@ -8,8 +8,8 @@ import net.optifine.expr.IExpressionCached;
 
 public class CustomUniforms
 {
-    private CustomUniform[] uniforms;
-    private IExpressionCached[] expressionsCached;
+    private final CustomUniform[] uniforms;
+    private final IExpressionCached[] expressionsCached;
 
     public CustomUniforms(CustomUniform[] uniforms, Map<String, IExpression> mapExpressions)
     {
@@ -18,7 +18,7 @@ public class CustomUniforms
 
         for (String s : mapExpressions.keySet())
         {
-            IExpression iexpression = (IExpression)mapExpressions.get(s);
+            IExpression iexpression = mapExpressions.get(s);
 
             if (iexpression instanceof IExpressionCached)
             {
@@ -27,7 +27,7 @@ public class CustomUniforms
             }
         }
 
-        this.expressionsCached = (IExpressionCached[])((IExpressionCached[])list.toArray(new IExpressionCached[list.size()]));
+        this.expressionsCached = list.toArray(new IExpressionCached[list.size()]);
     }
 
     public void setProgram(int program)

@@ -50,7 +50,7 @@ public class ResourcePackListEntryDefault extends ResourcePackListEntry
     {
         try
         {
-            PackMetadataSection packmetadatasection = (PackMetadataSection)this.field_148320_d.getPackMetadata(this.mc.getResourcePackRepository().rprMetadataSerializer, "pack");
+            PackMetadataSection packmetadatasection = this.field_148320_d.getPackMetadata(this.mc.getResourcePackRepository().rprMetadataSerializer, "pack");
 
             if (packmetadatasection != null)
             {
@@ -59,11 +59,11 @@ public class ResourcePackListEntryDefault extends ResourcePackListEntry
         }
         catch (JsonParseException jsonparseexception)
         {
-            logger.error((String)"Couldn\'t load metadata info", (Throwable)jsonparseexception);
+            logger.error("Couldn't load metadata info", jsonparseexception);
         }
         catch (IOException ioexception)
         {
-            logger.error((String)"Couldn\'t load metadata info", (Throwable)ioexception);
+            logger.error("Couldn't load metadata info", ioexception);
         }
 
         return EnumChatFormatting.RED + "Missing " + "pack.mcmeta" + " :(";

@@ -47,7 +47,7 @@ public class ItemBlock extends Item
         {
             return false;
         }
-        else if (worldIn.canBlockBePlaced(this.block, pos, false, side, (Entity)null, stack))
+        else if (worldIn.canBlockBePlaced(this.block, pos, false, side, null, stack))
         {
             int i = this.getMetadata(stack.getMetadata());
             IBlockState iblockstate1 = this.block.onBlockPlaced(worldIn, pos, side, hitX, hitY, hitZ, i, playerIn);
@@ -62,7 +62,7 @@ public class ItemBlock extends Item
                     this.block.onBlockPlacedBy(worldIn, pos, iblockstate1, playerIn, stack);
                 }
 
-                worldIn.playSoundEffect((double)((float)pos.getX() + 0.5F), (double)((float)pos.getY() + 0.5F), (double)((float)pos.getZ() + 0.5F), this.block.stepSound.getPlaceSound(), (this.block.stepSound.getVolume() + 1.0F) / 2.0F, this.block.stepSound.getFrequency() * 0.8F);
+                worldIn.playSoundEffect((float)pos.getX() + 0.5F, (float)pos.getY() + 0.5F, (float)pos.getZ() + 0.5F, this.block.stepSound.getPlaceSound(), (this.block.stepSound.getVolume() + 1.0F) / 2.0F, this.block.stepSound.getFrequency() * 0.8F);
                 --stack.stackSize;
             }
 
@@ -130,7 +130,7 @@ public class ItemBlock extends Item
             pos = pos.offset(side);
         }
 
-        return worldIn.canBlockBePlaced(this.block, pos, false, side, (Entity)null, stack);
+        return worldIn.canBlockBePlaced(this.block, pos, false, side, null, stack);
     }
 
     public String getUnlocalizedName(ItemStack stack)

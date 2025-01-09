@@ -48,14 +48,14 @@ import org.lwjgl.input.Mouse;
 public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final Set<String> PROTOCOLS = Sets.newHashSet(new String[] {"http", "https"});
+    private static final Set<String> PROTOCOLS = Sets.newHashSet("http", "https");
     private static final Splitter NEWLINE_SPLITTER = Splitter.on('\n');
     protected Minecraft mc;
     protected RenderItem itemRender;
     public int width;
     public int height;
-    protected List<GuiButton> buttonList = Lists.<GuiButton>newArrayList();
-    protected List<GuiLabel> labelList = Lists.<GuiLabel>newArrayList();
+    protected List<GuiButton> buttonList = Lists.newArrayList();
+    protected List<GuiLabel> labelList = Lists.newArrayList();
     public boolean allowUserInput;
     protected FontRenderer fontRendererObj;
     public GuiButton selectedButton;
@@ -68,12 +68,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         for (int i = 0; i < this.buttonList.size(); ++i)
         {
-            ((GuiButton)this.buttonList.get(i)).drawButton(this.mc, mouseX, mouseY);
+            this.buttonList.get(i).drawButton(this.mc, mouseX, mouseY);
         }
 
         for (int j = 0; j < this.labelList.size(); ++j)
         {
-            ((GuiLabel)this.labelList.get(j)).drawLabel(this.mc, mouseX, mouseY);
+            this.labelList.get(j).drawLabel(this.mc, mouseX, mouseY);
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         if (keyCode == 1)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
 
             if (this.mc.currentScreen == null)
             {
@@ -94,7 +94,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
     {
         try
         {
-            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object)null);
+            Transferable transferable = Toolkit.getDefaultToolkit().getSystemClipboard().getContents(null);
 
             if (transferable != null && transferable.isDataFlavorSupported(DataFlavor.stringFlavor))
             {
@@ -103,7 +103,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         }
         catch (Exception var1)
         {
-            ;
         }
 
         return "";
@@ -116,11 +115,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
             try
             {
                 StringSelection stringselection = new StringSelection(copyText);
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, (ClipboardOwner)null);
+                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringselection, null);
             }
             catch (Exception var2)
             {
-                ;
             }
         }
     }
@@ -133,11 +131,11 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         {
             if (i == 0)
             {
-                list.set(i, stack.getRarity().rarityColor + (String)list.get(i));
+                list.set(i, stack.getRarity().rarityColor + list.get(i));
             }
             else
             {
-                list.set(i, EnumChatFormatting.GRAY + (String)list.get(i));
+                list.set(i, EnumChatFormatting.GRAY + list.get(i));
             }
         }
 
@@ -146,7 +144,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
     protected void drawCreativeTabHoveringText(String tabName, int mouseX, int mouseY)
     {
-        this.drawHoveringText(Arrays.<String>asList(new String[] {tabName}), mouseX, mouseY);
+        this.drawHoveringText(Arrays.asList(tabName), mouseX, mouseY);
     }
 
     protected void drawHoveringText(List<String> textLines, int x, int y)
@@ -188,7 +186,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 i2 = this.height - k - 6;
             }
 
-            this.zLevel = 300.0F;
+            zLevel = 300.0F;
             this.itemRender.zLevel = 300.0F;
             int l = -267386864;
             this.drawGradientRect(l1 - 3, i2 - 4, l1 + i + 3, i2 - 3, l, l);
@@ -205,7 +203,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
             for (int k1 = 0; k1 < textLines.size(); ++k1)
             {
-                String s1 = (String)textLines.get(k1);
+                String s1 = textLines.get(k1);
                 this.fontRendererObj.drawStringWithShadow(s1, (float)l1, (float)i2, -1);
 
                 if (k1 == 0)
@@ -216,7 +214,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 i2 += 10;
             }
 
-            this.zLevel = 0.0F;
+            zLevel = 0.0F;
             this.itemRender.zLevel = 0.0F;
             GlStateManager.enableLighting();
             GlStateManager.enableDepth();
@@ -246,7 +244,6 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 }
                 catch (NBTException var11)
                 {
-                    ;
                 }
 
                 if (itemstack != null)
@@ -268,7 +265,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
 
                         if (nbtbase1 instanceof NBTTagCompound)
                         {
-                            List<String> list1 = Lists.<String>newArrayList();
+                            List<String> list1 = Lists.newArrayList();
                             NBTTagCompound nbttagcompound = (NBTTagCompound)nbtbase1;
                             list1.add(nbttagcompound.getString("name"));
 
@@ -303,10 +300,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 if (statbase != null)
                 {
                     IChatComponent ichatcomponent = statbase.getStatName();
-                    IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"), new Object[0]);
+                    IChatComponent ichatcomponent1 = new ChatComponentTranslation("stats.tooltip.type." + (statbase.isAchievement() ? "achievement" : "statistic"));
                     ichatcomponent1.getChatStyle().setItalic(true);
                     String s1 = statbase instanceof Achievement ? ((Achievement)statbase).getDescription() : null;
-                    List<String> list = Lists.newArrayList(new String[] {ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText()});
+                    List<String> list = Lists.newArrayList(ichatcomponent.getFormattedText(), ichatcomponent1.getFormattedText());
 
                     if (s1 != null)
                     {
@@ -382,7 +379,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                     }
                     catch (URISyntaxException urisyntaxexception)
                     {
-                        LOGGER.error((String)("Can\'t open url for " + clickevent), (Throwable)urisyntaxexception);
+                        LOGGER.error("Can't open url for " + clickevent, urisyntaxexception);
                     }
                 }
                 else if (clickevent.getAction() == ClickEvent.Action.OPEN_FILE)
@@ -400,7 +397,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
                 }
                 else
                 {
-                    LOGGER.error("Don\'t know how to handle " + clickevent);
+                    LOGGER.error("Don't know how to handle " + clickevent);
                 }
 
                 return true;
@@ -431,7 +428,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         {
             for (int i = 0; i < this.buttonList.size(); ++i)
             {
-                GuiButton guibutton = (GuiButton)this.buttonList.get(i);
+                GuiButton guibutton = this.buttonList.get(i);
 
                 if (guibutton.mousePressed(this.mc, mouseX, mouseY))
                 {
@@ -579,10 +576,10 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         float f = 32.0F;
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX_COLOR);
-        worldrenderer.pos(0.0D, (double)this.height, 0.0D).tex(0.0D, (double)((float)this.height / 32.0F + (float)tint)).color(64, 64, 64, 255).endVertex();
-        worldrenderer.pos((double)this.width, (double)this.height, 0.0D).tex((double)((float)this.width / 32.0F), (double)((float)this.height / 32.0F + (float)tint)).color(64, 64, 64, 255).endVertex();
-        worldrenderer.pos((double)this.width, 0.0D, 0.0D).tex((double)((float)this.width / 32.0F), (double)tint).color(64, 64, 64, 255).endVertex();
-        worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, (double)tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(0.0D, this.height, 0.0D).tex(0.0D, (float)this.height / 32.0F + (float)tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(this.width, this.height, 0.0D).tex((float)this.width / 32.0F, (float)this.height / 32.0F + (float)tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(this.width, 0.0D, 0.0D).tex((float)this.width / 32.0F, tint).color(64, 64, 64, 255).endVertex();
+        worldrenderer.pos(0.0D, 0.0D, 0.0D).tex(0.0D, tint).color(64, 64, 64, 255).endVertex();
         tessellator.draw();
     }
 
@@ -615,12 +612,12 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         try
         {
             Class<?> oclass = Class.forName("java.awt.Desktop");
-            Object object = oclass.getMethod("getDesktop", new Class[0]).invoke((Object)null, new Object[0]);
-            oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, new Object[] {url});
+            Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null);
+            oclass.getMethod("browse", new Class[] {URI.class}).invoke(object, url);
         }
         catch (Throwable throwable)
         {
-            LOGGER.error("Couldn\'t open link", throwable);
+            LOGGER.error("Couldn't open link", throwable);
         }
     }
 

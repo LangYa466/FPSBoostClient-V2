@@ -5,14 +5,14 @@ import java.util.Map;
 
 public class TimedEvent
 {
-    private static Map<String, Long> mapEventTimes = new HashMap();
+    private static final Map<String, Long> mapEventTimes = new HashMap();
 
     public static boolean isActive(String name, long timeIntervalMs)
     {
         synchronized (mapEventTimes)
         {
             long i = System.currentTimeMillis();
-            Long olong = (Long)mapEventTimes.get(name);
+            Long olong = mapEventTimes.get(name);
 
             if (olong == null)
             {

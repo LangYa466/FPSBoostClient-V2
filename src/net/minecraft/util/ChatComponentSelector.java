@@ -51,6 +51,6 @@ public class ChatComponentSelector extends ChatComponentStyle
 
     public String toString()
     {
-        return "SelectorComponent{pattern=\'" + this.selector + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
+        return "SelectorComponent{pattern='" + this.selector + '\'' + ", siblings=" + this.siblings + ", style=" + this.getChatStyle() + '}';
     }
 }

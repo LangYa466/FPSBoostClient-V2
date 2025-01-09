@@ -4,13 +4,13 @@ import net.minecraft.src.Config;
 
 public class CompoundKey
 {
-    private Object[] keys;
+    private final Object[] keys;
     private int hashcode;
 
     public CompoundKey(Object[] keys)
     {
         this.hashcode = 0;
-        this.keys = (Object[])((Object[])keys.clone());
+        this.keys = keys.clone();
     }
 
     public CompoundKey(Object k1, Object k2)
@@ -83,7 +83,7 @@ public class CompoundKey
 
     private static boolean compareKeys(Object key1, Object key2)
     {
-        return key1 == key2 ? true : (key1 == null ? false : (key2 == null ? false : key1.equals(key2)));
+        return key1 == key2 || (key1 != null && (key2 != null && key1.equals(key2)));
     }
 
     private Object[] getKeys()
@@ -93,7 +93,7 @@ public class CompoundKey
 
     public Object[] getKeysCopy()
     {
-        return (Object[])((Object[])this.keys.clone());
+        return this.keys.clone();
     }
 
     public String toString()

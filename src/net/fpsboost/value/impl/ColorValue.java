@@ -1,6 +1,6 @@
 package net.fpsboost.value.impl;
 
-import cn.imflowow.clickgui.utils.HSBColor;
+import net.fpsboost.screen.clickgui.utils.HSBColor;
 import lombok.Getter;
 import lombok.Setter;
 import net.fpsboost.module.Module;

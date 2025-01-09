@@ -43,7 +43,7 @@ public class ModelAdapterHorse extends ModelAdapter
 
             if (map.containsKey(modelPart))
             {
-                int i = ((Integer)map.get(modelPart)).intValue();
+                int i = map.get(modelPart).intValue();
                 return (ModelRenderer)Reflector.getFieldValue(modelhorse, Reflector.ModelHorse_ModelRenderers, i);
             }
             else

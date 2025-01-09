@@ -35,7 +35,7 @@ public class ModelAdapterEndermite extends ModelAdapter
 
             if (modelPart.startsWith(s))
             {
-                ModelRenderer[] amodelrenderer = (ModelRenderer[])((ModelRenderer[])Reflector.getFieldValue(modelendermite, Reflector.ModelEnderMite_bodyParts));
+                ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelendermite, Reflector.ModelEnderMite_bodyParts);
 
                 if (amodelrenderer == null)
                 {

@@ -109,8 +109,8 @@ import net.optifine.shaders.Shaders;
 public class RenderManager
 {
     private Map<Class, Render> entityRenderMap = Maps.newHashMap();
-    private Map<String, RenderPlayer> skinMap = Maps.<String, RenderPlayer>newHashMap();
-    private RenderPlayer playerRenderer;
+    private final Map<String, RenderPlayer> skinMap = Maps.newHashMap();
+    private final RenderPlayer playerRenderer;
     private FontRenderer textRenderer;
     public static double renderPosX;
     public static double renderPosY;
@@ -200,9 +200,9 @@ public class RenderManager
 
     public void setRenderPosition(double renderPosXIn, double renderPosYIn, double renderPosZIn)
     {
-        this.renderPosX = renderPosXIn;
-        this.renderPosY = renderPosYIn;
-        this.renderPosZ = renderPosZIn;
+        renderPosX = renderPosXIn;
+        renderPosY = renderPosYIn;
+        renderPosZ = renderPosZIn;
     }
 
     public <T extends Entity> Render<T> getEntityClassRenderObject(Class <? extends Entity > entityClass)
@@ -211,7 +211,7 @@ public class RenderManager
 
         if (render == null && entityClass != Entity.class)
         {
-            render = this.<Entity>getEntityClassRenderObject((Class <? extends Entity >)entityClass.getSuperclass());
+            render = this.getEntityClassRenderObject((Class <? extends Entity >)entityClass.getSuperclass());
             this.entityRenderMap.put(entityClass, render);
         }
 
@@ -223,12 +223,12 @@ public class RenderManager
         if (entityIn instanceof AbstractClientPlayer)
         {
             String s = ((AbstractClientPlayer)entityIn).getSkinType();
-            RenderPlayer renderplayer = (RenderPlayer)this.skinMap.get(s);
+            RenderPlayer renderplayer = this.skinMap.get(s);
             return (Render<T>)(renderplayer != null ? renderplayer : this.playerRenderer);
         }
         else
         {
-            return this.<T>getEntityClassRenderObject(entityIn.getClass());
+            return this.getEntityClassRenderObject(entityIn.getClass());
         }
     }
 
@@ -247,7 +247,7 @@ public class RenderManager
             
             if (block == Blocks.bed)
             {
-                int j = ((EnumFacing)iblockstate.getValue(BlockBed.FACING)).getHorizontalIndex();
+                int j = iblockstate.getValue(BlockBed.FACING).getHorizontalIndex();
                 this.playerViewY = (float)(j * 90 + 180);
                 this.playerViewX = 0.0F;
             }
@@ -300,7 +300,7 @@ public class RenderManager
 
     public boolean shouldRender(Entity entityIn, ICamera camera, double camX, double camY, double camZ)
     {
-        Render<Entity> render = this.<Entity>getEntityRenderObject(entityIn);
+        Render<Entity> render = this.getEntityRenderObject(entityIn);
         return render != null && render.shouldRender(entityIn, camera, camX, camY, camZ);
     }
 
@@ -326,9 +326,9 @@ public class RenderManager
 
         int j = i % 65536;
         int k = i / 65536;
-        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+        OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-        return this.doRenderEntity(entity, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ, f, partialTicks, hideDebugBox);
+        return this.doRenderEntity(entity, d0 - renderPosX, d1 - renderPosY, d2 - renderPosZ, f, partialTicks, hideDebugBox);
     }
 
     public void renderWitherSkull(Entity entityIn, float partialTicks)
@@ -336,16 +336,16 @@ public class RenderManager
         double d0 = entityIn.lastTickPosX + (entityIn.posX - entityIn.lastTickPosX) * (double)partialTicks;
         double d1 = entityIn.lastTickPosY + (entityIn.posY - entityIn.lastTickPosY) * (double)partialTicks;
         double d2 = entityIn.lastTickPosZ + (entityIn.posZ - entityIn.lastTickPosZ) * (double)partialTicks;
-        Render<Entity> render = this.<Entity>getEntityRenderObject(entityIn);
+        Render<Entity> render = this.getEntityRenderObject(entityIn);
 
         if (render != null && this.renderEngine != null)
         {
             int i = entityIn.getBrightnessForRender(partialTicks);
             int j = i % 65536;
             int k = i / 65536;
-            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float)j / 1.0F, (float)k / 1.0F);
+            OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) j, (float) k);
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
-            render.renderName(entityIn, d0 - this.renderPosX, d1 - this.renderPosY, d2 - this.renderPosZ);
+            render.renderName(entityIn, d0 - renderPosX, d1 - renderPosY, d2 - renderPosZ);
         }
     }
 
@@ -360,7 +360,7 @@ public class RenderManager
 
         try
         {
-            render = this.<Entity>getEntityRenderObject(entity);
+            render = this.getEntityRenderObject(entity);
 
             if (render != null && this.renderEngine != null)
             {
@@ -407,10 +407,7 @@ public class RenderManager
                     }
                 }
             }
-            else if (this.renderEngine != null)
-            {
-                return false;
-            }
+            else return this.renderEngine == null;
 
             return true;
         }
@@ -498,6 +495,6 @@ public class RenderManager
 
     public Map<String, RenderPlayer> getSkinMap()
     {
-        return Collections.<String, RenderPlayer>unmodifiableMap(this.skinMap);
+        return Collections.unmodifiableMap(this.skinMap);
     }
 }

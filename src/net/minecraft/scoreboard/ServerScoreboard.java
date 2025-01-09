@@ -16,7 +16,7 @@ import net.minecraft.server.MinecraftServer;
 public class ServerScoreboard extends Scoreboard
 {
     private final MinecraftServer scoreboardMCServer;
-    private final Set<ScoreObjective> field_96553_b = Sets.<ScoreObjective>newHashSet();
+    private final Set<ScoreObjective> field_96553_b = Sets.newHashSet();
     private ScoreboardSaveData scoreboardSaveData;
 
     public ServerScoreboard(MinecraftServer mcServer)
@@ -87,7 +87,7 @@ public class ServerScoreboard extends Scoreboard
         if (super.addPlayerToTeam(player, newTeam))
         {
             ScorePlayerTeam scoreplayerteam = this.getTeam(newTeam);
-            this.scoreboardMCServer.getConfigurationManager().sendPacketToAllPlayers(new S3EPacketTeams(scoreplayerteam, Arrays.asList(new String[] {player}), 3));
+            this.scoreboardMCServer.getConfigurationManager().sendPacketToAllPlayers(new S3EPacketTeams(scoreplayerteam, Arrays.asList(player), 3));
             this.markSaveDataDirty();
             return true;
         }
@@ -100,7 +100,7 @@ public class ServerScoreboard extends Scoreboard
     public void removePlayerFromTeam(String p_96512_1_, ScorePlayerTeam p_96512_2_)
     {
         super.removePlayerFromTeam(p_96512_1_, p_96512_2_);
-        this.scoreboardMCServer.getConfigurationManager().sendPacketToAllPlayers(new S3EPacketTeams(p_96512_2_, Arrays.asList(new String[] {p_96512_1_}), 4));
+        this.scoreboardMCServer.getConfigurationManager().sendPacketToAllPlayers(new S3EPacketTeams(p_96512_2_, Arrays.asList(p_96512_1_), 4));
         this.markSaveDataDirty();
     }
 
@@ -170,7 +170,7 @@ public class ServerScoreboard extends Scoreboard
 
     public List<Packet> func_96550_d(ScoreObjective p_96550_1_)
     {
-        List<Packet> list = Lists.<Packet>newArrayList();
+        List<Packet> list = Lists.newArrayList();
         list.add(new S3BPacketScoreboardObjective(p_96550_1_, 0));
 
         for (int i = 0; i < 19; ++i)
@@ -206,7 +206,7 @@ public class ServerScoreboard extends Scoreboard
 
     public List<Packet> func_96548_f(ScoreObjective p_96548_1_)
     {
-        List<Packet> list = Lists.<Packet>newArrayList();
+        List<Packet> list = Lists.newArrayList();
         list.add(new S3BPacketScoreboardObjective(p_96548_1_, 1));
 
         for (int i = 0; i < 19; ++i)

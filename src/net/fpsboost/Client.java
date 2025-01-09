@@ -1,6 +1,5 @@
 package net.fpsboost;
 
-import cn.imflowow.clickgui.ClickGui;
 import cn.langya.Logger;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;

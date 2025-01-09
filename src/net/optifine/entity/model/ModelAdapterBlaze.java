@@ -42,7 +42,7 @@ public class ModelAdapterBlaze extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[])((ModelRenderer[])Reflector.getFieldValue(modelblaze, Reflector.ModelBlaze_blazeSticks));
+                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelblaze, Reflector.ModelBlaze_blazeSticks);
 
                     if (amodelrenderer == null)
                     {

@@ -42,7 +42,7 @@ public class ModelAdapterSquid extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[])((ModelRenderer[])Reflector.getFieldValue(modelsquid, Reflector.ModelSquid_tentacles));
+                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelsquid, Reflector.ModelSquid_tentacles);
 
                     if (amodelrenderer == null)
                     {

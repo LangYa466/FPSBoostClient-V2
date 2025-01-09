@@ -1,6 +1,7 @@
 package net.fpsboost.screen;
 
 import cn.langya.Logger;
+import lombok.Getter;
 import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;
@@ -20,9 +21,11 @@ import java.io.IOException;
 public class GuiBackgroundSettings extends GuiScreen {
     private GuiTextField inputUrlField;
     private GuiButton buttonOnline;
+    @Getter
     private GuiButton buttonLocal;
+    @Getter
     private GuiButton buttonCancel;
-    private boolean cnMode;
+    private final boolean cnMode;
 
     public GuiBackgroundSettings(boolean cnMode) {
         this.cnMode = cnMode;
@@ -110,4 +113,5 @@ public class GuiBackgroundSettings extends GuiScreen {
         this.inputUrlField.textboxKeyTyped(typedChar, keyCode);
         super.keyTyped(typedChar, keyCode);
     }
+
 }

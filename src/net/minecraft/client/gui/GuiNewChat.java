@@ -18,9 +18,9 @@ public class GuiNewChat extends Gui
 {
     private static final Logger logger = LogManager.getLogger();
     private final Minecraft mc;
-    private final List<String> sentMessages = Lists.<String>newArrayList();
-    private final List<ChatLine> chatLines = Lists.<ChatLine>newArrayList();
-    private final List<ChatLine> drawnChatLines = Lists.<ChatLine>newArrayList();
+    private final List<String> sentMessages = Lists.newArrayList();
+    private final List<ChatLine> chatLines = Lists.newArrayList();
+    private final List<ChatLine> drawnChatLines = Lists.newArrayList();
     private int scrollPos;
     private boolean isScrolled;
 
@@ -54,7 +54,7 @@ public class GuiNewChat extends Gui
 
                 for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1)
                 {
-                    ChatLine chatline = (ChatLine)this.drawnChatLines.get(i1 + this.scrollPos);
+                    ChatLine chatline = this.drawnChatLines.get(i1 + this.scrollPos);
 
                     if (chatline != null)
                     {
@@ -183,7 +183,7 @@ public class GuiNewChat extends Gui
 
         for (int i = this.chatLines.size() - 1; i >= 0; --i)
         {
-            ChatLine chatline = (ChatLine)this.chatLines.get(i);
+            ChatLine chatline = this.chatLines.get(i);
             this.setChatLine(chatline.getChatComponent(), chatline.getChatLineID(), chatline.getUpdatedCounter(), true);
         }
     }
@@ -195,7 +195,7 @@ public class GuiNewChat extends Gui
 
     public void addToSentMessages(String message)
     {
-        if (this.sentMessages.isEmpty() || !((String)this.sentMessages.get(this.sentMessages.size() - 1)).equals(message))
+        if (this.sentMessages.isEmpty() || !this.sentMessages.get(this.sentMessages.size() - 1).equals(message))
         {
             this.sentMessages.add(message);
         }
@@ -248,7 +248,7 @@ public class GuiNewChat extends Gui
                     int i1 = k / this.mc.fontRendererObj.getHeight() + this.scrollPos;
 
                     if (i1 >= 0 && i1 < this.drawnChatLines.size()) {
-                        ChatLine chatline = (ChatLine) this.drawnChatLines.get(i1);
+                        ChatLine chatline = this.drawnChatLines.get(i1);
                         int j1 = 0;
 
                         for (IChatComponent ichatcomponent : chatline.getChatComponent()) {
@@ -282,7 +282,7 @@ public class GuiNewChat extends Gui
 
         while (iterator.hasNext())
         {
-            ChatLine chatline = (ChatLine)iterator.next();
+            ChatLine chatline = iterator.next();
 
             if (chatline.getChatLineID() == id)
             {
@@ -294,7 +294,7 @@ public class GuiNewChat extends Gui
 
         while (iterator.hasNext())
         {
-            ChatLine chatline1 = (ChatLine)iterator.next();
+            ChatLine chatline1 = iterator.next();
 
             if (chatline1.getChatLineID() == id)
             {

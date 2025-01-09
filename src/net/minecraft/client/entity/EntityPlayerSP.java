@@ -166,8 +166,8 @@ public class EntityPlayerSP extends AbstractClientPlayer
             double d0 = this.posX - this.lastReportedPosX;
             double d1 = this.getEntityBoundingBox().minY - this.lastReportedPosY;
             double d2 = this.posZ - this.lastReportedPosZ;
-            double d3 = (double)(rotationYaw - this.lastReportedYaw);
-            double d4 = (double)(rotationPitch - this.lastReportedPitch);
+            double d3 = rotationYaw - this.lastReportedYaw;
+            double d4 = rotationPitch - this.lastReportedPitch;
             boolean flag2 = d0 * d0 + d1 * d1 + d2 * d2 > 9.0E-4D || this.positionUpdateTicks >= 20;
             boolean flag3 = d3 != 0.0D || d4 != 0.0D;
 
@@ -259,9 +259,9 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public void closeScreenAndDropStack()
     {
-        this.inventory.setItemStack((ItemStack)null);
+        this.inventory.setItemStack(null);
         super.closeScreen();
-        this.mc.displayGuiScreen((GuiScreen)null);
+        this.mc.displayGuiScreen(null);
     }
 
     public void setPlayerSPHealth(float health)
@@ -391,22 +391,22 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
                 if (i == 0)
                 {
-                    this.motionX = (double)(-f);
+                    this.motionX = -f;
                 }
 
                 if (i == 1)
                 {
-                    this.motionX = (double)f;
+                    this.motionX = f;
                 }
 
                 if (i == 4)
                 {
-                    this.motionZ = (double)(-f);
+                    this.motionZ = -f;
                 }
 
                 if (i == 5)
                 {
-                    this.motionZ = (double)f;
+                    this.motionZ = f;
                 }
             }
 
@@ -561,7 +561,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
 
     public boolean isSneaking()
     {
-        boolean flag = this.movementInput != null ? this.movementInput.sneak : false;
+        boolean flag = this.movementInput != null && this.movementInput.sneak;
         return flag && !this.sleeping;
     }
 
@@ -609,7 +609,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             if (this.mc.currentScreen != null && !this.mc.currentScreen.doesGuiPauseGame())
             {
-                this.mc.displayGuiScreen((GuiScreen)null);
+                this.mc.displayGuiScreen(null);
             }
 
             if (this.timeInPortal == 0.0F)
@@ -723,12 +723,12 @@ public class EntityPlayerSP extends AbstractClientPlayer
         {
             if (this.movementInput.sneak)
             {
-                this.motionY -= (double)(this.capabilities.getFlySpeed() * 3.0F);
+                this.motionY -= this.capabilities.getFlySpeed() * 3.0F;
             }
 
             if (this.movementInput.jump)
             {
-                this.motionY += (double)(this.capabilities.getFlySpeed() * 3.0F);
+                this.motionY += this.capabilities.getFlySpeed() * 3.0F;
             }
         }
 

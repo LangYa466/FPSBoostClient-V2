@@ -4,8 +4,6 @@ import net.fpsboost.module.Module;
 import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.ClientInputGUI;
 
-import javax.swing.*;
-
 /**
  * @author LangYa
  * @since 2024/11/24 22:59

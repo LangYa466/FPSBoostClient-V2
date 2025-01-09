@@ -73,7 +73,7 @@ public class EmissiveTextures
                     resourcelocation = LOCATION_EMPTY;
                 }
 
-                ITextureObject itextureobject = (ITextureObject)mapTextures.get(resourcelocation);
+                ITextureObject itextureobject = mapTextures.get(resourcelocation);
 
                 if (itextureobject == null)
                 {
@@ -146,7 +146,6 @@ public class EmissiveTextures
             }
             catch (FileNotFoundException var4)
             {
-                return;
             }
             catch (IOException ioexception)
             {
@@ -167,7 +166,7 @@ public class EmissiveTextures
 
     public static boolean isEmissive(ResourceLocation loc)
     {
-        return suffixEmissivePng == null ? false : loc.getResourcePath().endsWith(suffixEmissivePng);
+        return suffixEmissivePng != null && loc.getResourcePath().endsWith(suffixEmissivePng);
     }
 
     public static void loadTexture(ResourceLocation loc, SimpleTexture tex)

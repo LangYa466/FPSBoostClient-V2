@@ -68,7 +68,7 @@ public class DefaultVertexFormats
             }
             else
             {
-                Object object = field.get((Object)null);
+                Object object = field.get(null);
                 return object;
             }
         }

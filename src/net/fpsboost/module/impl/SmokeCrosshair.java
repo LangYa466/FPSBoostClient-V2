@@ -154,7 +154,7 @@ public class SmokeCrosshair extends Module {
             this.curDynamicValues -= this.aerodynamicSpeedValue();
         }
         if (this.curDynamicValues < this.DynamicValues) {
-            this.curDynamicValues += (int) this.aerodynamicSpeedValue();
+            this.curDynamicValues += this.aerodynamicSpeedValue();
         }
         if (this.DynamicValues - this.curDynamicValues < this.aerodynamicSpeedValue() && this.DynamicValues - this.curDynamicValues > -this.aerodynamicSpeedValue()) {
             this.curDynamicValues = this.DynamicValues;

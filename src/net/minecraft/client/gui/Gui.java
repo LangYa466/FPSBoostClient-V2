@@ -62,10 +62,10 @@ public class Gui
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.color(f, f1, f2, f3);
         worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos((double) left, (double) bottom, 0.0D).endVertex();
-        worldrenderer.pos((double) right, (double) bottom, 0.0D).endVertex();
-        worldrenderer.pos((double) right, (double) top, 0.0D).endVertex();
-        worldrenderer.pos((double) left, (double) top, 0.0D).endVertex();
+        worldrenderer.pos(left, bottom, 0.0D).endVertex();
+        worldrenderer.pos(right, bottom, 0.0D).endVertex();
+        worldrenderer.pos(right, top, 0.0D).endVertex();
+        worldrenderer.pos(left, top, 0.0D).endVertex();
         tessellator.draw();
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();

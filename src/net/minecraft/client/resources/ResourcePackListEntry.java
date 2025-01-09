@@ -15,9 +15,9 @@ import net.minecraft.util.ResourceLocation;
 public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListEntry
 {
     private static final ResourceLocation RESOURCE_PACKS_TEXTURE = new ResourceLocation("textures/gui/resource_packs.png");
-    private static final IChatComponent field_183020_d = new ChatComponentTranslation("resourcePack.incompatible", new Object[0]);
-    private static final IChatComponent field_183021_e = new ChatComponentTranslation("resourcePack.incompatible.old", new Object[0]);
-    private static final IChatComponent field_183022_f = new ChatComponentTranslation("resourcePack.incompatible.new", new Object[0]);
+    private static final IChatComponent field_183020_d = new ChatComponentTranslation("resourcePack.incompatible");
+    private static final IChatComponent field_183021_e = new ChatComponentTranslation("resourcePack.incompatible.old");
+    private static final IChatComponent field_183022_f = new ChatComponentTranslation("resourcePack.incompatible.new");
     protected final Minecraft mc;
     protected final GuiScreenResourcePacks resourcePacksGUI;
 
@@ -125,7 +125,7 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
 
         for (int l = 0; l < 2 && l < list.size(); ++l)
         {
-            this.mc.fontRendererObj.drawStringWithShadow((String)list.get(l), (float)(x + 32 + 2), (float)(y + 12 + 10 * l), 8421504);
+            this.mc.fontRendererObj.drawStringWithShadow(list.get(l), (float)(x + 32 + 2), (float)(y + 12 + 10 * l), 8421504);
         }
     }
 
@@ -156,14 +156,14 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
     {
         List<ResourcePackListEntry> list = this.resourcePacksGUI.getListContaining(this);
         int i = list.indexOf(this);
-        return i > 0 && ((ResourcePackListEntry)list.get(i - 1)).func_148310_d();
+        return i > 0 && list.get(i - 1).func_148310_d();
     }
 
     protected boolean func_148307_h()
     {
         List<ResourcePackListEntry> list = this.resourcePacksGUI.getListContaining(this);
         int i = list.indexOf(this);
-        return i >= 0 && i < list.size() - 1 && ((ResourcePackListEntry)list.get(i + 1)).func_148310_d();
+        return i >= 0 && i < list.size() - 1 && list.get(i + 1).func_148310_d();
     }
 
     public boolean mousePressed(int slotIndex, int p_148278_2_, int p_148278_3_, int p_148278_4_, int p_148278_5_, int p_148278_6_)
@@ -177,8 +177,8 @@ public abstract class ResourcePackListEntry implements GuiListExtended.IGuiListE
 
                 if (j != 1)
                 {
-                    String s1 = I18n.format("resourcePack.incompatible.confirm.title", new Object[0]);
-                    String s = I18n.format("resourcePack.incompatible.confirm." + (j > 1 ? "new" : "old"), new Object[0]);
+                    String s1 = I18n.format("resourcePack.incompatible.confirm.title");
+                    String s = I18n.format("resourcePack.incompatible.confirm." + (j > 1 ? "new" : "old"));
                     this.mc.displayGuiScreen(new GuiYesNo(new GuiYesNoCallback()
                     {
                         public void confirmClicked(boolean result, int id)

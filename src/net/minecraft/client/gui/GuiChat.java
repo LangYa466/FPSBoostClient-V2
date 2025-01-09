@@ -23,7 +23,7 @@ public class GuiChat extends GuiScreen
     private boolean playerNamesFound;
     private boolean waitingOnAutocomplete;
     private int autocompleteIndex;
-    private List<String> foundPlayerNames = Lists.<String>newArrayList();
+    private final List<String> foundPlayerNames = Lists.newArrayList();
     protected GuiTextField inputField;
     private String defaultInputFieldText = "";
 
@@ -76,7 +76,7 @@ public class GuiChat extends GuiScreen
 
         if (keyCode == 1)
         {
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
         else if (keyCode != 28 && keyCode != 156)
         {
@@ -110,7 +110,7 @@ public class GuiChat extends GuiScreen
                 this.sendChatMessage(s);
             }
 
-            this.mc.displayGuiScreen((GuiScreen)null);
+            this.mc.displayGuiScreen(null);
         }
     }
 
@@ -230,7 +230,7 @@ public class GuiChat extends GuiScreen
             this.mc.ingameGUI.getChatGUI().printChatMessageWithOptionalDeletion(new ChatComponentText(stringbuilder.toString()), 1);
         }
 
-        this.inputField.writeText((String)this.foundPlayerNames.get(this.autocompleteIndex++));
+        this.inputField.writeText(this.foundPlayerNames.get(this.autocompleteIndex++));
     }
 
     private void sendAutocompleteRequest(String p_146405_1_, String p_146405_2_)
@@ -269,7 +269,7 @@ public class GuiChat extends GuiScreen
                     this.historyBuffer = this.inputField.getText();
                 }
 
-                this.inputField.setText((String)this.mc.ingameGUI.getChatGUI().getSentMessages().get(i));
+                this.inputField.setText(this.mc.ingameGUI.getChatGUI().getSentMessages().get(i));
                 this.sentHistoryCursor = i;
             }
         }

@@ -71,7 +71,7 @@ public abstract class PathNavigate
 
     public boolean tryMoveToXYZ(double x, double y, double z, double speedIn)
     {
-        PathEntity pathentity = this.getPathToXYZ((double)MathHelper.floor_double(x), (double)((int)y), (double)MathHelper.floor_double(z));
+        PathEntity pathentity = this.getPathToXYZ(MathHelper.floor_double(x), (int)y, MathHelper.floor_double(z));
         return this.setPath(pathentity, speedIn);
     }
 
@@ -102,7 +102,7 @@ public abstract class PathNavigate
     public boolean tryMoveToEntityLiving(Entity entityIn, double speedIn)
     {
         PathEntity pathentity = this.getPathToEntityLiving(entityIn);
-        return pathentity != null ? this.setPath(pathentity, speedIn) : false;
+        return pathentity != null && this.setPath(pathentity, speedIn);
     }
 
     public boolean setPath(PathEntity pathentityIn, double speedIn)

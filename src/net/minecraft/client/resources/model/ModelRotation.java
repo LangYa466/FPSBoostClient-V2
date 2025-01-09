@@ -30,7 +30,7 @@ public enum ModelRotation implements ITransformation
     X270_Y180(270, 180),
     X270_Y270(270, 270);
 
-    private static final Map<Integer, ModelRotation> mapRotations = Maps.<Integer, ModelRotation>newHashMap();
+    private static final Map<Integer, ModelRotation> mapRotations = Maps.newHashMap();
     private final int combinedXY;
     private final Matrix4f matrix4d;
     private final int quartersX;
@@ -41,7 +41,7 @@ public enum ModelRotation implements ITransformation
         return p_177521_0_ * 360 + p_177521_1_;
     }
 
-    private ModelRotation(int p_i46087_3_, int p_i46087_4_)
+    ModelRotation(int p_i46087_3_, int p_i46087_4_)
     {
         this.combinedXY = combineXY(p_i46087_3_, p_i46087_4_);
         this.matrix4d = new Matrix4f();
@@ -107,7 +107,7 @@ public enum ModelRotation implements ITransformation
 
     public static ModelRotation getModelRotation(int p_177524_0_, int p_177524_1_)
     {
-        return (ModelRotation)mapRotations.get(Integer.valueOf(combineXY(MathHelper.normalizeAngle(p_177524_0_, 360), MathHelper.normalizeAngle(p_177524_1_, 360))));
+        return mapRotations.get(Integer.valueOf(combineXY(MathHelper.normalizeAngle(p_177524_0_, 360), MathHelper.normalizeAngle(p_177524_1_, 360))));
     }
 
     public javax.vecmath.Matrix4f getMatrix()

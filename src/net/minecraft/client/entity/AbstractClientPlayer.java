@@ -115,7 +115,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
 
         if (itextureobject == null)
         {
-            itextureobject = new ThreadDownloadImageData((File)null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", new Object[] {StringUtils.stripControlCodes(username)}), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
+            itextureobject = new ThreadDownloadImageData(null, String.format("http://skins.minecraft.net/MinecraftSkins/%s.png", StringUtils.stripControlCodes(username)), DefaultPlayerSkin.getDefaultSkin(getOfflineUUID(username)), new ImageBufferDownload());
             texturemanager.loadTexture(resourceLocationIn, itextureobject);
         }
 
@@ -188,7 +188,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
     public boolean hasElytraCape()
     {
         ResourceLocation resourcelocation = this.getLocationCape();
-        return resourcelocation == null ? false : (resourcelocation == this.locationOfCape ? this.elytraOfCape : true);
+        return resourcelocation != null && (resourcelocation != this.locationOfCape || this.elytraOfCape);
     }
 
     public void setElytraOfCape(boolean p_setElytraOfCape_1_)

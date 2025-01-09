@@ -26,6 +26,7 @@ public class ClientIRC extends Module implements Wrapper {
     private static boolean initiated = false;
     private static boolean added = false;
     private boolean updated = false;
+    private static int errorIndex;
 
     public ClientIRC() {
         super("ClientIRC", "客户端在线聊天");
@@ -67,9 +68,7 @@ public class ClientIRC extends Module implements Wrapper {
         new Thread(() -> {
             try {
                 //                socket = new Socket("localhost", 11451);
-                socket = new Socket("103.79.187.250", 11451);
-                serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-                out = new PrintWriter(socket.getOutputStream(), true);
+                initClient();
 
                 while (true) {
                     String message;
@@ -80,6 +79,14 @@ public class ClientIRC extends Module implements Wrapper {
                         }
                     } catch (IOException e) {
                         Logger.error("接收消息时发生错误: {}", e.getMessage());
+                        errorIndex++;
+                        if (errorIndex >= 10) {
+                            Logger.error("错误次数超过限制，进程即将结束...");
+                            // exit
+                            System.exit(1);
+                            return;
+                        }
+                        initClient();
                     }
                 }
             } catch (IOException e) {
@@ -88,6 +95,12 @@ public class ClientIRC extends Module implements Wrapper {
         }).start();
         Logger.info("链接服务器后端成功!");
         initiated = true;
+    }
+
+    private static void initClient() throws IOException {
+        socket = new Socket("103.79.187.250", 11451);
+        serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        out = new PrintWriter(socket.getOutputStream(), true);
     }
 
     private static void addUser() {

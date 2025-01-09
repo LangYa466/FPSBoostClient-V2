@@ -20,9 +20,9 @@ public class GuiKeyBindingList extends GuiListExtended
         super(mcIn, controls.width, controls.height, 63, controls.height - 32, 20);
         this.field_148191_k = controls;
         this.mc = mcIn;
-        KeyBinding[] akeybinding = (KeyBinding[])ArrayUtils.clone(mcIn.gameSettings.keyBindings);
+        KeyBinding[] akeybinding = ArrayUtils.clone(mcIn.gameSettings.keyBindings);
         this.listEntries = new GuiListExtended.IGuiListEntry[akeybinding.length + KeyBinding.getKeybinds().size()];
-        Arrays.sort((Object[])akeybinding);
+        Arrays.sort(akeybinding);
         int i = 0;
         String s = null;
 
@@ -36,7 +36,7 @@ public class GuiKeyBindingList extends GuiListExtended
                 this.listEntries[i++] = new GuiKeyBindingList.CategoryEntry(s1);
             }
 
-            int j = mcIn.fontRendererObj.getStringWidth(I18n.format(keybinding.getKeyDescription(), new Object[0]));
+            int j = mcIn.fontRendererObj.getStringWidth(I18n.format(keybinding.getKeyDescription()));
 
             if (j > this.maxListLabelWidth)
             {
@@ -74,7 +74,7 @@ public class GuiKeyBindingList extends GuiListExtended
 
         public CategoryEntry(String p_i45028_2_)
         {
-            this.labelText = I18n.format(p_i45028_2_, new Object[0]);
+            this.labelText = I18n.format(p_i45028_2_);
             this.labelWidth = GuiKeyBindingList.this.mc.fontRendererObj.getStringWidth(this.labelText);
         }
 
@@ -107,9 +107,9 @@ public class GuiKeyBindingList extends GuiListExtended
         private KeyEntry(KeyBinding p_i45029_2_)
         {
             this.keybinding = p_i45029_2_;
-            this.keyDesc = I18n.format(p_i45029_2_.getKeyDescription(), new Object[0]);
-            this.btnChangeKeyBinding = new GuiButton(0, 0, 0, 75, 20, I18n.format(p_i45029_2_.getKeyDescription(), new Object[0]));
-            this.btnReset = new GuiButton(0, 0, 0, 50, 20, I18n.format("controls.reset", new Object[0]));
+            this.keyDesc = I18n.format(p_i45029_2_.getKeyDescription());
+            this.btnChangeKeyBinding = new GuiButton(0, 0, 0, 75, 20, I18n.format(p_i45029_2_.getKeyDescription()));
+            this.btnReset = new GuiButton(0, 0, 0, 50, 20, I18n.format("controls.reset"));
         }
 
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected)

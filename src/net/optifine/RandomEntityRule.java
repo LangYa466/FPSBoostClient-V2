@@ -26,7 +26,7 @@ public class RandomEntityRule
 {
     private String pathProps = null;
     private ResourceLocation baseResLoc = null;
-    private int index;
+    private final int index;
     private int[] textures = null;
     private ResourceLocation[] resourceLocations = null;
     private int[] weights = null;
@@ -74,7 +74,7 @@ public class RandomEntityRule
         this.baby = cp.parseBooleanObject(props.getProperty("baby." + index));
         this.moonPhases = cp.parseRangeListInt(props.getProperty("moonPhase." + index));
         this.dayTimes = cp.parseRangeListInt(props.getProperty("dayTime." + index));
-        this.weatherList = cp.parseWeather(props.getProperty("weather." + index), "weather." + index, (Weather[])null);
+        this.weatherList = cp.parseWeather(props.getProperty("weather." + index), "weather." + index, null);
     }
 
     private RangeListInt parseMinMaxHeight(Properties props, int index)
@@ -411,10 +411,7 @@ public class RandomEntityRule
                 {
                     Weather weather = Weather.getWeather(world2, 0.0F);
 
-                    if (!ArrayUtils.contains(this.weatherList, weather))
-                    {
-                        return false;
-                    }
+                    return ArrayUtils.contains(this.weatherList, weather);
                 }
             }
 

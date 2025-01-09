@@ -1,6 +1,6 @@
 package net.fpsboost.util;
 
-import net.fpsboost.util.font.FontManager;
+import net.fpsboost.screen.clickgui.ClickGui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -13,21 +13,31 @@ import java.io.IOException;
  * @since 2025/1/1
  */
 public class ClientInputGUI extends GuiScreen {
+    private String defaultText = "";
     public int x,y;
     public String text;
     public int width = 100;
     public int height = 20;
     private GuiTextField guiTextField;
+    private Runnable runnable;
 
     public ClientInputGUI(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
+    public ClientInputGUI(int x, int y, String text, Runnable runnable) {
+        this.x = x;
+        this.y = y;
+        this.defaultText = text;
+        this.runnable = runnable;
+    }
+
     @Override
     public void initGui() {
         this.buttonList.add(new GuiButton(0, x, y + 25, width, height, "确认"));
         guiTextField = new GuiTextField(1, this.fontRendererObj, x, y, width, height);
+        if (!defaultText.isEmpty()) guiTextField.setText(defaultText);
         super.initGui();
     }
 
@@ -53,6 +63,7 @@ public class ClientInputGUI extends GuiScreen {
     @Override
     public void onGuiClosed() {
         text = guiTextField.getText();
+        runnable.run();
         super.onGuiClosed();
     }
 
@@ -60,7 +71,6 @@ public class ClientInputGUI extends GuiScreen {
     protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
         if (button.id != 0) return null;
         onGuiClosed();
-        mc.displayGuiScreen(null);
         return super.actionPerformed(button);
     }
 
