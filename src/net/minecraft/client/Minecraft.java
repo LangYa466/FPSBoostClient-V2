@@ -33,6 +33,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import javax.imageio.ImageIO;
 
+import lombok.Getter;
 import net.fpsboost.Client;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
@@ -40,7 +41,7 @@ import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
-import net.fpsboost.util.screenShotHelper.ScreenshotTaker;
+import net.fpsboost.util.screenShot.ScreenshotTaker;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -141,19 +142,7 @@ import net.minecraft.stats.AchievementList;
 import net.minecraft.stats.IStatStringFormat;
 import net.minecraft.stats.StatFileWriter;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.FrameTimer;
-import net.minecraft.util.IThreadListener;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MinecraftError;
-import net.minecraft.util.MouseHelper;
-import net.minecraft.util.MovementInputFromOptions;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.ReportedException;
-import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.Session;
-import net.minecraft.util.Timer;
-import net.minecraft.util.Util;
+import net.minecraft.util.*;
 import net.minecraft.world.EnumDifficulty;
 import net.minecraft.world.WorldProviderEnd;
 import net.minecraft.world.WorldProviderHell;
@@ -202,6 +191,7 @@ public class Minecraft implements IThreadListener {
     private RenderItem renderItem;
     private ItemRenderer itemRenderer;
     public EntityPlayerSP thePlayer;
+    @Getter
     private Entity renderViewEntity;
     public Entity pointedEntity;
     public EffectRenderer effectRenderer;
@@ -252,7 +242,9 @@ public class Minecraft implements IThreadListener {
     private SoundHandler mcSoundHandler;
     private MusicTicker mcMusicTicker;
     private ResourceLocation mojangLogo;
+    @Getter
     private final MinecraftSessionService sessionService;
+    @Getter
     private SkinManager skinManager;
     private final Queue < FutureTask<? >> scheduledTasks = Queues. < FutureTask<? >> newArrayDeque();
     private long field_175615_aJ = 0L;
@@ -2698,8 +2690,7 @@ public class Minecraft implements IThreadListener {
         return this.thePlayer != null ? (this.thePlayer.worldObj.provider instanceof WorldProviderHell ? MusicTicker.MusicType.NETHER : (this.thePlayer.worldObj.provider instanceof WorldProviderEnd ? (BossStatus.bossName != null && BossStatus.statusBarTime > 0 ? MusicTicker.MusicType.END_BOSS : MusicTicker.MusicType.END) : (this.thePlayer.capabilities.isCreativeMode && this.thePlayer.capabilities.allowFlying ? MusicTicker.MusicType.CREATIVE : MusicTicker.MusicType.GAME))) : MusicTicker.MusicType.MENU;
     }
 
-    public void dispatchKeypresses()
-    {
+    public void dispatchKeypresses() {
         int i = Keyboard.getEventKey() == 0 ? Keyboard.getEventCharacter() : Keyboard.getEventKey();
 
         if (i != 0 && !Keyboard.isRepeatEvent())
@@ -2714,28 +2705,24 @@ public class Minecraft implements IThreadListener {
                     }
                     else if (i == this.gameSettings.keyBindScreenshot.getKeyCode())
                     {
-                        this.ingameGUI.getChatGUI().printChatMessage(ScreenshotTaker.takeScreenshot());
+                        ScreenshotTaker.takeScreenshotAsync(new ScreenshotTaker.ScreenshotCallback() {
+                            @Override
+                            public void onComplete(IChatComponent icc) {
+                                Minecraft.getMinecraft().thePlayer.addChatMessage(icc);
+                            }
 
-                       // this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc));
+                            @Override
+                            public void onError(Exception e) {
+                                Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Error taking screenshot: " + e.getMessage()));
+                                cn.langya.Logger.error("Failed to take screenshot: {}", e);
+                            }
+                        });
+
+                        // this.ingameGUI.getChatGUI().printChatMessage(ScreenShotHelper.saveScreenshot(this.mcDataDir, this.displayWidth, this.displayHeight, this.framebufferMc));
                     }
                 }
             }
         }
-    }
-
-    public MinecraftSessionService getSessionService()
-    {
-        return this.sessionService;
-    }
-
-    public SkinManager getSkinManager()
-    {
-        return this.skinManager;
-    }
-
-    public Entity getRenderViewEntity()
-    {
-        return this.renderViewEntity;
     }
 
     public void setRenderViewEntity(Entity viewingEntity)
