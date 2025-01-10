@@ -1,9 +1,11 @@
 package net.fpsboost.screen.clickgui.components.values;
 
 import lombok.Getter;
+import lombok.Setter;
 import net.fpsboost.screen.clickgui.utils.UIComponent;
 import net.fpsboost.value.Value;
 
+@Setter
 @Getter
 public class ValueEntity extends UIComponent {
 	Value<?> value;
@@ -33,10 +35,6 @@ public class ValueEntity extends UIComponent {
 	public double getHeight()
 	{
 		return 0.0;
-	}
-
-    public void setValue(Value<?> value) {
-		this.value = value;
 	}
 
 }
