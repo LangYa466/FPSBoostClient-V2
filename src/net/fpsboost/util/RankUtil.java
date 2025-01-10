@@ -4,9 +4,11 @@ import cn.langya.Logger;
 import net.fpsboost.Client;
 import net.fpsboost.util.network.WebUtil;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
 
 /**
  * @author LangYa466
@@ -21,16 +23,16 @@ public class RankUtil {
      */
     public static void getRanksAsync() {
         CompletableFuture.runAsync(() -> {
-            // 在异步线程中执行Web请求和数据处理
+            // 异步获取Web请求数据并处理
             String web = WebUtil.get(Client.web + "rank.txt");
-            String[] strings;
-            if (web != null) {
-                strings = parseStrings(web);
-            } else {
+
+            if (web == null) {
                 Logger.error("Failed to get rank data from server.");
                 return;
             }
-            ranks = parseString(strings);
+
+            // 处理排名数据
+            ranks = parseStrings(web);
         }).exceptionally(ex -> {
             Logger.error(ex.getMessage());
             return null;
@@ -44,26 +46,19 @@ public class RankUtil {
      * @return 玩家排名
      */
     public static String getRank(String ign) {
-        return ranks.get(ign);
+        return ranks.getOrDefault(ign, "Unknown");
     }
 
-    // 使用换行符（\n）分割输入字符串
-    public static String[] parseStrings(String input) {
-        return input.split("\n");
-    }
-
-    public static Map<String, String> parseString(String[] inputs) {
-        Map<String, String> result = new HashMap<>();
-
-        for (String input : inputs) {
-            // 使用 "-" 进行分割
-            String[] parts = input.split("-");
-
-            if (parts.length == 2) {
-                // 将解析出的字符串存入Map
-                result.put(parts[0], parts[1]);
-            }
-        }
-        return result;
+    /**
+     * 使用换行符（\n）分割输入字符串，并返回Map
+     *
+     * @param input 输入字符串
+     * @return 解析后的排名数据Map
+     */
+    public static Map<String, String> parseStrings(String input) {
+        return Arrays.stream(input.split("\n"))  // 使用 split("\n") 分割输入字符串
+                .map(line -> line.split("-"))
+                .filter(parts -> parts.length == 2)  // 过滤无效数据
+                .collect(Collectors.toMap(parts -> parts[0], parts -> parts[1]));
     }
 }

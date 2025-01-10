@@ -32,14 +32,39 @@ public class Client implements Wrapper {
     public static final String web = "https://api.fpsboost.cn:444/";
 
     public static boolean isWindows() {
-        String os = System.getProperty("os.name").toLowerCase();
-        return os.contains("win");
+        return System.getProperty("os.name").toLowerCase().contains("win");
     }
 
     public static void initClient() throws IOException {
-        File logFile = new File(ConfigManager.dir, "error.log");
-        if (isDev) logFile = new File(ConfigManager.dir, "debug.log");
+        // Set log file
+        setLogFile();
+
+        // Initialize components
+        initComponents();
+
+        // First time screen
+        if (ConfigManager.isFirst) {
+            mc.displayGuiScreen(new GuiWelcome());
+        }
+
+        // Version check
+        if (!isDev) {
+            checkForUpdates();
+        }
+
+        // Download and set background image
+        downloadBackgroundImage();
+
+        // Display the language settings screen
+        mc.displayGuiScreen(new GuiI18n());
+    }
+
+    private static void setLogFile() throws IOException {
+        File logFile = new File(ConfigManager.dir, isDev ? "debug.log" : "error.log");
         Logger.setLogFile(logFile.getAbsolutePath());
+    }
+
+    private static void initComponents() {
         ModuleManager.init();
         ElementManager.init();
         ValueManager.init();
@@ -48,37 +73,34 @@ public class Client implements Wrapper {
         ClientIRC.init();
         CapeUtil.init();
         FontManager.init();
+    }
 
-        if (ConfigManager.isFirst) mc.displayGuiScreen(new GuiWelcome());
-
-        // Version check
-        if (!isDev) {
-            String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "version.txt")).trim();
-            Logger.info((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
-            isOldVersion = !version.contains(latestVersion);
-            if (isOldVersion && isWindows()) {
-                File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");
-                String path = autoUpdateJarFile.getAbsolutePath();
-                Logger.info("Auto-update jar file: " + path);
-                Runtime.getRuntime().exec("java -jar " + path);
-                System.exit(0);
-            }
+    private static void checkForUpdates() throws IOException {
+        String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "version.txt")).trim();
+        Logger.info((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
+        isOldVersion = !version.contains(latestVersion);
+        if (isOldVersion && isWindows()) {
+            File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");
+            Logger.info("Auto-update jar file: " + autoUpdateJarFile.getAbsolutePath());
+            Runtime.getRuntime().exec("java -jar " + autoUpdateJarFile.getAbsolutePath());
+            System.exit(0);
         }
+    }
 
-        // download background
+    private static void downloadBackgroundImage() throws IOException {
         String url = web + "fj";
-        if (GuiMainMenu.file.exists()) {
-            String localImageContent = FileUtils.readFileToString(GuiMainMenu.file);
+        File backgroundFile = GuiMainMenu.file;
+
+        if (backgroundFile.exists()) {
+            String localImageContent = FileUtils.readFileToString(backgroundFile);
             if (localImageContent.contains("http") && localImageContent.contains("://")) {
                 WebUtil.bindTextureWithUrl(url, "ClientBG");
             } else {
-                WebUtil.bindLocalTexture(FileUtils.readFileToString(GuiMainMenu.file), "ClientBG");
+                WebUtil.bindLocalTexture(localImageContent, "ClientBG");
             }
         } else {
             WebUtil.bindTextureWithUrl(url, "ClientBG");
         }
-
-        mc.displayGuiScreen(new GuiI18n());
     }
 
     public static void stopClient() {
@@ -86,4 +108,3 @@ public class Client implements Wrapper {
         Logger.shutdown();
     }
 }
-

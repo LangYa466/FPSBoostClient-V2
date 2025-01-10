@@ -5,6 +5,8 @@ import net.fpsboost.config.Config;
 import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
 
+import java.util.stream.Collectors;
+
 /**
  * @author LangYa
  * @since 2024/9/3 18:21
@@ -15,24 +17,26 @@ public class ElementConfig extends Config {
         super("Element");
     }
 
+    @Override
     public JsonObject saveConfig() {
-        final JsonObject object = new JsonObject();
-        for (Element hud : ElementManager.elements) {
-            final JsonObject hudObject = new JsonObject();
+        JsonObject object = new JsonObject();
+        ElementManager.elements.forEach(hud -> {
+            JsonObject hudObject = new JsonObject();
             hudObject.addProperty("x", hud.xPos);
             hudObject.addProperty("y", hud.yPos);
             object.add(hud.name, hudObject);
-        }
+        });
         return object;
     }
 
+    @Override
     public void loadConfig(final JsonObject object) {
-        for (Element hud : ElementManager.elements) {
-            if (object.has(hud.name)) {
-                final JsonObject hudObject = object.get(hud.name).getAsJsonObject();
+        ElementManager.elements.forEach(hud -> {
+            JsonObject hudObject = object.getAsJsonObject(hud.name);
+            if (hudObject != null) {
                 hud.xPos = hudObject.get("x").getAsInt();
                 hud.yPos = hudObject.get("y").getAsInt();
             }
-        }
+        });
     }
 }

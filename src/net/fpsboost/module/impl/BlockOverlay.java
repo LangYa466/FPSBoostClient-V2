@@ -30,8 +30,9 @@ public class BlockOverlay extends Module {
     }
 
     @Override
-    public void onRender3D() {
+    public synchronized void onRender3D() {
         if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit == MovingObjectPosition.MovingObjectType.BLOCK) {
+            // 获取目标方块的信息
             final BlockPos pos = mc.objectMouseOver.getBlockPos();
             final Block block = mc.theWorld.getBlockState(pos).getBlock();
             final double n = pos.getX();
@@ -40,31 +41,59 @@ public class BlockOverlay extends Module {
             final double y = n2 - RenderManager.renderPosY;
             final double n3 = pos.getZ();
             final double z = n3 - RenderManager.renderPosZ;
+
+            // 设置 OpenGL 状态
             GL11.glPushMatrix();
-            GlStateManager.enableAlpha();
-            GlStateManager.enableBlend();
-            GL11.glBlendFunc(770, 771);
-            GL11.glDisable(GL11.GL_TEXTURE_2D);
-            GL11.glEnable(2848);
-            if (throughBlock.getValue()) GL11.glDisable(2929);
-            GL11.glDepthMask(false);
-            int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getValue().getAlpha() / 255f);
-            Color c = chroma.getValue() ? intToColor(chromaColor) : color1.getValue().getColor();
-            GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
-            final double minX = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinX();
-            final double minY = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinY();
-            final double minZ = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinZ();
-            if (!mode.getValue()) drawBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005));
-            GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
-            GL11.glLineWidth(1f);
-            if (mode.getValue()) drawOutlinedBoundingBox(new AxisAlignedBB(x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005, x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005));
-            GL11.glDisable(2848);
-            GL11.glEnable(3553);
-            if (throughBlock.getValue()) {
-                GL11.glEnable(2929);
+            try {
+                GlStateManager.enableAlpha();
+                GlStateManager.enableBlend();
+                GL11.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+                GL11.glDisable(GL11.GL_TEXTURE_2D);
+                GL11.glEnable(GL11.GL_LINE_SMOOTH);
+
+                if (throughBlock.getValue()) {
+                    GL11.glDisable(GL11.GL_DEPTH_TEST); // 禁用深度测试
+                }
+
+                GL11.glDepthMask(false); // 禁用深度掩码
+
+                // 获取颜色值
+                int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getValue().getAlpha() / 255f);
+                Color c = chroma.getValue() ? intToColor(chromaColor) : color1.getValue().getColor();
+                GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
+
+                // 定义方块边界
+                final double minX = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinX();
+                final double minY = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinY();
+                final double minZ = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinZ();
+
+                // 渲染边框
+                if (!mode.getValue()) {
+                    drawBoundingBox(new AxisAlignedBB(
+                            x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005,
+                            x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005
+                    ));
+                }
+
+                // 渲染外边框
+                if (mode.getValue()) {
+                    drawOutlinedBoundingBox(new AxisAlignedBB(
+                            x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005,
+                            x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005
+                    ));
+                }
+            } finally {
+                // 恢复 OpenGL 状态
+                GL11.glDisable(GL11.GL_LINE_SMOOTH);
+                GL11.glEnable(GL11.GL_TEXTURE_2D);
+
+                if (throughBlock.getValue()) {
+                    GL11.glEnable(GL11.GL_DEPTH_TEST);
+                }
+
+                GL11.glDepthMask(true);
+                GL11.glPopMatrix();
             }
-            GL11.glDepthMask(true);
-            GL11.glPopMatrix();
         }
     }
 

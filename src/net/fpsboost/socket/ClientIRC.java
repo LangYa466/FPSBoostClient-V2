@@ -9,9 +9,8 @@ import net.minecraft.util.EnumChatFormatting;
 
 import java.io.*;
 import java.net.*;
-import java.util.Arrays;
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.*;
+import java.util.concurrent.*;
 
 /**
  * @author LangYa466
@@ -22,11 +21,12 @@ public class ClientIRC extends Module implements Wrapper {
     private static Socket socket;
     private static BufferedReader serverInput;
     private static PrintWriter out;
-    private static final List<String> userIgnList = new CopyOnWriteArrayList<>();
+    private static final Set<String> userIgnList = ConcurrentHashMap.newKeySet();  // 使用线程安全的集合
     private static boolean initiated = false;
     private static boolean added = false;
     private boolean updated = false;
     private static int errorIndex;
+    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();  // 使用线程池
 
     public ClientIRC() {
         super("ClientIRC", "客户端在线聊天");
@@ -57,7 +57,6 @@ public class ClientIRC extends Module implements Wrapper {
         super.onWorldLoad();
     }
 
-
     private static void send(String message) {
         out.println(message);
     }
@@ -65,34 +64,23 @@ public class ClientIRC extends Module implements Wrapper {
     public static void init() {
         if (initiated) return;
 
-        new Thread(() -> {
+        executorService.submit(() -> {
             try {
-                //                socket = new Socket("localhost", 11451);
                 initClient();
 
-                while (true) {
-                    String message;
-                    try {
-                        while ((message = serverInput.readLine()) != null) {
-                            Logger.debug(message);
-                            processMessage(message);
-                        }
-                    } catch (IOException e) {
-                        Logger.error("接收消息时发生错误: {}", e.getMessage());
-                        errorIndex++;
-                        if (errorIndex >= 10) {
-                            Logger.error("错误次数超过限制，进程即将结束...");
-                            // exit
-                            System.exit(1);
-                            return;
-                        }
-                        initClient();
-                    }
+                String message;
+                while ((message = serverInput.readLine()) != null) {
+                    Logger.debug(message);
+                    processMessage(message);
                 }
             } catch (IOException e) {
                 Logger.error("发生错误: {}", e.getMessage());
+                handleConnectionError();
+            } finally {
+                closeResources();
             }
-        }).start();
+        });
+
         Logger.info("链接服务器后端成功!");
         initiated = true;
     }
@@ -101,6 +89,35 @@ public class ClientIRC extends Module implements Wrapper {
         socket = new Socket("103.79.187.250", 11451);
         serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         out = new PrintWriter(socket.getOutputStream(), true);
+    }
+
+    private static void handleConnectionError() {
+        errorIndex++;
+        if (errorIndex >= 10) {
+            Logger.error("错误次数超过限制，进程即将结束...");
+            System.exit(1);
+        }
+        try {
+            initClient();
+        } catch (IOException e) {
+            Logger.error("重新连接失败: {}", e.getMessage());
+        }
+    }
+
+    private static void closeResources() {
+        try {
+            if (serverInput != null) {
+                serverInput.close();
+            }
+            if (out != null) {
+                out.close();
+            }
+            if (socket != null && !socket.isClosed()) {
+                socket.close();
+            }
+        } catch (IOException e) {
+            Logger.error("关闭资源时发生错误: {}", e.getMessage());
+        }
     }
 
     private static void addUser() {
@@ -115,7 +132,7 @@ public class ClientIRC extends Module implements Wrapper {
 
     public static boolean sendMessage(String message) {
         if (!message.startsWith("-") || mc.thePlayer == null) return false;
-        message = message.replace("-","");
+        message = message.replace("-", "");
         String ign = mc.session.getUsername();
         RankUtil.getRanksAsync();
         String sendMessage = String.format(".message %s %s", ign, message);
@@ -126,69 +143,66 @@ public class ClientIRC extends Module implements Wrapper {
 
     private static void processMessage(String message) {
         if (message.startsWith(".message")) {
-            // 限制最大分割为 3 部分，确保 content 可以包含空格
-            String[] parts = message.split("\\s+", 3);
-
-            if (parts.length == 3) {
-                String ign = parts[1];
-                int index = 0;
-                StringBuilder content = new StringBuilder();
-                for (String part : parts) {
-                    index++;
-                    if (index > 2) content.append(part);
-                }
-
-                RankUtil.getRanksAsync();
-                String rank = RankUtil.getRank(ign);
-                if (rank == null) rank = "普通用户";
-
-                EnumChatFormatting rankColor;
-                switch (rank) {
-                    case "Admin":
-                        rankColor = EnumChatFormatting.GOLD;
-                        break;
-                    case "Media":
-                        rankColor = EnumChatFormatting.DARK_RED;
-                        break;
-                    case "MVP++":
-                        rankColor = EnumChatFormatting.RED;
-                        break;
-                    case "SVIP":
-                        rankColor = EnumChatFormatting.DARK_GREEN;
-                        break;
-                    case "VIP":
-                        rankColor = EnumChatFormatting.GREEN;
-                        break;
-                    default:
-                        rankColor = EnumChatFormatting.BLUE;
-                        break;
-                }
-
-                ChatUtil.addMessageWithClient("[客户端内置聊天] " + rankColor + "[" + rank + "] " + EnumChatFormatting.GREEN + "(" + ign + ")" + EnumChatFormatting.RESET + ": " + content);
-            } else {
-                Logger.warn("收到了未知的信息: {}", message);
-            }
+            processChatMessage(message);
         } else if (message.startsWith(".addUser")) {
-            // 处理获取在线玩家列表的消息
-            Logger.debug(message);
-            String[] parts = message.split("\\s+", 2);
-            if (parts.length == 2) {
-                Logger.debug(Arrays.toString(parts));
-                String userName = parts[1];
-                ChatUtil.addMessageWithClient("[客户端内置聊天] " + EnumChatFormatting.GREEN + userName + EnumChatFormatting.RESET + " 上线了");
-            } else {
-                Logger.warn("收到了未知的信息: {}", message);
-            }
+            processUserJoin(message);
         } else if (message.startsWith(".addIGN")) {
-            String[] parts = message.split("\\s+", 3);
-            if (parts.length == 2) {
-                String ign = parts[1];
-                if (!userIgnList.contains(ign)) userIgnList.add(ign);
-            } else {
-                Logger.warn("收到了非法的数据包: {}", message);
-            }
+            processAddIgn(message);
         } else {
             Logger.warn("收到了未知的信息: {}", message);
+        }
+    }
+
+    private static void processChatMessage(String message) {
+        String[] parts = message.split("\\s+", 3);
+        if (parts.length == 3) {
+            String ign = parts[1];
+            String content = parts[2];
+            String rank = RankUtil.getRank(ign);
+            if (rank == null) rank = "普通用户";
+
+            EnumChatFormatting rankColor = getRankColor(rank);
+
+            ChatUtil.addMessageWithClient("[客户端内置聊天] " + rankColor + "[" + rank + "] " + EnumChatFormatting.GREEN + "(" + ign + ")" + EnumChatFormatting.RESET + ": " + content);
+        } else {
+            Logger.warn("收到了未知的信息: {}", message);
+        }
+    }
+
+    private static EnumChatFormatting getRankColor(String rank) {
+        switch (rank) {
+            case "Admin":
+                return EnumChatFormatting.GOLD;
+            case "Media":
+                return EnumChatFormatting.DARK_RED;
+            case "MVP++":
+                return EnumChatFormatting.RED;
+            case "SVIP":
+                return EnumChatFormatting.DARK_GREEN;
+            case "VIP":
+                return EnumChatFormatting.GREEN;
+            default:
+                return EnumChatFormatting.BLUE;
+        }
+    }
+
+    private static void processUserJoin(String message) {
+        String[] parts = message.split("\\s+", 2);
+        if (parts.length == 2) {
+            String userName = parts[1];
+            ChatUtil.addMessageWithClient("[客户端内置聊天] " + EnumChatFormatting.GREEN + userName + EnumChatFormatting.RESET + " 上线了");
+        } else {
+            Logger.warn("收到了未知的信息: {}", message);
+        }
+    }
+
+    private static void processAddIgn(String message) {
+        String[] parts = message.split("\\s+", 3);
+        if (parts.length == 2) {
+            String ign = parts[1];
+            userIgnList.add(ign);
+        } else {
+            Logger.warn("收到了非法的数据包: {}", message);
         }
     }
 

@@ -23,7 +23,8 @@ public class ModuleManager implements Wrapper {
                 ClientSettings.INSTANCE, new MoreParticles(), new SmokeCrosshair(),
                 new NoDestroyEffects(), new Projectile(), new MinimizedBobbing(),
                 HitColor.INSTANCE, new AttackEffects(), new SmoothGUIZoom(),
-                new RenderMyNameTag(), CustomEnchantmentColor.INSTANCE, new BetterNameTag()
+                new RenderMyNameTag(), CustomEnchantmentColor.INSTANCE, new BetterNameTag(),
+                new TargetCircle()
         );
 
         // 特殊模块设置

@@ -3,6 +3,7 @@ package net.fpsboost.command;
 import net.fpsboost.command.impl.*;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * @author LangYa
@@ -17,15 +18,14 @@ public class CommandManager {
 
     public static boolean runCommand(String message) {
         String[] args = message.split(" ");
-        String commandName = args[0].replace(".","");
-        for (Command command : commands) {
-            if (command.name.equals(commandName)) {
-                command.run(args);
-                return true;
-            }
-        }
+        String commandName = args[0].replace(".", "");
 
-        return false;
+        Optional<Command> command = commands.stream()
+                .filter(c -> c.name.equals(commandName))
+                .findFirst();
+
+        command.ifPresent(c -> c.run(args));
+
+        return command.isPresent();
     }
-
 }

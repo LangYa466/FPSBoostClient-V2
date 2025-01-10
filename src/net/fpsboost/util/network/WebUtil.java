@@ -6,71 +6,48 @@ import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.stream.Collectors;
 
 import static net.fpsboost.Wrapper.mc;
 
 public class WebUtil {
-    
+
     // 发送 GET 请求并返回响应内容
     public static String get(String url) {
-        try {
-            HttpURLConnection connection = getHttpURLConnection(url);
-
-            int responseCode = connection.getResponseCode();
-            if (responseCode == 200) {
-                // Specify the character encoding
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-                StringBuilder responseBuilder = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    responseBuilder.append(line).append("\n");
-                }
-                reader.close();
-                return responseBuilder.toString();
-            }
-            throw new IOException("HTTP request failed with response code: " + responseCode);
-        }
-        catch (IOException e) {
-            Logger.info(e.getLocalizedMessage());
-            return null;
-        }
+        return getRequest(url, false);
     }
 
-    // 取消缓存
+    // 取消缓存的 GET 请求
     public static String getNoCache(String url) {
+        return getRequest(url, true);
+    }
+
+    // 处理 GET 请求逻辑
+    private static String getRequest(String url, boolean noCache) {
         try {
             HttpURLConnection connection = getHttpURLConnection(url);
 
-            // 禁用缓存
-            connection.setUseCaches(false);
-
-            // 设置请求头，确保没有缓存
-            connection.setRequestProperty("Cache-Control", "no-cache");
-            connection.setRequestProperty("Pragma", "no-cache");
+            // 设置缓存控制
+            if (noCache) {
+                connection.setUseCaches(false);
+                connection.setRequestProperty("Cache-Control", "no-cache");
+                connection.setRequestProperty("Pragma", "no-cache");
+            }
 
             int responseCode = connection.getResponseCode();
             if (responseCode == 200) {
-                // 指定字符编码
-                BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8));
-                StringBuilder responseBuilder = new StringBuilder();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    responseBuilder.append(line).append("\n");
+                try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8))) {
+                    return reader.lines().collect(Collectors.joining("\n"));
                 }
-                reader.close();
-                return responseBuilder.toString();
+            } else {
+                throw new IOException("HTTP request failed with response code: " + responseCode);
             }
-            throw new IOException("HTTP request failed with response code: " + responseCode);
-        }
-        catch (IOException e) {
-            Logger.error(e.getLocalizedMessage());
+        } catch (IOException e) {
+            Logger.error("Error during HTTP request: {}", e.getMessage());
             return null;
         }
     }
@@ -95,46 +72,40 @@ public class WebUtil {
      * @throws IOException 如果发生网络或 IO 错误
      */
     public static BufferedImage fetchImage(String imageUrl) throws IOException {
-        // 打开连接
         HttpURLConnection connection = getHttpURLConnection(imageUrl);
 
-        // 检查 HTTP 响应码
         int responseCode = connection.getResponseCode();
         if (responseCode != HttpURLConnection.HTTP_OK) {
             throw new IOException("Failed to fetch image, HTTP response code: " + responseCode);
         }
 
-        // 读取图片并返回 BufferedImage
-        return ImageIO.read(connection.getInputStream());
+        try (InputStream inputStream = connection.getInputStream()) {
+            return ImageIO.read(inputStream);
+        }
     }
 
     // 根据给定 URL 和名称绑定纹理
-    public static ResourceLocation bindTextureWithUrl(String url,String name) {
-        DynamicTexture dt;
-        ResourceLocation res = new ResourceLocation(name);
-        try {
-            dt = new DynamicTexture(fetchImage(url));
-            mc.getTextureManager().loadTexture(res, dt);
-            mc.getTextureManager().bindTexture(res);
-        } catch (IOException e) {
-            Logger.error(e.getMessage());
-        }
-        return res;
-    }
-    public static ResourceLocation bindLocalTexture(String filePath, String name) {
-        DynamicTexture dt;
-        ResourceLocation res = new ResourceLocation(name);
-        try {
-            // 读取本地图片
-            File file = new File(filePath);
-            BufferedImage bufferedImage = ImageIO.read(file);
-            dt = new DynamicTexture(bufferedImage);
-            mc.getTextureManager().loadTexture(res, dt);
-            mc.getTextureManager().bindTexture(res);
-        } catch (IOException e) {
-            Logger.error(e.getMessage());
-        }
-        return res;
+    public static ResourceLocation bindTextureWithUrl(String url, String name) {
+        return bindTexture(url, name, false);
     }
 
+    // 根据给定文件路径和名称绑定本地纹理
+    public static ResourceLocation bindLocalTexture(String filePath, String name) {
+        return bindTexture(filePath, name, true);
+    }
+
+    // 绑定纹理的通用方法
+    private static ResourceLocation bindTexture(String path, String name, boolean isLocal) {
+        DynamicTexture dt;
+        ResourceLocation res = new ResourceLocation(name);
+        try {
+            BufferedImage image = isLocal ? ImageIO.read(new File(path)) : fetchImage(path);
+            dt = new DynamicTexture(image);
+            mc.getTextureManager().loadTexture(res, dt);
+            mc.getTextureManager().bindTexture(res);
+        } catch (IOException e) {
+            Logger.error("Failed to load texture: {}", e.getMessage());
+        }
+        return res;
+    }
 }

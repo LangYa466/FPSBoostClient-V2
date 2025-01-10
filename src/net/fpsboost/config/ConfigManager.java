@@ -3,19 +3,17 @@ package net.fpsboost.config;
 import cn.langya.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+import net.fpsboost.Client;
+import net.fpsboost.Wrapper;
+import net.fpsboost.config.impl.*;
+import net.fpsboost.module.impl.ClientSettings;
+import org.apache.commons.io.FileUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-
-import com.google.gson.JsonParser;
-import net.fpsboost.Client;
-import net.fpsboost.Wrapper;
-import net.fpsboost.config.impl.ElementConfig;
-import net.fpsboost.config.impl.*;
-import net.fpsboost.module.impl.ClientSettings;
-import org.apache.commons.io.FileUtils;
 
 /**
  * 配置管理器类，实现了 Wrapper 接口
@@ -55,19 +53,9 @@ public class ConfigManager implements Wrapper {
                 if (!config.name.equals(name)) continue;
                 try {
                     config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
-                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                        Logger.info("加载客户端配置: " + name);
-                    } else {
-                        Logger.info("Loading client config: " + name);
-                    }
+                    logConfigAction(name, "加载客户端配置", "Loading client config");
                 } catch (FileNotFoundException e) {
-                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                        Logger.error("配置文件不存在: " + name);
-                    } else {
-                        Logger.error("Failed to load config: " + name);
-
-                    }
-                    Logger.error(e.getMessage());
+                    logConfigError(name, e);
                 }
                 break;
             }
@@ -85,15 +73,11 @@ public class ConfigManager implements Wrapper {
     public static void saveConfig(String name) {
         File file = new File(dir, name);
         try {
-            if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                Logger.info("保存客户端配置: " + name);
-            } else {
-                Logger.info("Saving client config: " + name);
-            }
             file.createNewFile();
             for (Config config : configs) {
                 if (!config.name.equals(name)) continue;
                 FileUtils.writeByteArrayToFile(file, gson.toJson(config.saveConfig()).getBytes(StandardCharsets.UTF_8));
+                logConfigAction(name, "保存客户端配置", "Saving client config");
                 break;
             }
         } catch (IOException e) {
@@ -106,11 +90,7 @@ public class ConfigManager implements Wrapper {
      */
     public static void loadAllConfig() {
         configs.forEach(it -> loadConfig(it.name));
-        if (ClientSettings.INSTANCE.cnMode.getValue()) {
-            Logger.info("成功加载全部配置");
-        } else {
-            Logger.info("Successfully loaded all configs");
-        }
+        logConfigAction("全部配置", "成功加载全部配置", "Successfully loaded all configs");
     }
 
     /**
@@ -118,10 +98,35 @@ public class ConfigManager implements Wrapper {
      */
     public static void saveAllConfig() {
         configs.forEach(it -> saveConfig(it.name));
+        logConfigAction("全部配置", "成功保存全部配置", "Successfully saved all configs");
+    }
+
+    /**
+     * 打印日志用于加载或保存配置的动作
+     * @param name 配置名称
+     * @param cnMessage 中文日志消息
+     * @param enMessage 英文日志消息
+     */
+    private static void logConfigAction(String name, String cnMessage, String enMessage) {
         if (ClientSettings.INSTANCE.cnMode.getValue()) {
-            Logger.info("成功保存全部配置");
+            Logger.info(cnMessage + ": " + name);
         } else {
-            Logger.info("Successfully saved all configs");
+            Logger.info(enMessage + ": " + name);
         }
+    }
+
+    /**
+     * 打印配置加载或保存的错误日志
+     *
+     * @param name 配置名称
+     * @param e    异常对象
+     */
+    private static void logConfigError(String name, Exception e) {
+        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+            Logger.error("配置文件不存在" + ": " + name);
+        } else {
+            Logger.error("Failed to load config" + ": " + name);
+        }
+        Logger.error(e.getMessage());
     }
 }

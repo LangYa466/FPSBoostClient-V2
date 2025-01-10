@@ -21,7 +21,9 @@ public class AttackHandler implements Wrapper {
     private static int lastAttackId;
     public static int currentCombo;
     private static int sentAttack = -1;
-    
+
+    private static final long COMBO_RESET_TIME = 2000L; // 2 seconds
+
     public static void onAttack(Entity targetEntity) {
         target = targetEntity;
         sentAttack = target.getEntityId();
@@ -33,7 +35,7 @@ public class AttackHandler implements Wrapper {
     }
 
     public static void onUpdate() {
-        if (System.currentTimeMillis() - lastHitTime > 2000L) {
+        if (System.currentTimeMillis() - lastHitTime > COMBO_RESET_TIME) {
             currentCombo = 0;
         }
     }
@@ -44,33 +46,40 @@ public class AttackHandler implements Wrapper {
     }
 
     public static void onPacketReceived(Packet<?> packet) {
-        if (target == null) return;
-        if (packet instanceof S19PacketEntityStatus) {
-            S19PacketEntityStatus s19 = (S19PacketEntityStatus) packet;
-            if (s19.getOpCode() == 2) {
-                Entity target = ((S19PacketEntityStatus) packet).getEntity(mc.theWorld);
-                if (target != null) {
-                    if (sentAttack != -1 && target.getEntityId() == sentAttack) {
-                        sentAttack = -1;
-                        if (System.currentTimeMillis() - sentAttackTime > 2000L) {
-                            sentAttackTime = 0L;
-                            currentCombo = 0;
-                            return;
-                        }
+        if (target == null || !(packet instanceof S19PacketEntityStatus)) return;
 
-                        if (lastAttackId == target.getEntityId()) {
-                            ++currentCombo;
-                        } else {
-                            currentCombo = 1;
-                        }
+        S19PacketEntityStatus s19 = (S19PacketEntityStatus) packet;
+        if (s19.getOpCode() != 2) return;
 
-                        lastHitTime = System.currentTimeMillis();
-                        lastAttackId = target.getEntityId();
-                    } else if (target.getEntityId() == mc.thePlayer.getEntityId()) {
-                        currentCombo = 0;
-                    }
-                }
-            }
+        Entity entity = s19.getEntity(mc.theWorld);
+        if (entity == null) return;
+
+        if (entity.getEntityId() == sentAttack) {
+            handleAttackCombo(entity);
+        } else if (entity.getEntityId() == mc.thePlayer.getEntityId()) {
+            currentCombo = 0;
         }
+    }
+
+    private static void handleAttackCombo(Entity target) {
+        if (System.currentTimeMillis() - sentAttackTime > COMBO_RESET_TIME) {
+            resetCombo();
+            return;
+        }
+
+        if (lastAttackId == target.getEntityId()) {
+            currentCombo++;
+        } else {
+            currentCombo = 1;
+        }
+
+        lastHitTime = System.currentTimeMillis();
+        lastAttackId = target.getEntityId();
+        sentAttack = -1;
+    }
+
+    private static void resetCombo() {
+        sentAttackTime = 0L;
+        currentCombo = 0;
     }
 }
