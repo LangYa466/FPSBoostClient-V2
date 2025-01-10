@@ -8,65 +8,43 @@ import net.fpsboost.module.impl.*;
 import net.fpsboost.socket.ClientIRC;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
-/**
- * @author LangYa
- * @since 2024/8/30 21:19
- */
 public class ModuleManager implements Wrapper {
+    private static final LinkedHashMap<Class<?>, Module> moduleMap = new LinkedHashMap<>();
     public static List<Module> modules = new ArrayList<>();
 
     public static void init() {
-        addModule(new ClickGUIModule());
-        addModule(new Sprint());
-        addModule(new OldAnimation());
-        addModule(new NameProtect());
-        addModule(new HideGuiChatRect());
-        addModule(new NoMissHitDelay());
-        addModule(new HideScoreboardRect());
-        addModule(new BossBar());
-        // addModule(new AutoLuGuan());
-        addModule(new BlockOverlay());
-        addModule(new ItemPhysic());
-        addModule(MotionBlur.INSTANCE);
-        addModule(new NoHurtCam());
-        addModule(ClientIRC.INSTANCE);
+        // 批量添加模块
+        addModules(
+                new ClickGUIModule(), new Sprint(), new OldAnimation(), new NameProtect(),
+                new HideGuiChatRect(), new NoMissHitDelay(), new HideScoreboardRect(),
+                new BossBar(), new BlockOverlay(), new ItemPhysic(), MotionBlur.INSTANCE,
+                new NoHurtCam(), ClientIRC.INSTANCE, new ClientCape(), new FullBright(),
+                ClientSettings.INSTANCE, new MoreParticles(), new SmokeCrosshair(),
+                new NoDestroyEffects(), new Projectile(), new MinimizedBobbing(),
+                HitColor.INSTANCE, new AttackEffects(), new SmoothGUIZoom(),
+                new RenderMyNameTag(), CustomEnchantmentColor.INSTANCE, new BetterNameTag()
+        );
+
+        // 特殊模块设置
         if (!ClientIRC.INSTANCE.enable) ClientIRC.INSTANCE.toggle();
-        addModule(new ClientCape());
-        addModule(new FullBright());
-        addModule(ClientSettings.INSTANCE);
         ClientSettings.INSTANCE.enable = true;
-        addModule(new MoreParticles());
-        addModule(new SmokeCrosshair());
-        addModule(new NoDestroyEffects());
-        addModule(new Projectile());
-        addModule(new MinimizedBobbing());
-        addModule(HitColor.INSTANCE);
-        addModule(new AttackEffects());
-        addModule(new SmoothGUIZoom());
-        addModule(new RenderMyNameTag());
-        addModule(CustomEnchantmentColor.INSTANCE);
-        addModule(new BetterNameTag());
-        // addModule(new BetterFont());这个模块有点bug
-        // addModule(new TargetCircle()); 这个模块有点bug
 
-        modules = moduleMap.values().stream()
-                .sorted(Comparator.comparing(module -> module.name)) // 排序
-                .collect(Collectors.toList());
+        // 初始化模块列表（仅排序一次）
+        modules = new ArrayList<>(moduleMap.values());
+        modules.sort(Comparator.comparing(module -> module.name));
     }
 
-    public static ArrayList<Module> getAllModules() {
-        ArrayList<Module> allModules = new ArrayList<>();
-        allModules.addAll(modules);
-        allModules.addAll(ElementManager.elements);
+    private static void addModules(Module... newModules) {
+        for (Module module : newModules) {
+            moduleMap.put(module.getClass(), module);
+        }
+    }
+
+    public static List<Module> getAllModules() {
+        List<Module> allModules = new ArrayList<>(modules);
+        allModules.addAll(ElementManager.elements); // 快速追加元素模块
         return allModules;
-    }
-
-    private static final Map<Class<?>, Module> moduleMap = new HashMap<>();
-
-    private static void addModule(Module module) {
-        moduleMap.put(module.getClass(), module);
     }
 
     public static boolean isEnabled(Class<?> moduleClass) {
@@ -75,28 +53,37 @@ public class ModuleManager implements Wrapper {
     }
 
     public static void moduleRender2D() {
-        if (mc.currentScreen != null) return;
+        if (mc.currentScreen != null) return; // 提前返回避免多余计算
         MessageHandler.onRender2D();
-        modules.stream().filter(Module::isEnabled).forEach(Module::onRender2D);
+        for (Module module : modules) {
+            if (module.enable) module.onRender2D();
+        }
     }
 
     public static void moduleRender3D() {
-        modules.stream().filter(Module::isEnabled).forEach(Module::onRender3D);
+        for (Module module : modules) {
+            if (module.enable) module.onRender3D();
+        }
     }
 
     public static void moduleUpdate() {
-        modules.stream().filter(Module::isEnabled).forEach(Module::onUpdate);
+        for (Module module : modules) {
+            if (module.enable) module.onUpdate();
+        }
         AttackHandler.onUpdate();
     }
 
     public static void moduleWorldLoad() {
-        modules.stream().filter(Module::isEnabled).forEach(Module::onWorldLoad);
+        for (Module module : modules) {
+            if (module.enable) module.onWorldLoad();
+        }
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
         for (Module module : modules) {
             if (inputKeyCode == module.keyCode) {
                 module.toggle();
+                break; // 一旦找到目标模块，立即终止循环
             }
         }
     }

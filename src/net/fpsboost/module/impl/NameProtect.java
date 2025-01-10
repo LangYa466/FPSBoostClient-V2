@@ -26,20 +26,22 @@ public class NameProtect extends Module {
     }
 
     public static String onText(String text) {
-        if (!enable) return text;
-        // sb none text 例如kk craft就会这样
-        if (text.isEmpty()) return text;
+        if (!enable || text.isEmpty()) return text;
 
-        StringBuilder sb = new StringBuilder(text);
-        int index = sb.indexOf(target);
+        String replacement = "我是狼牙的狗";
+        int targetLength = target.length();
+        StringBuilder sb = new StringBuilder();
+
+        int start = 0;
+        int index = text.indexOf(target);
 
         while (index != -1) {
-            String replacement = "我是狼牙的狗";
-            sb.replace(index, index + target.length(), replacement);
-            index += replacement.length();
-            index = sb.indexOf(target, index);
+            sb.append(text, start, index).append(replacement);
+            start = index + targetLength;
+            index = text.indexOf(target, start);
         }
 
+        sb.append(text, start, text.length());
         return sb.toString();
     }
 }

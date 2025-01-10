@@ -98,7 +98,7 @@ public class ModuleRect extends UIComponent {
 				MessageHandler.addMessage(
 						this.getModule().cnName
 								+ ": 按你想要绑定的任意键",
-						MessageHandler.MessageType.Warnning, 3000);
+						MessageHandler.MessageType.Warning, 3000);
 			}
 		}
 

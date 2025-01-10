@@ -37,7 +37,7 @@ public class MessageHandler implements Wrapper {
 	}
 
 	public enum MessageType {
-		Info, Help, Warnning, Error, Wrong, Right
+		Info, Help, Warning, Error, Wrong, Right
     }
 
 	public static int getColor(int type) {
@@ -67,23 +67,23 @@ public class MessageHandler implements Wrapper {
 		MessageType type;
 		Translate anim;
 		MsTimer timer;
-		int outtime;
+		int outTime;
 		int color;
 		final FontRenderer fr = FontManager.client(18);
 
-		public Message(String message, MessageType type, int outtime, int color) {
+		public Message(String message, MessageType type, int outTime, int color) {
 			this.message = message;
 			this.type = type;
-			this.outtime = outtime;
+			this.outTime = outTime;
 			this.anim = new Translate(0, 0);
 			this.timer = new MsTimer();
 			this.color = color;
 		}
 
-		public Message(String message, MessageType type, int outtime) {
+		public Message(String message, MessageType type, int outTime) {
 			this.message = message;
 			this.type = type;
-			this.outtime = outtime;
+			this.outTime = outTime;
 			this.anim = new Translate(0, 0);
 			this.timer = new MsTimer();
 			this.color = -1;
@@ -97,7 +97,7 @@ public class MessageHandler implements Wrapper {
 			fr.drawString(this.message, x - this.anim.getX() + 2 + 16,
 					y + 5 - this.anim.getY(), color == -1 ? getColor(1) : color);
 
-			if (timer.reach(outtime)) {
+			if (timer.reach(outTime)) {
 				this.anim.interpolate(0, 0, 0.3f);
 			} else {
 				this.anim.interpolate(width, (float) targetY, 0.3f);
@@ -118,7 +118,7 @@ public class MessageHandler implements Wrapper {
 				return "n";
 			case Right:
 				return "r";
-			case Warnning:
+			case Warning:
 				return "l";
 			case Wrong:
 				return "q";
@@ -128,7 +128,7 @@ public class MessageHandler implements Wrapper {
 		}
 
 		public boolean shouldRemove() {
-            return timer.reach(outtime) && this.anim.getX() == 0 && this.anim.getY() == 0;
+            return timer.reach(outTime) && this.anim.getX() == 0 && this.anim.getY() == 0;
         }
 	}
 }

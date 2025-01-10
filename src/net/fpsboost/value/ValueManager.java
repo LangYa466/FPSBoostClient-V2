@@ -6,6 +6,9 @@ import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Collection;
 
 /**
  * @author LangYa
@@ -19,15 +22,24 @@ public class ValueManager {
     }
 
     private static void addValues(Module module) {
+        // 临时列表，避免多次操作 module.values
+        List<Value<?>> valueList = new ArrayList<>();
         for (Field field : module.getClass().getDeclaredFields()) {
+            if (!Value.class.isAssignableFrom(field.getType())) continue; // 过滤非 Value 类型字段
             try {
                 field.setAccessible(true);
-                final Object obj = field.get(module);
-                if (obj instanceof Value) module.values.add((Value) obj);
+                Value<?> value = (Value<?>) field.get(module); // 确保类型安全
+                if (value != null) valueList.add(value);
             } catch (IllegalAccessException e) {
-                Logger.error("{} register value error : {}",module.name,e.getMessage());
+                Logger.error("Failed to register value for module [{}]: {}", module.name, e.getMessage());
             }
         }
+        // 批量添加值，减少多次操作
+        addValuesToModule(module, valueList);
     }
 
+    // 通过 Collection<? extends Value<?>> 类型安全地批量添加值
+    private static void addValuesToModule(Module module, Collection<? extends Value<?>> values) {
+        module.values.addAll(values); // 添加所有的值
+    }
 }
