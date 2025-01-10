@@ -4,32 +4,33 @@ import com.google.common.collect.Lists;
 
 import java.util.List;
 
-public class CpsUtil {
+public enum CpsUtil {
+    ;
     private static final List<MouseButton> leftCounter = Lists.newArrayList();
     private static final List<MouseButton> rightCounter = Lists.newArrayList();
 
     public static int getLeftCps() {
-        return (int) leftCounter.stream().filter(MouseButton::canBeReduced).count();
+        CpsUtil.update();
+        return CpsUtil.leftCounter.size();
     }
 
     public static int getRightCps() {
-        return (int) rightCounter.stream().filter(MouseButton::canBeReduced).count();
+        CpsUtil.update();
+        return CpsUtil.rightCounter.size();
     }
 
     public static void update() {
-        // 直接在 update 中调用 removeIf 来移除过期的按钮
-        leftCounter.removeIf(MouseButton::canBeReduced);
-        rightCounter.removeIf(MouseButton::canBeReduced);
+        CpsUtil.leftCounter.removeIf(MouseButton::canBeReduced);
+        CpsUtil.rightCounter.removeIf(MouseButton::canBeReduced);
     }
 
-    public static void update(int type) {
-        long currentTime = System.currentTimeMillis();
+    public static void update(final int type) {
         switch (type) {
             case 0:
-                leftCounter.add(new MouseButton(currentTime));
+                CpsUtil.leftCounter.add(new MouseButton(System.currentTimeMillis()));
                 break;
             case 1:
-                rightCounter.add(new MouseButton(currentTime));
+                CpsUtil.rightCounter.add(new MouseButton(System.currentTimeMillis()));
                 break;
         }
     }

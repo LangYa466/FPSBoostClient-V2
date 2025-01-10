@@ -1,6 +1,5 @@
 package net.minecraft.client.gui;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -11,20 +10,13 @@ import net.fpsboost.screen.GuiBackgroundSettings;
 import net.fpsboost.screen.alt.GuiAltManager;
 import net.fpsboost.util.ColorUtil;
 import net.fpsboost.util.font.FontManager;
-import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
-import org.apache.commons.io.FileUtils;
-
-import javax.swing.*;
-
-import static net.fpsboost.util.network.WebUtil.bindLocalTexture;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
     public static final File file = new File(ConfigManager.dir,"bg.data");
-    public static String localimg = "";
 
     public boolean doesGuiPauseGame() {
         return false;

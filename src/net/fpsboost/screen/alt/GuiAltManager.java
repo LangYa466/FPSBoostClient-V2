@@ -1,12 +1,12 @@
 package net.fpsboost.screen.alt;
 
 import cn.langya.Logger;
+import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.altimpl.MicrosoftAlt;
 import net.fpsboost.screen.alt.microsoft.GuiMicrosoftLogin;
 import net.fpsboost.screen.alt.microsoft.MicrosoftLogin;
 import com.mojang.authlib.exceptions.AuthenticationException;
-import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -67,54 +67,7 @@ public class GuiAltManager extends GuiScreen {
             mc.displayGuiScreen(parentScreen);
         } else if (button.id == 2) {
             if (selectAlt != null) {
-                final Thread thread = new Thread(() -> {
-                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                        status = EnumChatFormatting.YELLOW + "登录中...";
-                    } else {
-                        status = EnumChatFormatting.GREEN + "Logging in...";
-                    }
-                    switch (selectAlt.getAccountType()) {
-                        case OFFLINE:
-                            Minecraft.getMinecraft().session = new Session(selectAlt.getUserName(), "", "", "mojang");
-                            if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                                status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
-                            } else {
-                                status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
-                            }
-                            break;
-                        case MICROSOFT: {
-                            try {
-                                microsoftLogin = new MicrosoftLogin(((MicrosoftAlt) selectAlt).getRefreshToken());
-
-                                while (Minecraft.getMinecraft().running) {
-                                    if (microsoftLogin.logged) {
-                                        mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
-                                        if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                                            status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
-                                        } else {
-                                            status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
-                                        }
-                                        break;
-                                    }
-                                }
-                            } catch (Throwable e) {
-                                Logger.error(e.getMessage());
-                                if (ClientSettings.INSTANCE.cnMode.getValue()) {
-                                    status = EnumChatFormatting.RED + "登录失败! " + e.getClass().getName() + ": " + e.getMessage();
-                                } else {
-                                    status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
-                                }
-                            }
-
-                            microsoftLogin = null;
-
-                            break;
-                        }
-                    }
-                }, "AltManager Login Thread");
-
-                thread.setDaemon(true);
-                thread.start();
+                final Thread thread = getThread();
 
                 setRunningThread(thread);
             }
@@ -180,6 +133,58 @@ public class GuiAltManager extends GuiScreen {
         }
         super.actionPerformed(button);
         return null;
+    }
+
+    private Thread getThread() {
+        final Thread thread = new Thread(() -> {
+            if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                status = EnumChatFormatting.YELLOW + "登录中...";
+            } else {
+                status = EnumChatFormatting.GREEN + "Logging in...";
+            }
+            switch (selectAlt.getAccountType()) {
+                case OFFLINE:
+                    Minecraft.getMinecraft().session = new Session(selectAlt.getUserName(), "", "", "mojang");
+                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                        status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
+                    } else {
+                        status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
+                    }
+                    break;
+                case MICROSOFT: {
+                    try {
+                        microsoftLogin = new MicrosoftLogin(((MicrosoftAlt) selectAlt).getRefreshToken());
+
+                        while (Minecraft.getMinecraft().running) {
+                            if (microsoftLogin.logged) {
+                                mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
+                                if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                                    status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
+                                } else {
+                                    status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
+                                }
+                                break;
+                            }
+                        }
+                    } catch (Throwable e) {
+                        Logger.error(e.getMessage());
+                        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                            status = EnumChatFormatting.RED + "登录失败! " + e.getClass().getName() + ": " + e.getMessage();
+                        } else {
+                            status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
+                        }
+                    }
+
+                    microsoftLogin = null;
+
+                    break;
+                }
+            }
+        }, "AltManager Login Thread");
+
+        thread.setDaemon(true);
+        thread.start();
+        return thread;
     }
 
     @Override
