@@ -56,10 +56,10 @@ public class Client implements Wrapper {
         downloadBackgroundImage();
 
         // Display the language settings screen
-        mc.displayGuiScreen(new GuiI18n());
+        if (!isDev) mc.displayGuiScreen(new GuiI18n());
     }
 
-    private static void setLogFile() throws IOException {
+    private static void setLogFile() {
         File logFile = new File(ConfigManager.dir, isDev ? "debug.log" : "error.log");
         Logger.setLogFile(logFile.getAbsolutePath());
     }

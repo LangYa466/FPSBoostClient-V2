@@ -2,65 +2,60 @@ package net.fpsboost.util.mousefix;
 
 import cn.langya.Logger;
 import net.java.games.input.Controller;
+import net.java.games.input.Controller.Type;
 import net.java.games.input.ControllerEnvironment;
 import net.java.games.input.Mouse;
 import net.minecraft.client.Minecraft;
 import net.minecraft.util.MouseHelper;
-
-import java.util.Arrays;
-import java.util.Optional;
 
 public class RawInputMod {
     private Thread inputThread;
     public boolean isStart;
 
     public void start() {
-        isStart = true;
+        this.isStart = true;
         try {
             Minecraft.getMinecraft().mouseHelper = new RawMouseHelper();
-            controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
-            inputThread = new Thread(this::inputLoop);
-            inputThread.setName("inputThread");
-            inputThread.start();
-        } catch (Exception e) {
-            Logger.error("Error starting input thread: {}", e.getMessage());
-        }
-    }
+            RawInputMod.controllers = ControllerEnvironment.getDefaultEnvironment().getControllers();
+            this.inputThread = new Thread(() -> {
+                while (true) {
+                    int i = 0;
+                    while ((i < RawInputMod.controllers.length) && (null == mouse)) {
+                        if (RawInputMod.controllers[i].getType() == Type.MOUSE) {
+                            RawInputMod.controllers[i].poll();
+                            final Mouse tempMouse = (Mouse) RawInputMod.controllers[i];
+                            if ((0.0 != tempMouse.getX().getPollData()) || (0.0 != tempMouse.getY().getPollData()))
+                                RawInputMod.mouse = tempMouse;
+                        }
+                        i++;
+                    }
+                    if (null != mouse) {
+                        RawInputMod.mouse.poll();
+                        RawInputMod.dx += (int) RawInputMod.mouse.getX().getPollData();
+                        RawInputMod.dy += (int) RawInputMod.mouse.getY().getPollData();
+                        if (null != Minecraft.getMinecraft().currentScreen) {
+                            RawInputMod.dx = 0;
+                            RawInputMod.dy = 0;
+                        }
+                    }
+                    try {
+                        Thread.sleep(1);
+                    } catch (final InterruptedException e) {
+                        Logger.error(e.getMessage());
+                    }
 
-    private void inputLoop() {
-        while (isStart) {
-            Optional<Mouse> optionalMouse = Arrays.stream(controllers)
-                    .filter(controller -> controller.getType() == Controller.Type.MOUSE)
-                    .map(controller -> (Mouse) controller)
-                    .filter(mouse -> mouse.getX().getPollData() != 0.0 || mouse.getY().getPollData() != 0.0)
-                    .findFirst();
-
-            optionalMouse.ifPresent(tempMouse -> {
-                mouse = tempMouse;
-                mouse.poll();
-                dx += (int) mouse.getX().getPollData();
-                dy += (int) mouse.getY().getPollData();
-
-                if (Minecraft.getMinecraft().currentScreen != null) {
-                    dx = 0;
-                    dy = 0;
                 }
             });
-
-            try {
-                Thread.sleep(1);
-            } catch (InterruptedException e) {
-                Logger.error("Input thread interrupted: {}", e.getMessage());
-                Thread.currentThread().interrupt();
-            }
+            this.inputThread.setName("inputThread");
+            this.inputThread.start();
+        } catch (final Exception e) {
+            // ignored
         }
     }
 
     public void stop() {
-        isStart = false;
-        if (inputThread != null && inputThread.isAlive()) {
-            inputThread.interrupt();
-        }
+        this.isStart = false;
+        this.inputThread.stop();
         Minecraft.getMinecraft().mouseHelper = new MouseHelper();
     }
 
@@ -68,6 +63,6 @@ public class RawInputMod {
     public static Controller[] controllers;
 
     // Delta for mouse
-    public static int dx = 0;
-    public static int dy = 0;
+    public static int dx;
+    public static int dy;
 }

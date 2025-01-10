@@ -50,35 +50,35 @@ public class ArmorDisplay extends Element {
                 this.renderArmorStatus(i21, is);
             }
         }
-        
-        if(heldItem.getValue()) {
+
+        if (heldItem.getValue()) {
             GL11.glPushMatrix();
             RenderHelper.enableGUIStandardItemLighting();
 
-            if (mc.currentScreen instanceof GuiChat) {
-                mc.getRenderItem().renderItemAndEffectIntoGUI(sword, (!mode.getValue() ? (-16 * -1 + 48) : 0), (!mode.getValue() ? 0 : (-16 * -1 + 48)));
-            } else {
+            try {
                 int itemX = (!mode.getValue() ? (-16 * -1 + 48) : 0);
                 int itemY = (!mode.getValue() ? 0 : (-16 * -1 + 48));
+
                 ItemStack itemStack = mc.thePlayer.getHeldItem();
-                if (itemStack == null) return;
-                mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, itemX, itemY);
-                if (displayDamage.getValue()) {
-                    Item item = itemStack.getItem();
-                    if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow) {
-                        int strX = itemX;
-                        int strY = itemY;
-                        if (mode.getValue()) strX += 16;
-                        else strY += 16;
-                        int durability = itemStack.getMaxDamage() - itemStack.getItemDamage();
-                        FontManager.client().drawStringWithShadow(String.valueOf(durability), strX, strY, -1);
+                if (itemStack != null) {
+                    mc.getRenderItem().renderItemAndEffectIntoGUI(itemStack, itemX, itemY);
+
+                    if (displayDamage.getValue()) {
+                        Item item = itemStack.getItem();
+                        if (item instanceof ItemTool || item instanceof ItemSword || item instanceof ItemBow) {
+                            int durability = itemStack.getMaxDamage() - itemStack.getItemDamage();
+                            int strX = mode.getValue() ? itemX + 16 : itemX;
+                            int strY = mode.getValue() ? itemY : itemY + 16;
+                            FontManager.client().drawStringWithShadow(String.valueOf(durability), strX, strY, -1);
+                        }
                     }
                 }
+            } finally {
+                // 确保状态总是被正确恢复
+                RenderHelper.disableStandardItemLighting();
+                GlStateManager.disableLighting();
+                GL11.glPopMatrix();
             }
-
-            RenderHelper.disableStandardItemLighting();
-            GlStateManager.disableLighting();
-            GL11.glPopMatrix();
         }
 
         width = (x);
