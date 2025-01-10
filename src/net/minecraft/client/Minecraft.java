@@ -37,6 +37,7 @@ import lombok.Getter;
 import net.fpsboost.Client;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClickSounds;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.fpsboost.util.CpsUtil;
@@ -1328,6 +1329,7 @@ public class Minecraft implements IThreadListener {
         //leftClickCounter = 0;
         if (this.leftClickCounter <= 0)
         {
+            ClickSounds.onClick();
             this.thePlayer.swingItem();
             if (this.objectMouseOver == null)
             {

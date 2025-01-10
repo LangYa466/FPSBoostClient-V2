@@ -1,8 +1,10 @@
 package net.optifine.config;
 
+import lombok.Getter;
 import net.minecraft.block.state.BlockStateBase;
 import net.minecraft.src.Config;
 
+@Getter
 public class MatchBlock
 {
     private int blockId = -1;
@@ -27,16 +29,6 @@ public class MatchBlock
     {
         this.blockId = blockId;
         this.metadatas = metadatas;
-    }
-
-    public int getBlockId()
-    {
-        return this.blockId;
-    }
-
-    public int[] getMetadatas()
-    {
-        return this.metadatas;
     }
 
     public boolean matches(BlockStateBase blockState)
