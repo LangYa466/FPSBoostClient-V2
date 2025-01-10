@@ -218,7 +218,7 @@ public interface IChatComponent extends Iterable<IChatComponent>
                         {
                             if (object instanceof IChatComponent)
                             {
-                                jsonarray1.add(this.serialize(object, object.getClass(), p_serialize_3_));
+                                jsonarray1.add(this.serialize((IChatComponent) object, object.getClass(), p_serialize_3_));
                             }
                             else
                             {
