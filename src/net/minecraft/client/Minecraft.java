@@ -187,8 +187,11 @@ public class Minecraft implements IThreadListener {
     public Timer timer = new Timer(20.0F);
     public WorldClient theWorld;
     public RenderGlobal renderGlobal;
+    @Getter
     private RenderManager renderManager;
+    @Getter
     private RenderItem renderItem;
+    @Getter
     private ItemRenderer itemRenderer;
     public EntityPlayerSP thePlayer;
     @Getter
@@ -217,6 +220,7 @@ public class Minecraft implements IThreadListener {
     private final String launchedVersion;
     private final Proxy proxy;
     private ISaveFormat saveLoader;
+    @Getter
     private static int debugFPS;
     private int rightClickDelayTimer;
     private String serverName;
@@ -224,6 +228,7 @@ public class Minecraft implements IThreadListener {
     public boolean inGameHasFocus;
     long systemTime = getSystemTime();
     private int joinPlayerCounter;
+    @Getter
     public final FrameTimer frameTimer = new FrameTimer();
     long startNanoTime = System.nanoTime();
     private final boolean jvm64bit;
@@ -2759,31 +2764,6 @@ public class Minecraft implements IThreadListener {
     public BlockRendererDispatcher getBlockRendererDispatcher()
     {
         return this.blockRenderDispatcher;
-    }
-
-    public RenderManager getRenderManager()
-    {
-        return this.renderManager;
-    }
-
-    public RenderItem getRenderItem()
-    {
-        return this.renderItem;
-    }
-
-    public ItemRenderer getItemRenderer()
-    {
-        return this.itemRenderer;
-    }
-
-    public static int getDebugFPS()
-    {
-        return debugFPS;
-    }
-
-    public FrameTimer getFrameTimer()
-    {
-        return this.frameTimer;
     }
 
     public static Map<String, String> getSessionInfo()
