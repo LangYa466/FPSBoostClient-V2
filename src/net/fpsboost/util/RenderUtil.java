@@ -67,21 +67,30 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         RenderUtil.drawString(text,x + 1, y, pressbgColor);
         return width + 4;
     }
-
-    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow,boolean clientFont) {
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor, int textColor, boolean textShadow, boolean clientFont) {
+        // Use the font rendering method directly based on the font choice to avoid unnecessary calculations.
         int width = clientFont ? FontManager.client().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
         int height = clientFont ? FontManager.client().getHeight() : mc.fontRendererObj.getHeight();
-        int width1 = clientFont ? width + 6 : width + 8;
-        if (bg) RenderUtil.drawRect(x - 2, y - 2, width1,height + 4,bgColor);
-        if (!clientFont) {
-            if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text, x + 1, y + 1, textColor, textShadow);
-            else RenderUtil.drawString(text, x + 1, y, textColor, textShadow);
-        } else {
-            FontManager.client().drawString(text, x + 1, y - 1, textColor, textShadow);
+
+        // Calculate the width for the background rectangle in one step.
+        int width1 = width + (clientFont ? 6 : 8);
+
+        // Draw background rectangle if needed.
+        if (bg) {
+            RenderUtil.drawRect(x - 2, y - 2, width1, height + 4, bgColor);
         }
+
+        // Draw text with or without shadow based on clientFont and GameSettings.
+        if (clientFont) {
+            FontManager.client().drawString(text, x + 1, y - 1, textColor, textShadow);
+        } else {
+            int offsetX = GameSettings.forceUnicodeFont ? 0 : 1;
+            int offsetY = GameSettings.forceUnicodeFont ? 0 : 1;
+            RenderUtil.drawString(text, x + offsetX, y + offsetY, textColor, textShadow);
+        }
+
         return width1;
     }
-
     public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
         return drawText(text,x,y,bg,bgColor,textColor,textShadow,false);
     }
