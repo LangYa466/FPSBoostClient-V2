@@ -92,7 +92,7 @@ public class MenuButton extends UIComponent {
 
         FontManager.logo(42).drawString(icon, positionX, positionY,
                 this.isChosen() ? this.getColor(5) : this.getColor(4));
-        FontManager.client(14).drawString(text, positionX + 10 - FontManager.client(14).getStringWidth(text) / 2F, positionY + 23,
+        FontManager.client(14).drawString(text, positionX + 10 - FontManager.client(14).getStringWidth(text) / 2F, positionY + 21.5F,
                 this.isChosen() ? this.getColor(5) : this.getColor(4));
     }
 }

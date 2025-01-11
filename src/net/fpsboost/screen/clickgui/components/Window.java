@@ -118,11 +118,10 @@ public class Window extends UIComponent {
 			this.positionY = (mouseY - h);
 		}
 
-		int diffX = 18;
 		int diffY = 10;
 
 		// FontManager.logo(24).drawString("a", positionX + 8 + diffX, positionY + 6.4 + diffY, this.getColor(1));
-		FontManager.arialBold(18).drawString("FPSBoost", positionX + 20 + diffX,
+		FontManager.arialBold(38).drawString("FPSBoost", positionX + 8,
 				positionY + 7.5 + diffY, this.getColor(1));
 
 		this.lastMouseX = mouseX;
