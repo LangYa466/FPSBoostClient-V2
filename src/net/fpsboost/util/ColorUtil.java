@@ -22,4 +22,20 @@ public class ColorUtil {
         fArray[2] = f % Float.intBitsToFloat(Float.floatToIntBits(0.8992331f) ^ 0x7F663424);
         return new Color(Color.HSBtoRGB(fArray[0], fArray[1], fArray[2]));
     }
+
+    public static Double interpolate(double oldValue, double newValue, double interpolationValue) {
+        return (oldValue + (newValue - oldValue) * interpolationValue);
+    }
+
+    public static int interpolateInt(int oldValue, int newValue, double interpolationValue) {
+        return interpolate(oldValue, newValue, (float) interpolationValue).intValue();
+    }
+
+    public static Color interpolateColorC(Color color1, Color color2, float amount) {
+        amount = Math.min(1, Math.max(0, amount));
+        return new Color(interpolateInt(color1.getRed(), color2.getRed(), amount),
+                interpolateInt(color1.getGreen(), color2.getGreen(), amount),
+                interpolateInt(color1.getBlue(), color2.getBlue(), amount),
+                interpolateInt(color1.getAlpha(), color2.getAlpha(), amount));
+    }
 }

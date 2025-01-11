@@ -7,6 +7,7 @@ import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.GuiI18n;
+import net.fpsboost.screen.GuiRectMode;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.CapeUtil;
@@ -57,6 +58,7 @@ public class Client implements Wrapper {
 
         // Display the language settings screen
         if (!isDev) mc.displayGuiScreen(new GuiI18n());
+        mc.displayGuiScreen(new GuiRectMode());
     }
 
     private static void setLogFile() {
@@ -76,7 +78,7 @@ public class Client implements Wrapper {
     }
 
     private static void checkForUpdates() throws IOException {
-        String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "version.txt")).trim();
+        String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "versionwithv2.txt")).trim();
         Logger.info((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
         isOldVersion = !version.contains(latestVersion);
         if (isOldVersion && isWindows()) {

@@ -1,7 +1,10 @@
 package net.fpsboost.util;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.module.impl.RectMode;
+import net.fpsboost.screen.clickgui.utils.RoundedRect;
 import net.fpsboost.util.font.FontManager;
+import net.fpsboost.util.shader.RoundedUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
@@ -17,12 +20,31 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 2024/8/30 21:52
  */
 public class RenderUtil extends ThemeUtil implements Wrapper {
-    public static void drawRect(int x,int y,int width,int height,int color) {
-        Gui.drawRect(x,y,x + width,y + height,color);
+    public static void drawRect(int x,int y,int width,int height,Color color) {
+        int mode = RectMode.mode;
+        float radius = RectMode.radius;
+        int rgba = color.getRGB();
+        switch (mode) {
+            // 直角
+            case 0: {
+                Gui.drawRect(x,y,x + width,y + height,rgba);
+                break;
+            }
+            // 无瑕疵圆角(优化一般)
+            case 1: {
+                RoundedUtil.drawRound(x,y,width - 1,height - 1,radius,color);
+                break;
+            }
+            // 有瑕疵圆角(优化好)
+            case 2: {
+                new RoundedRect(x,y,width,height,radius,rgba,RoundedRect.RenderType.Expand).draw();
+                break;
+            }
+        }
     }
 
-    public static void drawRect(int x, int y, int width, int height, Color color) {
-        drawRect(x,y,width,height,color.getRGB());
+    public static void drawRect(int x, int y, int width, int height, int color) {
+        drawRect(x,y,width,height,new Color(color, true));
     }
 
     public static void drawOutline(int x, int y, int width, int height, int color) {
@@ -185,5 +207,10 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static void scaleEnd() {
         glPopMatrix();
+    }
+
+    public static void setAlphaLimit(float limit) {
+        GlStateManager.enableAlpha();
+        GlStateManager.alphaFunc(GL_GREATER, (float) (limit * .01));
     }
 }

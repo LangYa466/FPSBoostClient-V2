@@ -24,7 +24,7 @@ public class ModuleManager implements Wrapper {
                 new NoDestroyEffects(), new Projectile(), new MinimizedBobbing(),
                 HitColor.INSTANCE, new AttackEffects(), new SmoothGUIZoom(),
                 new RenderMyNameTag(), CustomEnchantmentColor.INSTANCE, new BetterNameTag(),
-                new TargetCircle(), new ClickSounds()
+                new TargetCircle(), new ClickSounds(), new RectMode()
         );
 
         // 特殊模块设置
