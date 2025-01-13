@@ -1,10 +1,9 @@
 package net.minecraft.client.gui;
 
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import java.util.Collection;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
@@ -27,7 +26,6 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
-import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -517,26 +515,31 @@ public class GuiIngame extends Gui
     {
         Scoreboard scoreboard = objective.getScoreboard();
         Collection<Score> collection = scoreboard.getSortedScores(objective);
-        List<Score> list = Lists.newArrayList(Iterables.filter(collection, p_apply_1_ -> p_apply_1_.getPlayerName() != null && !p_apply_1_.getPlayerName().startsWith("#")));
 
-        if (list.size() > 15)
-        {
-            collection = Lists.newArrayList(Iterables.skip(list, collection.size() - 15));
+        // 过滤掉无效的玩家
+        List<Score> list = new CopyOnWriteArrayList<>();
+        for (Score score : collection) {
+            if (score.getPlayerName() != null && !score.getPlayerName().startsWith("#")) {
+                list.add(score);
+            }
         }
-        else
-        {
+
+        // 只保留前15条
+        if (list.size() > 15) {
+            collection = list.subList(list.size() - 15, list.size());
+        } else {
             collection = list;
         }
 
         int i = this.getFontRenderer().getStringWidth(objective.getDisplayName());
 
-        for (Score score : collection)
-        {
+        // 计算最大宽度
+        for (Score score : collection) {
             ScorePlayerTeam scoreplayerteam = scoreboard.getPlayersTeam(score.getPlayerName());
             String s;
-            if (HideScoreboardRect.isEnable && HideScoreboardRect.rednumber.getValue()){
+            if (HideScoreboardRect.isEnable && HideScoreboardRect.rednumber.getValue()) {
                 s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName()) + ": " + EnumChatFormatting.RED + score.getScorePoints();
-            }else {
+            } else {
                 s = ScorePlayerTeam.formatPlayerName(scoreplayerteam, score.getPlayerName());
             }
             i = Math.max(i, this.getFontRenderer().getStringWidth(s));
@@ -548,25 +551,30 @@ public class GuiIngame extends Gui
         int l1 = scaledRes.getScaledWidth() - i - k1;
         int j = 0;
 
-        for (Score score1 : collection)
-        {
+        boolean hideScoreboard = HideScoreboardRect.isEnable;
+        boolean rednumberEnabled = HideScoreboardRect.rednumber.getValue();
+
+        for (Score score1 : collection) {
             ++j;
             ScorePlayerTeam scoreplayerteam1 = scoreboard.getPlayersTeam(score1.getPlayerName());
             String s1 = ScorePlayerTeam.formatPlayerName(scoreplayerteam1, score1.getPlayerName());
             String s2 = EnumChatFormatting.RED + "" + score1.getScorePoints();
             int k = j1 - j * this.getFontRenderer().getHeight();
             int l = scaledRes.getScaledWidth() - k1 + 2;
-            boolean enable = !HideScoreboardRect.isEnable;
-            if(!enable) drawRect(l1 - 2, k, l, k + this.getFontRenderer().getHeight(), 1342177280);
+
+            if (!hideScoreboard) {
+                drawRect(l1 - 2, k, l, k + this.getFontRenderer().getHeight(), 1342177280);
+            }
             this.getFontRenderer().drawString(s1, l1, k, 553648127);
-            if (enable && HideScoreboardRect.rednumber.getValue()) {
+            if (hideScoreboard) {
+                if (rednumberEnabled) this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
+            } else {
                 this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
             }
 
-            if (j == collection.size())
-            {
+            if (j == collection.size()) {
                 String s3 = objective.getDisplayName();
-                if (!enable) {
+                if (!hideScoreboard) {
                     drawRect(l1 - 2, k - this.getFontRenderer().getHeight() - 1, l, k - 1, 1610612736);
                     drawRect(l1 - 2, k - 1, l, k, 1342177280);
                 }

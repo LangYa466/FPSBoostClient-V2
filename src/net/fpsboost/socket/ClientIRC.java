@@ -200,7 +200,9 @@ public class ClientIRC extends Module implements Wrapper {
         String[] parts = message.split("\\s+", 3);
         if (parts.length == 2) {
             String ign = parts[1];
+            if (userIgnList.contains(ign)) return;
             userIgnList.add(ign);
+            Logger.debug("添加User IGN到list: {}", message);
         } else {
             Logger.warn("收到了非法的数据包: {}", message);
         }

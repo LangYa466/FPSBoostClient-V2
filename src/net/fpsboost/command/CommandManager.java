@@ -3,6 +3,7 @@ package net.fpsboost.command;
 import net.fpsboost.command.impl.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 /**
@@ -13,7 +14,11 @@ public class CommandManager {
     public static final ArrayList<Command> commands = new ArrayList<>();
 
     public static void init() {
-        commands.add(new BindCommand());
+        addCommands(new BindCommand(), new ToggleCommand());
+    }
+
+    private static void addCommands(Command... commands) {
+        CommandManager.commands.addAll(Arrays.asList(commands));
     }
 
     public static boolean runCommand(String message) {

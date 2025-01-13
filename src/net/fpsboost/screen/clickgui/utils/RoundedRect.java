@@ -1,10 +1,14 @@
 package net.fpsboost.screen.clickgui.utils;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.lwjgl.opengl.GL11;
 
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 
+@Setter
+@Getter
 public class RoundedRect extends RenderEntity {
 	double x;
 	double y;
@@ -129,59 +133,4 @@ public class RoundedRect extends RenderEntity {
 		Expand, Position
     }
 
-	public double getX() {
-		return x;
-	}
-
-	public void setX(double x) {
-		this.x = x;
-	}
-
-	public double getY() {
-		return y;
-	}
-
-	public void setY(double y) {
-		this.y = y;
-	}
-
-	public double getWidth() {
-		return width;
-	}
-
-	public void setWidth(double width) {
-		this.width = width;
-	}
-
-	public double getHeight() {
-		return height;
-	}
-
-	public void setHeight(double height) {
-		this.height = height;
-	}
-
-	public int getColor() {
-		return color;
-	}
-
-	public void setColor(int color) {
-		this.color = color;
-	}
-
-	public RenderType getType() {
-		return type;
-	}
-
-	public void setType(RenderType type) {
-		this.type = type;
-	}
-
-	public double getRadius() {
-		return radius;
-	}
-
-	public void setRadius(double radius) {
-		this.radius = radius;
-	}
 }

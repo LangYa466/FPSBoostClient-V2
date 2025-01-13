@@ -7,6 +7,7 @@ import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.GuiI18n;
+import net.fpsboost.screen.GuiRectMode;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.CapeUtil;
@@ -26,7 +27,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.91";
+    public static final String version = "1.92";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static final String web = "https://api.fpsboost.cn:444/";
@@ -56,10 +57,11 @@ public class Client implements Wrapper {
         downloadBackgroundImage();
 
         // Display the language settings screen
-        mc.displayGuiScreen(new GuiI18n());
+        if (!isDev) mc.displayGuiScreen(new GuiI18n());
+        mc.displayGuiScreen(new GuiRectMode());
     }
 
-    private static void setLogFile() throws IOException {
+    private static void setLogFile() {
         File logFile = new File(ConfigManager.dir, isDev ? "debug.log" : "error.log");
         Logger.setLogFile(logFile.getAbsolutePath());
     }
@@ -76,7 +78,7 @@ public class Client implements Wrapper {
     }
 
     private static void checkForUpdates() throws IOException {
-        String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "version.txt")).trim();
+        String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "versionwithv2.txt")).trim();
         Logger.info((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
         isOldVersion = !version.contains(latestVersion);
         if (isOldVersion && isWindows()) {

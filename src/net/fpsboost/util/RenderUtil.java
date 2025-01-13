@@ -1,7 +1,10 @@
 package net.fpsboost.util;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.module.impl.RectMode;
+import net.fpsboost.screen.clickgui.utils.RoundedRect;
 import net.fpsboost.util.font.FontManager;
+import net.fpsboost.util.shader.RoundedUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
@@ -17,12 +20,31 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 2024/8/30 21:52
  */
 public class RenderUtil extends ThemeUtil implements Wrapper {
-    public static void drawRect(int x,int y,int width,int height,int color) {
-        Gui.drawRect(x,y,x + width,y + height,color);
+    public static void drawRect(int x,int y,int width,int height,Color color) {
+        int mode = RectMode.mode;
+        float radius = RectMode.radius;
+        int rgba = color.getRGB();
+        switch (mode) {
+            // 直角
+            case 0: {
+                Gui.drawRect(x,y,x + width,y + height,rgba);
+                break;
+            }
+            // 无瑕疵圆角(优化一般)
+            case 1: {
+                RoundedUtil.drawRound(x,y,width - 1,height - 1,radius,color);
+                break;
+            }
+            // 有瑕疵圆角(优化好)
+            case 2: {
+                new RoundedRect(x,y,width,height,radius,rgba,RoundedRect.RenderType.Expand).draw();
+                break;
+            }
+        }
     }
 
-    public static void drawRect(int x, int y, int width, int height, Color color) {
-        drawRect(x,y,width,height,color.getRGB());
+    public static void drawRect(int x, int y, int width, int height, int color) {
+        drawRect(x,y,width,height,new Color(color, true));
     }
 
     public static void drawOutline(int x, int y, int width, int height, int color) {
@@ -67,21 +89,30 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         RenderUtil.drawString(text,x + 1, y, pressbgColor);
         return width + 4;
     }
-
-    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow,boolean clientFont) {
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor, int textColor, boolean textShadow, boolean clientFont) {
+        // Use the font rendering method directly based on the font choice to avoid unnecessary calculations.
         int width = clientFont ? FontManager.client().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
         int height = clientFont ? FontManager.client().getHeight() : mc.fontRendererObj.getHeight();
-        int width1 = clientFont ? width + 6 : width + 8;
-        if (bg) RenderUtil.drawRect(x - 2, y - 2, width1,height + 4,bgColor);
-        if (!clientFont) {
-            if (!GameSettings.forceUnicodeFont) RenderUtil.drawString(text, x + 1, y + 1, textColor, textShadow);
-            else RenderUtil.drawString(text, x + 1, y, textColor, textShadow);
-        } else {
-            FontManager.client().drawString(text, x + 1, y - 1, textColor, textShadow);
+
+        // Calculate the width for the background rectangle in one step.
+        int width1 = width + (clientFont ? 8 : 6);
+
+        // Draw background rectangle if needed.
+        if (bg) {
+            RenderUtil.drawRect(x - 2, y - 2, width1, height + 6, bgColor);
         }
+
+        // Draw text with or without shadow based on clientFont and GameSettings.
+        if (clientFont) {
+            FontManager.client().drawString(text, x + 1, y - 1, textColor, textShadow);
+        } else {
+            int offsetX = GameSettings.forceUnicodeFont ? 0 : 1;
+            int offsetY = GameSettings.forceUnicodeFont ? 0 : 1;
+            RenderUtil.drawString(text, x + offsetX, y + offsetY, textColor, textShadow);
+        }
+
         return width1;
     }
-
     public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
         return drawText(text,x,y,bg,bgColor,textColor,textShadow,false);
     }
@@ -176,5 +207,10 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static void scaleEnd() {
         glPopMatrix();
+    }
+
+    public static void setAlphaLimit(float limit) {
+        GlStateManager.enableAlpha();
+        GlStateManager.alphaFunc(GL_GREATER, (float) (limit * .01));
     }
 }

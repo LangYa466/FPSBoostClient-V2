@@ -551,14 +551,34 @@ public class Config
         }
     }
 
-    public static void dbg(String p_dbg_0_)
-    {
-        LOGGER.info("[OptiFine] " + p_dbg_0_);
+    public static void dbg(String str) {
+        Set<String> ignoredPrefixes = new HashSet<>();
+        ignoredPrefixes.add("CustomItems:");
+        ignoredPrefixes.add("NaturalTextures:");
+        ignoredPrefixes.add("ConnectedTextures:");
+        ignoredPrefixes.add("CustomSky properties:");
+        ignoredPrefixes.add("CustomColors:");
+
+        for (String prefix : ignoredPrefixes) {
+            if (str.startsWith(prefix)) {
+                return;
+            }
+        }
+        LOGGER.info("[OptiFine] " + str);
     }
 
-    public static void warn(String p_warn_0_)
+    public static void warn(String str)
     {
-        LOGGER.warn("[OptiFine] " + p_warn_0_);
+        Set<String> ignoredPrefixes = new HashSet<>();
+        ignoredPrefixes.add("File not found:");
+        ignoredPrefixes.add("Error registering model with ModelLoader");
+        ignoredPrefixes.add("Custom Items: Model not found");
+        ignoredPrefixes.add("CustomColors:");
+
+        for (String prefix : ignoredPrefixes) {
+            if (str.startsWith(prefix)) return;
+        }
+        LOGGER.warn("[OptiFine] " + str);
     }
 
     public static void error(String p_error_0_)

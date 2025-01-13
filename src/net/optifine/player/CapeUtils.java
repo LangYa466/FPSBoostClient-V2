@@ -2,8 +2,6 @@ package net.optifine.player;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.io.File;
 import java.util.regex.Pattern;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
@@ -11,12 +9,14 @@ import net.minecraft.client.renderer.ThreadDownloadImageData;
 import net.minecraft.client.renderer.texture.ITextureObject;
 import net.minecraft.client.renderer.texture.SimpleTexture;
 import net.minecraft.client.renderer.texture.TextureManager;
-import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 
 public class CapeUtils
 {
     private static final Pattern PATTERN_USERNAME = Pattern.compile("[a-zA-Z0-9_]+");
+
+    // 使用缓存防止重复下载相同的纹理
+    private static final TextureManager textureManager = Minecraft.getMinecraft().getTextureManager();
 
     public static void downloadCape(AbstractClientPlayer player)
     {
@@ -26,34 +26,29 @@ public class CapeUtils
         {
             String s1 = "http://s.optifine.net/capes/" + s + ".png";
             ResourceLocation resourcelocation = new ResourceLocation("capeof/" + s);
-            TextureManager texturemanager = Minecraft.getMinecraft().getTextureManager();
-            ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
+            // 检查纹理是否已加载，避免重复下载
+            ITextureObject itextureobject = textureManager.getTexture(resourcelocation);
             if (itextureobject != null && itextureobject instanceof ThreadDownloadImageData)
             {
-                ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData)itextureobject;
-
-                if (threaddownloadimagedata.imageFound != null)
+                ThreadDownloadImageData threaddownloadimagedata = (ThreadDownloadImageData) itextureobject;
+                if (threaddownloadimagedata.imageFound != null && threaddownloadimagedata.imageFound)
                 {
-                    if (threaddownloadimagedata.imageFound.booleanValue())
+                    player.setLocationOfCape(resourcelocation);
+                    if (threaddownloadimagedata.getImageBuffer() instanceof CapeImageBuffer)
                     {
-                        player.setLocationOfCape(resourcelocation);
-
-                        if (threaddownloadimagedata.getImageBuffer() instanceof CapeImageBuffer)
-                        {
-                            CapeImageBuffer capeimagebuffer1 = (CapeImageBuffer)threaddownloadimagedata.getImageBuffer();
-                            player.setElytraOfCape(capeimagebuffer1.isElytraOfCape());
-                        }
+                        CapeImageBuffer capeimagebuffer1 = (CapeImageBuffer) threaddownloadimagedata.getImageBuffer();
+                        player.setElytraOfCape(capeimagebuffer1.isElytraOfCape());
                     }
-
-                    return;
+                    return; // 图像已存在，直接返回
                 }
             }
 
+            // 创建并加载新的图像
             CapeImageBuffer capeimagebuffer = new CapeImageBuffer(player, resourcelocation);
             ThreadDownloadImageData threaddownloadimagedata1 = new ThreadDownloadImageData(null, s1, null, capeimagebuffer);
             threaddownloadimagedata1.pipeline = true;
-            texturemanager.loadTexture(resourcelocation, threaddownloadimagedata1);
+            textureManager.loadTexture(resourcelocation, threaddownloadimagedata1);
         }
     }
 
@@ -84,18 +79,21 @@ public class CapeUtils
     {
         String s = player.getNameClear();
         ResourceLocation resourcelocation = new ResourceLocation("capeof/" + s);
-        TextureManager texturemanager = Config.getTextureManager();
-        ITextureObject itextureobject = texturemanager.getTexture(resourcelocation);
 
+        // 清理旧的纹理
+        ITextureObject itextureobject = textureManager.getTexture(resourcelocation);
         if (itextureobject instanceof SimpleTexture)
         {
-            SimpleTexture simpletexture = (SimpleTexture)itextureobject;
-            simpletexture.deleteGlTexture();
-            texturemanager.deleteTexture(resourcelocation);
+            SimpleTexture simpletexture = (SimpleTexture) itextureobject;
+            simpletexture.deleteGlTexture(); // 删除 OpenGL 纹理
+            textureManager.deleteTexture(resourcelocation); // 删除缓存
         }
 
+        // 重置玩家的披风状态
         player.setLocationOfCape(null);
         player.setElytraOfCape(false);
+
+        // 下载并加载新的披风
         downloadCape(player);
     }
 }

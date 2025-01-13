@@ -3,11 +3,15 @@ package net.fpsboost.config;
 import cn.langya.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fpsboost.Client;
 import net.fpsboost.Wrapper;
 import net.fpsboost.config.impl.*;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.screen.alt.AccountEnum;
+import net.fpsboost.screen.alt.AltManager;
+import net.fpsboost.screen.alt.altimpl.MicrosoftAlt;
 import org.apache.commons.io.FileUtils;
 
 import java.io.*;
@@ -24,6 +28,7 @@ public class ConfigManager implements Wrapper {
     public static final File dir = new File(mc.mcDataDir, Client.name);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static boolean isFirst;
+    private static final File accountFile = new File(dir, "Accounts.json");
 
     /**
      * 初始化配置管理器

@@ -37,6 +37,7 @@ import lombok.Getter;
 import net.fpsboost.Client;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.module.impl.ClickSounds;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.fpsboost.util.CpsUtil;
@@ -187,8 +188,11 @@ public class Minecraft implements IThreadListener {
     public Timer timer = new Timer(20.0F);
     public WorldClient theWorld;
     public RenderGlobal renderGlobal;
+    @Getter
     private RenderManager renderManager;
+    @Getter
     private RenderItem renderItem;
+    @Getter
     private ItemRenderer itemRenderer;
     public EntityPlayerSP thePlayer;
     @Getter
@@ -217,6 +221,7 @@ public class Minecraft implements IThreadListener {
     private final String launchedVersion;
     private final Proxy proxy;
     private ISaveFormat saveLoader;
+    @Getter
     private static int debugFPS;
     private int rightClickDelayTimer;
     private String serverName;
@@ -224,6 +229,7 @@ public class Minecraft implements IThreadListener {
     public boolean inGameHasFocus;
     long systemTime = getSystemTime();
     private int joinPlayerCounter;
+    @Getter
     public final FrameTimer frameTimer = new FrameTimer();
     long startNanoTime = System.nanoTime();
     private final boolean jvm64bit;
@@ -1323,6 +1329,7 @@ public class Minecraft implements IThreadListener {
         //leftClickCounter = 0;
         if (this.leftClickCounter <= 0)
         {
+            ClickSounds.onClick();
             this.thePlayer.swingItem();
             if (this.objectMouseOver == null)
             {
@@ -2759,31 +2766,6 @@ public class Minecraft implements IThreadListener {
     public BlockRendererDispatcher getBlockRendererDispatcher()
     {
         return this.blockRenderDispatcher;
-    }
-
-    public RenderManager getRenderManager()
-    {
-        return this.renderManager;
-    }
-
-    public RenderItem getRenderItem()
-    {
-        return this.renderItem;
-    }
-
-    public ItemRenderer getItemRenderer()
-    {
-        return this.itemRenderer;
-    }
-
-    public static int getDebugFPS()
-    {
-        return debugFPS;
-    }
-
-    public FrameTimer getFrameTimer()
-    {
-        return this.frameTimer;
     }
 
     public static Map<String, String> getSessionInfo()

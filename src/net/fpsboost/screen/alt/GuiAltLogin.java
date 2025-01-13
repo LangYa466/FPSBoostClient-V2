@@ -21,7 +21,7 @@ public abstract class GuiAltLogin extends GuiScreen {
     protected ResourceLocation actionPerformed(GuiButton button) {
         switch (button.id) {
             case 0:
-                if (username.getText().length() != 0) {
+                if (!username.getText().isEmpty()) {
                     this.onLogin(username.getText(), "");
                 } else {
                     status = EnumChatFormatting.RED + "登录失败!";
