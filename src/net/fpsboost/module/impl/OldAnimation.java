@@ -9,6 +9,7 @@ public class OldAnimation extends Module {
     public static BooleanValue blockHit = new BooleanValue("防砍动画","BlockHit Animation", true);
     public static BooleanValue oldBow = new BooleanValue("弓箭动画","Bow Animation", true);
     public static BooleanValue oldSwing = new BooleanValue("挥手动画","Swing Animation", true);
+    public static BooleanValue oldUsing = new BooleanValue("吃东西动画","Using Animation", true);
 
     public OldAnimation() {
         super("1.7Animation", "1.7动画","Animation for 1.7 version", "旧版本动画");

@@ -1,7 +1,5 @@
 package net.minecraft.client.renderer;
 
-import net.fpsboost.Client;
-import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.OldAnimation;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
@@ -28,7 +26,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.storage.MapData;
 import net.optifine.DynamicLights;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import org.lwjgl.opengl.GL11;
 
@@ -353,8 +350,14 @@ public class ItemRenderer
 
                         case EAT:
                         case DRINK:
+
                             this.performDrinking(abstractclientplayer, partialTicks);
-                            this.transformFirstPersonItem(f, 0.0F);
+                            if (OldAnimation.isEnabled && OldAnimation.oldUsing.getValue()) {
+                                this.transformFirstPersonItem(f, f1);
+                                GlStateManager.translate(0, 0.3, 0);
+                            } else {
+                                this.transformFirstPersonItem(f, 0.0F);
+                            }
                             break;
 
                         case BLOCK:
