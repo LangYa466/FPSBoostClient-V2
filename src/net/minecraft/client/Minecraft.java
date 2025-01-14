@@ -40,6 +40,7 @@ import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClickSounds;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.SmokeCrosshair;
+import net.fpsboost.screen.SplashScreen;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.screenShot.ScreenshotTaker;
@@ -220,6 +221,7 @@ public class Minecraft implements IThreadListener {
     private final File fileAssets;
     private final String launchedVersion;
     private final Proxy proxy;
+    @Getter
     private ISaveFormat saveLoader;
     @Getter
     private static int debugFPS;
@@ -824,46 +826,41 @@ public class Minecraft implements IThreadListener {
         Tessellator.getInstance().draw();
     }
 
-    public ISaveFormat getSaveLoader()
-    {
-        return this.saveLoader;
+    public void displayGuiScreen(GuiScreen guiScreenIn) {
+        if (currentScreen == null || guiScreenIn == null ||thePlayer != null || currentScreen instanceof GuiIngameMenu) {
+            displayScreen(guiScreenIn);
+            return;
+        }
+        SplashScreen splashScreen = new SplashScreen(currentScreen, guiScreenIn);
+        displayScreen(splashScreen);
     }
 
-    public void displayGuiScreen(GuiScreen guiScreenIn)
-    {
-        if (this.currentScreen != null)
-        {
+    public void displayScreen(GuiScreen guiScreenIn) {
+        if (this.currentScreen != null && !(guiScreenIn instanceof SplashScreen)) {
             this.currentScreen.onGuiClosed();
         }
 
-        if (guiScreenIn == null && this.theWorld == null)
-        {
-            guiScreenIn = new GuiMainMenu();
-        }
-        else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F)
-        {
+        if (guiScreenIn == null && this.theWorld == null) {
+            guiScreenIn = Client.guimainMenu;
+        } else if (guiScreenIn == null && this.thePlayer.getHealth() <= 0.0F) {
             guiScreenIn = new GuiGameOver();
         }
 
-        if (guiScreenIn instanceof GuiMainMenu)
-        {
+        if (guiScreenIn == Client.guimainMenu) {
             this.gameSettings.showDebugInfo = false;
             this.ingameGUI.getChatGUI().clearChatMessages();
         }
 
         this.currentScreen = guiScreenIn;
 
-        if (guiScreenIn != null)
-        {
+        if (guiScreenIn != null) {
             this.setIngameNotInFocus();
             ScaledResolution scaledresolution = new ScaledResolution(this);
             int i = scaledresolution.getScaledWidth();
             int j = scaledresolution.getScaledHeight();
             guiScreenIn.setWorldAndResolution(this, i, j);
             this.skipRenderWorld = false;
-        }
-        else
-        {
+        } else {
             this.mcSoundHandler.resumeSounds();
             this.setIngameFocus();
         }
@@ -896,7 +893,7 @@ public class Minecraft implements IThreadListener {
             {
                 this.loadWorld(null);
             }
-            catch (Throwable var5)
+            catch (Throwable ignored)
             {
             }
 

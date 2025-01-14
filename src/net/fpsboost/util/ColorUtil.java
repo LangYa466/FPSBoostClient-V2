@@ -38,4 +38,15 @@ public class ColorUtil {
                 interpolateInt(color1.getBlue(), color2.getBlue(), amount),
                 interpolateInt(color1.getAlpha(), color2.getAlpha(), amount));
     }
+
+    public static int applyOpacity(int color, float opacity) {
+        Color old = new Color(color);
+        return applyOpacity(old, opacity).getRGB();
+    }
+
+    //Opacity value ranges from 0-1
+    public static Color applyOpacity(Color color, float opacity) {
+        opacity = Math.min(1, Math.max(0, opacity));
+        return new Color(color.getRed() / 255f, color.getGreen() / 255f, color.getBlue() / 255f, opacity);
+    }
 }

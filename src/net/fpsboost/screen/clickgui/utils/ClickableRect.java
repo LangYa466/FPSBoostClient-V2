@@ -14,6 +14,11 @@ public class ClickableRect extends ClickEntity {
         super.tick();
     }
 
+    public void draw2() {
+        rect.draw2();
+        super.tick();
+    }
+
     public double getX() {
         return rect.getX();
     }

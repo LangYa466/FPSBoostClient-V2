@@ -27,10 +27,11 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "1.92";
+    public static final String version = "1.93";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static final String web = "https://api.fpsboost.cn:444/";
+    public static GuiMainMenu guimainMenu;
 
     public static boolean isWindows() {
         return System.getProperty("os.name").toLowerCase().contains("win");
@@ -59,6 +60,7 @@ public class Client implements Wrapper {
         // Display the language settings screen
         if (!isDev) mc.displayGuiScreen(new GuiI18n());
         mc.displayGuiScreen(new GuiRectMode());
+        guimainMenu = new GuiMainMenu();
     }
 
     private static void setLogFile() {

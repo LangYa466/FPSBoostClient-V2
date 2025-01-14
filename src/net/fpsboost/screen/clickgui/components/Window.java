@@ -108,7 +108,7 @@ public class Window extends UIComponent {
 		this.top.setColor(this.getColor(0));
 		this.top.setX(positionX);
 		this.top.setY(positionY);
-		this.top.draw();
+		this.top.draw2();
 
 		if (this.top_) {
 			double w = this.lastMouseX - this.positionX;

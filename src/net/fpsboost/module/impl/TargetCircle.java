@@ -28,7 +28,7 @@ public class TargetCircle extends Module {
     private static EntityPlayer target;
 
     public static void onAttack(Entity entity) {
-        if (entity instanceof EntityPlayer) target = (EntityPlayer) entity;
+        if (entity instanceof EntityPlayer && !entity.isInvisibleToPlayer(mc.thePlayer)) target = (EntityPlayer) entity;
     }
 
     @Override
