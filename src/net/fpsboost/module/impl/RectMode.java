@@ -35,7 +35,7 @@ public class RectMode extends Module {
             }
         }
     };
-    public static final NumberValue radiusValue = new NumberValue("圆角值(越高越圆)","Radius",2,10,1,0.5) {
+    public static final NumberValue radiusValue = new NumberValue("圆角值(越高越圆)","Radius",2,10,1,1) {
         @Override
         public void setValue(Double value) {
             radius = value.intValue();
