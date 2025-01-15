@@ -1,5 +1,6 @@
 package net.minecraft.client.main;
 
+import cn.langya.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
@@ -21,6 +22,7 @@ public class Main
 {
     public static void main(String[] p_main_0_)
     {
+        Logger.setHasColorInfo(true);
         System.setProperty("java.net.preferIPv4Stack", "true");
         OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();

@@ -43,7 +43,7 @@ public class Rect extends RenderEntity {
 	public void draw2() {
 		switch (type) {
 			case Expand:
-				this.drawRound();
+				this.drawRect();
 				break;
 			case Position:
 				this.drawRect2();

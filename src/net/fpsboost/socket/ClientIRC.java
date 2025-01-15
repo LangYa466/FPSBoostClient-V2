@@ -23,8 +23,6 @@ public class ClientIRC extends Module implements Wrapper {
     private static PrintWriter out;
     private static final Set<String> userIgnList = ConcurrentHashMap.newKeySet();  // 使用线程安全的集合
     private static boolean initiated = false;
-    private static boolean added = false;
-    private boolean updated = false;
     private static int errorIndex;
     private static final ExecutorService executorService = Executors.newSingleThreadExecutor();  // 使用线程池
 
@@ -43,17 +41,9 @@ public class ClientIRC extends Module implements Wrapper {
     }
 
     @Override
-    public void onUpdate() {
-        if (updated) return;
-        addUser();
-        sendIgn();
-        updated = true;
-        super.onUpdate();
-    }
-
-    @Override
     public void onWorldLoad() {
-        if (updated) sendIgn();
+        sendIgn();
+        RankUtil.getRanksAsync();
         super.onWorldLoad();
     }
 
@@ -82,6 +72,7 @@ public class ClientIRC extends Module implements Wrapper {
         });
 
         Logger.info("链接服务器后端成功!");
+        RankUtil.getRanksAsync();
         initiated = true;
     }
 
@@ -120,12 +111,6 @@ public class ClientIRC extends Module implements Wrapper {
         }
     }
 
-    private static void addUser() {
-        if (added) return;
-        send(String.format(".addUser %s", mc.session.getUsername()));
-        added = true;
-    }
-
     private static void sendIgn() {
         send(String.format(".addIGN %s", mc.session.getUsername()));
     }
@@ -134,7 +119,6 @@ public class ClientIRC extends Module implements Wrapper {
         if (!message.startsWith("-") || mc.thePlayer == null) return false;
         message = message.replace("-", "");
         String ign = mc.session.getUsername();
-        RankUtil.getRanksAsync();
         String sendMessage = String.format(".message %s %s", ign, message);
         Logger.debug("发送消息: {}", sendMessage);
         send(sendMessage);
@@ -144,8 +128,6 @@ public class ClientIRC extends Module implements Wrapper {
     private static void processMessage(String message) {
         if (message.startsWith(".message")) {
             processChatMessage(message);
-        } else if (message.startsWith(".addUser")) {
-            processUserJoin(message);
         } else if (message.startsWith(".addIGN")) {
             processAddIgn(message);
         } else {
@@ -183,16 +165,6 @@ public class ClientIRC extends Module implements Wrapper {
                 return EnumChatFormatting.GREEN;
             default:
                 return EnumChatFormatting.BLUE;
-        }
-    }
-
-    private static void processUserJoin(String message) {
-        String[] parts = message.split("\\s+", 2);
-        if (parts.length == 2) {
-            String userName = parts[1];
-            ChatUtil.addMessageWithClient("[客户端内置聊天] " + EnumChatFormatting.GREEN + userName + EnumChatFormatting.RESET + " 上线了");
-        } else {
-            Logger.warn("收到了未知的信息: {}", message);
         }
     }
 

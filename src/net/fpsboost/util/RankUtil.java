@@ -33,6 +33,7 @@ public class RankUtil {
 
             // 处理排名数据
             ranks = parseStrings(web);
+            Logger.debug(ranks.toString());
         }).exceptionally(ex -> {
             Logger.error(ex.getMessage());
             return null;

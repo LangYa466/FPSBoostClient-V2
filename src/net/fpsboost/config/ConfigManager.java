@@ -28,7 +28,6 @@ public class ConfigManager implements Wrapper {
     public static final File dir = new File(mc.mcDataDir, Client.name);
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static boolean isFirst;
-    private static final File accountFile = new File(dir, "Accounts.json");
 
     /**
      * 初始化配置管理器

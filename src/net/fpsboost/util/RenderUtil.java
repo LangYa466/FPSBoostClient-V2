@@ -32,7 +32,7 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
             }
             // 无瑕疵圆角(优化一般)
             case 1: {
-                RoundedUtil.drawRound(x,y,width - 1,height - 1,radius,color);
+                new RoundedRect(x,y,width,height,radius,rgba,RoundedRect.RenderType.Expand).draw();
                 break;
             }
             // 有瑕疵圆角(优化好)

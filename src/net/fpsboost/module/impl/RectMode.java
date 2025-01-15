@@ -26,12 +26,8 @@ public class RectMode extends Module {
                 case "直角":
                     mode = 0;
                     break;
-                case "无瑕疵圆角(优化一般)":
-                    mode = 1;
-                    break;
                 case "有瑕疵圆角(优化好)":
-                    mode = 2;
-                    break;
+                default: mode = 2;
             }
         }
     };
