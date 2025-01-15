@@ -156,8 +156,7 @@ public class GuiIngame extends Gui
         this.mc.getTextureManager().bindTexture(icons);
         GlStateManager.enableBlend();
 
-        if (this.showCrosshair())
-        {
+        if (this.showCrosshair()) {
             GlStateManager.tryBlendFuncSeparate(775, 769, 1, 0);
             GlStateManager.enableAlpha();
             this.drawTexturedModalRect(i / 2 - 7, j / 2 - 7, 0, 0, 16, 16);
@@ -177,8 +176,7 @@ public class GuiIngame extends Gui
 
         GlStateManager.disableBlend();
 
-        if (this.mc.thePlayer.getSleepTimer() > 0)
-        {
+        if (this.mc.thePlayer.getSleepTimer() > 0) {
             this.mc.mcProfiler.startSection("sleep");
             GlStateManager.disableDepth();
             GlStateManager.disableAlpha();
@@ -200,50 +198,37 @@ public class GuiIngame extends Gui
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         int k1 = i / 2 - 91;
 
-        if (this.mc.thePlayer.isRidingHorse())
-        {
+        if (this.mc.thePlayer.isRidingHorse()) {
             this.renderHorseJumpBar(scaledresolution, k1);
-        }
-        else if (this.mc.playerController.gameIsSurvivalOrAdventure())
-        {
+        } else if (this.mc.playerController.gameIsSurvivalOrAdventure()) {
             this.renderExpBar(scaledresolution, k1);
         }
 
-        if (this.mc.gameSettings.heldItemTooltips && !this.mc.playerController.isSpectator())
-        {
+        if (this.mc.gameSettings.heldItemTooltips && !this.mc.playerController.isSpectator()) {
             this.renderSelectedItem(scaledresolution);
-        }
-        else if (this.mc.thePlayer.isSpectator())
-        {
+        } else if (this.mc.thePlayer.isSpectator()) {
             this.spectatorGui.renderSelectedItem(scaledresolution);
         }
 
-        if (this.mc.gameSettings.showDebugInfo)
-        {
+        if (this.mc.gameSettings.showDebugInfo) {
             this.overlayDebug.renderDebugInfo(scaledresolution);
         }
 
-        if (this.recordPlayingUpFor > 0)
-        {
+        if (this.recordPlayingUpFor > 0) {
             this.mc.mcProfiler.startSection("overlayMessage");
             float f2 = (float)this.recordPlayingUpFor - partialTicks;
             int l1 = (int)(f2 * 255.0F / 20.0F);
 
-            if (l1 > 255)
-            {
-                l1 = 255;
-            }
+            if (l1 > 255) l1 = 255;
 
-            if (l1 > 8)
-            {
+            if (l1 > 8) {
                 GlStateManager.pushMatrix();
                 GlStateManager.translate((float)(i / 2), (float)(j - 68), 0.0F);
                 GlStateManager.enableBlend();
                 GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
                 int l = 16777215;
 
-                if (this.recordIsPlaying)
-                {
+                if (this.recordIsPlaying) {
                     l = MathHelper.hsvToRGB(f2 / 50.0F, 0.7F, 0.6F) & 16777215;
                 }
 
@@ -258,21 +243,7 @@ public class GuiIngame extends Gui
         if (this.titlesTimer > 0)
         {
             this.mc.mcProfiler.startSection("titleAndSubtitle");
-            float f3 = (float)this.titlesTimer - partialTicks;
-            int i2 = 255;
-
-            if (this.titlesTimer > this.titleFadeOut + this.titleDisplayTime)
-            {
-                float f4 = (float)(this.titleFadeIn + this.titleDisplayTime + this.titleFadeOut) - f3;
-                i2 = (int)(f4 * 255.0F / (float)this.titleFadeIn);
-            }
-
-            if (this.titlesTimer <= this.titleFadeOut)
-            {
-                i2 = (int)(f3 * 255.0F / (float)this.titleFadeOut);
-            }
-
-            i2 = MathHelper.clamp_int(i2, 0, 255);
+            int i2 = getI2(partialTicks);
 
             if (i2 > 8)
             {
@@ -343,6 +314,25 @@ public class GuiIngame extends Gui
         GlStateManager.enableAlpha();
 
         MotionBlur.INSTANCE.renderOverlay();
+    }
+
+    private int getI2(float partialTicks) {
+        float f3 = (float)this.titlesTimer - partialTicks;
+        int i2 = 255;
+
+        if (this.titlesTimer > this.titleFadeOut + this.titleDisplayTime)
+        {
+            float f4 = (float)(this.titleFadeIn + this.titleDisplayTime + this.titleFadeOut) - f3;
+            i2 = (int)(f4 * 255.0F / (float)this.titleFadeIn);
+        }
+
+        if (this.titlesTimer <= this.titleFadeOut)
+        {
+            i2 = (int)(f3 * 255.0F / (float)this.titleFadeOut);
+        }
+
+        i2 = MathHelper.clamp_int(i2, 0, 255);
+        return i2;
     }
 
     protected void renderTooltip(ScaledResolution sr, float partialTicks)
