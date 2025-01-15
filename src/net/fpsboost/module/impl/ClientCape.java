@@ -19,7 +19,7 @@ public class ClientCape extends Module {
         ClientInputGUI clientInputGUI = new ClientInputGUI(mc.displayWidth / 4, mc.displayHeight / 4);
         mc.displayGuiScreen(clientInputGUI);
         String cape = clientInputGUI.text;
-        if (cape == null)return;
+        if (cape.isEmpty())return;
         CapeUtil.setCape(cape);
         super.onEnable();
     }
