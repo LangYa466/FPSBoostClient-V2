@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import java.nio.FloatBuffer;
 import java.util.List;
 
+import net.fpsboost.module.impl.CustomModel;
 import net.fpsboost.module.impl.HitColor;
 import net.fpsboost.module.impl.RenderMyNameTag;
 import net.minecraft.client.Minecraft;
@@ -16,6 +17,7 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
+import net.minecraft.client.renderer.entity.layers.LayerHeldItem;
 import net.minecraft.client.renderer.entity.layers.LayerRenderer;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -540,6 +542,9 @@ public abstract class RendererLivingEntity<T extends EntityLivingBase> extends R
     {
         for (LayerRenderer<T> layerrenderer : this.layerRenderers)
         {
+            if (entitylivingbaseIn instanceof EntityPlayer && CustomModel.enabled && !(layerrenderer instanceof LayerHeldItem))
+                continue;
+
             boolean flag = this.setBrightness(entitylivingbaseIn, partialTicks, layerrenderer.shouldCombineTextures());
 
             if (EmissiveTextures.isActive())

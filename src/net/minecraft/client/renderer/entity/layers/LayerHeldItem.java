@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity.layers;
 
+import net.fpsboost.module.impl.CustomModel;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelBiped;
@@ -13,44 +14,50 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 
-public class LayerHeldItem implements LayerRenderer<EntityLivingBase>
-{
+public class LayerHeldItem implements LayerRenderer<EntityLivingBase> {
     private final RendererLivingEntity<?> livingEntityRenderer;
 
-    public LayerHeldItem(RendererLivingEntity<?> livingEntityRendererIn)
-    {
+    public LayerHeldItem(RendererLivingEntity<?> livingEntityRendererIn) {
         this.livingEntityRenderer = livingEntityRendererIn;
     }
 
-    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale)
-    {
+    public void doRenderLayer(EntityLivingBase entitylivingbaseIn, float p_177141_2_, float p_177141_3_, float partialTicks, float p_177141_5_, float p_177141_6_, float p_177141_7_, float scale) {
         ItemStack itemstack = entitylivingbaseIn.getHeldItem();
 
-        if (itemstack != null)
-        {
+        if (itemstack != null) {
             GlStateManager.pushMatrix();
 
-            if (this.livingEntityRenderer.getMainModel().isChild)
-            {
+            if (entitylivingbaseIn instanceof EntityPlayer && CustomModel.enabled) {
+                if (CustomModel.model.isMode("Rabbit")) {
+                    float f = 0.75F;
+                    GlStateManager.translate(-.25F, .35, -0.25F);
+                    GlStateManager.scale(f, f, f);
+                } else {
+                    float f = 0.75F;
+                    GlStateManager.translate(-.25F, .35, -0.25F);
+                    // GlStateManager.translate(-0.05F, 0.5F, 0.3F);
+                    GlStateManager.rotate(-10.0F, 0.0F, -1.0F, 0.0F);
+                    GlStateManager.rotate(40.0F, -1.0F, 0.0F, 0.0F);
+                    GlStateManager.scale(f, f, f);
+                }
+            } else if (this.livingEntityRenderer.getMainModel().isChild) {
                 float f = 0.5F;
                 GlStateManager.translate(0.0F, 0.625F, 0.0F);
                 GlStateManager.rotate(-20.0F, -1.0F, 0.0F, 0.0F);
                 GlStateManager.scale(f, f, f);
             }
 
-            ((ModelBiped)this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F);
+            ((ModelBiped) this.livingEntityRenderer.getMainModel()).postRenderArm(0.0625F);
             GlStateManager.translate(-0.0625F, 0.4375F, 0.0625F);
 
-            if (entitylivingbaseIn instanceof EntityPlayer && ((EntityPlayer)entitylivingbaseIn).fishEntity != null)
-            {
+            if (entitylivingbaseIn instanceof EntityPlayer && ((EntityPlayer) entitylivingbaseIn).fishEntity != null) {
                 itemstack = new ItemStack(Items.fishing_rod, 0);
             }
 
             Item item = itemstack.getItem();
             Minecraft minecraft = Minecraft.getMinecraft();
 
-            if (item instanceof ItemBlock && Block.getBlockFromItem(item).getRenderType() == 2)
-            {
+            if (item instanceof ItemBlock && Block.getBlockFromItem(item).getRenderType() == 2) {
                 GlStateManager.translate(0.0F, 0.1875F, -0.3125F);
                 GlStateManager.rotate(20.0F, 1.0F, 0.0F, 0.0F);
                 GlStateManager.rotate(45.0F, 0.0F, 1.0F, 0.0F);
@@ -58,8 +65,7 @@ public class LayerHeldItem implements LayerRenderer<EntityLivingBase>
                 GlStateManager.scale(-f1, -f1, f1);
             }
 
-            if (entitylivingbaseIn.isSneaking())
-            {
+            if (entitylivingbaseIn.isSneaking()) {
                 GlStateManager.translate(0.0F, 0.203125F, 0.0F);
             }
 
@@ -68,8 +74,7 @@ public class LayerHeldItem implements LayerRenderer<EntityLivingBase>
         }
     }
 
-    public boolean shouldCombineTextures()
-    {
+    public boolean shouldCombineTextures() {
         return false;
     }
 }

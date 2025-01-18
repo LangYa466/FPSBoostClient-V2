@@ -1,5 +1,6 @@
 package net.minecraft.client.renderer.entity;
 
+import net.fpsboost.module.impl.CustomModel;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelPlayer;
@@ -109,8 +110,18 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
         }
     }
 
-    protected ResourceLocation getEntityTexture(AbstractClientPlayer entity)
-    {
+    protected ResourceLocation getEntityTexture(AbstractClientPlayer entity) {
+
+        if (CustomModel.enabled) {
+            switch (CustomModel.model.getValue()) {
+                case "Rabbit":
+                    return CustomModel.rabbitModel;
+                case "Among Us":
+                    return CustomModel.amongusModel;
+            }
+        }
+
+
         return entity.getLocationSkin();
     }
 

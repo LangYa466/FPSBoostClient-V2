@@ -17,10 +17,10 @@ public class GuiRectMode extends GuiScreen {
 
     @Override
     public void initGui() {
-        int buttonX = width / 2 - 20;
+        int buttonX = this.width / 2 - 100;
         // buttonList.add(new GuiButton(1,buttonX,height / 2 - 20,80,20,"无瑕疵圆角(优化一般)"));
-        buttonList.add(new GuiButton(2,buttonX,height / 2 + 5,80,20,"直角"));
-        buttonList.add(new GuiButton(3,buttonX,height / 2 + 30,80,20,"有瑕疵圆角(优化好)"));
+        buttonList.add(new GuiButton(2,buttonX,height / 2 + 5,"直角"));
+        buttonList.add(new GuiButton(3,buttonX,height / 2 + 30,"有瑕疵圆角(优化好)"));
         super.initGui();
     }
 
