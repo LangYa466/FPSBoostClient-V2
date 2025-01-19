@@ -38,71 +38,84 @@ public class Gui
         drawRect(x, startY + 1, x + 1, endY, color);
     }
 
+    // 通用的绘制矩形方法
+    private static void drawRectCommon(double left, double top, double right, double bottom, float f, float f1, float f2, float f3) {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // 开始绘制
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+        worldrenderer.pos(left, bottom, 0.0D).endVertex();
+        worldrenderer.pos(right, bottom, 0.0D).endVertex();
+        worldrenderer.pos(right, top, 0.0D).endVertex();
+        worldrenderer.pos(left, top, 0.0D).endVertex();
+        tessellator.draw();
+    }
+
+    // 绘制矩形（浮动坐标）
     public static void drawRect(double left, double top, double right, double bottom, int color) {
+        // 调整坐标，确保 left <= right，top <= bottom
         if (left < right) {
             double i = left;
             left = right;
             right = i;
         }
-
         if (top < bottom) {
             double j = top;
             top = bottom;
             bottom = j;
         }
 
-        float f3 = (float) (color >> 24 & 255) / 255.0F;
-        float f = (float) (color >> 16 & 255) / 255.0F;
-        float f1 = (float) (color >> 8 & 255) / 255.0F;
-        float f2 = (float) (color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+        // 解析颜色
+        float f3 = (float)(color >> 24 & 255) / 255.0F;
+        float f = (float)(color >> 16 & 255) / 255.0F;
+        float f1 = (float)(color >> 8 & 255) / 255.0F;
+        float f2 = (float)(color & 255) / 255.0F;
+
+        // 设置 OpenGL 状态
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.color(f, f1, f2, f3);
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(left, bottom, 0.0D).endVertex();
-        worldrenderer.pos(right, bottom, 0.0D).endVertex();
-        worldrenderer.pos(right, top, 0.0D).endVertex();
-        worldrenderer.pos(left, top, 0.0D).endVertex();
-        tessellator.draw();
+
+        // 调用通用的矩形绘制方法
+        drawRectCommon(left, top, right, bottom, f, f1, f2, f3);
+
+        // 恢复 OpenGL 状态
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
 
-    public static void drawRect(int left, int top, int right, int bottom, int color)
-    {
-        if (left < right)
-        {
+    // 绘制矩形（整数坐标）
+    public static void drawRect(int left, int top, int right, int bottom, int color) {
+        // 调整坐标，确保 left <= right，top <= bottom
+        if (left < right) {
             int i = left;
             left = right;
             right = i;
         }
-
-        if (top < bottom)
-        {
+        if (top < bottom) {
             int j = top;
             top = bottom;
             bottom = j;
         }
 
+        // 解析颜色
         float f3 = (float)(color >> 24 & 255) / 255.0F;
         float f = (float)(color >> 16 & 255) / 255.0F;
         float f1 = (float)(color >> 8 & 255) / 255.0F;
         float f2 = (float)(color & 255) / 255.0F;
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // 设置 OpenGL 状态
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.color(f, f1, f2, f3);
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-        worldrenderer.pos(left, bottom, 0.0D).endVertex();
-        worldrenderer.pos(right, bottom, 0.0D).endVertex();
-        worldrenderer.pos(right, top, 0.0D).endVertex();
-        worldrenderer.pos(left, top, 0.0D).endVertex();
-        tessellator.draw();
+
+        // 调用通用的矩形绘制方法
+        drawRectCommon(left, top, right, bottom, f, f1, f2, f3);
+
+        // 恢复 OpenGL 状态
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
     }
@@ -174,74 +187,80 @@ public class Gui
         tessellator.draw();
     }
 
+    private static final float TEX_SCALE = 0.00390625F; // 1/256
+
     public static void drawTexturedModalRect2(float x, float y, int textureX, int textureY, int width, int height) {
-        float f = 0.00390625F;
-        float f1 = 0.00390625F;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // 使用局部变量缓存 tex 坐标计算
+        float texX1 = textureX * TEX_SCALE;
+        float texY1 = textureY * TEX_SCALE;
+        float texX2 = (textureX + width) * TEX_SCALE;
+        float texY2 = (textureY + height) * TEX_SCALE;
+
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(x, y + height, zLevel).tex((float)(textureX) * f, (float)(textureY + height) * f1).endVertex();
-        worldrenderer.pos(x + width, y + height, zLevel).tex((float)(textureX + width) * f, (float)(textureY + height) * f1).endVertex();
-        worldrenderer.pos(x + width, y, zLevel).tex((float)(textureX + width) * f, (float)(textureY) * f1).endVertex();
-        worldrenderer.pos(x, y, zLevel).tex((float)(textureX) * f, (float)(textureY) * f1).endVertex();
+        worldrenderer.pos(x, y + height, zLevel).tex(texX1, texY2).endVertex();
+        worldrenderer.pos(x + width, y + height, zLevel).tex(texX2, texY2).endVertex();
+        worldrenderer.pos(x + width, y, zLevel).tex(texX2, texY1).endVertex();
+        worldrenderer.pos(x, y, zLevel).tex(texX1, texY1).endVertex();
+        tessellator.draw();
+    }
+    public void drawTexturedModalRect(int xCoord, int yCoord, TextureAtlasSprite textureSprite, int widthIn, int heightIn) {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // 使用局部变量缓存 tex 坐标计算
+        float minU = textureSprite.getMinU();
+        float minV = textureSprite.getMinV();
+        float maxU = textureSprite.getMaxU();
+        float maxV = textureSprite.getMaxV();
+
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos(xCoord, yCoord + heightIn, zLevel).tex(minU, maxV).endVertex();
+        worldrenderer.pos(xCoord + widthIn, yCoord + heightIn, zLevel).tex(maxU, maxV).endVertex();
+        worldrenderer.pos(xCoord + widthIn, yCoord, zLevel).tex(maxU, minV).endVertex();
+        worldrenderer.pos(xCoord, yCoord, zLevel).tex(minU, minV).endVertex();
         tessellator.draw();
     }
 
-    public void drawTexturedModalRect(int xCoord, int yCoord, TextureAtlasSprite textureSprite, int widthIn, int heightIn)
-    {
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(xCoord, yCoord + heightIn, zLevel).tex(textureSprite.getMinU(), textureSprite.getMaxV()).endVertex();
-        worldrenderer.pos(xCoord + widthIn, yCoord + heightIn, zLevel).tex(textureSprite.getMaxU(), textureSprite.getMaxV()).endVertex();
-        worldrenderer.pos(xCoord + widthIn, yCoord, zLevel).tex(textureSprite.getMaxU(), textureSprite.getMinV()).endVertex();
-        worldrenderer.pos(xCoord, yCoord, zLevel).tex(textureSprite.getMinU(), textureSprite.getMinV()).endVertex();
-        tessellator.draw();
-    }
-
-    public static void drawModalRectWithCustomSizedTexture(int x, int y, float u, float v, int width, int height, float textureWidth, float textureHeight)
-    {
-        float f = 1.0F / textureWidth;
-        float f1 = 1.0F / textureHeight;
-        Tessellator tessellator = Tessellator.getInstance();
-        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(x, y + height, 0.0D).tex(u * f, (v + (float)height) * f1).endVertex();
-        worldrenderer.pos(x + width, y + height, 0.0D).tex((u + (float)width) * f, (v + (float)height) * f1).endVertex();
-        worldrenderer.pos(x + width, y, 0.0D).tex((u + (float)width) * f, v * f1).endVertex();
-        worldrenderer.pos(x, y, 0.0D).tex(u * f, v * f1).endVertex();
-        tessellator.draw();
-    }
-
-    /**
-     * Draws a textured rectangle at z = 0. Args: x, y, u, v, width, height, textureWidth, textureHeight
-     */
     public static void drawModalRectWithCustomSizedTexture(float x, float y, float u, float v, float width, float height, float textureWidth, float textureHeight) {
-
         float f = 1.0F / textureWidth;
         float f1 = 1.0F / textureHeight;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(x, y + height, 0.0D).tex(u * f, (v + height) * f1).endVertex();
-        worldrenderer.pos(x + width, y + height, 0.0D).tex((u + width) * f, (v + height) * f1).endVertex();
-        worldrenderer.pos(x + width, y, 0.0D).tex((u + width) * f, v * f1).endVertex();
-        worldrenderer.pos(x, y, 0.0D).tex(u * f, v * f1).endVertex();
-        tessellator.draw();
 
+        // 使用局部变量缓存 tex 坐标计算
+        float texU1 = u * f;
+        float texV1 = v * f1;
+        float texU2 = (u + width) * f;
+        float texV2 = (v + height) * f1;
+
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
+        worldrenderer.pos(x, y + height, 0.0D).tex(texU1, texV2).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0D).tex(texU2, texV2).endVertex();
+        worldrenderer.pos(x + width, y, 0.0D).tex(texU2, texV1).endVertex();
+        worldrenderer.pos(x, y, 0.0D).tex(texU1, texV1).endVertex();
+        tessellator.draw();
     }
 
-    public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight)
-    {
+    public static void drawScaledCustomSizeModalRect(int x, int y, float u, float v, int uWidth, int vHeight, int width, int height, float tileWidth, float tileHeight) {
         float f = 1.0F / tileWidth;
         float f1 = 1.0F / tileHeight;
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // 使用局部变量缓存 tex 坐标计算
+        float texU1 = u * f;
+        float texV1 = v * f1;
+        float texU2 = (u + uWidth) * f;
+        float texV2 = (v + vHeight) * f1;
+
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(x, y + height, 0.0D).tex(u * f, (v + (float)vHeight) * f1).endVertex();
-        worldrenderer.pos(x + width, y + height, 0.0D).tex((u + (float)uWidth) * f, (v + (float)vHeight) * f1).endVertex();
-        worldrenderer.pos(x + width, y, 0.0D).tex((u + (float)uWidth) * f, v * f1).endVertex();
-        worldrenderer.pos(x, y, 0.0D).tex(u * f, v * f1).endVertex();
+        worldrenderer.pos(x, y + height, 0.0D).tex(texU1, texV2).endVertex();
+        worldrenderer.pos(x + width, y + height, 0.0D).tex(texU2, texV2).endVertex();
+        worldrenderer.pos(x + width, y, 0.0D).tex(texU2, texV1).endVertex();
+        worldrenderer.pos(x, y, 0.0D).tex(texU1, texV1).endVertex();
         tessellator.draw();
     }
 }

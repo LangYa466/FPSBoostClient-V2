@@ -176,6 +176,7 @@ public class Minecraft implements IThreadListener {
     private static final List<DisplayMode> macDisplayModes = Lists.newArrayList(new DisplayMode(2560, 1600), new DisplayMode(2880, 1800));
     private final File fileResourcepacks;
     private final PropertyMap profileProperties;
+    @Getter
     private ServerData currentServerData;
     private TextureManager renderEngine;
     private static Minecraft theMinecraft;
@@ -2570,11 +2571,6 @@ public class Minecraft implements IThreadListener {
     public void setServerData(ServerData serverDataIn)
     {
         this.currentServerData = serverDataIn;
-    }
-
-    public ServerData getCurrentServerData()
-    {
-        return this.currentServerData;
     }
 
     public boolean isIntegratedServerRunning()

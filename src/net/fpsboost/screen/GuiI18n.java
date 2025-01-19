@@ -36,7 +36,7 @@ public class GuiI18n extends GuiScreen {
         } else {
             ClientSettings.INSTANCE.cnMode.setValue(false);
         }
-        mc.displayGuiScreen(new GuiMainMenu());
+        mc.displayGuiScreen(new GuiRectMode());
         return super.actionPerformed(button);
     }
 }

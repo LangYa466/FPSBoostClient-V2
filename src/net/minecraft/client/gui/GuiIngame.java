@@ -151,7 +151,6 @@ public class GuiIngame extends Gui
         });
 
 
-
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         this.mc.getTextureManager().bindTexture(icons);
         GlStateManager.enableBlend();
@@ -865,20 +864,31 @@ public class GuiIngame extends Gui
 
     private void renderPumpkinOverlay(ScaledResolution scaledRes)
     {
+        // 计算宽高，避免每次都调用
+        int width = scaledRes.getScaledWidth();
+        int height = scaledRes.getScaledHeight();
+
+        // 统一的状态设置
         GlStateManager.disableDepth();
         GlStateManager.depthMask(false);
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
-        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.disableAlpha();
+        GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+
+        // 绑定纹理（纹理绑定可以提前做，减少每帧重复操作）
         this.mc.getTextureManager().bindTexture(pumpkinBlurTexPath);
+
+        // 渲染四边形
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-        worldrenderer.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-        worldrenderer.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+        worldrenderer.pos(0.0D, height, -90.0D).tex(0.0D, 1.0D).endVertex();
+        worldrenderer.pos(width, height, -90.0D).tex(1.0D, 1.0D).endVertex();
+        worldrenderer.pos(width, 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
         worldrenderer.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
         tessellator.draw();
+
+        // 恢复状态
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
         GlStateManager.enableAlpha();
@@ -887,6 +897,10 @@ public class GuiIngame extends Gui
 
     private void renderVignette(float lightLevel, ScaledResolution scaledRes)
     {
+        // 计算宽高，避免每次都调用
+        int width = scaledRes.getScaledWidth();
+        int height = scaledRes.getScaledHeight();
+
         if (!Config.isVignetteEnabled())
         {
             GlStateManager.enableDepth();
@@ -915,6 +929,7 @@ public class GuiIngame extends Gui
             GlStateManager.depthMask(false);
             GlStateManager.tryBlendFuncSeparate(0, 769, 1, 0);
 
+            // 调整颜色设置
             if (f > 0.0F)
             {
                 GlStateManager.color(0.0F, f, f, 1.0F);
@@ -924,15 +939,20 @@ public class GuiIngame extends Gui
                 GlStateManager.color(this.prevVignetteBrightness, this.prevVignetteBrightness, this.prevVignetteBrightness, 1.0F);
             }
 
+            // 绑定纹理
             this.mc.getTextureManager().bindTexture(vignetteTexPath);
+
+            // 渲染四边形
             Tessellator tessellator = Tessellator.getInstance();
             WorldRenderer worldrenderer = tessellator.getWorldRenderer();
             worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-            worldrenderer.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(0.0D, 1.0D).endVertex();
-            worldrenderer.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(1.0D, 1.0D).endVertex();
-            worldrenderer.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
+            worldrenderer.pos(0.0D, height, -90.0D).tex(0.0D, 1.0D).endVertex();
+            worldrenderer.pos(width, height, -90.0D).tex(1.0D, 1.0D).endVertex();
+            worldrenderer.pos(width, 0.0D, -90.0D).tex(1.0D, 0.0D).endVertex();
             worldrenderer.pos(0.0D, 0.0D, -90.0D).tex(0.0D, 0.0D).endVertex();
             tessellator.draw();
+
+            // 恢复状态
             GlStateManager.depthMask(true);
             GlStateManager.enableDepth();
             GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
@@ -942,6 +962,10 @@ public class GuiIngame extends Gui
 
     private void renderPortal(float timeInPortal, ScaledResolution scaledRes)
     {
+        // 计算宽高，避免每次都调用
+        int width = scaledRes.getScaledWidth();
+        int height = scaledRes.getScaledHeight();
+
         if (timeInPortal < 1.0F)
         {
             timeInPortal = timeInPortal * timeInPortal;
@@ -954,25 +978,32 @@ public class GuiIngame extends Gui
         GlStateManager.depthMask(false);
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.color(1.0F, 1.0F, 1.0F, timeInPortal);
+
+        // 绑定纹理
         this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
         TextureAtlasSprite textureatlassprite = this.mc.getBlockRendererDispatcher().getBlockModelShapes().getTexture(Blocks.portal.getDefaultState());
         float f = textureatlassprite.getMinU();
         float f1 = textureatlassprite.getMinV();
         float f2 = textureatlassprite.getMaxU();
         float f3 = textureatlassprite.getMaxV();
+
+        // 渲染四边形
         Tessellator tessellator = Tessellator.getInstance();
         WorldRenderer worldrenderer = tessellator.getWorldRenderer();
         worldrenderer.begin(7, DefaultVertexFormats.POSITION_TEX);
-        worldrenderer.pos(0.0D, scaledRes.getScaledHeight(), -90.0D).tex(f, f3).endVertex();
-        worldrenderer.pos(scaledRes.getScaledWidth(), scaledRes.getScaledHeight(), -90.0D).tex(f2, f3).endVertex();
-        worldrenderer.pos(scaledRes.getScaledWidth(), 0.0D, -90.0D).tex(f2, f1).endVertex();
+        worldrenderer.pos(0.0D, height, -90.0D).tex(f, f3).endVertex();
+        worldrenderer.pos(width, height, -90.0D).tex(f2, f3).endVertex();
+        worldrenderer.pos(width, 0.0D, -90.0D).tex(f2, f1).endVertex();
         worldrenderer.pos(0.0D, 0.0D, -90.0D).tex(f, f1).endVertex();
         tessellator.draw();
+
+        // 恢复状态
         GlStateManager.depthMask(true);
         GlStateManager.enableDepth();
         GlStateManager.enableAlpha();
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
+
 
     private void renderHotbarItem(int index, int xPos, int yPos, float partialTicks, EntityPlayer player)
     {

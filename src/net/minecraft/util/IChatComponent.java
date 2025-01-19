@@ -1,22 +1,16 @@
 package net.minecraft.util;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonDeserializationContext;
-import com.google.gson.JsonDeserializer;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonPrimitive;
-import com.google.gson.JsonSerializationContext;
-import com.google.gson.JsonSerializer;
+import com.google.gson.*;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map.Entry;
 
-public interface IChatComponent extends Iterable<IChatComponent>
-{
+/**
+ * IChatComponent 接口用于表示聊天组件，可以是文本、翻译、得分等类型。
+ * 它提供了获取和设置聊天样式、附加文本或子组件的方法。
+ */
+public interface IChatComponent extends Iterable<IChatComponent> {
+
     IChatComponent setChatStyle(ChatStyle style);
 
     ChatStyle getChatStyle();
@@ -35,241 +29,203 @@ public interface IChatComponent extends Iterable<IChatComponent>
 
     IChatComponent createCopy();
 
-    class Serializer implements JsonDeserializer<IChatComponent>, JsonSerializer<IChatComponent>
-    {
-        private static final Gson GSON;
+    /**
+     * 序列化与反序列化 IChatComponent 对象的工具类
+     */
+    class Serializer implements JsonDeserializer<IChatComponent>, JsonSerializer<IChatComponent> {
 
-        public IChatComponent deserialize(JsonElement p_deserialize_1_, Type p_deserialize_2_, JsonDeserializationContext p_deserialize_3_) throws JsonParseException
-        {
-            if (p_deserialize_1_.isJsonPrimitive())
-            {
-                return new ChatComponentText(p_deserialize_1_.getAsString());
+        private static final Gson GSON = new GsonBuilder()
+                .registerTypeHierarchyAdapter(IChatComponent.class, new Serializer())
+                .registerTypeHierarchyAdapter(ChatStyle.class, new ChatStyle.Serializer())
+                .registerTypeAdapterFactory(new EnumTypeAdapterFactory())
+                .create();
+
+        /**
+         * 将 JSON 元素反序列化为 IChatComponent 对象
+         */
+        @Override
+        public IChatComponent deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+            if (json.isJsonPrimitive()) {
+                return new ChatComponentText(json.getAsString());
             }
-            else if (!p_deserialize_1_.isJsonObject())
-            {
-                if (p_deserialize_1_.isJsonArray())
-                {
-                    JsonArray jsonarray1 = p_deserialize_1_.getAsJsonArray();
-                    IChatComponent ichatcomponent1 = null;
 
-                    for (JsonElement jsonelement : jsonarray1)
-                    {
-                        IChatComponent ichatcomponent2 = this.deserialize(jsonelement, jsonelement.getClass(), p_deserialize_3_);
+            if (json.isJsonArray()) {
+                JsonArray jsonArray = json.getAsJsonArray();
+                IChatComponent component = null;
 
-                        if (ichatcomponent1 == null)
-                        {
-                            ichatcomponent1 = ichatcomponent2;
-                        }
-                        else
-                        {
-                            ichatcomponent1.appendSibling(ichatcomponent2);
-                        }
+                for (JsonElement element : jsonArray) {
+                    IChatComponent sibling = deserialize(element, typeOfT, context);
+                    if (component == null) {
+                        component = sibling;
+                    } else {
+                        component.appendSibling(sibling);
                     }
+                }
 
-                    return ichatcomponent1;
-                }
-                else
-                {
-                    throw new JsonParseException("Don't know how to turn " + p_deserialize_1_ + " into a Component");
-                }
+                return component;
             }
-            else
-            {
-                JsonObject jsonobject = p_deserialize_1_.getAsJsonObject();
-                IChatComponent ichatcomponent;
 
-                if (jsonobject.has("text"))
-                {
-                    ichatcomponent = new ChatComponentText(jsonobject.get("text").getAsString());
-                }
-                else if (jsonobject.has("translate"))
-                {
-                    String s = jsonobject.get("translate").getAsString();
+            if (json.isJsonObject()) {
+                JsonObject jsonObject = json.getAsJsonObject();
+                IChatComponent component;
 
-                    if (jsonobject.has("with"))
-                    {
-                        JsonArray jsonarray = jsonobject.getAsJsonArray("with");
-                        Object[] aobject = new Object[jsonarray.size()];
-
-                        for (int i = 0; i < aobject.length; ++i)
-                        {
-                            aobject[i] = this.deserialize(jsonarray.get(i), p_deserialize_2_, p_deserialize_3_);
-
-                            if (aobject[i] instanceof ChatComponentText)
-                            {
-                                ChatComponentText chatcomponenttext = (ChatComponentText)aobject[i];
-
-                                if (chatcomponenttext.getChatStyle().isEmpty() && chatcomponenttext.getSiblings().isEmpty())
-                                {
-                                    aobject[i] = chatcomponenttext.getChatComponentText_TextValue();
-                                }
-                            }
-                        }
-
-                        ichatcomponent = new ChatComponentTranslation(s, aobject);
-                    }
-                    else
-                    {
-                        ichatcomponent = new ChatComponentTranslation(s);
-                    }
-                }
-                else if (jsonobject.has("score"))
-                {
-                    JsonObject jsonobject1 = jsonobject.getAsJsonObject("score");
-
-                    if (!jsonobject1.has("name") || !jsonobject1.has("objective"))
-                    {
-                        throw new JsonParseException("A score component needs a least a name and an objective");
-                    }
-
-                    ichatcomponent = new ChatComponentScore(JsonUtils.getString(jsonobject1, "name"), JsonUtils.getString(jsonobject1, "objective"));
-
-                    if (jsonobject1.has("value"))
-                    {
-                        ((ChatComponentScore)ichatcomponent).setValue(JsonUtils.getString(jsonobject1, "value"));
-                    }
-                }
-                else
-                {
-                    if (!jsonobject.has("selector"))
-                    {
-                        throw new JsonParseException("Don't know how to turn " + p_deserialize_1_ + " into a Component");
-                    }
-
-                    ichatcomponent = new ChatComponentSelector(JsonUtils.getString(jsonobject, "selector"));
+                if (jsonObject.has("text")) {
+                    component = new ChatComponentText(jsonObject.get("text").getAsString());
+                } else if (jsonObject.has("translate")) {
+                    component = handleTranslate(jsonObject, context);
+                } else if (jsonObject.has("score")) {
+                    component = handleScore(jsonObject);
+                } else if (jsonObject.has("selector")) {
+                    component = new ChatComponentSelector(JsonUtils.getString(jsonObject, "selector"));
+                } else {
+                    throw new JsonParseException("Unknown component type: " + json);
                 }
 
-                if (jsonobject.has("extra"))
-                {
-                    JsonArray jsonarray2 = jsonobject.getAsJsonArray("extra");
-
-                    if (jsonarray2.size() <= 0)
-                    {
-                        throw new JsonParseException("Unexpected empty array of components");
-                    }
-
-                    for (int j = 0; j < jsonarray2.size(); ++j)
-                    {
-                        ichatcomponent.appendSibling(this.deserialize(jsonarray2.get(j), p_deserialize_2_, p_deserialize_3_));
+                if (jsonObject.has("extra")) {
+                    JsonArray extraArray = jsonObject.getAsJsonArray("extra");
+                    for (JsonElement extraElement : extraArray) {
+                        component.appendSibling(deserialize(extraElement, typeOfT, context));
                     }
                 }
 
-                ichatcomponent.setChatStyle(p_deserialize_3_.deserialize(p_deserialize_1_, ChatStyle.class));
-                return ichatcomponent;
+                component.setChatStyle(context.deserialize(json, ChatStyle.class));
+                return component;
             }
+
+            throw new JsonParseException("Don't know how to turn " + json + " into a Component");
         }
 
-        private void serializeChatStyle(ChatStyle style, JsonObject object, JsonSerializationContext ctx)
-        {
-            JsonElement jsonelement = ctx.serialize(style);
+        /**
+         * 处理翻译类型的聊天组件
+         */
+        private IChatComponent handleTranslate(JsonObject jsonObject, JsonDeserializationContext context) {
+            String key = jsonObject.get("translate").getAsString();
+            IChatComponent component;
 
-            if (jsonelement.isJsonObject())
-            {
-                JsonObject jsonobject = (JsonObject)jsonelement;
+            if (jsonObject.has("with")) {
+                JsonArray withArray = jsonObject.getAsJsonArray("with");
+                Object[] args = new Object[withArray.size()];
 
-                for (Entry<String, JsonElement> entry : jsonobject.entrySet())
-                {
+                for (int i = 0; i < args.length; ++i) {
+                    args[i] = deserialize(withArray.get(i), Object.class, context);
+                }
+
+                component = new ChatComponentTranslation(key, args);
+            } else {
+                component = new ChatComponentTranslation(key);
+            }
+
+            return component;
+        }
+
+        /**
+         * 处理得分类型的聊天组件
+         */
+        private IChatComponent handleScore(JsonObject jsonObject) {
+            JsonObject scoreObject = jsonObject.getAsJsonObject("score");
+            if (!scoreObject.has("name") || !scoreObject.has("objective")) {
+                throw new JsonParseException("A score component needs at least a name and an objective");
+            }
+
+            IChatComponent component = new ChatComponentScore(
+                    JsonUtils.getString(scoreObject, "name"),
+                    JsonUtils.getString(scoreObject, "objective")
+            );
+
+            if (scoreObject.has("value")) {
+                ((ChatComponentScore) component).setValue(JsonUtils.getString(scoreObject, "value"));
+            }
+
+            return component;
+        }
+
+        /**
+         * 序列化 IChatComponent 对象为 JSON
+         */
+        @Override
+        public JsonElement serialize(IChatComponent component, Type typeOfSrc, JsonSerializationContext context) {
+            JsonObject jsonObject = new JsonObject();
+
+            if (!component.getChatStyle().isEmpty()) {
+                serializeChatStyle(component.getChatStyle(), jsonObject, context);
+            }
+
+            if (!component.getSiblings().isEmpty()) {
+                JsonArray extraArray = new JsonArray();
+                for (IChatComponent sibling : component.getSiblings()) {
+                    extraArray.add(serialize(sibling, sibling.getClass(), context));
+                }
+                jsonObject.add("extra", extraArray);
+            }
+
+            if (component instanceof ChatComponentText) {
+                jsonObject.addProperty("text", ((ChatComponentText) component).getChatComponentText_TextValue());
+            } else if (component instanceof ChatComponentTranslation) {
+                ChatComponentTranslation translation = (ChatComponentTranslation) component;
+                jsonObject.addProperty("translate", translation.getKey());
+                addWithArgument(translation, jsonObject, context);
+            } else if (component instanceof ChatComponentScore) {
+                serializeScore((ChatComponentScore) component, jsonObject);
+            } else if (component instanceof ChatComponentSelector) {
+                jsonObject.addProperty("selector", ((ChatComponentSelector) component).getSelector());
+            }
+
+            return jsonObject;
+        }
+
+        /**
+         * 序列化聊天样式
+         */
+        private void serializeChatStyle(ChatStyle style, JsonObject object, JsonSerializationContext ctx) {
+            JsonElement styleElement = ctx.serialize(style);
+            if (styleElement.isJsonObject()) {
+                JsonObject styleObject = (JsonObject) styleElement;
+                for (Entry<String, JsonElement> entry : styleObject.entrySet()) {
                     object.add(entry.getKey(), entry.getValue());
                 }
             }
         }
 
-        public JsonElement serialize(IChatComponent p_serialize_1_, Type p_serialize_2_, JsonSerializationContext p_serialize_3_)
-        {
-            if (p_serialize_1_ instanceof ChatComponentText && p_serialize_1_.getChatStyle().isEmpty() && p_serialize_1_.getSiblings().isEmpty())
-            {
-                return new JsonPrimitive(((ChatComponentText)p_serialize_1_).getChatComponentText_TextValue());
-            }
-            else
-            {
-                JsonObject jsonobject = new JsonObject();
-
-                if (!p_serialize_1_.getChatStyle().isEmpty())
-                {
-                    this.serializeChatStyle(p_serialize_1_.getChatStyle(), jsonobject, p_serialize_3_);
-                }
-
-                if (!p_serialize_1_.getSiblings().isEmpty())
-                {
-                    JsonArray jsonarray = new JsonArray();
-
-                    for (IChatComponent ichatcomponent : p_serialize_1_.getSiblings())
-                    {
-                        jsonarray.add(this.serialize(ichatcomponent, ichatcomponent.getClass(), p_serialize_3_));
-                    }
-
-                    jsonobject.add("extra", jsonarray);
-                }
-
-                if (p_serialize_1_ instanceof ChatComponentText)
-                {
-                    jsonobject.addProperty("text", ((ChatComponentText)p_serialize_1_).getChatComponentText_TextValue());
-                }
-                else if (p_serialize_1_ instanceof ChatComponentTranslation)
-                {
-                    ChatComponentTranslation chatcomponenttranslation = (ChatComponentTranslation)p_serialize_1_;
-                    jsonobject.addProperty("translate", chatcomponenttranslation.getKey());
-
-                    if (chatcomponenttranslation.getFormatArgs() != null && chatcomponenttranslation.getFormatArgs().length > 0)
-                    {
-                        JsonArray jsonarray1 = new JsonArray();
-
-                        for (Object object : chatcomponenttranslation.getFormatArgs())
-                        {
-                            if (object instanceof IChatComponent)
-                            {
-                                jsonarray1.add(this.serialize((IChatComponent) object, object.getClass(), p_serialize_3_));
-                            }
-                            else
-                            {
-                                jsonarray1.add(new JsonPrimitive(String.valueOf(object)));
-                            }
-                        }
-
-                        jsonobject.add("with", jsonarray1);
+        /**
+         * 添加格式化参数到翻译组件的 "with" 字段
+         */
+        private void addWithArgument(ChatComponentTranslation translation, JsonObject jsonObject, JsonSerializationContext context) {
+            if (translation.getFormatArgs() != null && translation.getFormatArgs().length > 0) {
+                JsonArray withArray = new JsonArray();
+                for (Object arg : translation.getFormatArgs()) {
+                    if (arg instanceof IChatComponent) {
+                        withArray.add(serialize((IChatComponent) arg, arg.getClass(), context));
+                    } else {
+                        withArray.add(new JsonPrimitive(String.valueOf(arg)));
                     }
                 }
-                else if (p_serialize_1_ instanceof ChatComponentScore)
-                {
-                    ChatComponentScore chatcomponentscore = (ChatComponentScore)p_serialize_1_;
-                    JsonObject jsonobject1 = new JsonObject();
-                    jsonobject1.addProperty("name", chatcomponentscore.getName());
-                    jsonobject1.addProperty("objective", chatcomponentscore.getObjective());
-                    jsonobject1.addProperty("value", chatcomponentscore.getUnformattedTextForChat());
-                    jsonobject.add("score", jsonobject1);
-                }
-                else
-                {
-                    if (!(p_serialize_1_ instanceof ChatComponentSelector))
-                    {
-                        throw new IllegalArgumentException("Don't know how to serialize " + p_serialize_1_ + " as a Component");
-                    }
-
-                    ChatComponentSelector chatcomponentselector = (ChatComponentSelector)p_serialize_1_;
-                    jsonobject.addProperty("selector", chatcomponentselector.getSelector());
-                }
-
-                return jsonobject;
+                jsonObject.add("with", withArray);
             }
         }
 
-        public static String componentToJson(IChatComponent component)
-        {
+        /**
+         * 序列化得分组件
+         */
+        private void serializeScore(ChatComponentScore score, JsonObject jsonObject) {
+            JsonObject scoreObject = new JsonObject();
+            scoreObject.addProperty("name", score.getName());
+            scoreObject.addProperty("objective", score.getObjective());
+            scoreObject.addProperty("value", score.getUnformattedTextForChat());
+            jsonObject.add("score", scoreObject);
+        }
+
+        /**
+         * 将 IChatComponent 转换为 JSON 字符串
+         */
+        public static String componentToJson(IChatComponent component) {
             return GSON.toJson(component);
         }
 
-        public static IChatComponent jsonToComponent(String json)
-        {
+        /**
+         * 将 JSON 字符串转换为 IChatComponent 对象
+         */
+        public static IChatComponent jsonToComponent(String json) {
             return GSON.fromJson(json, IChatComponent.class);
-        }
-
-        static
-        {
-            GsonBuilder gsonbuilder = new GsonBuilder();
-            gsonbuilder.registerTypeHierarchyAdapter(IChatComponent.class, new IChatComponent.Serializer());
-            gsonbuilder.registerTypeHierarchyAdapter(ChatStyle.class, new ChatStyle.Serializer());
-            gsonbuilder.registerTypeAdapterFactory(new EnumTypeAdapterFactory());
-            GSON = gsonbuilder.create();
         }
     }
 }

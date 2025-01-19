@@ -11,9 +11,8 @@ import net.fpsboost.util.font.FontManager;
 import java.awt.*;
 
 public class ModuleRect extends UIComponent {
-	@Setter
-    @Getter
-    private Module module;
+	@Setter @Getter
+	private Module module;
 	private final boolean hasValues;
 	private ClickableRect rect;
 	private final Translate anim = new Translate(0, 0);
@@ -46,7 +45,7 @@ public class ModuleRect extends UIComponent {
 				ClickGui.INSTANCE.getModuleList().setLastOnSetting(this.module);
 			} else if (ClickGui.INSTANCE.getModuleList()
 					.getLastOnSetting() == ClickGui.INSTANCE.getModuleList()
-							.getOnSetting()) {
+					.getOnSetting()) {
 				ClickGui.INSTANCE.getModuleList().setLastOnSetting(
 						ClickGui.INSTANCE.getModuleList().getOnSetting());
 			}
@@ -66,17 +65,17 @@ public class ModuleRect extends UIComponent {
 						return;
 					this.module.toggle();
 				}, () -> {
-				}, () -> {
-					if (!this.getClickGui().getModuleList().isClickable())
-						return;
-					this.rect.setColor(this.getColor(10));
-					ClickGui.INSTANCE.getModuleList().setOnHover(this.module);
-					anim.interpolate(5, 0, 0.3f);
-				}, () -> {
-				}, () -> {
-					this.rect.setColor(this.getColor(8));
-					anim.interpolate(0, 0, 0.3f);
-				});
+		}, () -> {
+			if (!this.getClickGui().getModuleList().isClickable())
+				return;
+			this.rect.setColor(this.getColor(10));
+			ClickGui.INSTANCE.getModuleList().setOnHover(this.module);
+			anim.interpolate(5, 0, 0.3f);
+		}, () -> {
+		}, () -> {
+			this.rect.setColor(this.getColor(8));
+			anim.interpolate(0, 0, 0.3f);
+		});
 		this.enable_rect = new Rect(0, 0, 2, 20,
 				this.module.isEnabled() ? new Color(1, 223, 1, this.getMenuAlpha()).getRGB()
 						: new Color(223, 1, 1, this.getMenuAlpha()).getRGB(),
@@ -131,5 +130,15 @@ public class ModuleRect extends UIComponent {
 		}
 
 		FontManager.client(18).drawString(this.module.cnName, positionX + 8 + anim.getX(), positionY + 8, this.getColor(9));
+	}
+
+	// 新增 getWidth 方法
+	public double getWidth() {
+		double width = this.rect.getWidth();
+		if (this.hasValues) {
+			// 如果有值，增加设置区域的宽度
+			width += 20; // 你可以根据需要调整这个值
+		}
+		return width;
 	}
 }

@@ -7,6 +7,8 @@ import java.util.EnumMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.locks.ReentrantLock;
+
+import lombok.Getter;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockCactus;
 import net.minecraft.block.BlockRedstoneWire;
@@ -51,6 +53,7 @@ public class RenderChunk
     public static int renderChunksUpdated;
     private BlockPos position;
     public CompiledChunk compiledChunk = CompiledChunk.DUMMY;
+    @Getter
     private final ReentrantLock lockCompileTask = new ReentrantLock();
     private final ReentrantLock lockCompiledChunk = new ReentrantLock();
     private ChunkCompileTaskGenerator compileTask = null;
@@ -161,93 +164,97 @@ public class RenderChunk
         }
     }
 
-    public void rebuildChunk(float x, float y, float z, ChunkCompileTaskGenerator generator)
-    {
+    public void rebuildChunk(float x, float y, float z, ChunkCompileTaskGenerator generator) {
+        // 创建已编译的区块对象
         CompiledChunk compiledchunk = new CompiledChunk();
         int i = 1;
         BlockPos blockpos = new BlockPos(this.position);
         BlockPos blockpos1 = blockpos.add(15, 15, 15);
+
+        // 获取任务生成器的锁
         generator.getLock().lock();
 
-        try
-        {
-            if (generator.getStatus() != ChunkCompileTaskGenerator.Status.COMPILING)
-            {
+        try {
+            // 如果当前状态不是编译中，直接返回
+            if (generator.getStatus() != ChunkCompileTaskGenerator.Status.COMPILING) {
                 return;
             }
 
+            // 设置已编译的区块
             generator.setCompiledChunk(compiledchunk);
-        }
-        finally
-        {
+        } finally {
+            // 解锁
             generator.getLock().unlock();
         }
 
+        // 创建可见性图和已渲染的TileEntity集合
         VisGraph lvt_10_1_ = new VisGraph();
-        HashSet lvt_11_1_ = Sets.newHashSet();
+        HashSet<TileEntity> lvt_11_1_ = Sets.newHashSet();
 
-        if (!this.isChunkRegionEmpty(blockpos))
-        {
+        // 如果区块区域不为空，开始渲染
+        if (!this.isChunkRegionEmpty(blockpos)) {
             ++renderChunksUpdated;
             ChunkCacheOF chunkcacheof = this.makeChunkCacheOF(blockpos);
             chunkcacheof.renderStart();
+
+            // 存储各层渲染状态
             boolean[] aboolean = new boolean[ENUM_WORLD_BLOCK_LAYERS.length];
             BlockRendererDispatcher blockrendererdispatcher = Minecraft.getMinecraft().getBlockRendererDispatcher();
 
-            for (Object o : BlockPosM.getAllInBoxMutable(blockpos, blockpos1))
-            {
+            // 遍历区块中的所有方块位置
+            for (Object o : BlockPosM.getAllInBoxMutable(blockpos, blockpos1)) {
                 BlockPosM blockposm = (BlockPosM) o;
                 IBlockState iblockstate = chunkcacheof.getBlockState(blockposm);
                 Block block = iblockstate.getBlock();
 
-                if (block.isOpaqueCube())
-                {
+                // 如果方块是透明的，则加入可见性图
+                if (block.isOpaqueCube()) {
                     lvt_10_1_.func_178606_a(blockposm);
                 }
 
-                if (iblockstate.getBlock().hasTileEntity())
-                {
+                // 如果方块有TileEntity，进行处理
+                if (iblockstate.getBlock().hasTileEntity()) {
                     TileEntity tileentity = chunkcacheof.getTileEntity(new BlockPos(blockposm));
                     TileEntitySpecialRenderer<TileEntity> tileentityspecialrenderer = TileEntityRendererDispatcher.instance.getSpecialRenderer(tileentity);
 
-                    if (tileentity != null && tileentityspecialrenderer != null)
-                    {
+                    if (tileentity != null && tileentityspecialrenderer != null) {
                         compiledchunk.addTileEntity(tileentity);
 
-                        if (tileentityspecialrenderer.forceTileEntityRender())
-                        {
+                        if (tileentityspecialrenderer.forceTileEntityRender()) {
                             lvt_11_1_.add(tileentity);
                         }
                     }
                 }
 
+                // 渲染各层
                 EnumWorldBlockLayer[] aenumworldblocklayer = this.blockLayersSingle;
                 aenumworldblocklayer[0] = block.getBlockLayer();
 
-                for (int j = 0; j < aenumworldblocklayer.length; ++j)
-                {
-                    EnumWorldBlockLayer enumworldblocklayer = aenumworldblocklayer[j];
+                for (EnumWorldBlockLayer enumWorldBlockLayer : aenumworldblocklayer) {
+                    EnumWorldBlockLayer enumworldblocklayer = enumWorldBlockLayer;
 
+                    // 修正方块层
                     enumworldblocklayer = this.fixBlockLayer(iblockstate, enumworldblocklayer);
                     int k = enumworldblocklayer.ordinal();
 
-                    if (block.getRenderType() != -1)
-                    {
+                    // 如果方块渲染类型有效，进行渲染
+                    if (block.getRenderType() != -1) {
                         WorldRenderer worldrenderer = generator.getRegionRenderCacheBuilder().getWorldRendererByLayerId(k);
                         worldrenderer.setBlockLayer(enumworldblocklayer);
                         RenderEnv renderenv = worldrenderer.getRenderEnv(iblockstate, blockposm);
                         renderenv.setRegionRenderCacheBuilder(generator.getRegionRenderCacheBuilder());
 
-                        if (!compiledchunk.isLayerStarted(enumworldblocklayer))
-                        {
+                        // 如果该层还未开始渲染，则进行初始化
+                        if (!compiledchunk.isLayerStarted(enumworldblocklayer)) {
                             compiledchunk.setLayerStarted(enumworldblocklayer);
                             this.preRenderBlocks(worldrenderer, blockpos);
                         }
 
+                        // 渲染该方块
                         aboolean[k] |= blockrendererdispatcher.renderBlock(iblockstate, blockposm, chunkcacheof, worldrenderer);
 
-                        if (renderenv.isOverlaysRendered())
-                        {
+                        // 渲染完覆盖层
+                        if (renderenv.isOverlaysRendered()) {
                             this.postRenderOverlays(generator.getRegionRenderCacheBuilder(), compiledchunk, aboolean);
                             renderenv.setOverlaysRendered(false);
                         }
@@ -255,52 +262,51 @@ public class RenderChunk
                 }
             }
 
-            for (EnumWorldBlockLayer enumworldblocklayer1 : ENUM_WORLD_BLOCK_LAYERS)
-            {
-                if (aboolean[enumworldblocklayer1.ordinal()])
-                {
+            // 遍历所有方块层，处理渲染后的操作
+            for (EnumWorldBlockLayer enumworldblocklayer1 : ENUM_WORLD_BLOCK_LAYERS) {
+                if (aboolean[enumworldblocklayer1.ordinal()]) {
                     compiledchunk.setLayerUsed(enumworldblocklayer1);
                 }
 
-                if (compiledchunk.isLayerStarted(enumworldblocklayer1))
-                {
-                    if (Config.isShaders())
-                    {
+                // 如果该层已经开始渲染
+                if (compiledchunk.isLayerStarted(enumworldblocklayer1)) {
+                    if (Config.isShaders()) {
+                        // 如果启用了着色器，计算法线
                         SVertexBuilder.calcNormalChunkLayer(generator.getRegionRenderCacheBuilder().getWorldRendererByLayer(enumworldblocklayer1));
                     }
 
                     WorldRenderer worldrenderer1 = generator.getRegionRenderCacheBuilder().getWorldRendererByLayer(enumworldblocklayer1);
                     this.postRenderBlocks(enumworldblocklayer1, x, y, z, worldrenderer1, compiledchunk);
 
-                    if (worldrenderer1.animatedSprites != null)
-                    {
-                        compiledchunk.setAnimatedSprites(enumworldblocklayer1, (BitSet)worldrenderer1.animatedSprites.clone());
+                    // 如果有动画精灵，则设置动画精灵
+                    if (worldrenderer1.animatedSprites != null) {
+                        compiledchunk.setAnimatedSprites(enumworldblocklayer1, (BitSet) worldrenderer1.animatedSprites.clone());
                     }
-                }
-                else
-                {
+                } else {
                     compiledchunk.setAnimatedSprites(enumworldblocklayer1, null);
                 }
             }
 
+            // 完成渲染
             chunkcacheof.renderFinish();
         }
 
+        // 设置可见性图
         compiledchunk.setVisibility(lvt_10_1_.computeVisibility());
+
+        // 获取锁，更新TileEntity
         this.lockCompileTask.lock();
 
-        try
-        {
-            Set<TileEntity> set = Sets.newHashSet(lvt_11_1_);
+        try {
+            HashSet<TileEntity> set = Sets.newHashSet(lvt_11_1_);
             Set<TileEntity> set1 = Sets.newHashSet(this.setTileEntities);
             set.removeAll(this.setTileEntities);
             set1.removeAll(lvt_11_1_);
             this.setTileEntities.clear();
             this.setTileEntities.addAll(lvt_11_1_);
             this.renderGlobal.updateTileEntities(set1, set);
-        }
-        finally
-        {
+        } finally {
+            // 解锁
             this.lockCompileTask.unlock();
         }
     }
@@ -321,11 +327,6 @@ public class RenderChunk
         {
             this.lockCompileTask.unlock();
         }
-    }
-
-    public ReentrantLock getLockCompileTask()
-    {
-        return this.lockCompileTask;
     }
 
     public ChunkCompileTaskGenerator makeCompileTaskChunk()
@@ -356,8 +357,7 @@ public class RenderChunk
         {
             if (this.compileTask != null && this.compileTask.getStatus() == ChunkCompileTaskGenerator.Status.PENDING)
             {
-                ChunkCompileTaskGenerator chunkcompiletaskgenerator2 = null;
-                return chunkcompiletaskgenerator2;
+                return null;
             }
 
             if (this.compileTask != null && this.compileTask.getStatus() != ChunkCompileTaskGenerator.Status.DONE)
@@ -368,8 +368,7 @@ public class RenderChunk
 
             this.compileTask = new ChunkCompileTaskGenerator(this, ChunkCompileTaskGenerator.Type.RESORT_TRANSPARENCY);
             this.compileTask.setCompiledChunk(this.compiledChunk);
-            ChunkCompileTaskGenerator chunkcompiletaskgenerator = this.compileTask;
-            chunkcompiletaskgenerator1 = chunkcompiletaskgenerator;
+            chunkcompiletaskgenerator1 = this.compileTask;
         }
         finally
         {
@@ -381,20 +380,28 @@ public class RenderChunk
 
     private void preRenderBlocks(WorldRenderer worldRendererIn, BlockPos pos)
     {
+        // 开始渲染，指定渲染模式和顶点格式
         worldRendererIn.begin(7, DefaultVertexFormats.BLOCK);
 
+        // 如果启用了区域渲染
         if (Config.isRenderRegions())
         {
+            // 设置区域的大小和起始位置
             int i = 8;
             int j = pos.getX() >> i << i;
             int k = pos.getY() >> i << i;
             int l = pos.getZ() >> i << i;
+
+            // 设置当前区域的X和Z坐标
             j = this.regionX;
             l = this.regionZ;
+
+            // 设置渲染器的平移坐标
             worldRendererIn.setTranslation(-j, -k, -l);
         }
         else
         {
+            // 如果没有启用区域渲染，直接设置方块的平移坐标
             worldRendererIn.setTranslation(-pos.getX(), -pos.getY(), -pos.getZ());
         }
     }

@@ -237,24 +237,28 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
     }
 
-    private float renderDefaultChar(int ch, boolean italic)
-    {
+    private float renderDefaultChar(int ch, boolean italic) {
         int i = ch % 16 * 8;
         int j = ch / 16 * 8;
         int k = italic ? 1 : 0;
+
         this.bindTexture(this.locationFontTexture);
+
         float f = this.charWidthFloat[ch];
         float f1 = 7.99F;
+
+        // 合并绘制操作，减少OpenGL状态切换
         GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
         GL11.glTexCoord2f((float)i / 128.0F, (float)j / 128.0F);
         GL11.glVertex3f(this.posX + (float)k, this.posY, 0.0F);
-        GL11.glTexCoord2f((float)i / 128.0F, ((float)j + 7.99F) / 128.0F);
-        GL11.glVertex3f(this.posX - (float)k, this.posY + 7.99F, 0.0F);
+        GL11.glTexCoord2f((float)i / 128.0F, ((float)j + f1) / 128.0F);
+        GL11.glVertex3f(this.posX - (float)k, this.posY + f1, 0.0F);
         GL11.glTexCoord2f(((float)i + f1 - 1.0F) / 128.0F, (float)j / 128.0F);
         GL11.glVertex3f(this.posX + f1 - 1.0F + (float)k, this.posY, 0.0F);
-        GL11.glTexCoord2f(((float)i + f1 - 1.0F) / 128.0F, ((float)j + 7.99F) / 128.0F);
-        GL11.glVertex3f(this.posX + f1 - 1.0F - (float)k, this.posY + 7.99F, 0.0F);
+        GL11.glTexCoord2f(((float)i + f1 - 1.0F) / 128.0F, ((float)j + f1) / 128.0F);
+        GL11.glVertex3f(this.posX + f1 - 1.0F - (float)k, this.posY + f1, 0.0F);
         GL11.glEnd();
+
         return f;
     }
 
@@ -274,16 +278,13 @@ public class FontRenderer implements IResourceManagerReloadListener
         this.bindTexture(this.getUnicodePageLocation(page));
     }
 
-    private float renderUnicodeChar(char ch, boolean italic)
-    {
-        if (this.glyphWidth[ch] == 0)
-        {
+    private float renderUnicodeChar(char ch, boolean italic) {
+        if (this.glyphWidth[ch] == 0) {
             return 0.0F;
-        }
-        else
-        {
+        } else {
             int i = ch / 256;
             this.loadGlyphTexture(i);
+
             int j = this.glyphWidth[ch] >>> 4;
             int k = this.glyphWidth[ch] & 15;
             float f = (float)j;
@@ -292,6 +293,8 @@ public class FontRenderer implements IResourceManagerReloadListener
             float f3 = (float)((ch & 255) / 16 * 16);
             float f4 = f1 - f - 0.02F;
             float f5 = italic ? 1.0F : 0.0F;
+
+            // 合并绘制操作，减少OpenGL状态切换
             GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
             GL11.glTexCoord2f(f2 / 256.0F, f3 / 256.0F);
             GL11.glVertex3f(this.posX + f5, this.posY, 0.0F);
@@ -302,6 +305,7 @@ public class FontRenderer implements IResourceManagerReloadListener
             GL11.glTexCoord2f((f2 + f4) / 256.0F, (f3 + 15.98F) / 256.0F);
             GL11.glVertex3f(this.posX + f4 / 2.0F - f5, this.posY + 7.99F, 0.0F);
             GL11.glEnd();
+
             return (f1 - f) / 2.0F + 1.0F;
         }
     }
@@ -534,35 +538,43 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     protected void doDraw(float p_doDraw_1_)
     {
+        Tessellator tessellator = Tessellator.getInstance();
+        WorldRenderer worldrenderer = tessellator.getWorldRenderer();
+
+        // 禁用纹理，只需要一次
+        GlStateManager.disableTexture2D();
+
+        // 开始绘制
+        worldrenderer.begin(7, DefaultVertexFormats.POSITION);
+
+        // 删除线
         if (this.strikethroughStyle)
         {
-            Tessellator tessellator = Tessellator.getInstance();
-            WorldRenderer worldrenderer = tessellator.getWorldRenderer();
-            GlStateManager.disableTexture2D();
-            worldrenderer.begin(7, DefaultVertexFormats.POSITION);
-            worldrenderer.pos(this.posX, this.posY + (float)(this.getHeight() / 2), 0.0D).endVertex();
-            worldrenderer.pos(this.posX + p_doDraw_1_, this.posY + (float)(this.getHeight() / 2), 0.0D).endVertex();
-            worldrenderer.pos(this.posX + p_doDraw_1_, this.posY + (float)(this.getHeight() / 2) - 1.0F, 0.0D).endVertex();
-            worldrenderer.pos(this.posX, this.posY + (float)(this.getHeight() / 2) - 1.0F, 0.0D).endVertex();
-            tessellator.draw();
-            GlStateManager.enableTexture2D();
+            float yCenter = this.posY + (float)(this.getHeight() / 2);
+            worldrenderer.pos(this.posX, yCenter, 0.0D).endVertex();
+            worldrenderer.pos(this.posX + p_doDraw_1_, yCenter, 0.0D).endVertex();
+            worldrenderer.pos(this.posX + p_doDraw_1_, yCenter - 1.0F, 0.0D).endVertex();
+            worldrenderer.pos(this.posX, yCenter - 1.0F, 0.0D).endVertex();
         }
 
+        // 下划线
         if (this.underlineStyle)
         {
-            Tessellator tessellator1 = Tessellator.getInstance();
-            WorldRenderer worldrenderer1 = tessellator1.getWorldRenderer();
-            GlStateManager.disableTexture2D();
-            worldrenderer1.begin(7, DefaultVertexFormats.POSITION);
+            float yBottom = this.posY + (float)this.getHeight();
             int i = this.underlineStyle ? -1 : 0;
-            worldrenderer1.pos(this.posX + (float)i, this.posY + (float)this.getHeight(), 0.0D).endVertex();
-            worldrenderer1.pos(this.posX + p_doDraw_1_, this.posY + (float)this.getHeight(), 0.0D).endVertex();
-            worldrenderer1.pos(this.posX + p_doDraw_1_, this.posY + (float)this.getHeight() - 1.0F, 0.0D).endVertex();
-            worldrenderer1.pos(this.posX + (float)i, this.posY + (float)this.getHeight() - 1.0F, 0.0D).endVertex();
-            tessellator1.draw();
-            GlStateManager.enableTexture2D();
+            worldrenderer.pos(this.posX + (float)i, yBottom, 0.0D).endVertex();
+            worldrenderer.pos(this.posX + p_doDraw_1_, yBottom, 0.0D).endVertex();
+            worldrenderer.pos(this.posX + p_doDraw_1_, yBottom - 1.0F, 0.0D).endVertex();
+            worldrenderer.pos(this.posX + (float)i, yBottom - 1.0F, 0.0D).endVertex();
         }
 
+        // 绘制所有线条
+        tessellator.draw();
+
+        // 恢复纹理
+        GlStateManager.enableTexture2D();
+
+        // 更新位置
         this.posX += p_doDraw_1_;
     }
 

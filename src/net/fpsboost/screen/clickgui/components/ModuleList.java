@@ -20,29 +20,29 @@ public class ModuleList extends UIComponent {
 
 	public Module lastOnHover;
 	@Setter
-    @Getter
-    public Module onHover;
 	@Getter
-    @Setter
-    public Module lastOnSetting;
+	public Module onHover;
+	@Getter
 	@Setter
-    @Getter
-    public Module onSetting;
+	public Module lastOnSetting;
+	@Setter
+	@Getter
+	public Module onSetting;
 
 	@Getter
-    @Setter
-    public ClickEntity clickarea;
+	@Setter
+	public ClickEntity clickarea;
 	@Getter
-    @Setter
-    public boolean clickable;
+	@Setter
+	public boolean clickable;
 
 	public Rect onHover_rect;
 	public Translate anim_onhover = new Translate(0, 0);
 	public double onHover_width;
 
 	@Getter
-    @Setter
-    public double tarY;
+	@Setter
+	public double tarY;
 	public double curY;
 	public Translate animation = new Translate(0, 0);
 
@@ -114,8 +114,7 @@ public class ModuleList extends UIComponent {
 				this.lastOnHover = this.onHover;
 			String text = this.lastOnHover.cnDescription;
 			if (text.isEmpty()) text = "无";
-			float width = FontManager.client(16).getStringWidth(text);
-			this.onHover_width = width;
+            this.onHover_width = (float) FontManager.client(16).getStringWidth(text);
 			this.scissor.setX(2);
 			this.scissor.setY(this.getScaledHeight() - 2 - 10);
 			this.scissor.setWidth(anim_onhover.getX());
@@ -135,20 +134,20 @@ public class ModuleList extends UIComponent {
 
 	public void refreshList(int type) {
 		switch (type) {
-		case 0:
-			lists.clear();
-			List<Module> list1 = ModuleManager.modules;
-			for (Module module : list1) {
-				lists.add(new ModuleRect(module));
-			}
-			break;
-		case 1:
-			lists.clear();
-			List<Element> list2 = ElementManager.elements;
-			for (Module module : list2) {
-				lists.add(new ModuleRect(module));
-			}
-			break;
+			case 0:
+				lists.clear();
+				List<Module> list1 = ModuleManager.modules;
+				for (Module module : list1) {
+					lists.add(new ModuleRect(module));
+				}
+				break;
+			case 1:
+				lists.clear();
+				List<Element> list2 = ElementManager.elements;
+				for (Module module : list2) {
+					lists.add(new ModuleRect(module));
+				}
+				break;
 		}
 	}
 }

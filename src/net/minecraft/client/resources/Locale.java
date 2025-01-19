@@ -3,39 +3,36 @@ package net.minecraft.client.resources;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Maps;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.IllegalFormatException;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Pattern;
+import lombok.Getter;
 import net.minecraft.util.ResourceLocation;
 import org.apache.commons.io.Charsets;
 import org.apache.commons.io.IOUtils;
 
-public class Locale
-{
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.regex.Pattern;
+
+public class Locale {
     private static final Splitter splitter = Splitter.on('=').limit(2);
     private static final Pattern pattern = Pattern.compile("%(\\d+\\$)?[\\d\\.]*[df]");
-    Map<String, String> properties = Maps.newHashMap();
+    final Map<String, String> properties = new ConcurrentHashMap<>();
+    @Getter
     private boolean unicode;
 
-    public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageList)
-    {
+    public synchronized void loadLocaleDataFiles(IResourceManager resourceManager, List<String> languageList) {
         this.properties.clear();
 
-        for (String s : languageList)
-        {
-            String s1 = String.format("lang/%s.lang", s);
+        for (String language : languageList) {
+            String langFile = String.format("lang/%s.lang", language);
 
-            for (String s2 : resourceManager.getResourceDomains())
-            {
-                try
-                {
-                    this.loadLocaleData(resourceManager.getAllResources(new ResourceLocation(s2, s1)));
-                }
-                catch (IOException var9)
-                {
+            for (String domain : resourceManager.getResourceDomains()) {
+                try {
+                    List<IResource> resources = resourceManager.getAllResources(new ResourceLocation(domain, langFile));
+                    this.loadLocaleData(resources);
+                } catch (IOException ignored) {
+                    // Log the error if necessary
                 }
             }
         }
@@ -43,87 +40,57 @@ public class Locale
         this.checkUnicode();
     }
 
-    public boolean isUnicode()
-    {
-        return this.unicode;
-    }
+    private void checkUnicode() {
+        int unicodeCount = 0;
+        int totalCount = 0;
 
-    private void checkUnicode()
-    {
-        this.unicode = false;
-        int i = 0;
-        int j = 0;
+        for (String value : this.properties.values()) {
+            int length = value.length();
+            totalCount += length;
 
-        for (String s : this.properties.values())
-        {
-            int k = s.length();
-            j += k;
-
-            for (int l = 0; l < k; ++l)
-            {
-                if (s.charAt(l) >= 256)
-                {
-                    ++i;
+            for (int i = 0; i < length; i++) {
+                if (value.charAt(i) >= 256) {
+                    unicodeCount++;
                 }
             }
         }
 
-        float f = (float)i / (float)j;
-        this.unicode = (double)f > 0.1D;
+        this.unicode = (double) unicodeCount / totalCount > 0.1;
     }
 
-    private void loadLocaleData(List<IResource> resourcesList) throws IOException
-    {
-        for (IResource iresource : resourcesList)
-        {
-            InputStream inputstream = iresource.getInputStream();
-
-            try
-            {
-                this.loadLocaleData(inputstream);
-            }
-            finally
-            {
-                IOUtils.closeQuietly(inputstream);
+    private void loadLocaleData(List<IResource> resources) throws IOException {
+        for (IResource resource : resources) {
+            try (InputStream inputStream = resource.getInputStream()) {
+                this.loadLocaleData(inputStream);
             }
         }
     }
 
-    private void loadLocaleData(InputStream inputStreamIn) throws IOException
-    {
-        for (String s : IOUtils.readLines(inputStreamIn, Charsets.UTF_8))
-        {
-            if (!s.isEmpty() && s.charAt(0) != 35)
-            {
-                String[] astring = Iterables.toArray(splitter.split(s), String.class);
+    private void loadLocaleData(InputStream inputStream) throws IOException {
+        for (String line : IOUtils.readLines(inputStream, Charsets.UTF_8)) {
+            if (!line.isEmpty() && line.charAt(0) != '#') {
+                String[] keyValue = Iterables.toArray(splitter.split(line), String.class);
 
-                if (astring != null && astring.length == 2)
-                {
-                    String s1 = astring[0];
-                    String s2 = pattern.matcher(astring[1]).replaceAll("%$1s");
-                    this.properties.put(s1, s2);
+                if (keyValue.length == 2) {
+                    String key = keyValue[0];
+                    String value = pattern.matcher(keyValue[1]).replaceAll("%$1s");
+                    this.properties.put(key, value);
                 }
             }
         }
     }
 
-    private String translateKeyPrivate(String translateKey)
-    {
-        String s = this.properties.get(translateKey);
-        return s == null ? translateKey : s;
+    private String translateKeyPrivate(String key) {
+        return this.properties.getOrDefault(key, key);
     }
 
-    public String formatMessage(String translateKey, Object[] parameters)
-    {
-        String s = this.translateKeyPrivate(translateKey);
+    public String formatMessage(String key, Object[] parameters) {
+        String message = this.translateKeyPrivate(key);
 
-        try
-        {
-            return String.format(s, parameters);
-        }
-        catch (IllegalFormatException var5)
-        {
-            return "Format error: " + s;
+        try {
+            return String.format(message, parameters);
+        } catch (IllegalFormatException e) {
+            return "Format error: " + message;
         }
     }
 }

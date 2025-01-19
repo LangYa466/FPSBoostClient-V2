@@ -95,19 +95,17 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
         int height = clientFont ? FontManager.client().getHeight() : mc.fontRendererObj.getHeight();
 
         // Calculate the width for the background rectangle in one step.
-        int width1 = width + (clientFont ? 8 : 6);
+        int width1 = width + (clientFont ? 7 : 6);
 
-        // Draw background rectangle if needed.
-        if (bg) {
-            RenderUtil.drawRect(x - 2, y - 2, width1, height + 6, bgColor);
-        }
 
         // Draw text with or without shadow based on clientFont and GameSettings.
         if (clientFont) {
+            if (bg) RenderUtil.drawRect(x - 2, y - 2, width1, height + 5, bgColor);
             FontManager.client().drawString(text, x + 1, y - 1, textColor, textShadow);
         } else {
             int offsetX = GameSettings.forceUnicodeFont ? 0 : 1;
             int offsetY = GameSettings.forceUnicodeFont ? 0 : 1;
+            if (bg) RenderUtil.drawRect(offsetX - 2, offsetY - 2, width1, height + 6, bgColor);
             RenderUtil.drawString(text, x + offsetX, y + offsetY, textColor, textShadow);
         }
 

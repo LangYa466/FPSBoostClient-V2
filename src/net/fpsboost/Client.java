@@ -58,8 +58,7 @@ public class Client implements Wrapper {
         downloadBackgroundImage();
 
         // Display the language settings screen
-        if (!isDev) mc.displayGuiScreen(new GuiI18n());
-        mc.displayGuiScreen(new GuiRectMode());
+        if (!isDev)  mc.displayGuiScreen(new GuiI18n());
         guimainMenu = new GuiMainMenu();
     }
 

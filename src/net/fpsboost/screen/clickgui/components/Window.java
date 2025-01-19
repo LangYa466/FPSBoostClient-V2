@@ -56,7 +56,7 @@ public class Window extends UIComponent {
 				}, () -> {});
 
 		this.menu = new Rect(positionX, positionY + 40, 100, 260, this.getColor(2), Rect.RenderType.Expand);
-		this.main = new Rect(positionX + 100, positionY, 150, 300, this.getColor(4), Rect.RenderType.Expand);
+		this.main = new Rect(positionX + 100, positionY, 200, 300, this.getColor(4), Rect.RenderType.Expand);
 		this.modules = new MenuButton(0, "e", "辅助功能", positionX + 40, positionY + 98, true);
 		this.modules.init(positionX, positionY);
 		this.global = new MenuButton(1, "f", "视觉UI", positionX + 40, positionY + 158, false);
