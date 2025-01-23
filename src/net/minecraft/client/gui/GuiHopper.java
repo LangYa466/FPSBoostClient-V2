@@ -12,7 +12,7 @@ public class GuiHopper extends GuiContainer
 {
     private static final ResourceLocation HOPPER_GUI_TEXTURE = new ResourceLocation("textures/gui/container/hopper.png");
     private final IInventory playerInventory;
-    private final IInventory hopperInventory;
+    public final IInventory hopperInventory;
 
     public GuiHopper(InventoryPlayer playerInv, IInventory hopperInv)
     {

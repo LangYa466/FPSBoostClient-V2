@@ -28,16 +28,22 @@ public class ModelAdapterEnderCrystal extends ModelAdapter
         return new ModelEnderCrystal(0.0F, true);
     }
 
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelEnderCrystal))
-        {
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelEnderCrystal)) {
             return null;
-        }
-        else
-        {
-            ModelEnderCrystal modelendercrystal = (ModelEnderCrystal)model;
-            return modelPart.equals("cube") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 0) : (modelPart.equals("glass") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 1) : (modelPart.equals("base") ? (ModelRenderer)Reflector.getFieldValue(modelendercrystal, Reflector.ModelEnderCrystal_ModelRenderers, 2) : null));
+        } else {
+            ModelEnderCrystal modelendercrystal = (ModelEnderCrystal) model;
+
+            switch (modelPart) {
+                case "cube":
+                    return modelendercrystal.cube;
+                case "glass":
+                    return modelendercrystal.glass;
+                case "base":
+                    return modelendercrystal.base;
+                default:
+                    return null;
+            }
         }
     }
 
@@ -60,17 +66,9 @@ public class ModelAdapterEnderCrystal extends ModelAdapter
         {
             RenderEnderCrystal renderendercrystal = (RenderEnderCrystal)render;
 
-            if (!Reflector.RenderEnderCrystal_modelEnderCrystal.exists())
-            {
-                Config.warn("Field not found: RenderEnderCrystal.modelEnderCrystal");
-                return null;
-            }
-            else
-            {
-                Reflector.setFieldValue(renderendercrystal, Reflector.RenderEnderCrystal_modelEnderCrystal, modelBase);
-                renderendercrystal.shadowSize = shadowSize;
-                return renderendercrystal;
-            }
+            renderendercrystal.modelEnderCrystal = modelBase;
+            renderendercrystal.shadowSize = shadowSize;
+            return renderendercrystal;
         }
     }
 }

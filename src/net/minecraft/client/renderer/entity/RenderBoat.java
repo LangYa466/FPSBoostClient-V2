@@ -10,7 +10,7 @@ import net.minecraft.util.ResourceLocation;
 public class RenderBoat extends Render<EntityBoat>
 {
     private static final ResourceLocation boatTextures = new ResourceLocation("textures/entity/boat.png");
-    protected ModelBase modelBoat = new ModelBoat();
+    public ModelBase modelBoat = new ModelBoat();
 
     public RenderBoat(RenderManager renderManagerIn)
     {

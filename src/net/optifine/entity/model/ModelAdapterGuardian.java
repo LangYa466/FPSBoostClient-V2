@@ -34,11 +34,11 @@ public class ModelAdapterGuardian extends ModelAdapter
 
             if (modelPart.equals("body"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_body);
+                return modelguardian.guardianBody;
             }
             else if (modelPart.equals("eye"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_eye);
+                return modelguardian.guardianEye;
             }
             else
             {
@@ -46,19 +46,12 @@ public class ModelAdapterGuardian extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer1 = (ModelRenderer[]) Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_spines);
+                    ModelRenderer[] amodelrenderer1 = (ModelRenderer[]) modelguardian.guardianSpines;
 
-                    if (amodelrenderer1 == null)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        String s3 = modelPart.substring(s.length());
-                        int j = Config.parseInt(s3, -1);
-                        --j;
-                        return j >= 0 && j < amodelrenderer1.length ? amodelrenderer1[j] : null;
-                    }
+                    String s3 = modelPart.substring(s.length());
+                    int j = Config.parseInt(s3, -1);
+                    --j;
+                    return j >= 0 && j < amodelrenderer1.length ? amodelrenderer1[j] : null;
                 }
                 else
                 {
@@ -66,7 +59,7 @@ public class ModelAdapterGuardian extends ModelAdapter
 
                     if (modelPart.startsWith(s1))
                     {
-                        ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelguardian, Reflector.ModelGuardian_tail);
+                        ModelRenderer[] amodelrenderer = (ModelRenderer[]) modelguardian.guardianTail;
 
                         if (amodelrenderer == null)
                         {

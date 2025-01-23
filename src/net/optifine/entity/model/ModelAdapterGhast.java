@@ -34,7 +34,7 @@ public class ModelAdapterGhast extends ModelAdapter
 
             if (modelPart.equals("body"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelghast, Reflector.ModelGhast_body);
+                return modelghast.body;
             }
             else
             {
@@ -42,7 +42,7 @@ public class ModelAdapterGhast extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelghast, Reflector.ModelGhast_tentacles);
+                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) modelghast.tentacles;
 
                     if (amodelrenderer == null)
                     {

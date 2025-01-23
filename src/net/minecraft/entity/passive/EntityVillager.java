@@ -74,8 +74,8 @@ public class EntityVillager extends EntityAgeable implements IMerchant, INpc
     private boolean isWillingToMate;
     private int wealth;
     private String lastBuyingPlayer;
-    private int careerId;
-    private int careerLevel;
+    public int careerId;
+    public int careerLevel;
     private boolean isLookingForHome;
     private boolean areAdditionalTasksSet;
     private final InventoryBasic villagerInventory;

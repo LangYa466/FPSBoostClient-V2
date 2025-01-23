@@ -21,7 +21,7 @@ import org.lwjgl.opengl.GL11;
 public class TileEntitySignRenderer extends TileEntitySpecialRenderer<TileEntitySign>
 {
     private static final ResourceLocation SIGN_TEXTURE = new ResourceLocation("textures/entity/sign.png");
-    private final ModelSign model = new ModelSign();
+    public ModelSign model = new ModelSign();
     private static double textRenderDistanceSq = 4096.0D;
 
     public void renderTileEntityAt(TileEntitySign te, double x, double y, double z, float partialTicks, int destroyStage)

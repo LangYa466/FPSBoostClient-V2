@@ -78,10 +78,8 @@ public class RandomEntities
             EntityVillager entityvillager = (EntityVillager)entity;
             int i = entityvillager.getProfession();
             ev.setProfession(i);
-            int j = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerId, 0);
-            Reflector.setFieldValueInt(ev, Reflector.EntityVillager_careerId, j);
-            int k = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerLevel, 0);
-            Reflector.setFieldValueInt(ev, Reflector.EntityVillager_careerLevel, k);
+            ev.careerId = entityvillager.careerId;
+            ev.careerLevel = entityvillager.careerLevel;
         }
     }
 

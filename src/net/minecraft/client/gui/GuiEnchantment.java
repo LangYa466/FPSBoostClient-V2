@@ -38,7 +38,7 @@ public class GuiEnchantment extends GuiContainer
     public float field_147080_z;
     public float field_147076_A;
     ItemStack field_147077_B;
-    private final IWorldNameable field_175380_I;
+    public final IWorldNameable field_175380_I;
 
     public GuiEnchantment(InventoryPlayer inventory, World worldIn, IWorldNameable p_i45502_3_)
     {

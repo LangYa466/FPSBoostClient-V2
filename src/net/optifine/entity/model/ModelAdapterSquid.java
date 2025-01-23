@@ -34,7 +34,7 @@ public class ModelAdapterSquid extends ModelAdapter
 
             if (modelPart.equals("body"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelsquid, Reflector.ModelSquid_body);
+                return (ModelRenderer)modelsquid.squidBody;
             }
             else
             {
@@ -42,7 +42,7 @@ public class ModelAdapterSquid extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelsquid, Reflector.ModelSquid_tentacles);
+                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) modelsquid.squidTentacles;
 
                     if (amodelrenderer == null)
                     {

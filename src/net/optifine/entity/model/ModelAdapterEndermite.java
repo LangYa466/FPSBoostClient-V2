@@ -35,19 +35,12 @@ public class ModelAdapterEndermite extends ModelAdapter
 
             if (modelPart.startsWith(s))
             {
-                ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelendermite, Reflector.ModelEnderMite_bodyParts);
+                ModelRenderer[] amodelrenderer = (ModelRenderer[]) modelendermite.field_178713_d;
 
-                if (amodelrenderer == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    String s1 = modelPart.substring(s.length());
-                    int i = Config.parseInt(s1, -1);
-                    --i;
-                    return i >= 0 && i < amodelrenderer.length ? amodelrenderer[i] : null;
-                }
+                String s1 = modelPart.substring(s.length());
+                int i = Config.parseInt(s1, -1);
+                --i;
+                return i >= 0 && i < amodelrenderer.length ? amodelrenderer[i] : null;
             }
             else
             {

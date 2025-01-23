@@ -34,7 +34,7 @@ public class ModelAdapterMagmaCube extends ModelAdapter
 
             if (modelPart.equals("core"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelmagmacube, Reflector.ModelMagmaCube_core);
+                return modelmagmacube.core;
             }
             else
             {
@@ -42,7 +42,7 @@ public class ModelAdapterMagmaCube extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelmagmacube, Reflector.ModelMagmaCube_segments);
+                    ModelRenderer[] amodelrenderer = modelmagmacube.segments;
 
                     if (amodelrenderer == null)
                     {

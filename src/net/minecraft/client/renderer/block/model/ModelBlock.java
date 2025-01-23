@@ -31,9 +31,9 @@ public class ModelBlock
     private final boolean ambientOcclusion;
     private final ItemCameraTransforms cameraTransforms;
     public String name;
-    protected final Map<String, String> textures;
+    public final Map<String, String> textures;
     protected ModelBlock parent;
-    protected ResourceLocation parentLocation;
+    public ResourceLocation parentLocation;
 
     public static ModelBlock deserialize(Reader readerIn)
     {

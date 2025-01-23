@@ -34,7 +34,7 @@ public class ModelAdapterBlaze extends ModelAdapter
 
             if (modelPart.equals("head"))
             {
-                return (ModelRenderer)Reflector.getFieldValue(modelblaze, Reflector.ModelBlaze_blazeHead);
+                return modelblaze.blazeHead;
             }
             else
             {
@@ -42,19 +42,12 @@ public class ModelAdapterBlaze extends ModelAdapter
 
                 if (modelPart.startsWith(s))
                 {
-                    ModelRenderer[] amodelrenderer = (ModelRenderer[]) Reflector.getFieldValue(modelblaze, Reflector.ModelBlaze_blazeSticks);
+                    ModelRenderer[] amodelrenderer = modelblaze.blazeSticks;
 
-                    if (amodelrenderer == null)
-                    {
-                        return null;
-                    }
-                    else
-                    {
-                        String s1 = modelPart.substring(s.length());
-                        int i = Config.parseInt(s1, -1);
-                        --i;
-                        return i >= 0 && i < amodelrenderer.length ? amodelrenderer[i] : null;
-                    }
+                    String s1 = modelPart.substring(s.length());
+                    int i = Config.parseInt(s1, -1);
+                    --i;
+                    return i >= 0 && i < amodelrenderer.length ? amodelrenderer[i] : null;
                 }
                 else
                 {

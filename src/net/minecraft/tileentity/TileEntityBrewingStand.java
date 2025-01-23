@@ -28,7 +28,7 @@ public class TileEntityBrewingStand extends TileEntityLockable implements ITicka
     private int brewTime;
     private boolean[] filledSlots;
     private Item ingredientID;
-    private String customName;
+    public String customName;
 
     public String getName()
     {
@@ -37,7 +37,7 @@ public class TileEntityBrewingStand extends TileEntityLockable implements ITicka
 
     public boolean hasCustomName()
     {
-        return this.customName != null && this.customName.length() > 0;
+        return this.customName != null && !this.customName.isEmpty();
     }
 
     public void setName(String name)

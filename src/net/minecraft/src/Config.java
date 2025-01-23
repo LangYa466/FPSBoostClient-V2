@@ -1037,7 +1037,7 @@ public class Config
         if (defaultResourcePackLazy == null)
         {
             Minecraft minecraft = Minecraft.getMinecraft();
-            defaultResourcePackLazy = (DefaultResourcePack)Reflector.getFieldValue(minecraft, Reflector.Minecraft_defaultResourcePack);
+            defaultResourcePackLazy = minecraft.mcDefaultResourcePack;
 
             if (defaultResourcePackLazy == null)
             {

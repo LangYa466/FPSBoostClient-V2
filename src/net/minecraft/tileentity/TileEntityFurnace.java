@@ -35,7 +35,7 @@ public class TileEntityFurnace extends TileEntityLockable implements ITickable, 
     private int currentItemBurnTime;
     private int cookTime;
     private int totalCookTime;
-    private String furnaceCustomName;
+    public String furnaceCustomName;
 
     public int getSizeInventory()
     {

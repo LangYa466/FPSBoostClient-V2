@@ -5,9 +5,9 @@ import net.minecraft.entity.Entity;
 
 public class ModelEnderCrystal extends ModelBase
 {
-    private final ModelRenderer cube;
-    private final ModelRenderer glass = new ModelRenderer(this, "glass");
-    private ModelRenderer base;
+    public final ModelRenderer cube;
+    public final ModelRenderer glass = new ModelRenderer(this, "glass");
+    public ModelRenderer base;
 
     public ModelEnderCrystal(float p_i1170_1_, boolean p_i1170_2_)
     {

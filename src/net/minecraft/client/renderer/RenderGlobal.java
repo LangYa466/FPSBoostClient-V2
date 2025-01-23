@@ -32,6 +32,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.multiplayer.ChunkProviderClient;
 import net.minecraft.client.multiplayer.WorldClient;
 import net.minecraft.client.particle.EntityFX;
 import net.minecraft.client.renderer.chunk.ChunkRenderDispatcher;
@@ -2685,14 +2686,14 @@ public class RenderGlobal implements IWorldAccess, IResourceManagerReloadListene
         if (this.theWorld == null) {
             return 0;
         } else {
-            IChunkProvider ichunkprovider = this.theWorld.getChunkProvider();
+            ChunkProviderClient ichunkprovider = (ChunkProviderClient) this.theWorld.getChunkProvider();
 
             if (ichunkprovider == null) {
                 return 0;
             } else {
                 if (ichunkprovider != this.worldChunkProvider) {
                     this.worldChunkProvider = ichunkprovider;
-                    this.worldChunkProviderMap = (LongHashMap) Reflector.getFieldValue(ichunkprovider, Reflector.ChunkProviderClient_chunkMapping);
+                    this.worldChunkProviderMap = ichunkprovider.chunkMapping;
                 }
 
                 return this.worldChunkProviderMap == null ? 0 : this.worldChunkProviderMap.getNumHashElements();

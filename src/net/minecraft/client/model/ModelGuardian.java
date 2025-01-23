@@ -8,10 +8,10 @@ import net.minecraft.util.Vec3;
 
 public class ModelGuardian extends ModelBase
 {
-    private final ModelRenderer guardianBody;
-    private final ModelRenderer guardianEye;
-    private final ModelRenderer[] guardianSpines;
-    private final ModelRenderer[] guardianTail;
+    public final ModelRenderer guardianBody;
+    public final ModelRenderer guardianEye;
+    public final ModelRenderer[] guardianSpines;
+    public final ModelRenderer[] guardianTail;
 
     public ModelGuardian()
     {

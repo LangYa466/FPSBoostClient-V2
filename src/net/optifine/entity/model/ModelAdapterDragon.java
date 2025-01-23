@@ -21,18 +21,42 @@ public class ModelAdapterDragon extends ModelAdapter
         return new ModelDragon(0.0F);
     }
 
-    public ModelRenderer getModelRenderer(ModelBase model, String modelPart)
-    {
-        if (!(model instanceof ModelDragon))
-        {
+    public ModelRenderer getModelRenderer(ModelBase model, String modelPart) {
+        if (!(model instanceof ModelDragon)) {
             return null;
-        }
-        else
-        {
-            ModelDragon modeldragon = (ModelDragon)model;
-            return modelPart.equals("head") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 0) : (modelPart.equals("spine") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 1) : (modelPart.equals("jaw") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 2) : (modelPart.equals("body") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 3) : (modelPart.equals("rear_leg") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 4) : (modelPart.equals("front_leg") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 5) : (modelPart.equals("rear_leg_tip") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 6) : (modelPart.equals("front_leg_tip") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 7) : (modelPart.equals("rear_foot") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 8) : (modelPart.equals("front_foot") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 9) : (modelPart.equals("wing") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 10) : (modelPart.equals("wing_tip") ? (ModelRenderer)Reflector.getFieldValue(modeldragon, Reflector.ModelDragon_ModelRenderers, 11) : null)))))))))));
+        } else {
+            ModelDragon modeldragon = (ModelDragon) model;
+            switch (modelPart) {
+                case "head":
+                    return modeldragon.head;
+                case "spine":
+                    return modeldragon.spine;
+                case "jaw":
+                    return modeldragon.jaw;
+                case "body":
+                    return modeldragon.body;
+                case "rear_leg":
+                    return modeldragon.rearLeg;
+                case "front_leg":
+                    return modeldragon.frontLeg;
+                case "rear_leg_tip":
+                    return modeldragon.rearLegTip;
+                case "front_leg_tip":
+                    return modeldragon.frontLegTip;
+                case "rear_foot":
+                    return modeldragon.rearFoot;
+                case "front_foot":
+                    return modeldragon.frontFoot;
+                case "wing":
+                    return modeldragon.wing;
+                case "wing_tip":
+                    return modeldragon.wingTip;
+                default:
+                    return null;
+            }
         }
     }
+
 
     public String[] getModelRendererNames()
     {

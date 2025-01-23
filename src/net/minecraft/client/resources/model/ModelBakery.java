@@ -782,12 +782,11 @@ public class ModelBakery
     {
         ResourceLocation resourcelocation = fixModelLocation(p_fixModelLocations_0_.getParentLocation(), p_fixModelLocations_1_);
 
-        if (resourcelocation != p_fixModelLocations_0_.getParentLocation())
-        {
-            Reflector.setFieldValue(p_fixModelLocations_0_, Reflector.ModelBlock_parentLocation, resourcelocation);
+        if (resourcelocation != p_fixModelLocations_0_.getParentLocation()) {
+            p_fixModelLocations_0_.parentLocation = resourcelocation;
         }
 
-        Map<String, String> map = (Map)Reflector.getFieldValue(p_fixModelLocations_0_, Reflector.ModelBlock_textures);
+        Map<String, String> map = p_fixModelLocations_0_.textures;
 
         if (map != null)
         {

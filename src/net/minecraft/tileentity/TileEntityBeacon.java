@@ -38,7 +38,7 @@ public class TileEntityBeacon extends TileEntityLockable implements ITickable, I
     private int primaryEffect;
     private int secondaryEffect;
     private ItemStack payment;
-    private String customName;
+    public String customName;
 
     public void update()
     {

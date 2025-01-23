@@ -389,10 +389,10 @@ public class CustomGuiProperties
 
     private static IWorldNameable getWorldNameable(GuiScreen screen)
     {
-        return screen instanceof GuiBeacon ? getWorldNameable(screen, Reflector.GuiBeacon_tileBeacon) : (screen instanceof GuiBrewingStand ? getWorldNameable(screen, Reflector.GuiBrewingStand_tileBrewingStand) : (screen instanceof GuiChest ? getWorldNameable(screen, Reflector.GuiChest_lowerChestInventory) : (screen instanceof GuiDispenser ? ((GuiDispenser)screen).dispenserInventory : (screen instanceof GuiEnchantment ? getWorldNameable(screen, Reflector.GuiEnchantment_nameable) : (screen instanceof GuiFurnace ? getWorldNameable(screen, Reflector.GuiFurnace_tileFurnace) : (screen instanceof GuiHopper ? getWorldNameable(screen, Reflector.GuiHopper_hopperInventory) : null))))));
+        return screen instanceof GuiBeacon ? ((GuiBeacon) screen).tileBeacon : (screen instanceof GuiBrewingStand ? ((GuiBrewingStand) screen).tileBrewingStand : (screen instanceof GuiChest ? ((GuiChest) screen).lowerChestInventory : (screen instanceof GuiDispenser ? ((GuiDispenser)screen).dispenserInventory : (screen instanceof GuiEnchantment ? ((GuiEnchantment) screen).field_175380_I : (screen instanceof GuiFurnace ? ((GuiFurnace) screen).tileFurnace : (screen instanceof GuiHopper ? ((GuiHopper) screen).hopperInventory : null))))));
     }
 
-    private static IWorldNameable getWorldNameable(GuiScreen screen, ReflectorField fieldInventory)
+    private static IWorldNameable getWorldNameable2(GuiScreen screen, ReflectorField fieldInventory)
     {
         Object object = Reflector.getFieldValue(screen, fieldInventory);
         return !(object instanceof IWorldNameable) ? null : (IWorldNameable)object;
@@ -535,7 +535,7 @@ public class CustomGuiProperties
             if (this.professions != null)
             {
                 int i = entityvillager.getProfession();
-                int j = Reflector.getFieldValueInt(entityvillager, Reflector.EntityVillager_careerId, -1);
+                int j = entityvillager.careerId;
 
                 if (j < 0)
                 {
@@ -544,12 +544,8 @@ public class CustomGuiProperties
 
                 boolean flag = false;
 
-                for (int k = 0; k < this.professions.length; ++k)
-                {
-                    VillagerProfession villagerprofession = this.professions[k];
-
-                    if (villagerprofession.matches(i, j))
-                    {
+                for (VillagerProfession villagerprofession : this.professions) {
+                    if (villagerprofession.matches(i, j)) {
                         flag = true;
                         break;
                     }

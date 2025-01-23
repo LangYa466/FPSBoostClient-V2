@@ -4,7 +4,7 @@ import net.minecraft.entity.Entity;
 
 public class ModelSlime extends ModelBase
 {
-    ModelRenderer slimeBodies;
+    public ModelRenderer slimeBodies;
     ModelRenderer slimeRightEye;
     ModelRenderer slimeLeftEye;
     ModelRenderer slimeMouth;
