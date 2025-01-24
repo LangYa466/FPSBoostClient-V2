@@ -33,6 +33,6 @@ public class ClickGUIModule extends Module {
     @Override
     public void onEnable() {
         mc.displayGuiScreen(ClickGui.INSTANCE);
-        toggle();
+        enable = false;
     }
 }

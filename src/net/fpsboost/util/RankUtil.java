@@ -17,25 +17,35 @@ import java.util.stream.Collectors;
 public class RankUtil {
 
     public static Map<String, String> ranks = new HashMap<>();
+    public static boolean hasError = false; // 错误标志
 
     /**
      * 异步获取排名数据
      */
     public static void getRanksAsync() {
+        if (hasError) return;
         CompletableFuture.runAsync(() -> {
             // 异步获取Web请求数据并处理
             String web = WebUtil.get(Client.web + "rank.txt");
 
-            if (web == null) {
+            if (web == null || web.isEmpty()) {
                 Logger.error("Failed to get rank data from server.");
+                hasError = true;
                 return;
             }
 
-            // 处理排名数据
-            ranks = parseStrings(web);
+            try {
+                Map<String, String> parsedRanks = parseStrings(web);
+                if (parsedRanks != null) ranks = parsedRanks;
+            } catch (Exception e) {
+                Logger.error("Error while parsing rank data: " + e.getMessage());
+                hasError = true;
+            }
+
             Logger.debug(ranks.toString());
         }).exceptionally(ex -> {
             Logger.error(ex.getMessage());
+            hasError = true;
             return null;
         });
     }

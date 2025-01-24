@@ -1,6 +1,7 @@
 package net.fpsboost.module;
 
 import net.fpsboost.Wrapper;
+import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.value.Value;
 
 import java.util.ArrayList;
@@ -54,7 +55,13 @@ public class Module implements Wrapper {
 
     public void setEnable(boolean enable) {
         this.enable = enable;
-        if (enable) onEnable(); else onDisable();
+        boolean isNull = mc.thePlayer == null;
+        if (enable) {
+            onEnable();
+        } else {
+            onDisable();
+        }
+        if (!isNull) MessageHandler.addMessage(String.format("%s %s",cnName,enable ? "已开启" : "已关闭"),MessageHandler.MessageType.Info);
     }
 
     public void onRender2D() { }

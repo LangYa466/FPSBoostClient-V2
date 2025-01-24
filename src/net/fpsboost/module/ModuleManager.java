@@ -24,7 +24,8 @@ public class ModuleManager implements Wrapper {
                 new NoDestroyEffects(), new Projectile(), new MinimizedBobbing(),
                 HitColor.INSTANCE, new AttackEffects(), new SmoothGUIZoom(),
                 new RenderMyNameTag(), CustomEnchantmentColor.INSTANCE, new BetterNameTag(),
-                new TargetCircle(), new ClickSounds(), new RectMode(), new CustomModel()
+                new TargetCircle(), new ClickSounds(), new RectMode(), new CustomModel(),
+                new CustomWorldTime()
         );
 
         // 特殊模块设置
@@ -54,7 +55,6 @@ public class ModuleManager implements Wrapper {
     }
 
     public static void moduleRender2D() {
-        if (mc.currentScreen != null) return; // 提前返回避免多余计算
         MessageHandler.onRender2D();
         for (Module module : modules) {
             if (module.enable) module.onRender2D();

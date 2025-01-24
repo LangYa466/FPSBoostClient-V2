@@ -3,9 +3,7 @@ package net.fpsboost.socket;
 import cn.langya.Logger;
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
-import net.fpsboost.util.ChatUtil;
 import net.fpsboost.util.RankUtil;
-import net.minecraft.util.EnumChatFormatting;
 
 import java.io.*;
 import java.net.*;
@@ -72,7 +70,6 @@ public class ClientIRC extends Module implements Wrapper {
         });
 
         Logger.info("链接服务器后端成功!");
-        RankUtil.getRanksAsync();
         initiated = true;
     }
 
@@ -115,56 +112,11 @@ public class ClientIRC extends Module implements Wrapper {
         send(String.format(".addIGN %s", mc.session.getUsername()));
     }
 
-    public static boolean sendMessage(String message) {
-        if (!message.startsWith("-") || mc.thePlayer == null) return false;
-        message = message.replace("-", "");
-        String ign = mc.session.getUsername();
-        String sendMessage = String.format(".message %s %s", ign, message);
-        Logger.debug("发送消息: {}", sendMessage);
-        send(sendMessage);
-        return true;
-    }
-
     private static void processMessage(String message) {
-        if (message.startsWith(".message")) {
-            processChatMessage(message);
-        } else if (message.startsWith(".addIGN")) {
+        if (message.startsWith(".addIGN")) {
             processAddIgn(message);
         } else {
             Logger.warn("收到了未知的信息: {}", message);
-        }
-    }
-
-    private static void processChatMessage(String message) {
-        String[] parts = message.split("\\s+", 3);
-        if (parts.length == 3) {
-            String ign = parts[1];
-            String content = parts[2];
-            String rank = RankUtil.getRank(ign);
-            if (rank == null) rank = "普通用户";
-
-            EnumChatFormatting rankColor = getRankColor(rank);
-
-            ChatUtil.addMessageWithClient("[客户端内置聊天] " + rankColor + "[" + rank + "] " + EnumChatFormatting.GREEN + "(" + ign + ")" + EnumChatFormatting.RESET + ": " + content);
-        } else {
-            Logger.warn("收到了未知的信息: {}", message);
-        }
-    }
-
-    private static EnumChatFormatting getRankColor(String rank) {
-        switch (rank) {
-            case "Admin":
-                return EnumChatFormatting.GOLD;
-            case "Media":
-                return EnumChatFormatting.DARK_RED;
-            case "MVP++":
-                return EnumChatFormatting.RED;
-            case "SVIP":
-                return EnumChatFormatting.DARK_GREEN;
-            case "VIP":
-                return EnumChatFormatting.GREEN;
-            default:
-                return EnumChatFormatting.BLUE;
         }
     }
 

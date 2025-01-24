@@ -36,6 +36,10 @@ public class MessageHandler implements Wrapper {
 		list.add(new Message(message, type, outtime));
 	}
 
+	public static void addMessage(String message, MessageType type) {
+		list.add(new Message(message, type, 1500));
+	}
+
 	public enum MessageType {
 		Info, Help, Warning, Error, Wrong, Right
 	}

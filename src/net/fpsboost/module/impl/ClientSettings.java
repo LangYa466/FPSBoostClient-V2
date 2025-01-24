@@ -1,5 +1,6 @@
 package net.fpsboost.module.impl;
 
+import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.Module;
 import net.fpsboost.util.mousefix.RawInputMod;
 import net.fpsboost.value.impl.BooleanValue;
@@ -27,5 +28,12 @@ public class ClientSettings extends Module {
             if (rawInputMod.isStart) rawInputMod.stop();
         }
         super.onUpdate();
+    }
+
+    @Override
+    public void onDisable() {
+        enable = true;
+        MessageHandler.addMessage("不准关闭这个功能啊笨蛋", MessageHandler.MessageType.Warning);
+        super.onDisable();
     }
 }
