@@ -150,10 +150,10 @@ public class ClickGui extends GuiScreen {
 		if (this.onBindingModule != null) {
             if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Keyboard.KEY_DELETE) {
                 this.onBindingModule.keyCode = 0;
-				MessageHandler.addMessage(this.onBindingModule.cnName + "现在是未绑定的.", MessageHandler.MessageType.Info, 3000);
+				MessageHandler.addMessage(this.onBindingModule.getDisplayName() + "现在是未绑定的.", MessageHandler.MessageType.Info, 3000);
             } else {
                 this.onBindingModule.keyCode = keyCode;
-                MessageHandler.addMessage(this.onBindingModule.cnName
+                MessageHandler.addMessage(this.onBindingModule.getDisplayName()
                         + " is now bound to \"" + Keyboard.getKeyName(keyCode) + "\".", MessageHandler.MessageType.Info, 3000);
             }
             this.onBindingModule = null;

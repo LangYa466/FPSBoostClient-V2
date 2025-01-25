@@ -158,7 +158,7 @@ public class ValueList extends UIComponent {
 		if (this.getClickGui().getModuleList().getLastOnSetting() != null) {
 			Module module = this.getClickGui().getModuleList().getLastOnSetting();
 
-			FontManager.client(16).drawString(module.cnName, positionX + 250 + 25, positionY + 8,
+			FontManager.client(16).drawString(module.getDisplayName(), positionX + 250 + 25, positionY + 8,
 					this.getColor(19));
 			this.scissor.setX(positionX + 258);
 			this.scissor.setY(positionY + 20);

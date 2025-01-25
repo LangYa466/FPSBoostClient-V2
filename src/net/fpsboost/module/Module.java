@@ -19,8 +19,7 @@ public class Module implements Wrapper {
     public boolean enable;
     public int keyCode;
 
-    public ArrayList<Value<?>> values;
-    public boolean inArray = true;
+    public ArrayList<Value<?>> values = new ArrayList<>();;
 
     public Module(String name,String cnName,String description,String cnDescription,int keyCode) {
         this.name = name;
@@ -28,7 +27,6 @@ public class Module implements Wrapper {
         this.cnDescription = cnDescription;
         this.description = description;
         this.keyCode = keyCode;
-        values = new ArrayList<>();
     }
 
     public Module(String name,String cnName,String description,String cnDescription) {
@@ -36,7 +34,6 @@ public class Module implements Wrapper {
         this.cnName = cnName;
         this.cnDescription = cnDescription;
         this.description = description;
-        values = new ArrayList<>();
     }
 
     public Module(String name,String cnName) {
@@ -44,7 +41,6 @@ public class Module implements Wrapper {
         this.cnName = cnName;
         this.cnDescription = "";
         this.description = "";
-        values = new ArrayList<>();
     }
 
     public void onEnable() { }
@@ -62,7 +58,7 @@ public class Module implements Wrapper {
         } else {
             onDisable();
         }
-        if (!isNull) MessageHandler.addMessage(String.format("%s %s",cnName,enable ? "已开启" : "已关闭"),MessageHandler.MessageType.Info);
+        if (!isNull) MessageHandler.addMessage(String.format("%s %s",getDisplayName(),enable ? "已开启" : "已关闭"),MessageHandler.MessageType.Info);
     }
 
     public void onRender2D() { }

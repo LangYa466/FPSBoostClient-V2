@@ -129,7 +129,7 @@ public class ModuleRect extends UIComponent {
 			this.setting.draw();
 		}
 
-		FontManager.client(18).drawString(this.module.cnName, positionX + 8 + anim.getX(), positionY + 8, this.getColor(9));
+		FontManager.client(18).drawString(this.module.getDisplayName(), positionX + 8 + anim.getX(), positionY + 8, this.getColor(9));
 	}
 
 	// 新增 getWidth 方法
