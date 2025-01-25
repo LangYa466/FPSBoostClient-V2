@@ -2,6 +2,7 @@ package net.fpsboost.util.font.impl;
 
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.impl.NameProtect;
+import net.fpsboost.util.DrawTextHookManager;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;
 
@@ -149,7 +150,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
      */
     @Override
     public int drawString(String text, float x, float y, int color, boolean dropShadow) {
-        text = NameProtect.onText(text);
+        text = DrawTextHookManager.hookMethod(text).getDisplayText();
         int shadowColor = 0;
         if (dropShadow) shadowColor = (color & 0xFCFCFC) >> 2 | color & new Color(20, 20, 20, 200).getRGB();
         float shadowWidth = stringCache.renderString(text, x + 1F, y + .5F, shadowColor, true);
@@ -158,7 +159,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
 
     @Override
     public int getStringWidth(String text) {
-        text = NameProtect.onText(text);
+        text = DrawTextHookManager.hookMethod(text).getDisplayText();
         return stringCache.getStringWidth(text);
     }
 

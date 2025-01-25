@@ -4,7 +4,6 @@ import net.fpsboost.screen.clickgui.ClickGui;
 import net.fpsboost.screen.clickgui.utils.*;
 import lombok.Getter;
 import lombok.Setter;
-import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
@@ -136,17 +135,11 @@ public class ModuleList extends UIComponent {
 		switch (type) {
 			case 0:
 				lists.clear();
-				List<Module> list1 = ModuleManager.modules;
-				for (Module module : list1) {
-					lists.add(new ModuleRect(module));
-				}
+				ModuleManager.modules.forEach(module -> lists.add(new ModuleRect(module)));
 				break;
 			case 1:
 				lists.clear();
-				List<Element> list2 = ElementManager.elements;
-				for (Module module : list2) {
-					lists.add(new ModuleRect(module));
-				}
+				ElementManager.elements.forEach(element -> lists.add(new ModuleRect(element)));
 				break;
 		}
 	}

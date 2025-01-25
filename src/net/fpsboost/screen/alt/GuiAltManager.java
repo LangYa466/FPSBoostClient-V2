@@ -35,7 +35,7 @@ public class GuiAltManager extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         String info;
-        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+        if (ClientSettings.isChinese) {
             info = "您当前登录的账号: ";
             status = EnumChatFormatting.YELLOW + "等待切换中...";
         }else {
@@ -85,7 +85,7 @@ public class GuiAltManager extends GuiScreen {
                         public void run() {
                             final AltManager.LoginStatus loginStatus;
                             try {
-                                if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                                if (ClientSettings.isChinese) {
                                     status = EnumChatFormatting.YELLOW + "登录中...";
                                 } else {
                                     status = EnumChatFormatting.GREEN + "Logging in...";
@@ -94,7 +94,7 @@ public class GuiAltManager extends GuiScreen {
 
                                 switch (loginStatus) {
                                     case FAILED:
-                                        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                                        if (ClientSettings.isChinese) {
                                             status = EnumChatFormatting.RED + "登录失败!";
                                         } else {
                                             status = EnumChatFormatting.RED + "Login failed!";
@@ -102,7 +102,7 @@ public class GuiAltManager extends GuiScreen {
                                         break;
                                     case SUCCESS:
                                         String ign = mc.session.getUsername();
-                                        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                                        if (ClientSettings.isChinese) {
                                             status = EnumChatFormatting.GREEN + "登录成功! " + ign;
                                         } else {
                                             status = EnumChatFormatting.GREEN + "Logged in! " + ign;
@@ -111,7 +111,7 @@ public class GuiAltManager extends GuiScreen {
                                 }
                             } catch (AuthenticationException e) {
                                 Logger.error(e.getMessage());
-                                if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                                if (ClientSettings.isChinese) {
                                     status = EnumChatFormatting.RED + "登录失败! " + e.getClass().getName() + ": " + e.getMessage();
                                 } else {
                                     status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
@@ -137,7 +137,7 @@ public class GuiAltManager extends GuiScreen {
 
     private Thread getThread() {
         final Thread thread = new Thread(() -> {
-            if (ClientSettings.INSTANCE.cnMode.getValue()) {
+            if (ClientSettings.isChinese) {
                 status = EnumChatFormatting.YELLOW + "登录中...";
             } else {
                 status = EnumChatFormatting.GREEN + "Logging in...";
@@ -145,7 +145,7 @@ public class GuiAltManager extends GuiScreen {
             switch (selectAlt.getAccountType()) {
                 case OFFLINE:
                     Minecraft.getMinecraft().session = new Session(selectAlt.getUserName(), "", "", "mojang");
-                    if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                    if (ClientSettings.isChinese) {
                         status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
                     } else {
                         status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
@@ -158,7 +158,7 @@ public class GuiAltManager extends GuiScreen {
                         while (Minecraft.getMinecraft().running) {
                             if (microsoftLogin.logged) {
                                 mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
-                                if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                                if (ClientSettings.isChinese) {
                                     status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
                                 } else {
                                     status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
@@ -168,7 +168,7 @@ public class GuiAltManager extends GuiScreen {
                         }
                     } catch (Throwable e) {
                         Logger.error(e.getMessage());
-                        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+                        if (ClientSettings.isChinese) {
                             status = EnumChatFormatting.RED + "登录失败! " + e.getClass().getName() + ": " + e.getMessage();
                         } else {
                             status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
@@ -189,7 +189,7 @@ public class GuiAltManager extends GuiScreen {
 
     @Override
     public void initGui() {
-        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+        if (ClientSettings.isChinese) {
             buttonList.add(new GuiButton(4, this.width / 2 - 120, this.height - 48, 70, 20, "离线登录"));
             buttonList.add(new GuiButton(5, this.width / 2 - 40, this.height - 48, 70, 20, "微软登录"));
             this.buttonList.add(new GuiButton(0, this.width / 2 + 40, this.height - 48, 70, 20, "返回"));

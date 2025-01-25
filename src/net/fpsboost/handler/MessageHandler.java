@@ -20,10 +20,10 @@ public class MessageHandler implements Wrapper {
 	public static void onRender2D() {
 		ScaledResolution sr = new ScaledResolution(mc);
 		int y = 0;
-		int commandbox = ClickGui.INSTANCE.IsOnCommandBox() ? 10 : 0;
+		int commandY = ClickGui.INSTANCE.IsOnCommandBox() ? 10 : 0;
 		for (Message message : list) {
-			double diff = message.draw(sr.getScaledWidth(), sr.getScaledHeight(), y + 16 + 2 + commandbox, y);
-			y += (int) (diff - commandbox);
+			double diff = message.draw(sr.getScaledWidth(), sr.getScaledHeight(), y + 18 + commandY, y);
+			y += (int) (diff - commandY);
 		}
 		list.removeIf(Message::shouldRemove);
 	}
@@ -44,6 +44,7 @@ public class MessageHandler implements Wrapper {
 		Info, Help, Warning, Error, Wrong, Right
 	}
 
+	// 突然想起来语法 所以不能这样改 我是JavaBigGod
 	public static int getColor(int type) {
 		Color rectColor, textColor;
 		switch (ClickGUIModule.theme) {
@@ -119,6 +120,7 @@ public class MessageHandler implements Wrapper {
 			}
 		}
 
+		// 666这个三元运算符太吓人了
 		public boolean shouldRemove() {
 			return timer.reach(outTime) && this.anim.getX() == 0 && this.anim.getY() == 0;
 		}

@@ -80,7 +80,7 @@ public class Client implements Wrapper {
 
     private static void checkForUpdates() throws IOException {
         String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "versionwithv2.txt")).trim();
-        Logger.info((!ClientSettings.INSTANCE.cnMode.getValue() ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
+        Logger.info((!ClientSettings.isChinese ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
         isOldVersion = !version.contains(latestVersion);
         if (isOldVersion && isWindows()) {
             File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");

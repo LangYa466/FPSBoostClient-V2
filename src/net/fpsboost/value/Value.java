@@ -32,6 +32,6 @@ public class Value<T> {
     }
 
     public String getName() {
-        if (ClientSettings.INSTANCE.cnMode.getValue()) return cnName; else return name;
+        if (ClientSettings.isChinese) return cnName; else return name;
     }
 }

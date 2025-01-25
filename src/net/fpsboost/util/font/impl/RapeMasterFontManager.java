@@ -1,6 +1,7 @@
 package net.fpsboost.util.font.impl;
 
 import net.fpsboost.module.impl.NameProtect;
+import net.fpsboost.util.DrawTextHookManager;
 import net.fpsboost.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -162,7 +163,7 @@ public class RapeMasterFontManager extends FontRenderer {
     }
 
     public final int drawStringNoFormat(String str, float x, float y, int color, boolean darken) {
-        str = NameProtect.onText(str);
+        str = DrawTextHookManager.hookMethod(str).getDisplayText();
         y = y - 2;
         x *= 2;
         y *= 2;
@@ -198,8 +199,9 @@ public class RapeMasterFontManager extends FontRenderer {
         return offset;
     }
 
+    @Override
     public final int drawString(String str, float x, float y, int color, boolean darken) {
-        str = NameProtect.onText(str);
+        str = DrawTextHookManager.hookMethod(str).getDisplayText();
         y = y - 2;
         x *= 2;
         y *= 2;
@@ -245,7 +247,7 @@ public class RapeMasterFontManager extends FontRenderer {
     }
 
     public final int getStringWidth(String text) {
-        text = NameProtect.onText(text);
+        text = DrawTextHookManager.hookMethod(text).getDisplayText();
         if (text == null) {
             return 0;
         }

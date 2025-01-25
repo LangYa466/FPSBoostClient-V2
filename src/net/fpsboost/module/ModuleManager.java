@@ -34,7 +34,11 @@ public class ModuleManager implements Wrapper {
 
         // 初始化模块列表（仅排序一次）
         modules = new ArrayList<>(moduleMap.values());
-        modules.sort(Comparator.comparing(module -> module.name));
+        sortModules();
+    }
+
+    public static void sortModules() {
+        modules.sort(Comparator.comparing(Module::getDisplayName));
     }
 
     private static void addModules(Module... newModules) {
@@ -84,7 +88,7 @@ public class ModuleManager implements Wrapper {
         for (Module module : modules) {
             if (inputKeyCode == module.keyCode) {
                 module.toggle();
-                break; // 一旦找到目标模块，立即终止循环
+                break; // 一旦找到目标模块，立即终止循环 之前有个臭傻逼说我不break 我草他吗的 没遇见过BUG吗、、
             }
         }
     }

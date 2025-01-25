@@ -30,20 +30,20 @@ public class CapeUtil implements Wrapper {
             try {
                 oldCapeFile.createNewFile();
             } catch (IOException e) {
-                JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Create cape verification failed":"创建披风验证失败"));
+                JOptionPane.showMessageDialog(null,(ClientSettings.isChinese ?"Create cape verification failed":"创建披风验证失败"));
                 Logger.error(e.getMessage());
-                JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Take a screenshot and send it to the administrator":"截图给群主 让他给你补卡密 因为客户端写入出现了验证错误!!"));
+                JOptionPane.showMessageDialog(null,(ClientSettings.isChinese ?"Take a screenshot and send it to the administrator":"截图给群主 让他给你补卡密 因为客户端写入出现了验证错误!!"));
                 return;
             }
-            if (!writeToFile(oldCapeFile,url)) JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Take a screenshot and send it to the administrator":"截图给群主 让他给你补卡密 因为客户端写入出现了验证错误!!"));
+            if (!writeToFile(oldCapeFile,url)) JOptionPane.showMessageDialog(null,(ClientSettings.isChinese ?"Take a screenshot and send it to the administrator":"截图给群主 让他给你补卡密 因为客户端写入出现了验证错误!!"));
         }
         DynamicTexture dt;
         try {
             dt = new DynamicTexture(ImageIO.read(new URL(url)));
         } catch (IOException e) {
-            JOptionPane.showMessageDialog(null,(ClientSettings.INSTANCE.cnMode.getValue() ?"Failed to load cape image and input again: ":"读取披风图片失败 请重新输入 按确定重新输入"));
+            JOptionPane.showMessageDialog(null,(ClientSettings.isChinese ?"Failed to load cape image and input again: ":"读取披风图片失败 请重新输入 按确定重新输入"));
             Logger.error(e.getMessage());
-            setCape(JOptionPane.showInputDialog((ClientSettings.INSTANCE.cnMode.getValue() ?"New cape image link":"新的披风图片链接")));
+            setCape(JOptionPane.showInputDialog((ClientSettings.isChinese ?"New cape image link":"新的披风图片链接")));
             return;
         }
         ResourceLocation capeRes = new ResourceLocation("clientCape");
@@ -59,14 +59,14 @@ public class CapeUtil implements Wrapper {
             writer.newLine();
             return true;
         } catch (IOException e) {
-            System.err.println((ClientSettings.INSTANCE.cnMode.getValue() ?"File writing failed: ":"写入文件时出错: ") + e.getMessage());
+            System.err.println((ClientSettings.isChinese ?"File writing failed: ":"写入文件时出错: ") + e.getMessage());
             return false;
         }
     }
 
     public static String readFromFile(File file) {
         if (!file.exists()) {
-            System.err.println((ClientSettings.INSTANCE.cnMode.getValue() ?"File not found: ":"文件不存在：") + file.getAbsolutePath());
+            System.err.println((ClientSettings.isChinese ?"File not found: ":"文件不存在：") + file.getAbsolutePath());
             return "";
         }
 
@@ -79,7 +79,7 @@ public class CapeUtil implements Wrapper {
             }
             return content.toString();
         } catch (IOException e) {
-            System.err.println((ClientSettings.INSTANCE.cnMode.getValue() ? "Reading file failed: ":"读取文件时出错: ") + e.getMessage());
+            System.err.println((ClientSettings.isChinese ? "Reading file failed: ":"读取文件时出错: ") + e.getMessage());
             return "";
         }
     }

@@ -1,6 +1,7 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
+import net.fpsboost.util.DrawTextHook;
 
 /**
  * @author LangYa
@@ -25,8 +26,10 @@ public class NameProtect extends Module {
         enable = false;
     }
 
-    public static String onText(String text) {
-        if (!enable || text.isEmpty()) return text;
+    public static DrawTextHook hook(DrawTextHook drawTextHook) {
+        String text = drawTextHook.getDisplayText();
+
+        if (!enable) return drawTextHook;
 
         String replacement = "我是狼牙的狗";
         int targetLength = target.length();
@@ -42,6 +45,7 @@ public class NameProtect extends Module {
         }
 
         sb.append(text, start, text.length());
-        return sb.toString();
+        drawTextHook.setDisplayText(sb.toString());
+        return drawTextHook;
     }
 }

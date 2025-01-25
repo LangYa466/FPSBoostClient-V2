@@ -75,26 +75,30 @@ public class TargetCircle extends Module {
             double d11 = d8 + Math.cos((double) i * Math.PI / 180.0) * d4;
             double d12 = d6 - Math.sin((double) (i - 5) * Math.PI / 180.0) * d4;
             double d13 = d8 + Math.cos((double) (i - 5) * Math.PI / 180.0) * d4;
-
+            int blue = ColorUtil.pulseColor(color, 200, 1).getBlue();
+            int green = ColorUtil.pulseColor(color, 200, 1).getGreen();
+            int red = ColorUtil.pulseColor(color, 200, 1).getRed();
+            // 十六进制
+            float rgbaAlpha = 255.0f;
             // Render the filled segments using GL11
             GL11.glBegin(GL11.GL_QUADS);
-            GL11.glColor4f((float) ColorUtil.pulseColor(color, 200, 1).getRed() / 255.0f,
-                    (float) ColorUtil.pulseColor(color, 200, 1).getGreen() / 255.0f,
-                    (float) ColorUtil.pulseColor(color, 200, 1).getBlue() / 255.0f, 0.0f);
+            GL11.glColor4f((float) red / rgbaAlpha,
+                    (float) green / rgbaAlpha,
+                    (float) blue / rgbaAlpha, 0.0f);
             GL11.glVertex3d(d10, d7 + d9, d11);
             GL11.glVertex3d(d12, d7 + d9, d13);
 
-            GL11.glColor4f((float) ColorUtil.pulseColor(color, 200, 1).getRed() / 255.0f,
-                    (float) ColorUtil.pulseColor(color, 200, 1).getGreen() / 255.0f,
-                    (float) ColorUtil.pulseColor(color, 200, 1).getBlue() / 255.0f, 200.0f);
+            GL11.glColor4f((float) red / rgbaAlpha,
+                    (float) green / rgbaAlpha,
+                    (float) blue / rgbaAlpha, 200.0f);
             GL11.glVertex3d(d12, d7, d13);
             GL11.glVertex3d(d10, d7, d11);
             GL11.glEnd();
 
             // Render the outline using GlStateManager
-            GlStateManager.color((float) ColorUtil.pulseColor(color, 200, 1).getRed() / 255.0f,
-                    (float) ColorUtil.pulseColor(color, 200, 1).getGreen() / 255.0f,
-                    (float) ColorUtil.pulseColor(color, 200, 1).getBlue() / 255.0f, 1.0f);
+            GlStateManager.color((float) red / rgbaAlpha,
+                    (float) green / rgbaAlpha,
+                    (float) blue / rgbaAlpha, 1.0f);
             GlStateManager.glBegin(GL11.GL_LINES);
             GL11.glVertex3d(d12, d7, d13);
             GL11.glVertex3d(d10, d7, d11);

@@ -4,7 +4,6 @@ import net.fpsboost.Wrapper;
 import net.fpsboost.module.impl.RectMode;
 import net.fpsboost.screen.clickgui.utils.RoundedRect;
 import net.fpsboost.util.font.FontManager;
-import net.fpsboost.util.shader.RoundedUtil;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.settings.GameSettings;
@@ -19,7 +18,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author LangYa
  * @since 2024/8/30 21:52
  */
-public class RenderUtil extends ThemeUtil implements Wrapper {
+public class RenderUtil implements Wrapper {
     public static void drawRect(int x,int y,int width,int height,Color color) {
         int mode = RectMode.mode;
         float radius = RectMode.radius;
@@ -78,17 +77,6 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
        return drawString(text,x,y,color.getRGB());
     }
 
-    public static int drawStringWithRounded(String text, int x, int y) {
-        return drawStringWithRounded(text,x,y,true);
-    }
-
-    public static int drawStringWithRounded(String text, int x, int y, boolean bg) {
-        int width = getStringWidth(text);
-        int height = mc.fontRendererObj.getHeight();
-        if (bg) RenderUtil.drawRect(x, y, width + 4,height,bgColor);
-        RenderUtil.drawString(text,x + 1, y, pressbgColor);
-        return width + 4;
-    }
     public static int drawText(String text, int x, int y, boolean bg, int bgColor, int textColor, boolean textShadow, boolean clientFont) {
         // Use the font rendering method directly based on the font choice to avoid unnecessary calculations.
         int width = clientFont ? FontManager.client().getStringWidth(text) : mc.fontRendererObj.getStringWidth(text);
@@ -129,15 +117,6 @@ public class RenderUtil extends ThemeUtil implements Wrapper {
 
     public static int drawStringWithShadow(String text, int x, int y, Color color) {
         return drawStringWithShadow(text,x,y,color.getRGB());
-    }
-
-    public static int drawStringWithShadowAndRounded(String text, int x, int y) {
-        int width = getStringWidth(text);
-        int height = mc.fontRendererObj.getHeight();
-        RenderUtil.drawRect(x, y, width,height,pressbgColor);
-        int textX = getStringWidth(text);
-        RenderUtil.drawStringWithShadow(text,x + textX, y + height / 2 + 1, bgColor);
-        return width + 4;
     }
 
     public static int getStringWidth(String text) {

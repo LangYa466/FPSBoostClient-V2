@@ -13,6 +13,7 @@ import java.util.Properties;
 import java.util.Random;
 
 import net.fpsboost.module.impl.NameProtect;
+import net.fpsboost.util.DrawTextHookManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -345,7 +346,7 @@ public class FontRenderer implements IResourceManagerReloadListener
 
     public int drawString(String text, float x, float y, int color, boolean dropShadow, boolean isMC)
     {
-        text = NameProtect.onText(text);
+        text = DrawTextHookManager.hookMethod(text).getDisplayText();
         this.enableAlpha();
 
         if (this.blend)
@@ -632,7 +633,7 @@ public class FontRenderer implements IResourceManagerReloadListener
         }
         else
         {
-            text = NameProtect.onText(text);
+            text = DrawTextHookManager.hookMethod(text).getDisplayText();
             float f = 0.0F;
             boolean flag = false;
 

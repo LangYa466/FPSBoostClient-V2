@@ -112,7 +112,7 @@ public class ConfigManager implements Wrapper {
      * @param enMessage 英文日志消息
      */
     private static void logConfigAction(String name, String cnMessage, String enMessage) {
-        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+        if (ClientSettings.isChinese) {
             Logger.info(cnMessage + ": " + name);
         } else {
             Logger.info(enMessage + ": " + name);
@@ -126,7 +126,7 @@ public class ConfigManager implements Wrapper {
      * @param e    异常对象
      */
     private static void logConfigError(String name, Exception e) {
-        if (ClientSettings.INSTANCE.cnMode.getValue()) {
+        if (ClientSettings.isChinese) {
             Logger.error("配置文件不存在" + ": " + name);
         } else {
             Logger.error("Failed to load config" + ": " + name);

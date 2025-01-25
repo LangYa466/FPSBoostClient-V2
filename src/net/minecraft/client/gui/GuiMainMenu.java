@@ -62,14 +62,14 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
             this.mc.displayGuiScreen(new GuiLanguage(this,mc.gameSettings,mc.getLanguageManager()));
         }
         if (button.id == 114514) {
-            this.mc.displayGuiScreen(new GuiBackgroundSettings(ClientSettings.INSTANCE.cnMode.getValue()));
+            this.mc.displayGuiScreen(new GuiBackgroundSettings(ClientSettings.isChinese));
         }
         return null;
     }
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawClientBackground();
-        if (Client.isOldVersion) FontManager.client().drawStringWithShadow(!ClientSettings.INSTANCE.cnMode.getValue()?"Your version is not the latest! Please download the latest version from the group file!":"您的版本不是最新版! 请去群文件下载最新版!",5,5, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
+        if (Client.isOldVersion) FontManager.client().drawStringWithShadow(!ClientSettings.isChinese?"Your version is not the latest! Please download the latest version from the group file!":"您的版本不是最新版! 请去群文件下载最新版!",5,5, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
         FontManager.client(70).drawCenteredStringWithShadow("FPSBoost",width / 2F,height / 4F,-1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }

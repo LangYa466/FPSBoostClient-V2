@@ -4,18 +4,13 @@ import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.util.animation.Animation;
 import net.fpsboost.util.animation.Direction;
-import net.fpsboost.util.animation.impl.SmoothStepAnimation;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
-import net.minecraft.client.settings.GameSettings;
 import net.minecraft.client.settings.KeyBinding;
-import org.lwjgl.Sys;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
-
-import static net.fpsboost.util.ThemeUtil.*;
 
 /**
  * @author LangYa

@@ -13,11 +13,11 @@ import java.awt.*;
 public class ColorValue extends Value<HSBColor> {
 
     BooleanValue rainbow;
-    NumberValue rainbowspeed;
+    NumberValue rainbowSpeed;
     Module module;
 
-    public ColorValue(String cnNmae, String name, Color value, Module m) {
-        super(cnNmae,name,new HSBColor(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()));
+    public ColorValue(String cnName, String name, Color value, Module m) {
+        super(cnName,name,new HSBColor(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()));
         module = m;
         init();
     }
@@ -32,20 +32,20 @@ public class ColorValue extends Value<HSBColor> {
 
     public void init() {
         this.rainbow = new BooleanValue((this.getName()) + ("彩虹色"), (this.getName()) + ("Rainbow"), false);
-        this.rainbowspeed = new NumberValue(
+        this.rainbowSpeed = new NumberValue(
                 (this.getName())
                         + ("彩虹速度"),
                 this.getName()
                 + ("RainbowSpeed"),
                 3, 1, 10, 1);
         module.values.add(this.rainbow);
-        module.values.add(this.rainbowspeed);
+        module.values.add(this.rainbowSpeed);
     }
 
     @Override
     public HSBColor getValue() {
         if (this.rainbow.getValue()) {
-            float speed = this.rainbowspeed.getValue().floatValue();
+            float speed = this.rainbowSpeed.getValue().floatValue();
             float hue = System.currentTimeMillis() % (int) ((1 - speed / 15.0) * 2000);
             hue /= (int) ((1 - speed / 15.0) * 2000);
             super.getValue().setHue(hue);

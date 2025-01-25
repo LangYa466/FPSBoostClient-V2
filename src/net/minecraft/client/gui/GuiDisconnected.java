@@ -31,7 +31,7 @@ public class GuiDisconnected extends GuiScreen {
         this.field_175353_i = this.multilineMessage.size() * this.fontRendererObj.getHeight();
         this.buttonList.add(new GuiButton(0, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.getHeight(), I18n.format("gui.toMenu")));
 
-        String buttonText = (ClientSettings.INSTANCE.cnMode.getValue()) ? "重连服务器" : "ReConnect";
+        String buttonText = (ClientSettings.isChinese) ? "重连服务器" : "ReConnect";
         this.buttonList.add(new GuiButton(1, this.width / 2 - 100, this.height / 2 + this.field_175353_i / 2 + this.fontRendererObj.getHeight() + 24, buttonText));
     }
 

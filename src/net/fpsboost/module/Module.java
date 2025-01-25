@@ -2,6 +2,7 @@ package net.fpsboost.module;
 
 import net.fpsboost.Wrapper;
 import net.fpsboost.handler.MessageHandler;
+import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.value.Value;
 
 import java.util.ArrayList;
@@ -75,5 +76,9 @@ public class Module implements Wrapper {
 
     public String name() {
         return name;
+    }
+
+    public String getDisplayName() {
+        return ClientSettings.isChinese ? cnName : name;
     }
 }

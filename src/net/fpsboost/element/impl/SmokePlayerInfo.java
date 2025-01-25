@@ -34,7 +34,7 @@ public class SmokePlayerInfo extends Element {
     }
 
     private String getDirectionsName(String dir) {
-        if (!ClientSettings.INSTANCE.cnMode.getValue()) return dir;
+        if (!ClientSettings.isChinese) return dir;
         if ("S".equals(dir)) return "南";
         if ("SW".equals(dir)) return "西南";
         if ("W".equals(dir)) return "西";
@@ -56,17 +56,17 @@ public class SmokePlayerInfo extends Element {
         if (mc.gameSettings.showDebugInfo) return;
 
         FontManager.client().drawStringWithShadow(
-                ClientSettings.INSTANCE.cnMode.getValue() ? "显示信息" : "Hud Info",
+                ClientSettings.isChinese ? "显示信息" : "Hud Info",
                 3, 3, new Color(0, 160, 255, 160).getRGB()
         );
 
         List<String> info = new ArrayList<>();
-        if (NickName.getValue()) info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<昵称> " : "<Username> ") + EnumChatFormatting.WHITE + mc.thePlayer.getName());
-        if (FPS.getValue()) info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<帧数> " : "<FPS> ") + EnumChatFormatting.WHITE + Minecraft.getDebugFPS());
-        if (Ping.getValue()) info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<延迟> " : "<Ping> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? "N/A" : PingDisplay.getPing()));
-        if (XYZ.getValue()) info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<坐标> " : "<XYZ> ") + EnumChatFormatting.WHITE + MathHelper.floor_double(mc.thePlayer.posX) + ", " + MathHelper.floor_double(mc.thePlayer.posY) + ", " + MathHelper.floor_double(mc.thePlayer.posZ));
-        if (Directions.getValue()) info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<方向> " : "<Directions> ") + EnumChatFormatting.WHITE + getDirectionsName(directions[wrapAngleToDirection(mc.thePlayer.rotationYaw, directions.length)]));
-        if (Server.getValue()) info.add((ClientSettings.INSTANCE.cnMode.getValue() ? "<服务器> " : "<Server> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? (ClientSettings.INSTANCE.cnMode.getValue() ? "单人世界" : "SingleWorld") : mc.getCurrentServerData().serverIP));
+        if (NickName.getValue()) info.add((ClientSettings.isChinese ? "<昵称> " : "<Username> ") + EnumChatFormatting.WHITE + mc.thePlayer.getName());
+        if (FPS.getValue()) info.add((ClientSettings.isChinese ? "<帧数> " : "<FPS> ") + EnumChatFormatting.WHITE + Minecraft.getDebugFPS());
+        if (Ping.getValue()) info.add((ClientSettings.isChinese ? "<延迟> " : "<Ping> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? "N/A" : PingDisplay.getPing()));
+        if (XYZ.getValue()) info.add((ClientSettings.isChinese ? "<坐标> " : "<XYZ> ") + EnumChatFormatting.WHITE + MathHelper.floor_double(mc.thePlayer.posX) + ", " + MathHelper.floor_double(mc.thePlayer.posY) + ", " + MathHelper.floor_double(mc.thePlayer.posZ));
+        if (Directions.getValue()) info.add((ClientSettings.isChinese ? "<方向> " : "<Directions> ") + EnumChatFormatting.WHITE + getDirectionsName(directions[wrapAngleToDirection(mc.thePlayer.rotationYaw, directions.length)]));
+        if (Server.getValue()) info.add((ClientSettings.isChinese ? "<服务器> " : "<Server> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? (ClientSettings.isChinese ? "单人世界" : "SingleWorld") : mc.getCurrentServerData().serverIP));
 
         int y = 15;
         for (String line : info) {

@@ -36,10 +36,12 @@ public class ValueManager {
         }
         // 批量添加值，减少多次操作
         addValuesToModule(module, valueList);
+        // 666忘记释放了 原来我在内存堆了屎
+        valueList.clear();
     }
 
     // 通过 Collection<? extends Value<?>> 类型安全地批量添加值
-    private static void addValuesToModule(Module module, Collection<? extends Value<?>> values) {
+    private static void addValuesToModule(Module module, List<Value<?>> values) {
         module.values.addAll(values); // 添加所有的值
     }
 }

@@ -11,11 +11,13 @@ import java.awt.*;
  */
 public class CustomEnchantmentColor extends Module {
 
+    // 终于知道我之前写这个有啥用了 以后的我别给删了 这个ColorValue恶俗啊！！！！！
+    public static final CustomEnchantmentColor INSTANCE = new CustomEnchantmentColor();
+
     public CustomEnchantmentColor() {
         super("CustomEnchantmentColor","自定义附魔颜色");
     }
 
-    public static final CustomEnchantmentColor INSTANCE = new CustomEnchantmentColor();
     public final ColorValue color = new ColorValue("自定义颜色","Custom Color",new Color(-8372020),this);
 
     //如果直接在mc里面的方法里面直接获取会浪费性能

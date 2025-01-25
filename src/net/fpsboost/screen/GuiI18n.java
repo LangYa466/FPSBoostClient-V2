@@ -14,7 +14,6 @@ import java.io.IOException;
  * @since 2024/12/25 23:00
  */
 public class GuiI18n extends GuiScreen {
-
     @Override
     public void initGui() {
         buttonList.add(new GuiButton(1,width / 2 - 40,height / 2 - 20,80,20,"简体中文"));
@@ -31,11 +30,8 @@ public class GuiI18n extends GuiScreen {
 
     @Override
     protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
-        if (button.id == 1) {
-            ClientSettings.INSTANCE.cnMode.setValue(true);
-        } else {
-            ClientSettings.INSTANCE.cnMode.setValue(false);
-        }
+        boolean isClickButton = button.id == 1;
+        ClientSettings.INSTANCE.cnMode.setValue(isClickButton);
         mc.displayGuiScreen(new GuiRectMode());
         return super.actionPerformed(button);
     }
