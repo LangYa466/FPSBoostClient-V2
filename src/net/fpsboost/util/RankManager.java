@@ -47,6 +47,7 @@ public class RankManager implements Wrapper  {
             } else {
                 rankPrefix = getRank(rank, EnumChatFormatting.BLUE.toString());
             }
+
             // e.text.replaceAll(playerName,rankPrefix + playerName);
             e.setDisplayText(replaceAllOccurrences(e.getDisplayText(), playerName, playerName + rankPrefix));
 

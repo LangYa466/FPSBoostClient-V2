@@ -3,10 +3,10 @@ package net.minecraft.client.renderer.entity;
 import lombok.Getter;
 import lombok.Setter;
 import net.fpsboost.module.impl.BetterNameTag;
+import net.fpsboost.module.impl.entityculling.EntityCulling;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.RenderUtil;
-import net.fpsboost.util.font.FontManager;
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
@@ -51,8 +51,12 @@ public abstract class Render<T extends Entity> implements IEntityRenderer
         this.renderManager = renderManager;
     }
 
-    public boolean shouldRender(T livingEntity, ICamera camera, double camX, double camY, double camZ)
-    {
+    public boolean shouldRender(T livingEntity, ICamera camera, double camX, double camY, double camZ) {
+        // EntityCulling
+        if(!EntityCulling.getInstance().shouldRenderEntity(livingEntity)) {
+            return false;
+        }
+
         AxisAlignedBB axisalignedbb = livingEntity.getEntityBoundingBox();
 
         if (axisalignedbb.hasNaN() || axisalignedbb.getAverageEdgeLength() == 0.0D)

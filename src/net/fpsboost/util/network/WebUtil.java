@@ -74,13 +74,23 @@ public class WebUtil {
     public static BufferedImage fetchImage(String imageUrl) throws IOException {
         HttpURLConnection connection = getHttpURLConnection(imageUrl);
 
-        int responseCode = connection.getResponseCode();
-        if (responseCode != HttpURLConnection.HTTP_OK) {
-            throw new IOException("Failed to fetch image, HTTP response code: " + responseCode);
-        }
+        // 设置连接和读取的超时时间为 5 秒
+        connection.setConnectTimeout(5000); // 设置连接超时为 5 秒
+        connection.setReadTimeout(5000); // 设置读取超时为 5 秒
 
-        try (InputStream inputStream = connection.getInputStream()) {
-            return ImageIO.read(inputStream);
+        try {
+            int responseCode = connection.getResponseCode();
+            if (responseCode != HttpURLConnection.HTTP_OK) {
+                throw new IOException("Failed to fetch image, HTTP response code: " + responseCode);
+            }
+
+            try (InputStream inputStream = connection.getInputStream()) {
+                return ImageIO.read(inputStream);
+            }
+        } catch (IOException e) {
+            // 如果是超时或其他 IO 错误，返回 null
+            Logger.error("Failed to fetch image or timeout occurred: {}", e.getMessage());
+            return null;
         }
     }
 
@@ -100,6 +110,7 @@ public class WebUtil {
         ResourceLocation res = new ResourceLocation(name);
         try {
             BufferedImage image = isLocal ? ImageIO.read(new File(path)) : fetchImage(path);
+            assert image != null;
             dt = new DynamicTexture(image);
             mc.getTextureManager().loadTexture(res, dt);
             mc.getTextureManager().bindTexture(res);

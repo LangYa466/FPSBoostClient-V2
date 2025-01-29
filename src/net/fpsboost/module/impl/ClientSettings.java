@@ -3,7 +3,6 @@ package net.fpsboost.module.impl;
 import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
-import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.util.mousefix.RawInputMod;
 import net.fpsboost.value.impl.BooleanValue;
 
@@ -28,9 +27,8 @@ public class ClientSettings extends Module {
             super.setValue(value);
         }
     };
-    public final BooleanValue gc = new BooleanValue("世界内存优化(fps更高 加载时间增加)","Memory Fix",false);
+    public static final BooleanValue gc = new BooleanValue("世界内存优化(fps更高 加载时间增加)","Memory Fix",false);
     public final BooleanValue mouseFix = new BooleanValue("鼠标手感优化(会导致和原版灵敏度不一样)","Mouse Fix",false);
-
     private final RawInputMod rawInputMod = new RawInputMod();
 
     @Override

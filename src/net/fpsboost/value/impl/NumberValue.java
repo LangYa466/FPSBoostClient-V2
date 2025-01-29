@@ -12,22 +12,22 @@ public class NumberValue extends Value<Double> {
     public double minValue;
     public double incValue;
 
-    public NumberValue(String cnNmae,String name, double value, double maxValue, double minValue, double incValue) {
-        super(cnNmae, name, value);
+    public NumberValue(String cnName,String name, double value, double maxValue, double minValue, double incValue) {
+        super(cnName, name, value);
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.incValue = incValue;
     }
 
-    public NumberValue(String cnNmae,String name, int value, int maxValue, int minValue, double incValue) {
-        super(cnNmae,name, (double) value);
+    public NumberValue(String cnName,String name, int value, int maxValue, int minValue, double incValue) {
+        super(cnName,name, (double) value);
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.incValue = incValue;
     }
 
-    public NumberValue(String cnNmae,String name, int value, int maxValue, int minValue, int incValue) {
-        super(cnNmae,name, (double) value);
+    public NumberValue(String cnName,String name, int value, int maxValue, int minValue, int incValue) {
+        super(cnName,name, (double) value);
         this.maxValue = maxValue;
         this.minValue = minValue;
         this.incValue = incValue;

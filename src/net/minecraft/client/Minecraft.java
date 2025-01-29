@@ -40,6 +40,7 @@ import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClickSounds;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.module.impl.SmokeCrosshair;
+import net.fpsboost.module.impl.entityculling.EntityCulling;
 import net.fpsboost.screen.SplashScreen;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
@@ -1529,6 +1530,7 @@ public class Minecraft implements IThreadListener {
 
     public void runTick() throws IOException
     {
+        // HUDCaching.onTick();
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;
@@ -2059,7 +2061,7 @@ public class Minecraft implements IThreadListener {
     public void launchIntegratedServer(String folderName, String worldName, WorldSettings worldSettingsIn)
     {
         this.loadWorld(null);
-        if (ClientSettings.INSTANCE.gc.getValue()) System.gc();
+        if (ClientSettings.gc.getValue()) System.gc();
         ISaveHandler isavehandler = this.saveLoader.getSaveLoader(folderName, false);
         WorldInfo worldinfo = isavehandler.loadWorldInfo();
 
@@ -2131,7 +2133,8 @@ public class Minecraft implements IThreadListener {
     {
         AttackHandler.onWorldLoad();
         ModuleManager.moduleWorldLoad();
-        System.gc();
+        EntityCulling.getInstance().onWorldUnload();
+        if (ClientSettings.gc.getValue()) System.gc();
         if (worldClientIn == null)
         {
             NetHandlerPlayClient nethandlerplayclient = this.getNetHandler();

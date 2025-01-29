@@ -469,7 +469,7 @@ public class GuiIngame extends Gui
         this.mc.mcProfiler.endSection();
     }
 
-    protected boolean showCrosshair()
+    public boolean showCrosshair()
     {
         if (SmokeCrosshair.isEnable) return false;
         if (this.mc.gameSettings.showDebugInfo && !this.mc.thePlayer.hasReducedDebug() && !this.mc.gameSettings.reducedDebugInfo)
@@ -895,8 +895,7 @@ public class GuiIngame extends Gui
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
     }
 
-    private void renderVignette(float lightLevel, ScaledResolution scaledRes)
-    {
+    private void renderVignette(float lightLevel, ScaledResolution scaledRes) {
         // 计算宽高，避免每次都调用
         int width = scaledRes.getScaledWidth();
         int height = scaledRes.getScaledHeight();

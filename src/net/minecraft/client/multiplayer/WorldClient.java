@@ -4,6 +4,8 @@ import com.google.common.collect.Sets;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Callable;
+
+import net.fpsboost.module.impl.entityculling.EntityCulling;
 import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.client.Minecraft;
@@ -38,7 +40,6 @@ import net.minecraft.world.storage.WorldInfo;
 import net.optifine.CustomGuis;
 import net.optifine.DynamicLights;
 import net.optifine.override.PlayerControllerOF;
-import net.optifine.reflect.Reflector;
 
 public class WorldClient extends World
 {
@@ -210,6 +211,7 @@ public class WorldClient extends World
 
     public void addEntityToWorld(int entityID, Entity entityToSpawn)
     {
+        EntityCulling.getInstance().addEntity(entityID, entityToSpawn);
         Entity entity = this.getEntityByID(entityID);
 
         if (entity != null)
@@ -237,12 +239,12 @@ public class WorldClient extends World
     {
         Entity entity = this.entitiesById.removeObject(entityID);
 
-        if (entity != null)
-        {
+        if (entity != null) {
             this.entityList.remove(entity);
             this.removeEntity(entity);
         }
 
+        EntityCulling.getInstance().removeEntity(entityID, entity);
         return entity;
     }
 

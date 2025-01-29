@@ -3,7 +3,6 @@ package net.fpsboost.config;
 import cn.langya.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.fpsboost.Client;
 import net.fpsboost.Wrapper;
@@ -50,23 +49,26 @@ public class ConfigManager implements Wrapper {
      * @param name 配置文件名称
      */
     public static void loadConfig(String name) {
-        File file = new File(dir, name);
-        JsonParser jsonParser = new JsonParser();
-        if (file.exists()) {
-            for (Config config : configs) {
-                if (!config.name.equals(name)) continue;
-                try {
-                    config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
-                    logConfigAction(name, "加载客户端配置", "Loading client config");
-                } catch (FileNotFoundException e) {
-                    logConfigError(name, e);
+        // 创建新进程来加载配置文件
+        new Thread(() -> {
+            File file = new File(dir, name);
+            JsonParser jsonParser = new JsonParser();
+            if (file.exists()) {
+                for (Config config : configs) {
+                    if (!config.name.equals(name)) continue;
+                    try {
+                        config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
+                        logConfigAction(name, "加载客户端配置", "Loading client config");
+                    } catch (FileNotFoundException e) {
+                        logConfigError(name, e);
+                    }
+                    break;
                 }
-                break;
+            } else {
+                Logger.warn("Config " + name + " doesn't exist, creating a new one...");
+                saveConfig(name);
             }
-        } else {
-            Logger.warn("Config " + name + " doesn't exist, creating a new one...");
-            saveConfig(name);
-        }
+        }).start();
     }
 
     /**
@@ -75,34 +77,43 @@ public class ConfigManager implements Wrapper {
      * @param name 配置文件名称
      */
     public static void saveConfig(String name) {
-        File file = new File(dir, name);
-        try {
-            file.createNewFile();
-            for (Config config : configs) {
-                if (!config.name.equals(name)) continue;
-                FileUtils.writeByteArrayToFile(file, gson.toJson(config.saveConfig()).getBytes(StandardCharsets.UTF_8));
-                logConfigAction(name, "保存客户端配置", "Saving client config");
-                break;
+        // 创建新进程来保存配置文件
+        new Thread(() -> {
+            File file = new File(dir, name);
+            try {
+                file.createNewFile();
+                for (Config config : configs) {
+                    if (!config.name.equals(name)) continue;
+                    FileUtils.writeByteArrayToFile(file, gson.toJson(config.saveConfig()).getBytes(StandardCharsets.UTF_8));
+                    logConfigAction(name, "保存客户端配置", "Saving client config");
+                    break;
+                }
+            } catch (IOException e) {
+                Logger.error("Failed to save config: " + name);
             }
-        } catch (IOException e) {
-            Logger.error("Failed to save config: " + name);
-        }
+        }).start();
     }
 
     /**
      * 加载所有配置文件
      */
     public static void loadAllConfig() {
-        configs.forEach(it -> loadConfig(it.name));
-        logConfigAction("全部配置", "成功加载全部配置", "Successfully loaded all configs");
+        // 创建新进程来加载所有配置文件
+        new Thread(() -> {
+            configs.forEach(it -> loadConfig(it.name));
+            logConfigAction("全部配置", "成功加载全部配置", "Successfully loaded all configs");
+        }).start();
     }
 
     /**
      * 保存所有配置文件
      */
     public static void saveAllConfig() {
-        configs.forEach(it -> saveConfig(it.name));
-        logConfigAction("全部配置", "成功保存全部配置", "Successfully saved all configs");
+        // 创建新进程来保存所有配置文件
+        new Thread(() -> {
+            configs.forEach(it -> saveConfig(it.name));
+            logConfigAction("全部配置", "成功保存全部配置", "Successfully saved all configs");
+        }).start();
     }
 
     /**

@@ -669,7 +669,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
                 BlockPos blockpos = new BlockPos(entity);
                 IBlockState iblockstate = this.mc.theWorld.getBlockState(blockpos);
                 Block block = iblockstate.getBlock();
-                
+
                 if (block == Blocks.bed)
                 {
                     int j = iblockstate.getValue(BlockBed.FACING).getHorizontalIndex();
