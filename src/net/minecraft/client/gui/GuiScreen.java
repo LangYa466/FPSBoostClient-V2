@@ -583,7 +583,7 @@ public abstract class GuiScreen extends Gui implements GuiYesNoCallback
         tessellator.draw();
     }
 
-    protected ResourceLocation clientBG = new ResourceLocation("ClientBG");
+    protected ResourceLocation clientBG = new ResourceLocation("client/bg.jpg");
     public void drawClientBackground() {
         RenderUtil.drawImage(clientBG,0,0,width,height);
     }

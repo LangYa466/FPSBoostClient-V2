@@ -17,7 +17,6 @@ import net.minecraft.util.ResourceLocation;
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
 
     public static final File file = new File(ConfigManager.dir,"bg.data");
-    private boolean test = false;
 
     public void initGui() {
         int buttonY = this.height / 4 + 48;

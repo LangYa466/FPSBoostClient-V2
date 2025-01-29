@@ -54,9 +54,6 @@ public class Client implements Wrapper {
             checkForUpdates();
         }
 
-        // Download and set background image
-        downloadBackgroundImage();
-
         // Display the language settings screen
         if (!isDev)  mc.displayGuiScreen(new GuiI18n());
         guimainMenu = new GuiMainMenu();
@@ -87,22 +84,6 @@ public class Client implements Wrapper {
             Logger.info("Auto-update jar file: " + autoUpdateJarFile.getAbsolutePath());
             Runtime.getRuntime().exec("java -jar " + autoUpdateJarFile.getAbsolutePath());
             System.exit(0);
-        }
-    }
-
-    private static void downloadBackgroundImage() throws IOException {
-        String url = web + "fj";
-        File backgroundFile = GuiMainMenu.file;
-
-        if (backgroundFile.exists()) {
-            String localImageContent = FileUtils.readFileToString(backgroundFile);
-            if (localImageContent.contains("http") && localImageContent.contains("://")) {
-                WebUtil.bindTextureWithUrl(url, "ClientBG");
-            } else {
-                WebUtil.bindLocalTexture(localImageContent, "ClientBG");
-            }
-        } else {
-            WebUtil.bindTextureWithUrl(url, "ClientBG");
         }
     }
 
