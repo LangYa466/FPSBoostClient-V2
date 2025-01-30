@@ -2,6 +2,9 @@ package net.minecraft.util;
 
 import java.util.Random;
 import java.util.UUID;
+
+import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.util.RivensMath;
 import net.optifine.util.MathUtils;
 
 public class MathHelper
@@ -26,11 +29,13 @@ public class MathHelper
 
     public static float sin(float p_76126_0_)
     {
+        if (ClientSettings.clientMathFix) return RivensMath.sin(p_76126_0_);
         return fastMath ? SIN_TABLE_FAST[(int)(p_76126_0_ * radToIndex) & 4095] : SIN_TABLE[(int)(p_76126_0_ * 10430.378F) & 65535];
     }
 
     public static float cos(float value)
     {
+        if (ClientSettings.clientMathFix) return RivensMath.cos(value);
         return fastMath ? SIN_TABLE_FAST[(int)(value * radToIndex + 1024.0F) & 4095] : SIN_TABLE[(int)(value * 10430.378F + 16384.0F) & 65535];
     }
 

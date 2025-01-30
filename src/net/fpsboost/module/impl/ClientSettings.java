@@ -29,7 +29,15 @@ public class ClientSettings extends Module {
     };
     public static final BooleanValue gc = new BooleanValue("世界内存优化(fps更高 加载时间增加)","Memory Fix",false);
     public final BooleanValue mouseFix = new BooleanValue("鼠标手感优化(会导致和原版灵敏度不一样)","Mouse Fix",false);
+    private final BooleanValue mathFix = new BooleanValue("Riven算法优化Math 建议开启","Riven Math",true) {
+        @Override
+        public void setValue(Boolean value) {
+            clientMathFix = value;
+            super.setValue(value);
+        }
+    };
     private final RawInputMod rawInputMod = new RawInputMod();
+    public static boolean clientMathFix = false;
 
     @Override
     public void onUpdate() {
