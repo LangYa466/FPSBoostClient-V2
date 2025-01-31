@@ -14,6 +14,8 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.concurrent.Callable;
+
+import net.fpsboost.element.impl.PackDisplay;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.StitcherException;
 import net.minecraft.client.resources.IResource;
@@ -479,6 +481,8 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                 Config.dbg("Exporting texture map: " + this.basePath);
                 TextureUtils.saveGlTexture("debug/" + this.basePath.replaceAll("/", "_"), this.getGlTextureId(), this.mipmapLevels, stitcher.getCurrentWidth(), stitcher.getCurrentHeight());
             }
+
+            PackDisplay.INSTANCE.onSwitchTexture();
 
             return;
         }

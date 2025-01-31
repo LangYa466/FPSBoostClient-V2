@@ -7,12 +7,10 @@ import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.ResourceLocation;
-import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -24,7 +22,6 @@ public class PotionDisplay extends Element {
     private final ColorValue color = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80), this);
     private final ColorValue textColorValue = new ColorValue("药水名字文本颜色","Potion Name Text Color", Color.white, this);
     private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色","Potion Duration Text Color", Color.white, this);
-
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 
     public PotionDisplay() {
@@ -36,11 +33,8 @@ public class PotionDisplay extends Element {
         ArrayList<PotionEffect> collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
 
         FontRenderer fr;
-        if (betterFont.getValue()) {
-            fr = FontManager.client();
-        } else {
-            fr = mc.fontRendererObj;
-        }
+        if (betterFont.getValue()) fr = FontManager.client(); else fr = mc.fontRendererObj;
+
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {
             RenderUtil.resetColor();

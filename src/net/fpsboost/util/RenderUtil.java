@@ -132,10 +132,8 @@ public class RenderUtil implements Wrapper {
     }
 
     public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
-        GlStateManager.enableBlend();
         mc.getTextureManager().bindTexture(resourceLocation);
         Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
-        GlStateManager.disableBlend();
     }
 
     public static void color(int color) {

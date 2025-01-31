@@ -25,6 +25,7 @@ public class ElementManager {
         elements.add(new SmokePlayerInfo());
         elements.add(new ReachDisplay());
         elements.add(new SprintDisplay());
+        elements.add(PackDisplay.INSTANCE);
 
         elements.forEach(Element::init);
     }

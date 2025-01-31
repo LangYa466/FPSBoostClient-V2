@@ -7,59 +7,67 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import lombok.Getter;
-import net.minecraft.util.JsonUtils;
-import org.apache.commons.io.IOUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.Reader;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Map.Entry;
+import net.minecraft.util.JsonUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-@Getter
-public class ResourceIndex {
+public class ResourceIndex
+{
     private static final Logger logger = LogManager.getLogger();
-    private final Map<String, File> resourceMap = new ConcurrentHashMap<>();
+    private final Map<String, File> resourceMap = Maps.newHashMap();
 
-    public ResourceIndex(File baseDir, String indexName) {
-        if (indexName != null) {
-            File objectsDir = new File(baseDir, "objects");
-            File indexFile = new File(baseDir, "indexes/" + indexName + ".json");
+    public ResourceIndex(File p_i1047_1_, String p_i1047_2_)
+    {
+        if (p_i1047_2_ != null)
+        {
+            File file1 = new File(p_i1047_1_, "objects");
+            File file2 = new File(p_i1047_1_, "indexes/" + p_i1047_2_ + ".json");
+            BufferedReader bufferedreader = null;
 
-            try (BufferedReader reader = Files.newReader(indexFile, Charsets.UTF_8)) {
-                JsonObject rootJson = (new JsonParser()).parse(reader).getAsJsonObject();
-                JsonObject objectsJson = JsonUtils.getJsonObject(rootJson, "objects", null);
+            try
+            {
+                bufferedreader = Files.newReader(file2, Charsets.UTF_8);
+                JsonObject jsonobject = (new JsonParser()).parse(bufferedreader).getAsJsonObject();
+                JsonObject jsonobject1 = JsonUtils.getJsonObject(jsonobject, "objects", null);
 
-                if (objectsJson != null) {
-                    for (Map.Entry<String, JsonElement> entry : objectsJson.entrySet()) {
-                        processResourceEntry(entry, objectsDir);
+                if (jsonobject1 != null)
+                {
+                    for (Entry<String, JsonElement> entry : jsonobject1.entrySet())
+                    {
+                        JsonObject jsonobject2 = (JsonObject)entry.getValue();
+                        String s = entry.getKey();
+                        String[] astring = s.split("/", 2);
+                        String s1 = astring.length == 1 ? astring[0] : astring[0] + ":" + astring[1];
+                        String s2 = JsonUtils.getString(jsonobject2, "hash");
+                        File file3 = new File(file1, s2.substring(0, 2) + "/" + s2);
+                        this.resourceMap.put(s1, file3);
                     }
                 }
-            } catch (JsonParseException e) {
-                logger.error("Failed to parse resource index file: {}", indexFile, e);
-            } catch (FileNotFoundException e) {
-                logger.error("Resource index file not found: {}", indexFile, e);
-            } catch (Exception e) {
-                logger.error("Unexpected error while loading resource index file: {}", indexFile, e);
+            }
+            catch (JsonParseException var20)
+            {
+                logger.error("Unable to parse resource index file: " + file2);
+            }
+            catch (FileNotFoundException var21)
+            {
+                logger.error("Can't find the resource index file: " + file2);
+            }
+            finally
+            {
+                IOUtils.closeQuietly(bufferedreader);
             }
         }
     }
 
-    private void processResourceEntry(Map.Entry<String, JsonElement> entry, File objectsDir) {
-        try {
-            JsonObject entryValue = entry.getValue().getAsJsonObject();
-            String originalKey = entry.getKey();
-            String resourceKey = originalKey.replace("/", ":");
-            String hash = JsonUtils.getString(entryValue, "hash");
-            File resourceFile = new File(objectsDir, hash.substring(0, 2) + "/" + hash);
-            resourceMap.put(resourceKey, resourceFile);
-        } catch (Exception e) {
-            logger.warn("Error processing resource entry: {}", entry.getKey(), e);
-        }
+    public Map<String, File> getResourceMap()
+    {
+        return this.resourceMap;
     }
-
 }

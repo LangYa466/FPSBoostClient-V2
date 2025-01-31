@@ -11,6 +11,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiLanguage;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.util.ResourceLocation;
 import org.apache.logging.log4j.LogManager;
@@ -20,9 +23,9 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 {
     private static final Logger logger = LogManager.getLogger();
     private static final Joiner joinerResourcePacks = Joiner.on(", ");
-    public final Map<String, FallbackResourceManager> domainResourceManagers = Maps.newHashMap();
-    public final List<IResourceManagerReloadListener> reloadListeners = Lists.newArrayList();
-    private final Set<String> setResourceDomains = Sets.newLinkedHashSet();
+    private final Map<String, FallbackResourceManager> domainResourceManagers = Maps.<String, FallbackResourceManager>newHashMap();
+    private final List<IResourceManagerReloadListener> reloadListeners = Lists.<IResourceManagerReloadListener>newArrayList();
+    private final Set<String> setResourceDomains = Sets.<String>newLinkedHashSet();
     private final IMetadataSerializer rmMetadataSerializer;
 
     public SimpleReloadableResourceManager(IMetadataSerializer rmMetadataSerializerIn)
@@ -35,7 +38,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
         for (String s : resourcePack.getResourceDomains())
         {
             this.setResourceDomains.add(s);
-            FallbackResourceManager fallbackresourcemanager = this.domainResourceManagers.get(s);
+            FallbackResourceManager fallbackresourcemanager = (FallbackResourceManager)this.domainResourceManagers.get(s);
 
             if (fallbackresourcemanager == null)
             {
@@ -54,7 +57,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 
     public IResource getResource(ResourceLocation location) throws IOException
     {
-        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getResourceDomain());
+        IResourceManager iresourcemanager = (IResourceManager)this.domainResourceManagers.get(location.getResourceDomain());
 
         if (iresourcemanager != null)
         {
@@ -68,7 +71,7 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
 
     public List<IResource> getAllResources(ResourceLocation location) throws IOException
     {
-        IResourceManager iresourcemanager = this.domainResourceManagers.get(location.getResourceDomain());
+        IResourceManager iresourcemanager = (IResourceManager)this.domainResourceManagers.get(location.getResourceDomain());
 
         if (iresourcemanager != null)
         {
@@ -115,6 +118,11 @@ public class SimpleReloadableResourceManager implements IReloadableResourceManag
     {
         for (IResourceManagerReloadListener iresourcemanagerreloadlistener : this.reloadListeners)
         {
+            if (Minecraft.getMinecraft().currentScreen instanceof GuiLanguage){
+                if (!(iresourcemanagerreloadlistener instanceof LanguageManager)) {
+                    continue ;
+                }
+            }
             iresourcemanagerreloadlistener.onResourceManagerReload(this);
         }
     }

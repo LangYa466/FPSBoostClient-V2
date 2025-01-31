@@ -72,7 +72,6 @@ public class Gui
 
     // 绘制矩形（整数坐标）
     public static void drawRect(int left, int top, int right, int bottom, int color) {
-        // 调整坐标，确保 left <= right，top <= bottom
         if (left < right) {
             int i = left;
             left = right;
@@ -84,24 +83,23 @@ public class Gui
             bottom = j;
         }
 
-        // 解析颜色
-        float f3 = (float)(color >> 24 & 255) / 255.0F;
-        float f = (float)(color >> 16 & 255) / 255.0F;
-        float f1 = (float)(color >> 8 & 255) / 255.0F;
-        float f2 = (float)(color & 255) / 255.0F;
+        float f3 = (float) (color >> 24 & 255) / 255.0F;
+        float f = (float) (color >> 16 & 255) / 255.0F;
+        float f1 = (float) (color >> 8 & 255) / 255.0F;
+        float f2 = (float) (color & 255) / 255.0F;
 
-        // 设置 OpenGL 状态
         GlStateManager.enableBlend();
         GlStateManager.disableTexture2D();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         GlStateManager.color(f, f1, f2, f3);
 
-        // 调用通用的矩形绘制方法
         drawRectCommon(left, top, right, bottom, f, f1, f2, f3);
 
-        // 恢复 OpenGL 状态
+        // **关键：恢复 OpenGL 状态，防止影响后续纹理渲染**
         GlStateManager.enableTexture2D();
         GlStateManager.disableBlend();
+        GlStateManager.color(1, 1, 1, 1); // **重置颜色**
+        GlStateManager.blendFunc(770, 771); // **恢复默认混合模式**
     }
 
     protected void drawGradientRect(int left, int top, int right, int bottom, int startColor, int endColor)

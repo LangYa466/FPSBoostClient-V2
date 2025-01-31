@@ -127,6 +127,8 @@ public class RoundedRect extends RenderEntity {
 		GL11.glDisable(3042);
 		GlStateManager.enableTexture2D();
 		GlStateManager.disableBlend();
+		GlStateManager.color(1, 1, 1, 1);
+		GlStateManager.blendFunc(770, 771);
 	}
 
 	public enum RenderType {
