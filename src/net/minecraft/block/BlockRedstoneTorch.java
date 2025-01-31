@@ -70,7 +70,7 @@ public class BlockRedstoneTorch extends BlockTorch
     {
         if (this.isOn)
         {
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
@@ -81,7 +81,7 @@ public class BlockRedstoneTorch extends BlockTorch
     {
         if (this.isOn)
         {
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }

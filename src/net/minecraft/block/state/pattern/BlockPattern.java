@@ -78,9 +78,9 @@ public class BlockPattern
 
         for (BlockPos blockpos : BlockPos.getAllInBox(pos, pos.add(i - 1, i - 1, i - 1)))
         {
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
-                for (EnumFacing enumfacing1 : EnumFacing.values())
+                for (EnumFacing enumfacing1 : EnumFacing.CACHED_VALUES)
                 {
                     if (enumfacing1 != enumfacing && enumfacing1 != enumfacing.getOpposite())
                     {

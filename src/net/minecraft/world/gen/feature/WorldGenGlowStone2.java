@@ -31,7 +31,7 @@ public class WorldGenGlowStone2 extends WorldGenerator
                 {
                     int j = 0;
 
-                    for (EnumFacing enumfacing : EnumFacing.values())
+                    for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
                     {
                         if (worldIn.getBlockState(blockpos.offset(enumfacing)).getBlock() == Blocks.glowstone)
                         {

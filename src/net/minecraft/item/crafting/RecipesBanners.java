@@ -14,7 +14,7 @@ public class RecipesBanners
 {
     void addRecipes(CraftingManager p_179534_1_)
     {
-        for (EnumDyeColor enumdyecolor : EnumDyeColor.values())
+        for (EnumDyeColor enumdyecolor : EnumDyeColor.CACHED_VALUES)
         {
             p_179534_1_.addRecipe(new ItemStack(Items.banner, 1, enumdyecolor.getDyeDamage()), "###", "###", " | ", '#', new ItemStack(Blocks.wool, 1, enumdyecolor.getMetadata()), '|', Items.stick);
         }

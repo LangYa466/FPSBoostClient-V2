@@ -2,7 +2,6 @@ package net.minecraft.block;
 
 import java.util.List;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -33,7 +32,7 @@ public class BlockStoneBrick extends Block
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockStoneBrick.EnumType blockstonebrick$enumtype : BlockStoneBrick.EnumType.values())
+        for (BlockStoneBrick.EnumType blockstonebrick$enumtype : BlockStoneBrick.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blockstonebrick$enumtype.getMetadata()));
         }
@@ -65,6 +64,7 @@ public class BlockStoneBrick extends Block
         private final int meta;
         private final String name;
         private final String unlocalizedName;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int meta, String name, String unlocalizedName)
         {

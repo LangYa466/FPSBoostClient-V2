@@ -27,7 +27,7 @@ public class BlockSand extends BlockFalling
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockSand.EnumType blocksand$enumtype : BlockSand.EnumType.values())
+        for (BlockSand.EnumType blocksand$enumtype : BlockSand.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blocksand$enumtype.getMetadata()));
         }
@@ -63,6 +63,7 @@ public class BlockSand extends BlockFalling
         private final String name;
         private final MapColor mapColor;
         private final String unlocalizedName;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int meta, String name, String unlocalizedName, MapColor mapColor)
         {

@@ -61,7 +61,7 @@ public abstract class BlockButton extends Block
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             if (func_181088_a(worldIn, pos, enumfacing))
             {

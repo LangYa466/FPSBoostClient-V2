@@ -95,7 +95,7 @@ public class BlockPistonBase extends Block
 
     private boolean shouldBeExtended(World worldIn, BlockPos pos, EnumFacing facing)
     {
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             if (enumfacing != facing && worldIn.isSidePowered(pos.offset(enumfacing), enumfacing))
             {
@@ -111,7 +111,7 @@ public class BlockPistonBase extends Block
         {
             BlockPos blockpos = pos.up();
 
-            for (EnumFacing enumfacing1 : EnumFacing.values())
+            for (EnumFacing enumfacing1 : EnumFacing.CACHED_VALUES)
             {
                 if (enumfacing1 != EnumFacing.DOWN && worldIn.isSidePowered(blockpos.offset(enumfacing1), enumfacing1))
                 {

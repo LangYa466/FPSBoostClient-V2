@@ -30,7 +30,7 @@ public class BlockPlanks extends Block
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values())
+        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blockplanks$enumtype.getMetadata()));
         }
@@ -70,6 +70,7 @@ public class BlockPlanks extends Block
         private final String name;
         private final String unlocalizedName;
         private final MapColor mapColor;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int p_i46388_3_, String p_i46388_4_, MapColor p_i46388_5_)
         {

@@ -2566,7 +2566,7 @@ public abstract class World implements IBlockAccess
             }
             else
             {
-                for (EnumFacing enumfacing : EnumFacing.values())
+                for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
                 {
                     BlockPos blockpos = pos.offset(enumfacing);
                     int k = this.getLightFor(lightType, blockpos) - j;
@@ -2636,7 +2636,7 @@ public abstract class World implements IBlockAccess
                             {
                                 BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
 
-                                for (EnumFacing enumfacing : EnumFacing.values())
+                                for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
                                 {
                                     int i4 = i2 + enumfacing.getFrontOffsetX();
                                     int j4 = j2 + enumfacing.getFrontOffsetY();
@@ -2996,7 +2996,7 @@ public abstract class World implements IBlockAccess
     {
         int i = 0;
 
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             int j = this.getRedstonePower(pos.offset(enumfacing), enumfacing);
 

@@ -304,7 +304,7 @@ public class BlockFire extends Block
 
     private boolean canNeighborCatchFire(World worldIn, BlockPos pos)
     {
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             if (this.canCatchFire(worldIn, pos.offset(enumfacing)))
             {
@@ -325,7 +325,7 @@ public class BlockFire extends Block
         {
             int i = 0;
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 i = Math.max(this.getEncouragement(worldIn.getBlockState(pos.offset(enumfacing)).getBlock()), i);
             }

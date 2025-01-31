@@ -5,7 +5,7 @@ import net.minecraft.util.EnumFacing;
 
 public class SetVisibility
 {
-    private static final int COUNT_FACES = EnumFacing.values().length;
+    private static final int COUNT_FACES = EnumFacing.CACHED_VALUES.length;
     private long bits;
 
     public void setManyVisible(Set<EnumFacing> p_178620_1_)
@@ -47,18 +47,18 @@ public class SetVisibility
         StringBuilder stringbuilder = new StringBuilder();
         stringbuilder.append(' ');
 
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             stringbuilder.append(' ').append(enumfacing.toString().toUpperCase().charAt(0));
         }
 
         stringbuilder.append('\n');
 
-        for (EnumFacing enumfacing2 : EnumFacing.values())
+        for (EnumFacing enumfacing2 : EnumFacing.CACHED_VALUES)
         {
             stringbuilder.append(enumfacing2.toString().toUpperCase().charAt(0));
 
-            for (EnumFacing enumfacing1 : EnumFacing.values())
+            for (EnumFacing enumfacing1 : EnumFacing.CACHED_VALUES)
             {
                 if (enumfacing2 == enumfacing1)
                 {

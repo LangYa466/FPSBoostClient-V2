@@ -84,6 +84,7 @@ public abstract class BlockFlower extends BlockBush
         {
             return this == YELLOW ? Blocks.yellow_flower : Blocks.red_flower;
         }
+        public static final EnumFlowerColor[] CACHE_VALUES = values();
     }
 
     public enum EnumFlowerType implements IStringSerializable
@@ -99,7 +100,7 @@ public abstract class BlockFlower extends BlockBush
         PINK_TULIP(BlockFlower.EnumFlowerColor.RED, 7, "pink_tulip", "tulipPink"),
         OXEYE_DAISY(BlockFlower.EnumFlowerColor.RED, 8, "oxeye_daisy", "oxeyeDaisy");
 
-        private static final BlockFlower.EnumFlowerType[][] TYPES_FOR_BLOCK = new BlockFlower.EnumFlowerType[BlockFlower.EnumFlowerColor.values().length][];
+        private static final BlockFlower.EnumFlowerType[][] TYPES_FOR_BLOCK = new BlockFlower.EnumFlowerType[EnumFlowerColor.CACHE_VALUES.length][];
         private final BlockFlower.EnumFlowerColor blockType;
         private final int meta;
         private final String name;
@@ -161,7 +162,7 @@ public abstract class BlockFlower extends BlockBush
         }
 
         static {
-            for (final BlockFlower.EnumFlowerColor blockflower$enumflowercolor : BlockFlower.EnumFlowerColor.values())
+            for (final BlockFlower.EnumFlowerColor blockflower$enumflowercolor : EnumFlowerColor.CACHE_VALUES)
             {
                 Collection<BlockFlower.EnumFlowerType> collection = Collections2.filter(Lists.newArrayList(values()), new Predicate<BlockFlower.EnumFlowerType>()
                 {

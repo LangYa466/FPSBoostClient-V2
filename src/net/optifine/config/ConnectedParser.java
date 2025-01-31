@@ -1029,7 +1029,7 @@ public class ConnectedParser
 
     public EnumDyeColor[] parseDyeColors(String str, String property, EnumDyeColor[] errValue)
     {
-        return this.parseObjects(str, EnumDyeColor.values(), NAME_GETTER_DYE_COLOR, property, errValue);
+        return this.parseObjects(str, EnumDyeColor.CACHED_VALUES, NAME_GETTER_DYE_COLOR, property, errValue);
     }
 
     public Weather[] parseWeather(String str, String property, Weather[] errValue)

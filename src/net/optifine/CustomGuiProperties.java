@@ -137,7 +137,7 @@ public class CustomGuiProperties
         }
         else
         {
-            EnumDyeColor[] aenumdyecolor = EnumDyeColor.values();
+            EnumDyeColor[] aenumdyecolor = EnumDyeColor.CACHED_VALUES;
 
             for (int i = 0; i < aenumdyecolor.length; ++i)
             {

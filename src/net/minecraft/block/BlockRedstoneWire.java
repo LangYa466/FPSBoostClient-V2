@@ -176,7 +176,7 @@ public class BlockRedstoneWire extends Block
 
             this.blocksNeedingUpdate.add(pos1);
 
-            for (EnumFacing enumfacing1 : EnumFacing.values())
+            for (EnumFacing enumfacing1 : EnumFacing.CACHED_VALUES)
             {
                 this.blocksNeedingUpdate.add(pos1.offset(enumfacing1));
             }
@@ -191,7 +191,7 @@ public class BlockRedstoneWire extends Block
         {
             worldIn.notifyNeighborsOfStateChange(pos, this);
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
@@ -236,7 +236,7 @@ public class BlockRedstoneWire extends Block
 
         if (!worldIn.isRemote)
         {
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }

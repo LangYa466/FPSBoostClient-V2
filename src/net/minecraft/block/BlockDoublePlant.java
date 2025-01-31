@@ -3,7 +3,6 @@ package net.minecraft.block;
 import java.util.List;
 import java.util.Random;
 import net.minecraft.block.material.Material;
-import net.minecraft.block.properties.IProperty;
 import net.minecraft.block.properties.PropertyEnum;
 import net.minecraft.block.state.BlockState;
 import net.minecraft.block.state.IBlockState;
@@ -226,7 +225,7 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockDoublePlant.EnumPlantType blockdoubleplant$enumplanttype : BlockDoublePlant.EnumPlantType.values())
+        for (BlockDoublePlant.EnumPlantType blockdoubleplant$enumplanttype : EnumPlantType.CACHED_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blockdoubleplant$enumplanttype.getMeta()));
         }
@@ -329,6 +328,8 @@ public class BlockDoublePlant extends BlockBush implements IGrowable
             this.name = name;
             this.unlocalizedName = unlocalizedName;
         }
+
+        public static final EnumPlantType[] CACHED_VALUES = values();
 
         public int getMeta()
         {

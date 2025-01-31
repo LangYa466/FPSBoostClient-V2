@@ -75,7 +75,7 @@ public class BlockSponge extends Block
             BlockPos blockpos = tuple.getFirst();
             int j = tuple.getSecond().intValue();
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 BlockPos blockpos1 = blockpos.offset(enumfacing);
 

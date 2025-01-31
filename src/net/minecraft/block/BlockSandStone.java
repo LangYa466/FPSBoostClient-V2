@@ -30,7 +30,7 @@ public class BlockSandStone extends Block
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockSandStone.EnumType blocksandstone$enumtype : BlockSandStone.EnumType.values())
+        for (BlockSandStone.EnumType blocksandstone$enumtype : BlockSandStone.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blocksandstone$enumtype.getMetadata()));
         }
@@ -66,6 +66,7 @@ public class BlockSandStone extends Block
         private final int metadata;
         private final String name;
         private final String unlocalizedName;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int meta, String name, String unlocalizedName)
         {

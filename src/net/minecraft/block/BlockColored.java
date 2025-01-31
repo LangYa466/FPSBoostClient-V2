@@ -30,7 +30,7 @@ public class BlockColored extends Block
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (EnumDyeColor enumdyecolor : EnumDyeColor.values())
+        for (EnumDyeColor enumdyecolor : EnumDyeColor.CACHED_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, enumdyecolor.getMetadata()));
         }

@@ -48,7 +48,7 @@ public class BlockStone extends Block
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockStone.EnumType blockstone$enumtype : BlockStone.EnumType.values())
+        for (BlockStone.EnumType blockstone$enumtype : BlockStone.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blockstone$enumtype.getMetadata()));
         }
@@ -84,6 +84,7 @@ public class BlockStone extends Block
         private final String name;
         private final String unlocalizedName;
         private final MapColor field_181073_l;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int p_i46383_3_, MapColor p_i46383_4_, String p_i46383_5_)
         {

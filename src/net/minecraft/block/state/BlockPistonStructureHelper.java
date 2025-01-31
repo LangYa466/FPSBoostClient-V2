@@ -201,7 +201,7 @@ public class BlockPistonStructureHelper
 
     private boolean func_177250_b(BlockPos p_177250_1_)
     {
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             if (enumfacing.getAxis() != this.moveDirection.getAxis() && !this.func_177251_a(p_177250_1_.offset(enumfacing)))
             {

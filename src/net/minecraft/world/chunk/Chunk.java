@@ -1328,7 +1328,7 @@ public class Chunk
 
                 if (this.storageArrays[j] == null && flag || this.storageArrays[j] != null && this.storageArrays[j].getBlockByExtId(k, i1, l).getMaterial() == Material.air)
                 {
-                    for (EnumFacing enumfacing : EnumFacing.values())
+                    for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
                     {
                         BlockPos blockpos2 = blockpos1.offset(enumfacing);
 

@@ -21,7 +21,7 @@ public class PropertyDirection extends PropertyEnum<EnumFacing>
 
     public static PropertyDirection create(String name, Predicate<EnumFacing> filter)
     {
-        return create(name, Collections2.filter(Lists.newArrayList(EnumFacing.values()), filter));
+        return create(name, Collections2.filter(Lists.newArrayList(EnumFacing.CACHED_VALUES), filter));
     }
 
     public static PropertyDirection create(String name, Collection<EnumFacing> values)

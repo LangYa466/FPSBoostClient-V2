@@ -206,7 +206,7 @@ public class BlockSapling extends BlockBush implements IGrowable
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values())
+        for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blockplanks$enumtype.getMetadata()));
         }

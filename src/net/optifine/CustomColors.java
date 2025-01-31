@@ -1448,7 +1448,7 @@ public class CustomColors
 
     private static float[][] readDyeColors(Properties props, String fileName, String prefix, String logName)
     {
-        EnumDyeColor[] aenumdyecolor = EnumDyeColor.values();
+        EnumDyeColor[] aenumdyecolor = EnumDyeColor.CACHED_VALUES;
         Map<String, EnumDyeColor> map = new HashMap();
 
         for (int i = 0; i < aenumdyecolor.length; ++i)

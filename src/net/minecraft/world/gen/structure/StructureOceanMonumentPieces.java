@@ -806,7 +806,7 @@ public class StructureOceanMonumentPieces
 
                         if (astructureoceanmonumentpieces$roomdefinition[l4] != null)
                         {
-                            for (EnumFacing enumfacing : EnumFacing.values())
+                            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
                             {
                                 int i1 = k2 + enumfacing.getFrontOffsetX();
                                 int j1 = i4 + enumfacing.getFrontOffsetY();

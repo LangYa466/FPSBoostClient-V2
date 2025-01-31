@@ -67,7 +67,7 @@ public abstract class BlockWoodSlab extends BlockSlab
     {
         if (itemIn != Item.getItemFromBlock(Blocks.double_wooden_slab))
         {
-            for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.values())
+            for (BlockPlanks.EnumType blockplanks$enumtype : BlockPlanks.EnumType.CACHE_VALUES)
             {
                 list.add(new ItemStack(itemIn, 1, blockplanks$enumtype.getMetadata()));
             }

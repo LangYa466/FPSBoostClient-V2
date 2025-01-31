@@ -104,7 +104,7 @@ public class WeightedBakedModel implements IBakedModel
         {
             int i = this.model.getGeneralQuads().size();
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 i += this.model.getFaceQuads(enumfacing).size();
             }

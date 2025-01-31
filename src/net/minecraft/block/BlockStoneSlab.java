@@ -69,7 +69,7 @@ public abstract class BlockStoneSlab extends BlockSlab
     {
         if (itemIn != Item.getItemFromBlock(Blocks.double_stone_slab))
         {
-            for (BlockStoneSlab.EnumType blockstoneslab$enumtype : BlockStoneSlab.EnumType.values())
+            for (BlockStoneSlab.EnumType blockstoneslab$enumtype : BlockStoneSlab.EnumType.CACHE_VALUES)
             {
                 if (blockstoneslab$enumtype != BlockStoneSlab.EnumType.WOOD)
                 {
@@ -146,6 +146,7 @@ public abstract class BlockStoneSlab extends BlockSlab
         private final MapColor field_181075_k;
         private final String name;
         private final String unlocalizedName;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int p_i46381_3_, MapColor p_i46381_4_, String p_i46381_5_)
         {

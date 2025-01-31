@@ -82,7 +82,7 @@ public class SimpleBakedModel implements IBakedModel
             this(bakedModel.isAmbientOcclusion(), bakedModel.isGui3d(), bakedModel.getItemCameraTransforms());
             this.builderTexture = bakedModel.getParticleTexture();
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 this.addFaceBreakingFours(bakedModel, texture, enumfacing);
             }
@@ -111,7 +111,7 @@ public class SimpleBakedModel implements IBakedModel
             this.builderGeneralQuads = Lists.newArrayList();
             this.builderFaceQuads = Lists.newArrayListWithCapacity(6);
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 this.builderFaceQuads.add(Lists.newArrayList());
             }

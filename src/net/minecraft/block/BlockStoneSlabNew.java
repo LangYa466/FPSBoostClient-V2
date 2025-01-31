@@ -75,7 +75,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
     {
         if (itemIn != Item.getItemFromBlock(Blocks.double_stone_slab2))
         {
-            for (BlockStoneSlabNew.EnumType blockstoneslabnew$enumtype : BlockStoneSlabNew.EnumType.values())
+            for (BlockStoneSlabNew.EnumType blockstoneslabnew$enumtype : BlockStoneSlabNew.EnumType.CACHE_VALUES)
             {
                 list.add(new ItemStack(itemIn, 1, blockstoneslabnew$enumtype.getMetadata()));
             }
@@ -141,6 +141,7 @@ public abstract class BlockStoneSlabNew extends BlockSlab
         private final int meta;
         private final String name;
         private final MapColor field_181069_e;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int p_i46391_3_, String p_i46391_4_, MapColor p_i46391_5_)
         {

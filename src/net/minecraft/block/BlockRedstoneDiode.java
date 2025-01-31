@@ -95,7 +95,7 @@ public abstract class BlockRedstoneDiode extends BlockDirectional
             this.dropBlockAsItem(worldIn, pos, state, 0);
             worldIn.setBlockToAir(pos);
 
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }
@@ -203,7 +203,7 @@ public abstract class BlockRedstoneDiode extends BlockDirectional
     {
         if (this.isRepeaterPowered)
         {
-            for (EnumFacing enumfacing : EnumFacing.values())
+            for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
             {
                 worldIn.notifyNeighborsOfStateChange(pos.offset(enumfacing), this);
             }

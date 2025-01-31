@@ -121,7 +121,7 @@ public class BlockWall extends Block
 
     public void getSubBlocks(Item itemIn, CreativeTabs tab, List<ItemStack> list)
     {
-        for (BlockWall.EnumType blockwall$enumtype : BlockWall.EnumType.values())
+        for (BlockWall.EnumType blockwall$enumtype : BlockWall.EnumType.CACHE_VALUES)
         {
             list.add(new ItemStack(itemIn, 1, blockwall$enumtype.getMetadata()));
         }
@@ -166,6 +166,7 @@ public class BlockWall extends Block
         private final int meta;
         private final String name;
         private final String unlocalizedName;
+        public static final EnumType[] CACHE_VALUES = values();
 
         EnumType(int meta, String name, String unlocalizedName)
         {

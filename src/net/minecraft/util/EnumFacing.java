@@ -3,6 +3,8 @@ package net.minecraft.util;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterators;
 import com.google.common.collect.Maps;
+import lombok.Getter;
+
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Random;
@@ -16,11 +18,14 @@ public enum EnumFacing implements IStringSerializable
     WEST(4, 5, 1, "west", EnumFacing.AxisDirection.NEGATIVE, EnumFacing.Axis.X, new Vec3i(-1, 0, 0)),
     EAST(5, 4, 3, "east", EnumFacing.AxisDirection.POSITIVE, EnumFacing.Axis.X, new Vec3i(1, 0, 0));
 
+    @Getter
     private final int index;
     private final int opposite;
+    @Getter
     private final int horizontalIndex;
     private final String name;
     private final EnumFacing.Axis axis;
+    @Getter
     private final EnumFacing.AxisDirection axisDirection;
     private final Vec3i directionVec;
     public static final EnumFacing[] VALUES = new EnumFacing[6];
@@ -38,20 +43,7 @@ public enum EnumFacing implements IStringSerializable
         this.directionVec = directionVecIn;
     }
 
-    public int getIndex()
-    {
-        return this.index;
-    }
-
-    public int getHorizontalIndex()
-    {
-        return this.horizontalIndex;
-    }
-
-    public EnumFacing.AxisDirection getAxisDirection()
-    {
-        return this.axisDirection;
-    }
+    public static final EnumFacing[] CACHED_VALUES = values();
 
     public EnumFacing getOpposite()
     {

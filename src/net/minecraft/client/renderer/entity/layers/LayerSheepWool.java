@@ -30,7 +30,7 @@ public class LayerSheepWool implements LayerRenderer<EntitySheep>
             {
                 int i1 = 25;
                 int i = entitylivingbaseIn.ticksExisted / 25 + entitylivingbaseIn.getEntityId();
-                int j = EnumDyeColor.values().length;
+                int j = EnumDyeColor.CACHED_VALUES.length;
                 int k = i % j;
                 int l = (i + 1) % j;
                 float f = ((float)(entitylivingbaseIn.ticksExisted % 25) + partialTicks) / 25.0F;

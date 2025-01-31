@@ -822,7 +822,7 @@ public class BlockModelRenderer
 
         Orientation(EnumFacing p_i46233_3_, boolean p_i46233_4_)
         {
-            this.field_178229_m = p_i46233_3_.getIndex() + (p_i46233_4_ ? EnumFacing.values().length : 0);
+            this.field_178229_m = p_i46233_3_.getIndex() + (p_i46233_4_ ? EnumFacing.CACHED_VALUES.length : 0);
         }
     }
 

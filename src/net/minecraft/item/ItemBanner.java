@@ -123,7 +123,7 @@ public class ItemBanner extends ItemBlock
 
     public void getSubItems(Item itemIn, CreativeTabs tab, List<ItemStack> subItems)
     {
-        for (EnumDyeColor enumdyecolor : EnumDyeColor.values())
+        for (EnumDyeColor enumdyecolor : EnumDyeColor.CACHED_VALUES)
         {
             NBTTagCompound nbttagcompound = new NBTTagCompound();
             TileEntityBanner.setBaseColorAndPatterns(nbttagcompound, enumdyecolor.getDyeDamage(), null);

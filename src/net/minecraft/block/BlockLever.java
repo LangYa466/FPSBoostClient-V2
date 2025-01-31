@@ -50,7 +50,7 @@ public class BlockLever extends Block
 
     public boolean canPlaceBlockAt(World worldIn, BlockPos pos)
     {
-        for (EnumFacing enumfacing : EnumFacing.values())
+        for (EnumFacing enumfacing : EnumFacing.CACHED_VALUES)
         {
             if (func_181090_a(worldIn, pos, enumfacing))
             {
