@@ -7,7 +7,7 @@ public class I18n {
     private static Locale i18nLocale;
     private static final Map<String, String> cache = new ConcurrentHashMap<>();
 
-    static void setLocale() {
+    public static void setLocale() {
         i18nLocale = LanguageManager.currentLocale;
         cache.clear(); // 切换语言时清空缓存
     }

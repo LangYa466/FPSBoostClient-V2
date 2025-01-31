@@ -117,92 +117,61 @@ public class FontRenderer implements IResourceManagerReloadListener
         this.readGlyphSizes();
     }
 
-    private void readFontTexture()
-    {
-        BufferedImage bufferedimage;
-
-        try
-        {
-            bufferedimage = TextureUtil.readBufferedImage(this.getResourceInputStream(this.locationFontTexture));
-        }
-        catch (IOException ioexception1)
-        {
-            throw new RuntimeException(ioexception1);
+    private void readFontTexture() {
+        BufferedImage image;
+        try {
+            image = TextureUtil.readBufferedImage(this.getResourceInputStream(this.locationFontTexture));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
         Properties properties = FontUtils.readFontProperties(this.locationFontTexture);
         this.blend = FontUtils.readBoolean(properties, "blend", false);
-        int i = bufferedimage.getWidth();
-        int j = bufferedimage.getHeight();
-        int k = i / 16;
-        int l = j / 16;
-        float f = (float)i / 128.0F;
-        float f1 = Config.limit(f, 1.0F, 2.0F);
-        this.offsetBold = 1.0F / f1;
-        float f2 = FontUtils.readFloat(properties, "offsetBold", -1.0F);
 
-        if (f2 >= 0.0F)
-        {
-            this.offsetBold = f2;
+        int width = image.getWidth();
+        int height = image.getHeight();
+        int charWidth = width / 16;
+        int charHeight = height / 16;
+        float scale = Math.max(1.0F, Math.min((float) width / 128.0F, 2.0F));
+        this.offsetBold = 1.0F / scale;
+
+        float customOffsetBold = FontUtils.readFloat(properties, "offsetBold", -1.0F);
+        if (customOffsetBold >= 0.0F) {
+            this.offsetBold = customOffsetBold;
         }
 
-        int[] aint = new int[i * j];
-        bufferedimage.getRGB(0, 0, i, j, aint, 0, i);
+        int[] pixels = new int[width * height];
+        image.getRGB(0, 0, width, height, pixels, 0, width);
 
-        for (int i1 = 0; i1 < 256; ++i1)
-        {
-            int j1 = i1 % 16;
-            int k1 = i1 / 16;
-            int l1 = 0;
+        // 计算字符宽度
+        for (int i = 0; i < 256; ++i) {
+            int cx = (i % 16) * charWidth;
+            int cy = (i / 16) * charHeight;
+            int maxX = charWidth - 1;
 
-            for (l1 = k - 1; l1 >= 0; --l1)
-            {
-                int i2 = j1 * k + l1;
-                boolean flag = true;
-
-                for (int j2 = 0; j2 < l && flag; ++j2)
-                {
-                    int k2 = (k1 * l + j2) * i;
-                    int l2 = aint[i2 + k2];
-                    int i3 = l2 >> 24 & 255;
-
-                    if (i3 > 16) {
-                        flag = false;
+            for (; maxX >= 0; --maxX) {
+                boolean empty = true;
+                for (int y = 0; y < charHeight; ++y) {
+                    if ((pixels[(cy + y) * width + (cx + maxX)] >> 24 & 255) > 16) {
+                        empty = false;
                         break;
                     }
                 }
-
-                if (!flag)
-                {
-                    break;
-                }
+                if (!empty) break;
             }
 
-            if (i1 == 65)
-            {
-                i1 = i1;
+            // 处理空格字符宽度
+            if (i == 32) {
+                maxX = (charWidth <= 8) ? (int) (2.0F * scale) : (int) (1.5F * scale);
             }
 
-            if (i1 == 32)
-            {
-                if (k <= 8)
-                {
-                    l1 = (int)(2.0F * f);
-                }
-                else
-                {
-                    l1 = (int)(1.5F * f);
-                }
-            }
-
-            this.charWidthFloat[i1] = (float)(l1 + 1) / f + 1.0F;
+            this.charWidthFloat[i] = (maxX + 2) / scale;
         }
 
         FontUtils.readCustomCharWidths(properties, this.charWidthFloat);
 
-        for (int j3 = 0; j3 < this.charWidth.length; ++j3)
-        {
-            this.charWidth[j3] = Math.round(this.charWidthFloat[j3]);
+        for (int i = 0; i < this.charWidth.length; ++i) {
+            this.charWidth[i] = Math.round(this.charWidthFloat[i]);
         }
     }
 
@@ -400,141 +369,109 @@ public class FontRenderer implements IResourceManagerReloadListener
         this.strikethroughStyle = false;
     }
 
-    private void renderStringAtPos(String text, boolean shadow)
-    {
-        for (int i = 0; i < text.length(); ++i)
-        {
+    private void renderStringAtPos(String text, boolean shadow) {
+        int length = text.length();
+        for (int i = 0; i < length; ++i) {
             char c0 = text.charAt(i);
 
-            if (c0 == 167 && i + 1 < text.length())
-            {
-                int l = "0123456789abcdefklmnor".indexOf(text.toLowerCase(Locale.ENGLISH).charAt(i + 1));
+            if (c0 == '§' && i + 1 < length) { // 解析颜色/样式代码
+                char formatChar = Character.toLowerCase(text.charAt(i + 1));
+                int l = "0123456789abcdefklmnor".indexOf(formatChar);
 
-                if (l < 16)
-                {
-                    this.randomStyle = false;
-                    this.boldStyle = false;
-                    this.strikethroughStyle = false;
-                    this.underlineStyle = false;
-                    this.italicStyle = false;
-
-                    if (l < 0 || l > 15)
-                    {
-                        l = 15;
-                    }
-
-                    if (shadow)
-                    {
+                if (l >= 0 && l <= 15) { // 颜色代码
+                    resetStyles();
+                    if (shadow) {
                         l += 16;
                     }
+                    int color = this.colorCode[l];
 
-                    int i1 = this.colorCode[l];
-
-                    if (Config.isCustomColors())
-                    {
-                        i1 = CustomColors.getTextColor(l, i1);
+                    if (Config.isCustomColors()) {
+                        color = CustomColors.getTextColor(l, color);
                     }
 
-                    this.textColor = i1;
-                    this.setColor((float)(i1 >> 16) / 255.0F, (float)(i1 >> 8 & 255) / 255.0F, (float)(i1 & 255) / 255.0F, this.alpha);
-                }
-                else if (l == 16)
-                {
-                    this.randomStyle = true;
-                }
-                else if (l == 17)
-                {
-                    this.boldStyle = true;
-                }
-                else if (l == 18)
-                {
-                    this.strikethroughStyle = true;
-                }
-                else if (l == 19)
-                {
-                    this.underlineStyle = true;
-                }
-                else if (l == 20)
-                {
-                    this.italicStyle = true;
-                }
-                else if (l == 21)
-                {
-                    this.randomStyle = false;
-                    this.boldStyle = false;
-                    this.strikethroughStyle = false;
-                    this.underlineStyle = false;
-                    this.italicStyle = false;
-                    this.setColor(this.red, this.blue, this.green, this.alpha);
-                }
-
-                ++i;
-            }
-            else
-            {
-                int j = "\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000".indexOf(c0);
-
-                if (this.randomStyle && j != -1)
-                {
-                    int k = this.getCharWidth(c0);
-                    char c1;
-
-                    while (true)
-                    {
-                        j = this.fontRandom.nextInt("\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000".length());
-                        c1 = "\u00c0\u00c1\u00c2\u00c8\u00ca\u00cb\u00cd\u00d3\u00d4\u00d5\u00da\u00df\u00e3\u00f5\u011f\u0130\u0131\u0152\u0153\u015e\u015f\u0174\u0175\u017e\u0207\u0000\u0000\u0000\u0000\u0000\u0000\u0000 !\"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\u0000\u00c7\u00fc\u00e9\u00e2\u00e4\u00e0\u00e5\u00e7\u00ea\u00eb\u00e8\u00ef\u00ee\u00ec\u00c4\u00c5\u00c9\u00e6\u00c6\u00f4\u00f6\u00f2\u00fb\u00f9\u00ff\u00d6\u00dc\u00f8\u00a3\u00d8\u00d7\u0192\u00e1\u00ed\u00f3\u00fa\u00f1\u00d1\u00aa\u00ba\u00bf\u00ae\u00ac\u00bd\u00bc\u00a1\u00ab\u00bb\u2591\u2592\u2593\u2502\u2524\u2561\u2562\u2556\u2555\u2563\u2551\u2557\u255d\u255c\u255b\u2510\u2514\u2534\u252c\u251c\u2500\u253c\u255e\u255f\u255a\u2554\u2569\u2566\u2560\u2550\u256c\u2567\u2568\u2564\u2565\u2559\u2558\u2552\u2553\u256b\u256a\u2518\u250c\u2588\u2584\u258c\u2590\u2580\u03b1\u03b2\u0393\u03c0\u03a3\u03c3\u03bc\u03c4\u03a6\u0398\u03a9\u03b4\u221e\u2205\u2208\u2229\u2261\u00b1\u2265\u2264\u2320\u2321\u00f7\u2248\u00b0\u2219\u00b7\u221a\u207f\u00b2\u25a0\u0000".charAt(j);
-
-                        if (k == this.getCharWidth(c1))
-                        {
+                    this.textColor = color;
+                    this.setColor((color >> 16 & 255) / 255.0F, (color >> 8 & 255) / 255.0F, (color & 255) / 255.0F, this.alpha);
+                } else { // 样式代码
+                    switch (l) {
+                        case 16:
+                            this.randomStyle = true;
                             break;
-                        }
+                        case 17:
+                            this.boldStyle = true;
+                            break;
+                        case 18:
+                            this.strikethroughStyle = true;
+                            break;
+                        case 19:
+                            this.underlineStyle = true;
+                            break;
+                        case 20:
+                            this.italicStyle = true;
+                            break;
+                        case 21:
+                            this.randomStyle = false;
+                            this.boldStyle = false;
+                            this.strikethroughStyle = false;
+                            this.underlineStyle = false;
+                            this.italicStyle = false;
+                            this.setColor(this.red, this.blue, this.green, this.alpha);
+                            break;
                     }
-
-                    c0 = c1;
                 }
-
-                float f1 = j != -1 && !this.unicodeFlag ? this.offsetBold : 0.5F;
-                boolean flag = (c0 == 0 || j == -1 || this.unicodeFlag) && shadow;
-
-                if (flag)
-                {
-                    this.posX -= f1;
-                    this.posY -= f1;
-                }
-
-                float f = this.renderChar(c0, this.italicStyle);
-
-                if (flag)
-                {
-                    this.posX += f1;
-                    this.posY += f1;
-                }
-
-                if (this.boldStyle)
-                {
-                    this.posX += f1;
-
-                    if (flag)
-                    {
-                        this.posX -= f1;
-                        this.posY -= f1;
-                    }
-
-                    this.renderChar(c0, this.italicStyle);
-                    this.posX -= f1;
-
-                    if (flag)
-                    {
-                        this.posX += f1;
-                        this.posY += f1;
-                    }
-
-                    f += f1;
-                }
-
-                this.doDraw(f);
+                i++; // 跳过格式代码
+            } else {
+                renderCharacter(c0, shadow);
             }
         }
+    }
+
+    private void renderCharacter(char c0, boolean shadow) {
+        int j = "ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αβΓπΣσµτΦΘΩδ∞∅∈∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■ ".indexOf(c0);
+
+        if (this.randomStyle && j != -1) {
+            c0 = getRandomChar(j);
+        }
+
+        float offset = (j != -1 && !this.unicodeFlag) ? this.offsetBold : 0.5F;
+        boolean shadowEffect = (c0 == 0 || j == -1 || this.unicodeFlag) && shadow;
+
+        if (shadowEffect) {
+            this.posX -= offset;
+            this.posY -= offset;
+        }
+
+        float charWidth = this.renderChar(c0, this.italicStyle);
+
+        if (shadowEffect) {
+            this.posX += offset;
+            this.posY += offset;
+        }
+
+        if (this.boldStyle) {
+            this.posX += offset;
+            if (shadowEffect) {
+                this.posX -= offset;
+                this.posY -= offset;
+            }
+            this.renderChar(c0, this.italicStyle);
+            this.posX -= offset;
+            if (shadowEffect) {
+                this.posX += offset;
+                this.posY += offset;
+            }
+            charWidth += offset;
+        }
+
+        this.doDraw(charWidth);
+    }
+
+    private char getRandomChar(int j) {
+        char c1;
+        do {
+            int randIndex = this.fontRandom.nextInt("ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αβΓπΣσµτΦΘΩδ∞∅∈∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■ ".length());
+            c1 = "ÇüéâäàåçêëèïîìÄÅÉæÆôöòûùÿÖÜø£Ø×ƒáíóúñÑªº¿®¬½¼¡«»░▒▓│┤╡╢╖╕╣║╗╝╜╛┐└┴┬├─┼╞╟╚╔╩╦╠═╬╧╨╤╥╙╘╒╓╫╪┘┌█▄▌▐▀αβΓπΣσµτΦΘΩδ∞∅∈∩≡±≥≤⌠⌡÷≈°∙·√ⁿ²■ ".charAt(randIndex);
+        } while (this.getCharWidth(c1) != this.getCharWidth(c1));
+        return c1;
     }
 
     protected void doDraw(float p_doDraw_1_)

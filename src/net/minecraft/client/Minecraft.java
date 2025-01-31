@@ -45,6 +45,7 @@ import net.fpsboost.screen.SplashScreen;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.screenShot.ScreenshotTaker;
+import net.fpsboost.util.texfix.TextureFix;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.audio.MusicTicker;
@@ -1531,6 +1532,7 @@ public class Minecraft implements IThreadListener {
     public void runTick() throws IOException
     {
         // HUDCaching.onTick();
+        TextureFix.onTick();
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;

@@ -67,16 +67,13 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
             return field_148302_b.submit(() -> {});
         }
 
-        Runnable pingThread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    owner.getOldServerPinger().ping(server);
-                } catch (UnknownHostException e) {
-                    throw new RuntimeException(e);
-                }
+        Runnable pingThread = new Thread(() -> {
+            try {
+                owner.getOldServerPinger().ping(server);
+            } catch (UnknownHostException e) {
+                throw new RuntimeException(e);
             }
-        };
+        });
 
         final Future<?> future = timeoutExecutor.submit(pingThread);
         runningTaskCount++;

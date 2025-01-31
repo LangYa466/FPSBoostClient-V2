@@ -1,6 +1,5 @@
 package net.minecraft.client.gui;
 
-import cn.langya.Logger;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import java.io.IOException;
@@ -11,10 +10,8 @@ import net.minecraft.client.resources.Language;
 import net.minecraft.client.resources.LanguageManager;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.util.ResourceLocation;
-import net.optifine.Lang;
 
-public class GuiLanguage extends GuiScreen
-{
+public class GuiLanguage extends GuiScreen {
     protected GuiScreen parentScreen;
     private GuiLanguage.List list;
     private final GameSettings game_settings_3;
@@ -110,13 +107,9 @@ public class GuiLanguage extends GuiScreen
             Language language = this.languageMap.get(this.langCodeList.get(slotIndex));
             GuiLanguage.this.languageManager.setCurrentLanguage(language);
             GuiLanguage.this.game_settings_3.language = language.getLanguageCode();
-
-            // 移除 Forge 资源重载代码 (FMLClientHandler)
-            // 这里我们不再调用 Forge 相关的资源重载
-
-            // 使用自定义的资源重载方法
-            reloadLanguageManager();
-
+            //TODO watch, Polished-Gui incorp
+            this.mc.refreshResources();
+            this.mc.getLanguageManager().onResourceManagerReload(this.mc.getResourceManager());
             GuiLanguage.this.fontRendererObj.setUnicodeFlag(GuiLanguage.this.languageManager.isCurrentLocaleUnicode() || GameSettings.forceUnicodeFont);
             GuiLanguage.this.fontRendererObj.setBidiFlag(GuiLanguage.this.languageManager.isCurrentLanguageBidirectional());
             GuiLanguage.this.confirmSettingsBtn.displayString = I18n.format("gui.done");
@@ -144,14 +137,6 @@ public class GuiLanguage extends GuiScreen
             GuiLanguage.this.fontRendererObj.setBidiFlag(true);
             GuiLanguage.this.drawCenteredString(GuiLanguage.this.fontRendererObj, this.languageMap.get(this.langCodeList.get(entryID)).toString(), this.width / 2, p_180791_3_ + 1, 16777215);
             GuiLanguage.this.fontRendererObj.setBidiFlag(GuiLanguage.this.languageManager.getCurrentLanguage().isBidirectional());
-        }
-
-        // 自定义的语言资源重载方法
-        private void reloadLanguageManager() {
-            Minecraft mc = Minecraft.getMinecraft();
-            mc.getLanguageManager().onResourceManagerReload(mc.getResourceManager());
-
-            Lang.resourcesReloaded();
         }
     }
 }

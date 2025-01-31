@@ -251,6 +251,7 @@ public class VillageCollection extends WorldSavedData
     private boolean isWoodDoor(BlockPos doorPos)
     {
         Block block = this.worldObj.getBlockState(doorPos).getBlock();
+        if (!this.worldObj.isBlockLoaded(doorPos)) return false;
         return block instanceof BlockDoor && block.getMaterial() == Material.wood;
     }
 

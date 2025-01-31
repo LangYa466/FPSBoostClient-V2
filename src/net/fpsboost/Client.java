@@ -13,6 +13,7 @@ import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.CapeUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
+import net.fpsboost.util.texfix.TextureFix;
 import net.fpsboost.value.ValueManager;
 import net.minecraft.client.gui.GuiMainMenu;
 import org.apache.commons.io.FileUtils;
@@ -73,6 +74,7 @@ public class Client implements Wrapper {
         ClientIRC.init();
         CapeUtil.init();
         FontManager.init();
+        TextureFix.init();
     }
 
     private static void checkForUpdates() throws IOException {

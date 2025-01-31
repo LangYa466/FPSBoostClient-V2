@@ -14,28 +14,12 @@ public class Gui
     public static final ResourceLocation icons = new ResourceLocation("textures/gui/icons.png");
     public static float zLevel;
 
-    public void drawHorizontalLine(int startX, int endX, int y, int color)
-    {
-        if (endX < startX)
-        {
-            int i = startX;
-            startX = endX;
-            endX = i;
-        }
-
-        drawRect(startX, y, endX + 1, y + 1, color);
+    public void drawHorizontalLine(int startX, int endX, int y, int color) {
+        drawRect(Math.min(startX, endX), y, Math.max(startX, endX) + 1, y + 1, color);
     }
 
-    public void drawVerticalLine(int x, int startY, int endY, int color)
-    {
-        if (endY < startY)
-        {
-            int i = startY;
-            startY = endY;
-            endY = i;
-        }
-
-        drawRect(x, startY + 1, x + 1, endY, color);
+    public void drawVerticalLine(int x, int startY, int endY, int color) {
+        drawRect(x, Math.min(startY, endY), x + 1, Math.max(startY, endY) + 1, color);
     }
 
     // 通用的绘制矩形方法
