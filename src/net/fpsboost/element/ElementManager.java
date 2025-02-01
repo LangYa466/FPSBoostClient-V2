@@ -26,6 +26,7 @@ public class ElementManager {
         elements.add(new ReachDisplay());
         elements.add(new SprintDisplay());
         elements.add(PackDisplay.INSTANCE);
+        elements.add(new ServerDisplay());
 
         elements.forEach(Element::init);
     }

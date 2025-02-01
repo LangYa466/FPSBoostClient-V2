@@ -33,14 +33,14 @@ public class ServerListEntryNormal implements GuiListExtended.IGuiListEntry
     private static final int SERVER_TIME_OUT = 10;
     private static final ThreadPoolExecutor field_148302_b = new ScheduledThreadPoolExecutor(Math.min(serverCountCache + 5, MAX_THREAD_COUNT_PINGER), (new ThreadFactoryBuilder()).setNameFormat("Server Pinger #%d").setDaemon(true).build());
 
-    private static final ResourceLocation UNKNOWN_SERVER = new ResourceLocation("textures/misc/unknown_server.png");
+    public static final ResourceLocation UNKNOWN_SERVER = new ResourceLocation("textures/misc/unknown_server.png");
     private static final ResourceLocation SERVER_SELECTION_BUTTONS = new ResourceLocation("textures/gui/server_selection.png");
     private final GuiMultiplayer owner;
     private final Minecraft mc;
-    private final ServerData server;
-    private final ResourceLocation serverIcon;
+    public final ServerData server;
+    public final ResourceLocation serverIcon;
     private String field_148299_g;
-    private DynamicTexture field_148305_h;
+    public DynamicTexture field_148305_h;
     private long field_148298_f;
 
     protected ServerListEntryNormal(GuiMultiplayer p_i45048_1_, ServerData serverIn)

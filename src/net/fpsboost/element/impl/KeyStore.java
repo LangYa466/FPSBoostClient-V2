@@ -8,6 +8,7 @@ import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.settings.KeyBinding;
+import net.minecraft.item.ItemAppleGold;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;

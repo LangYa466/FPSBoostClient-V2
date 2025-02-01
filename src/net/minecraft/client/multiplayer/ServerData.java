@@ -19,6 +19,11 @@ public class ServerData
     private String serverIcon;
     private boolean lanServer;
 
+    @Override
+    public String toString() {
+        return String.format("%s(%s)",serverName,serverIP);
+    }
+
     public ServerData(String name, String ip, boolean isLan)
     {
         this.serverName = name;
