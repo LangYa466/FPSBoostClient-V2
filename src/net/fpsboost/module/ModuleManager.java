@@ -26,7 +26,8 @@ public class ModuleManager implements Wrapper {
                 new RenderMyNameTag(), BetterEnchantment.INSTANCE, new BetterNameTag(),
                 new TargetCircle(), new ClickSounds(), new RectMode(), new CustomModel(),
                 new CustomWorldTime(),new CustomHitBox(), new BetterInventory(),
-                new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE
+                new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE,
+                new HidePlantBlock()
         );
 
         // 特殊模块设置
