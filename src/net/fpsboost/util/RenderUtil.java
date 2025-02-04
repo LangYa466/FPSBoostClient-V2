@@ -19,7 +19,9 @@ import static org.lwjgl.opengl.GL11.*;
  * @since 2024/8/30 21:52
  */
 public class RenderUtil implements Wrapper {
-    public static void drawRect(int x,int y,int width,int height,Color color) {
+    public static float E3DPartialTicks = 0;
+
+    public static void drawRect(int x, int y, int width, int height, Color color) {
         int mode = RectMode.mode;
         float radius = RectMode.radius;
         int rgba = color.getRGB();

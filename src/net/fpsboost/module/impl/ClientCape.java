@@ -10,17 +10,18 @@ import net.fpsboost.util.ClientInputGUI;
  */
 public class ClientCape extends Module {
     public ClientCape() {
-        super("ClientCape", "切换客户端披风");
+        super("ClientCape", "赞助披风");
     }
+
+    public static boolean isEnable;
 
     @Override
     public void onEnable() {
-        enable = false;
-        ClientInputGUI clientInputGUI = new ClientInputGUI(mc.displayWidth / 4, mc.displayHeight / 4);
-        mc.displayGuiScreen(clientInputGUI);
-        String cape = clientInputGUI.text;
-        if (cape == null) return;
-        CapeUtil.setCape(cape);
-        super.onEnable();
+        isEnable = true;
+    }
+
+    @Override
+    public void onDisable() {
+        isEnable = false;
     }
 }

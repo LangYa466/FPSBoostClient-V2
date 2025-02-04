@@ -3,6 +3,7 @@ package net.minecraft.client.entity;
 import com.mojang.authlib.GameProfile;
 import java.io.File;
 
+import net.fpsboost.module.impl.ClientCape;
 import net.fpsboost.util.CapeUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.network.NetworkPlayerInfo;
@@ -87,7 +88,7 @@ public abstract class AbstractClientPlayer extends EntityPlayer
         if (!Config.isShowCapes())
         {
             return null;
-        } else if(CapeUtil.cape != null && this == mc.thePlayer) {
+        } else if(ClientCape.isEnable && CapeUtil.cape != null && this == mc.thePlayer) {
             return CapeUtil.cape;
         } else {
             if (this.reloadCapeTimeMs != 0L && System.currentTimeMillis() > this.reloadCapeTimeMs)

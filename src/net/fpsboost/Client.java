@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.11";
+    public static final String version = "2.12";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static final String web = "https://api.fpsboost.cn:444/";
@@ -72,7 +72,6 @@ public class Client implements Wrapper {
         CommandManager.init();
         ConfigManager.init();
         ClientIRC.init();
-        CapeUtil.init();
         FontManager.init();
         TextureFix.init();
     }

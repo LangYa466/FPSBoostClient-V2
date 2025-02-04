@@ -27,7 +27,7 @@ public class ModuleManager implements Wrapper {
                 new TargetCircle(), new ClickSounds(), new RectMode(), new CustomModel(),
                 new CustomWorldTime(),new CustomHitBox(), new BetterInventory(),
                 new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE,
-                new HidePlantBlock()
+                new HidePlantBlock(), new DragonWings()
         );
 
         // 特殊模块设置

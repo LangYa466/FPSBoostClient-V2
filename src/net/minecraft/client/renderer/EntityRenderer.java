@@ -11,6 +11,7 @@ import java.util.concurrent.Callable;
 
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.*;
+import net.fpsboost.util.RenderUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -1753,6 +1754,8 @@ public class EntityRenderer implements IResourceManagerReloadListener {
         GlStateManager.pushMatrix();
         ModuleManager.moduleRender3D();
         GlStateManager.popMatrix();
+
+        RenderUtil.E3DPartialTicks = partialTicks;
 
 
         if (entity.posY + (double)entity.getEyeHeight() >= 128.0D + (double)(this.mc.gameSettings.ofCloudsHeight * 128.0F))
