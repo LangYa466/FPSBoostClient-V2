@@ -38,8 +38,8 @@ public class CustomHitBox extends Module {
                 double x1 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) mc.timer.renderPartialTicks - RenderManager.renderPosX;
                 double y1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) mc.timer.renderPartialTicks - RenderManager.renderPosY;
                 double z1 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) mc.timer.renderPartialTicks - RenderManager.renderPosZ;
-                double width1 = entity.getEntityBoundingBox().maxX - entity.getEntityBoundingBox().minX - 0.1;
-                double height1 = entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY + 0.2;
+                double width1 = (entity.getEntityBoundingBox().maxX - entity.getEntityBoundingBox().minX) / 2;
+                double height1 = entity.getEntityBoundingBox().maxY - entity.getEntityBoundingBox().minY;
                 drawEntityESP(x1, y1, z1, width1, height1, red, green, blue, 0.0F, red, green, blue, 0.8F, size.getValue().floatValue());
             }
         }
