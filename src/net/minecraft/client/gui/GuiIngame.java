@@ -143,10 +143,13 @@ public class GuiIngame extends Gui
         ElementManager.elements.forEach(element -> {
             if (element.enable) {
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(element.xPos,element.yPos,0);
-                GL11.glPointSize(element.size);
-                element.onDraw();
-                GlStateManager.popMatrix();
+                try {
+                    GlStateManager.translate(element.xPos, element.yPos, 0);
+                    GlStateManager.scale(element.scale, element.scale, 1.0F);
+                    element.onDraw();
+                } finally {
+                    GlStateManager.popMatrix();
+                }
             }
         });
 

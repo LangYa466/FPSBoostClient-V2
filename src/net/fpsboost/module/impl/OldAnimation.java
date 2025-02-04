@@ -2,6 +2,7 @@ package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
 import net.fpsboost.value.impl.BooleanValue;
+import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.client.entity.EntityPlayerSP;
 
 public class OldAnimation extends Module {
@@ -11,6 +12,7 @@ public class OldAnimation extends Module {
     public static BooleanValue oldBow = new BooleanValue("弓箭动画","Bow Animation", true);
     public static BooleanValue oldSwing = new BooleanValue("挥手动画","Swing Animation", true);
     public static BooleanValue oldUsing = new BooleanValue("吃东西动画","Using Animation", true);
+    public static NumberValue usingY = new NumberValue("吃东西高度(吃东西动画)","Using Food Y",0.3,1.5,-2,.1);
     public static BooleanValue oldSneak = new BooleanValue("潜行动画","Sneak Animation", false);
     public static BooleanValue oldSmoothSneak = new BooleanValue("潜行动画丝滑(需先开潜行动画)","Sneak Smooth Animation", false);
 

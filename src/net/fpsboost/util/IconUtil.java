@@ -13,6 +13,7 @@ import java.util.stream.IntStream;
 public class IconUtil {
 
     public static final ResourceLocation icon = new ResourceLocation("client/icons/icon_32x32.png");
+    public static final ResourceLocation iconBig = new ResourceLocation("client/icons/icon_150x150.png");
 
     public static ByteBuffer[] getFavicon() {
         try {

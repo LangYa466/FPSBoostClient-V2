@@ -354,7 +354,7 @@ public class ItemRenderer
                             this.performDrinking(abstractclientplayer, partialTicks);
                             if (OldAnimation.isEnabled && OldAnimation.oldUsing.getValue()) {
                                 this.transformFirstPersonItem(f, f1);
-                                GlStateManager.translate(0, 0.3, 0);
+                                GlStateManager.translate(0, OldAnimation.usingY.getValue().floatValue(), 0);
                             } else {
                                 this.transformFirstPersonItem(f, 0.0F);
                             }

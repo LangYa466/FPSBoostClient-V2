@@ -28,7 +28,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.10";
+    public static final String version = "2.11";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static final String web = "https://api.fpsboost.cn:444/";
@@ -80,6 +80,7 @@ public class Client implements Wrapper {
     private static void checkForUpdates() throws IOException {
         String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "versionwithv2.txt")).trim();
         Logger.info((!ClientSettings.isChinese ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
+        Logger.info("当前客户端版本: {}",version);
         isOldVersion = !version.contains(latestVersion);
         if (isOldVersion && isWindows()) {
             File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");

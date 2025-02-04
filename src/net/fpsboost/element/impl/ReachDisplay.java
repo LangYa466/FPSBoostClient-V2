@@ -5,8 +5,8 @@ import net.fpsboost.util.RenderUtil;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.fpsboost.value.impl.NumberValue;
+import net.minecraft.entity.Entity;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 
 import java.awt.*;
 
@@ -29,11 +29,14 @@ public class ReachDisplay extends Element {
 
     private static double range;
 
-    public static void onAttack() {
-        if (mc.objectMouseOver != null && mc.objectMouseOver.typeOfHit.equals(MovingObjectPosition.MovingObjectType.ENTITY)) {
-            Vec3 vec3 = mc.getRenderViewEntity().getPositionEyes(1);
-            range = mc.objectMouseOver.hitVec.distanceTo(vec3);
-        }
+    // 死吗render distance
+    public static void onAttack(Entity targetEntity) {
+        double distance = mc.thePlayer.getDistanceToEntity(targetEntity);
+
+        // 修正 别问为什么要这样减少 不信自己获取getDistanceToEntity试试看
+        double offset = distance > 2 ? 1.62 : 0.8;
+
+        range = Math.max(0, distance - offset);
     }
 
     @Override

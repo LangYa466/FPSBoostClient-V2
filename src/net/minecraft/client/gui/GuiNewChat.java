@@ -4,7 +4,9 @@ import com.google.common.collect.Lists;
 import java.util.Iterator;
 import java.util.List;
 
-import net.fpsboost.module.impl.HideGuiChatRect;
+import net.fpsboost.module.impl.ChatCopy;
+import net.fpsboost.module.impl.BetterChat;
+import net.fpsboost.screen.clickgui.utils.AnimationUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,16 +25,39 @@ public class GuiNewChat extends Gui
     private final List<ChatLine> drawnChatLines = Lists.newArrayList();
     private int scrollPos;
     private boolean isScrolled;
+    public static float percentComplete = 0.0f;
+    public static long prevMillis;
+    public static int newLines;
+
+    static {
+        prevMillis = -1L;
+    }
 
     public GuiNewChat(Minecraft mcIn)
     {
         this.mc = mcIn;
     }
 
-    public void drawChat(int updateCounter)
-    {
-        if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN)
-        {
+    public static void updatePercentage(long diff) {
+        if (percentComplete < 1.0f) {
+            percentComplete += 0.004f * (float)diff;
+        }
+        percentComplete = AnimationUtil.clamp(percentComplete, 0.0f, 1.0f);
+    }
+
+    public void drawChat(int updateCounter) {
+        if (prevMillis == -1L) {
+            prevMillis = System.currentTimeMillis();
+            return;
+        }
+        long current = System.currentTimeMillis();
+        long diff = current - prevMillis;
+        prevMillis = current;
+        updatePercentage(diff);
+        float t = percentComplete;
+        float percent = 1.0f - (t -= 1.0f) * t * t * t;
+        percent = AnimationUtil.clamp(percent, 0.0f, 1.0f);
+        if (this.mc.gameSettings.chatVisibility != EntityPlayer.EnumChatVisibility.HIDDEN) {
             int i = this.getLineCount();
             boolean flag = false;
             int j = 0;
@@ -49,7 +74,11 @@ public class GuiNewChat extends Gui
                 float f1 = this.getChatScale();
                 int l = MathHelper.ceiling_float_int((float)this.getChatWidth() / f1);
                 GlStateManager.pushMatrix();
-                GlStateManager.translate(2.0F, 20.0F, 0.0F);
+                if (BetterChat.isEnable && BetterChat.animation.getValue() && !this.isScrolled) {
+                    GlStateManager.translate(2.0f, 20.0F + (9.0f - 9.0f * percent) * f1, 0.0f);
+                } else {
+                    GlStateManager.translate(2.0F, 20.0F, 0.0F);
+                }
                 GlStateManager.scale(f1, f1, 1.0F);
 
                 for (int i1 = 0; i1 + this.scrollPos < this.drawnChatLines.size() && i1 < i; ++i1)
@@ -81,12 +110,18 @@ public class GuiNewChat extends Gui
                             {
                                 int i2 = 0;
                                 int j2 = -i1 * 11;
-                                if (!HideGuiChatRect.isEnable) {
+                                if (BetterChat.isEnable) {
+                                    if (!BetterChat.hideRect.getValue()) drawRect(i2, j2 - 11, i2 + l + 4, j2, l1 / 2 << 24);
+                                } else {
                                     drawRect(i2, j2 - 11, i2 + l + 4, j2, l1 / 2 << 24);
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, j2 - 8.8F, 16777215 + (l1 << 24));
+                                if (BetterChat.isEnable && BetterChat.animation.getValue() && i1 <= newLines) {
+                                    this.mc.fontRendererObj.drawStringWithShadow(s, 0.0f, (float)(j2 - 8), 16777215 + ((int)((float)l1 * percent) << 24));
+                                } else {
+                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float)i2, (float)(j2 - 8), 16777215 + (l1 << 24));
+                                }
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();
                             }
@@ -131,9 +166,11 @@ public class GuiNewChat extends Gui
 
     public void printChatMessageWithOptionalDeletion(IChatComponent chatComponent, int chatLineId)
     {
-    	if(chatComponent.getUnformattedText().length() == 0 || chatComponent.getUnformattedText().equals(" ")) {
+    	if(chatComponent.getUnformattedText().isEmpty() || chatComponent.getUnformattedText().equals(" ")) {
     		return;
     	}
+        percentComplete = 0.0f;
+        ChatCopy.onChat(chatComponent);
         this.setChatLine(chatComponent, chatLineId, this.mc.ingameGUI.getUpdateCounter(), false);
         logger.info("[CHAT] " + chatComponent.getUnformattedText());
     }
@@ -148,6 +185,7 @@ public class GuiNewChat extends Gui
         int i = MathHelper.floor_float((float)this.getChatWidth() / this.getChatScale());
         List<IChatComponent> list = GuiUtilRenderComponents.splitText(chatComponent, i, this.mc.fontRendererObj, false, false);
         boolean flag = this.getChatOpen();
+        percentComplete = list.size() - 1;
 
         for (IChatComponent ichatcomponent : list)
         {

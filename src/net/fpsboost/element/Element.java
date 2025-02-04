@@ -13,7 +13,8 @@ public class Element extends Module implements Wrapper {
     public boolean dragging;
 
     public int width, height;
-    public float size = 1F;
+    public boolean isHovering;
+    public float scale = 1;
 
     public Element(String name, String cnName) {
         super(name, cnName, "", "");
@@ -29,8 +30,10 @@ public class Element extends Module implements Wrapper {
             alignWithOtherElements();
         }
 
+        isHovering = HoveringUtil.isHovering(xPos, yPos, width * scale, height * scale, mouseX, mouseY);
+
         // 绘制元素的边框
-        RenderUtil.drawOutline(xPos - 2, yPos - 2, this.width, this.height + 3, -1);
+        RenderUtil.drawOutline(xPos - 2, yPos - 2, (int) (this.width * scale), (int) ((this.height + 3) * scale), -1);
     }
 
     // 对齐其他元素
@@ -63,9 +66,9 @@ public class Element extends Module implements Wrapper {
     public void onDraw() {}
 
     public void onClick(int mouseX, int mouseY, int button) {
-        boolean canDrag = HoveringUtil.isHovering(xPos, yPos, width, height, mouseX, mouseY);
-        ElementManager.dragging = canDrag;
-        if (button == 0 && canDrag) {
+        isHovering = HoveringUtil.isHovering(xPos, yPos, width * scale, height * scale, mouseX, mouseY);
+        ElementManager.dragging = isHovering;
+        if (button == 0 && isHovering) {
             dragging = true;
             startX = mouseX - xPos;
             startY = mouseY - yPos;
@@ -74,5 +77,23 @@ public class Element extends Module implements Wrapper {
 
     public void onRelease(int button) {
         if (button == 0) dragging = false;
+    }
+
+    public void setScale(float scale) {
+
+        if(scale > 5.0 || scale < 0.2) {
+
+            if(scale > 5.0) {
+                this.scale = 5.0F;
+            }
+
+            if(scale < 0.2) {
+                this.scale = 0.2F;
+            }
+
+            return;
+        }
+
+        this.scale = scale;
     }
 }

@@ -13,6 +13,7 @@ public class RankManager implements Wrapper  {
     public static final String SECONDARY_COLOR = EnumChatFormatting.GRAY.toString();
 
     public static void hook(DrawTextHook e) {
+        if (Wrapper.isNull()) return;
         RankUtil.ranks.forEach((playerName, rank) -> set(e, playerName, rank));
     }
 

@@ -127,13 +127,17 @@ public class RenderUtil implements Wrapper {
         GlStateManager.resetColor();
     }
 
-    public static Color reAlpha(Color color,float alpha) {
+    public static Color reAlpha(Color color,int alpha) {
         return new Color(color.getRed(),color.getGreen(),color.getBlue(),alpha);
     }
 
-    public static void drawImage(ResourceLocation resourceLocation, float x, float y, float imgWidth, float imgHeight) {
-        mc.getTextureManager().bindTexture(resourceLocation);
-        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, imgWidth, imgHeight, imgWidth, imgHeight);
+    public static void drawImage(ResourceLocation texture, float x, float y, int width, int height) {
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.color(1, 1, 1, 1); // 确保每次绘制时重置颜色
+        mc.getTextureManager().bindTexture(texture);
+        Gui.drawModalRectWithCustomSizedTexture(x, y, 0, 0, width, height, width, height);
+        GlStateManager.disableBlend();
     }
 
     public static void color(int color) {

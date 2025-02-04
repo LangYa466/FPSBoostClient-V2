@@ -9,7 +9,6 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.Getter;
 import lombok.Setter;
-import net.fpsboost.config.ConfigManager;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.Sys;
 

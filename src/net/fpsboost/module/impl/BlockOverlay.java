@@ -4,6 +4,7 @@ import net.fpsboost.module.Module;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.fpsboost.value.impl.ModeValue;
+import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
 import net.minecraft.client.renderer.GlStateManager;
@@ -24,6 +25,7 @@ public class BlockOverlay extends Module {
     private final ColorValue color = new ColorValue("填充颜色","Fill Color", new Color(255, 255, 255, 50),this);
     private final BooleanValue chroma = new BooleanValue("彩虹色","Rainbow", false);
     private final BooleanValue throughBlock = new BooleanValue("边框-立体","3D Outline", true);
+    private final NumberValue size = new NumberValue("边框模式粗细","Outline mode thickness",1,10,1,1);
 
     public BlockOverlay() {
         super("BlockOverlay","方块边框","Display the block outline or fill","抄袭FpsMaster的");
@@ -58,7 +60,7 @@ public class BlockOverlay extends Module {
                 GL11.glDepthMask(false); // 禁用深度掩码
 
                 // 获取颜色值
-                int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getValue().getAlpha() / 255f);
+                int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getValue().getColor().getAlpha() / 255f);
                 Color c = chroma.getValue() ? intToColor(chromaColor) : color1.getValue().getColor();
                 GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
 
@@ -66,12 +68,13 @@ public class BlockOverlay extends Module {
                 final double minX = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinX();
                 final double minY = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinY();
                 final double minZ = (block instanceof BlockStairs || Block.getIdFromBlock(block) == 134) ? 0 : block.getBlockBoundsMinZ();
+                GL11.glLineWidth(size.getValue().floatValue());
 
                 // 渲染边框
                 if (!mode.getValue()) {
                     drawBoundingBox(new AxisAlignedBB(
                             x + minX - 0.005, y + minY - 0.005, z + minZ - 0.005,
-                            x + block.getBlockBoundsMaxX() + 0.005, y + block.getBlockBoundsMaxY() + 0.005, z + block.getBlockBoundsMaxZ() + 0.005
+                            x + block.getBlockBoundsMaxX() + 0.005F, y + block.getBlockBoundsMaxY() + 0.005F, z + block.getBlockBoundsMaxZ() + 0.005F
                     ));
                 }
 

@@ -39,6 +39,7 @@ import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClickSounds;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.module.impl.Perspective;
 import net.fpsboost.module.impl.SmokeCrosshair;
 import net.fpsboost.module.impl.entityculling.EntityCulling;
 import net.fpsboost.screen.SplashScreen;
@@ -1533,6 +1534,7 @@ public class Minecraft implements IThreadListener {
     {
         // HUDCaching.onTick();
         TextureFix.onTick();
+        Perspective.INSTANCE.onTick();
         if (this.rightClickDelayTimer > 0)
         {
             --this.rightClickDelayTimer;

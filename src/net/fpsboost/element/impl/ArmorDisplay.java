@@ -30,8 +30,6 @@ public class ArmorDisplay extends Element {
         int y;
         int addHeldItem = heldItem.getValue() ? 16 : 0;
 
-        ItemStack sword = new ItemStack(Items.diamond_sword);
-
         if(!mode.getValue()) {
         	x = 65 + addHeldItem;
         	y = 16;

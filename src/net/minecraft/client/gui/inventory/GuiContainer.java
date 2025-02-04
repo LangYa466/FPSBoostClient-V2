@@ -3,6 +3,11 @@ package net.minecraft.client.gui.inventory;
 import com.google.common.collect.Sets;
 import java.io.IOException;
 import java.util.Set;
+
+import net.fpsboost.module.impl.GUIOpenAnimation;
+import net.fpsboost.screen.clickgui.utils.Translate;
+import net.fpsboost.util.IconUtil;
+import net.fpsboost.util.RenderUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiScreen;
@@ -19,6 +24,7 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
+import org.lwjgl.opengl.GL11;
 
 public abstract class GuiContainer extends GuiScreen
 {
@@ -50,26 +56,32 @@ public abstract class GuiContainer extends GuiScreen
     private int lastClickButton;
     private boolean doubleClick;
     private ItemStack shiftClickedSlot;
+    private Translate translate;
 
-    public GuiContainer(Container inventorySlotsIn)
-    {
+    public GuiContainer(Container inventorySlotsIn) {
         this.inventorySlots = inventorySlotsIn;
         this.ignoreMouseUp = true;
     }
 
-    public void initGui()
-    {
+    public void initGui() {
         super.initGui();
         this.mc.thePlayer.openContainer = this.inventorySlots;
         this.guiLeft = (this.width - this.xSize) / 2;
         this.guiTop = (this.height - this.ySize) / 2;
+        this.translate = new Translate(0, 0);
     }
 
-    public void drawScreen(int mouseX, int mouseY, float partialTicks)
-    {
+    public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         this.drawDefaultBackground();
         int i = this.guiLeft;
         int j = this.guiTop;
+        translate.interpolate(this.width, this.height, 0.3f);
+        double xmod = this.width / 2 - (translate.getX() / 2);
+        double ymod = this.height / 2 - (translate.getY() / 2);
+        if (GUIOpenAnimation.isEnable) {
+            GlStateManager.translate(xmod, ymod, 0);
+            GlStateManager.scale(translate.getX() / this.width, translate.getY() / this.height, 1);
+        }
         this.drawGuiContainerBackgroundLayer(partialTicks, mouseX, mouseY);
         GlStateManager.disableRescaleNormal();
         RenderHelper.disableStandardItemLighting();
@@ -78,7 +90,7 @@ public abstract class GuiContainer extends GuiScreen
         super.drawScreen(mouseX, mouseY, partialTicks);
         RenderHelper.enableGUIStandardItemLighting();
         GlStateManager.pushMatrix();
-        GlStateManager.translate((float)i, (float)j, 0.0F);
+        GlStateManager.translate((float) i, (float) j, 0.0F);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
         GlStateManager.enableRescaleNormal();
         this.theSlot = null;
@@ -87,13 +99,11 @@ public abstract class GuiContainer extends GuiScreen
         OpenGlHelper.setLightmapTextureCoords(OpenGlHelper.lightmapTexUnit, (float) k, (float) l);
         GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 
-        for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1)
-        {
+        for (int i1 = 0; i1 < this.inventorySlots.inventorySlots.size(); ++i1) {
             Slot slot = this.inventorySlots.inventorySlots.get(i1);
             this.drawSlot(slot);
 
-            if (this.isMouseOverSlot(slot, mouseX, mouseY) && slot.canBeHovered())
-            {
+            if (this.isMouseOverSlot(slot, mouseX, mouseY) && slot.canBeHovered()) {
                 this.theSlot = slot;
                 GlStateManager.disableLighting();
                 GlStateManager.disableDepth();
@@ -113,24 +123,19 @@ public abstract class GuiContainer extends GuiScreen
         InventoryPlayer inventoryplayer = this.mc.thePlayer.inventory;
         ItemStack itemstack = this.draggedStack == null ? inventoryplayer.getItemStack() : this.draggedStack;
 
-        if (itemstack != null)
-        {
+        if (itemstack != null) {
             int j2 = 8;
             int k2 = this.draggedStack == null ? 8 : 16;
             String s = null;
 
-            if (this.draggedStack != null && this.isRightMouseClick)
-            {
+            if (this.draggedStack != null && this.isRightMouseClick) {
                 itemstack = itemstack.copy();
-                itemstack.stackSize = MathHelper.ceiling_float_int((float)itemstack.stackSize / 2.0F);
-            }
-            else if (this.dragSplitting && this.dragSplittingSlots.size() > 1)
-            {
+                itemstack.stackSize = MathHelper.ceiling_float_int((float) itemstack.stackSize / 2.0F);
+            } else if (this.dragSplitting && this.dragSplittingSlots.size() > 1) {
                 itemstack = itemstack.copy();
                 itemstack.stackSize = this.dragSplittingRemnant;
 
-                if (itemstack.stackSize == 0)
-                {
+                if (itemstack.stackSize == 0) {
                     s = EnumChatFormatting.YELLOW + "0";
                 }
             }
@@ -138,30 +143,39 @@ public abstract class GuiContainer extends GuiScreen
             this.drawItemStack(itemstack, mouseX - i - j2, mouseY - j - k2, s);
         }
 
-        if (this.returningStack != null)
-        {
-            float f = (float)(Minecraft.getSystemTime() - this.returningStackTime) / 100.0F;
+        if (this.returningStack != null) {
+            float f = (float) (Minecraft.getSystemTime() - this.returningStackTime) / 100.0F;
 
-            if (f >= 1.0F)
-            {
+            if (f >= 1.0F) {
                 f = 1.0F;
                 this.returningStack = null;
             }
 
             int l2 = this.returningStackDestSlot.xDisplayPosition - this.touchUpX;
             int i3 = this.returningStackDestSlot.yDisplayPosition - this.touchUpY;
-            int l1 = this.touchUpX + (int)((float)l2 * f);
-            int i2 = this.touchUpY + (int)((float)i3 * f);
+            int l1 = this.touchUpX + (int) ((float) l2 * f);
+            int i2 = this.touchUpY + (int) ((float) i3 * f);
             this.drawItemStack(this.returningStack, l1, i2, null);
         }
 
         GlStateManager.popMatrix();
 
-        if (inventoryplayer.getItemStack() == null && this.theSlot != null && this.theSlot.getHasStack())
-        {
+        if (inventoryplayer.getItemStack() == null && this.theSlot != null && this.theSlot.getHasStack()) {
             ItemStack itemstack1 = this.theSlot.getStack();
             this.renderToolTip(itemstack1, mouseX, mouseY);
         }
+
+        // client logo
+        // TODO image color alpha fix...
+        /*
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA); // 确保透明度按预期混合
+        GlStateManager.color(1, 1, 1, 1);
+
+        RenderUtil.drawImage(IconUtil.iconBig, 0, height - 32, 32, 32);
+        GlStateManager.disableBlend();
+
+         */
 
         GlStateManager.enableLighting();
         GlStateManager.enableDepth();

@@ -1,5 +1,6 @@
 package net.fpsboost.module.impl;
 
+import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ModeValue;
@@ -51,6 +52,7 @@ public class AttackEffects extends Module {
     
     @Override
     public void onUpdate() {
+        if (Wrapper.isNull()) return;
         if (target != null && target.hurtTime >= 3 && mc.thePlayer.getDistance(target.posX, target.posY, target.posZ) < 10) {
             if (mc.thePlayer.ticksExisted > 3) {
                 switch (mode.getValue().toLowerCase()) {

@@ -51,14 +51,19 @@ public class Module implements Wrapper {
     }
 
     public void setEnable(boolean enable) {
+        setEnable(enable, false);
+    }
+    public void setEnable(boolean enable,boolean silent) {
         this.enable = enable;
-        boolean isNull = mc.thePlayer == null;
         if (enable) {
             onEnable();
         } else {
             onDisable();
         }
-        if (!isNull) MessageHandler.addMessage(String.format("%s %s",getDisplayName(),enable ? "已开启" : "已关闭"),MessageHandler.MessageType.Info);
+
+        if (silent) {
+            if (mc.thePlayer != null) MessageHandler.addMessage(String.format("%s %s", getDisplayName(), enable ? "已开启" : "已关闭"), MessageHandler.MessageType.Info);
+        }
     }
 
     public void onRender2D() { }

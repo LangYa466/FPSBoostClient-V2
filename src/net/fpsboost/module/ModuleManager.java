@@ -17,15 +17,16 @@ public class ModuleManager implements Wrapper {
         // 批量添加模块
         addModules(
                 new ClickGUIModule(), new Sprint(), new OldAnimation(), new NameProtect(),
-                new HideGuiChatRect(), new NoMissHitDelay(), new HideScoreboardRect(),
+                new BetterChat(), new NoMissHitDelay(), new HideScoreboardRect(),
                 new BossBar(), new BlockOverlay(), new ItemPhysic(), MotionBlur.INSTANCE,
                 new NoHurtCam(), ClientIRC.INSTANCE, new ClientCape(), new FullBright(),
                 ClientSettings.INSTANCE, new MoreParticles(), new SmokeCrosshair(),
                 new NoDestroyEffects(), new Projectile(), new MinimizedBobbing(),
                 HitColor.INSTANCE, new AttackEffects(), new SmoothGUIZoom(),
-                new RenderMyNameTag(), CustomEnchantmentColor.INSTANCE, new BetterNameTag(),
+                new RenderMyNameTag(), BetterEnchantment.INSTANCE, new BetterNameTag(),
                 new TargetCircle(), new ClickSounds(), new RectMode(), new CustomModel(),
-                new CustomWorldTime()
+                new CustomWorldTime(),new CustomHitBox(), new BetterInventory(),
+                new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE
         );
 
         // 特殊模块设置

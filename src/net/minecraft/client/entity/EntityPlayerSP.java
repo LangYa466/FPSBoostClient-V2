@@ -1,7 +1,7 @@
 package net.minecraft.client.entity;
 
 import net.fpsboost.command.CommandManager;
-import net.fpsboost.socket.ClientIRC;
+import net.fpsboost.module.impl.ChatCopy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.MovingSoundMinecartRiding;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -227,6 +227,7 @@ public class EntityPlayerSP extends AbstractClientPlayer
     public void sendChatMessage(String message)
     {
         if (message.startsWith(".") && CommandManager.runCommand(message)) return;
+        if (ChatCopy.onSendMessage(message)) return;
         this.sendQueue.addToSendQueue(new C01PacketChatMessage(message));
     }
 

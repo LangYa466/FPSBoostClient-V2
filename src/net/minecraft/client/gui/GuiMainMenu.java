@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
@@ -9,9 +10,12 @@ import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.GuiBackgroundSettings;
 import net.fpsboost.screen.alt.GuiAltManager;
 import net.fpsboost.util.ColorUtil;
+import net.fpsboost.util.RenderUtil;
 import net.fpsboost.util.font.FontManager;
+import net.fpsboost.util.font.impl.UFontRenderer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.src.Config;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.ResourceLocation;
 
 public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
@@ -67,6 +71,10 @@ public class GuiMainMenu extends GuiScreen implements GuiYesNoCallback {
         drawClientBackground();
         if (Client.isOldVersion) FontManager.client().drawStringWithShadow(!ClientSettings.isChinese?"Your version is not the latest! Please download the latest version from the group file!":"您的版本不是最新版! 请去群文件下载最新版!",5,5, ColorUtil.rainbow(3, (int) partialTicks).getRGB());
         FontManager.client(70).drawCenteredStringWithShadow("FPSBoost",width / 2F,height / 4F,-1);
+        String text = String.format("Created by LangYa466 with %s❤", EnumChatFormatting.RED);
+        FontManager.client().drawStringWithShadow(text,1.14514F,1.14514F,Color.gray.getRGB());
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
+
+
 }

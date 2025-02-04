@@ -24,6 +24,7 @@ public class ElementConfig extends Config {
             JsonObject hudObject = new JsonObject();
             hudObject.addProperty("x", hud.xPos);
             hudObject.addProperty("y", hud.yPos);
+            hudObject.addProperty("scale", hud.scale);
             object.add(hud.name, hudObject);
         });
         return object;
@@ -36,6 +37,7 @@ public class ElementConfig extends Config {
             if (hudObject != null) {
                 hud.xPos = hudObject.get("x").getAsInt();
                 hud.yPos = hudObject.get("y").getAsInt();
+                hud.scale = hudObject.get("scale").getAsInt();
             }
         });
     }

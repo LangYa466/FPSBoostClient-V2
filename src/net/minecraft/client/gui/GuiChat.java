@@ -1,5 +1,6 @@
 package net.minecraft.client.gui;
 
+import cn.langya.Logger;
 import com.google.common.collect.Lists;
 import java.io.IOException;
 import java.util.List;
@@ -280,6 +281,27 @@ public class GuiChat extends GuiScreen
         ElementManager.elements.forEach(element -> {
             if (element.enable) {
                 element.onHover(mouseX, mouseY);
+                if (element.isHovering) {
+                    int dWheel = Mouse.getDWheel();
+
+                    if (dWheel != 0) {
+                        float scaleChange = 0.1F;
+                        float newScale = element.scale;
+
+                        if (dWheel > 1) {
+                            newScale += scaleChange;
+                        }
+
+                        if (dWheel < 1) {
+                            newScale -= scaleChange;
+                        }
+
+                        float roundedScale = Math.round(newScale * 10.0F) / 10.0F;
+
+                        Logger.debug(String.format("%s New Scale : %s",element.name,roundedScale));
+                        element.setScale(roundedScale);
+                    }
+                }
             }
         });
 

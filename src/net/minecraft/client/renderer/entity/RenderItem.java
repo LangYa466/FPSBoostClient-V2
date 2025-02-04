@@ -3,8 +3,7 @@ package net.minecraft.client.renderer.entity;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import net.fpsboost.module.ModuleManager;
-import net.fpsboost.module.impl.CustomEnchantmentColor;
+import net.fpsboost.module.impl.BetterEnchantment;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockDirt;
 import net.minecraft.block.BlockDoublePlant;
@@ -65,7 +64,6 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Vec3i;
 import net.optifine.CustomColors;
 import net.optifine.CustomItems;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.Shaders;
 import net.optifine.shaders.ShadersRender;
 
@@ -224,7 +222,7 @@ public class RenderItem implements IResourceManagerReloadListener
                     ShadersRender.renderEnchantedGlintBegin();
                 }
                 int color = -8372020;
-                if (CustomEnchantmentColor.isEnable) color = CustomEnchantmentColor.INSTANCE.color.getValueC();
+                if (BetterEnchantment.isEnable) color = BetterEnchantment.INSTANCE.color.getValueC();
                 GlStateManager.matrixMode(5890);
                 GlStateManager.pushMatrix();
                 GlStateManager.scale(8.0F, 8.0F, 8.0F);

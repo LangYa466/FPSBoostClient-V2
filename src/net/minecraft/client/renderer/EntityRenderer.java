@@ -5,17 +5,12 @@ import com.google.common.base.Predicates;
 import com.google.gson.JsonSyntaxException;
 import java.io.IOException;
 import java.nio.FloatBuffer;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
 import net.fpsboost.module.ModuleManager;
-import net.fpsboost.module.impl.MinimizedBobbing;
-import net.fpsboost.module.impl.NoHurtCam;
-import net.fpsboost.module.impl.OldAnimation;
-import net.fpsboost.module.impl.SmoothGUIZoom;
+import net.fpsboost.module.impl.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.material.Material;
@@ -102,8 +97,7 @@ import org.lwjgl.opengl.GL12;
 import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.Project;
 
-public class EntityRenderer implements IResourceManagerReloadListener
-{
+public class EntityRenderer implements IResourceManagerReloadListener {
     private static final Logger logger = LogManager.getLogger();
     private static final ResourceLocation locationRainPng = new ResourceLocation("textures/environment/rain.png");
     private static final ResourceLocation locationSnowPng = new ResourceLocation("textures/environment/snow.png");
@@ -651,116 +645,120 @@ public class EntityRenderer implements IResourceManagerReloadListener
         }
     }
 
-    private void orientCamera(float partialTicks)
-    {
+    /**
+     * sets up player's eye (or camera in third person mode)
+     */
+    private void orientCamera(float partialTicks) {
         Entity entity = this.mc.getRenderViewEntity();
         float f = (entity != mc.thePlayer) ? entity.getEyeHeight() : OldAnimation.getEyeHeight(partialTicks);
-        double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)partialTicks;
-        double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)partialTicks + (double)f;
-        double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)partialTicks;
+        double d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
+        double d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
+        double d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
 
-        if (entity instanceof EntityLivingBase && ((EntityLivingBase)entity).isPlayerSleeping())
-        {
-            f = (float)((double)f + 1.0D);
+        if (entity instanceof EntityLivingBase && ((EntityLivingBase) entity).isPlayerSleeping()) {
+            f = (float) ((double) f + 1.0D);
             GlStateManager.translate(0.0F, 0.3F, 0.0F);
 
-            if (!this.mc.gameSettings.debugCamEnable)
-            {
+            if (!this.mc.gameSettings.debugCamEnable) {
                 BlockPos blockpos = new BlockPos(entity);
                 IBlockState iblockstate = this.mc.theWorld.getBlockState(blockpos);
                 Block block = iblockstate.getBlock();
 
-                if (block == Blocks.bed)
-                {
-                    int j = iblockstate.getValue(BlockBed.FACING).getHorizontalIndex();
-                    GlStateManager.rotate((float)(j * 90), 0.0F, 1.0F, 0.0F);
+                if (block == Blocks.bed) {
+                    int j = ((EnumFacing) iblockstate.getValue(BlockBed.FACING)).getHorizontalIndex();
+                    GlStateManager.rotate((float) (j * 90), 0.0F, 1.0F, 0.0F);
                 }
 
-                GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks + 180.0F, 0.0F, -1.0F, 0.0F);
-                GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, -1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(
+                        Perspective.getCameraPrevYaw()
+                                + (Perspective.getCameraYaw() - Perspective.getCameraPrevYaw()) * partialTicks + 180.0F,
+                        0.0F, -1.0F, 0.0F);
+                GlStateManager.rotate(
+                        Perspective.getCameraPrevPitch()
+                                + (Perspective.getCameraPitch() - Perspective.getCameraPrevPitch()) * partialTicks,
+                        -1.0F, 0.0F, 0.0F);
             }
-        }
-        else if (this.mc.gameSettings.thirdPersonView > 0)
-        {
-            double d3 = this.thirdPersonDistanceTemp + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * partialTicks;
+        } else if (this.mc.gameSettings.thirdPersonView > 0) {
+            double d3 = (double) (this.thirdPersonDistanceTemp
+                    + (this.thirdPersonDistance - this.thirdPersonDistanceTemp) * partialTicks);
 
-            if (this.mc.gameSettings.debugCamEnable)
-            {
-                GlStateManager.translate(0.0F, 0.0F, (float)(-d3));
-            }
-            else
-            {
-                float f1 = entity.rotationYaw;
-                float f2 = entity.rotationPitch;
+            if (this.mc.gameSettings.debugCamEnable) {
+                GlStateManager.translate(0.0F, 0.0F, (float) (-d3));
+            } else {
+                float f1 = Perspective.getCameraYaw();
+                float f2 = Perspective.getCameraPitch();
 
-                if (this.mc.gameSettings.thirdPersonView == 2)
-                {
+                if (this.mc.gameSettings.thirdPersonView == 2) {
                     f2 += 180.0F;
                 }
 
-                double d4 = (double)(-MathHelper.sin(f1 / 180.0F * (float)Math.PI) * MathHelper.cos(f2 / 180.0F * (float)Math.PI)) * d3;
-                double d5 = (double)(MathHelper.cos(f1 / 180.0F * (float)Math.PI) * MathHelper.cos(f2 / 180.0F * (float)Math.PI)) * d3;
-                double d6 = (double)(-MathHelper.sin(f2 / 180.0F * (float)Math.PI)) * d3;
+                double d4 = (double) (-MathHelper.sin(f1 / 180.0F * (float) Math.PI)
+                        * MathHelper.cos(f2 / 180.0F * (float) Math.PI)) * d3;
+                double d5 = (double) (MathHelper.cos(f1 / 180.0F * (float) Math.PI)
+                        * MathHelper.cos(f2 / 180.0F * (float) Math.PI)) * d3;
+                double d6 = (double) (-MathHelper.sin(f2 / 180.0F * (float) Math.PI)) * d3;
 
-                for (int i = 0; i < 8; ++i)
-                {
-                    float f3 = (float)((i & 1) * 2 - 1);
-                    float f4 = (float)((i >> 1 & 1) * 2 - 1);
-                    float f5 = (float)((i >> 2 & 1) * 2 - 1);
+                for (int i = 0; i < 8; ++i) {
+                    float f3 = (float) ((i & 1) * 2 - 1);
+                    float f4 = (float) ((i >> 1 & 1) * 2 - 1);
+                    float f5 = (float) ((i >> 2 & 1) * 2 - 1);
                     f3 = f3 * 0.1F;
                     f4 = f4 * 0.1F;
                     f5 = f5 * 0.1F;
-                    MovingObjectPosition movingobjectposition = this.mc.theWorld.rayTraceBlocks(new Vec3(d0 + (double)f3, d1 + (double)f4, d2 + (double)f5), new Vec3(d0 - d4 + (double)f3 + (double)f5, d1 - d6 + (double)f4, d2 - d5 + (double)f5), false, true, true);
+                    MovingObjectPosition movingobjectposition = this.mc.theWorld.rayTraceBlocks(
+                            new Vec3(d0 + (double) f3, d1 + (double) f4, d2 + (double) f5),
+                            new Vec3(d0 - d4 + (double) f3 + (double) f5, d1 - d6 + (double) f4, d2 - d5 + (double) f5),
+                            false, true, true);
 
-                    if (movingobjectposition != null)
-                    {
+                    if (movingobjectposition != null) {
                         double d7 = movingobjectposition.hitVec.distanceTo(new Vec3(d0, d1, d2));
 
-                        if (d7 < d3)
-                        {
+                        if (d7 < d3) {
                             d3 = d7;
                         }
                     }
                 }
 
-                if (this.mc.gameSettings.thirdPersonView == 2)
-                {
+                if (this.mc.gameSettings.thirdPersonView == 2) {
                     GlStateManager.rotate(180.0F, 0.0F, 1.0F, 0.0F);
                 }
 
-                GlStateManager.rotate(entity.rotationPitch - f2, 1.0F, 0.0F, 0.0F);
-                GlStateManager.rotate(entity.rotationYaw - f1, 0.0F, 1.0F, 0.0F);
-                GlStateManager.translate(0.0F, 0.0F, (float)(-d3));
-                GlStateManager.rotate(f1 - entity.rotationYaw, 0.0F, 1.0F, 0.0F);
-                GlStateManager.rotate(f2 - entity.rotationPitch, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(Perspective.getCameraPitch() - f2, 1.0F, 0.0F, 0.0F);
+                GlStateManager.rotate(Perspective.getCameraYaw() - f1, 0.0F, 1.0F, 0.0F);
+                GlStateManager.translate(0.0F, 0.0F, (float) (-d3));
+                GlStateManager.rotate(f1 - Perspective.getCameraYaw(), 0.0F, 1.0F, 0.0F);
+                GlStateManager.rotate(f2 - Perspective.getCameraPitch(), 1.0F, 0.0F, 0.0F);
             }
-        }
-        else
-        {
+        } else {
             GlStateManager.translate(0.0F, 0.0F, -0.1F);
         }
 
-        if (!this.mc.gameSettings.debugCamEnable)
-        {
-            GlStateManager.rotate(entity.prevRotationPitch + (entity.rotationPitch - entity.prevRotationPitch) * partialTicks, 1.0F, 0.0F, 0.0F);
+    if (!this.mc.gameSettings.debugCamEnable) {
+            GlStateManager.rotate(
+                    Perspective.getCameraPrevPitch()
+                            + (Perspective.getCameraPitch() - Perspective.getCameraPrevPitch()) * partialTicks,
+                    1.0F, 0.0F, 0.0F);
 
-            if (entity instanceof EntityAnimal)
-            {
-                EntityAnimal entityanimal = (EntityAnimal)entity;
-                GlStateManager.rotate(entityanimal.prevRotationYawHead + (entityanimal.rotationYawHead - entityanimal.prevRotationYawHead) * partialTicks + 180.0F, 0.0F, 1.0F, 0.0F);
-            }
-            else
-            {
-                GlStateManager.rotate(entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * partialTicks + 180.0F, 0.0F, 1.0F, 0.0F);
+            if (entity instanceof EntityAnimal) {
+                EntityAnimal entityanimal = (EntityAnimal) entity;
+                GlStateManager.rotate(entityanimal.prevRotationYawHead
+                                + (entityanimal.rotationYawHead - entityanimal.prevRotationYawHead) * partialTicks + 180.0F,
+                        0.0F, 1.0F, 0.0F);
+            } else {
+                GlStateManager.rotate(
+                        Perspective.getCameraPrevYaw()
+                                + (Perspective.getCameraYaw() - Perspective.getCameraPrevYaw()) * partialTicks + 180.0F,
+                        0.0F, 1.0F, 0.0F);
             }
         }
 
         GlStateManager.translate(0.0F, -f, 0.0F);
-        d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double)partialTicks;
-        d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double)partialTicks + (double)f;
-        d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double)partialTicks;
+        d0 = entity.prevPosX + (entity.posX - entity.prevPosX) * (double) partialTicks;
+        d1 = entity.prevPosY + (entity.posY - entity.prevPosY) * (double) partialTicks + (double) f;
+        d2 = entity.prevPosZ + (entity.posZ - entity.prevPosZ) * (double) partialTicks;
         this.cloudFog = this.mc.renderGlobal.hasCloudFog(d0, d1, d2, partialTicks);
     }
+
 
     public void setupCameraTransform(float partialTicks, int pass)
     {
@@ -1182,8 +1180,7 @@ public class EntityRenderer implements IResourceManagerReloadListener
             Mouse.setGrabbed(true);
         }
 
-        if (this.mc.inGameHasFocus && flag)
-        {
+        if (Perspective.overrideMouse() && flag) {
             this.mc.mouseHelper.mouseXYChange();
             float f = this.mc.gameSettings.mouseSensitivity * 0.6F + 0.2F;
             float f1 = f * f * f * 8.0F;

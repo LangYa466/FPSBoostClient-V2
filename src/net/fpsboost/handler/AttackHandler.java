@@ -30,7 +30,7 @@ public class AttackHandler implements Wrapper {
         sentAttackTime = System.currentTimeMillis();
         MoreParticles.onAttack(targetEntity);
         TargetCircle.onAttack(targetEntity);
-        ReachDisplay.onAttack();
+        ReachDisplay.onAttack(targetEntity);
         AttackEffects.onAttack(targetEntity);
     }
 
