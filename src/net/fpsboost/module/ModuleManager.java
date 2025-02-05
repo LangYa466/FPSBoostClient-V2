@@ -18,7 +18,7 @@ public class ModuleManager implements Wrapper {
         addModules(
                 new ClickGUIModule(), new Sprint(), new OldAnimation(), new NameProtect(),
                 new BetterChat(), new NoMissHitDelay(), new HideScoreboardRect(),
-                new BossBar(), new BlockOverlay(), new ItemPhysic(), MotionBlur.INSTANCE,
+                BossBar.INSTANCE, new BlockOverlay(), new ItemPhysic(), MotionBlur.INSTANCE,
                 new NoHurtCam(), ClientIRC.INSTANCE, new ClientCape(), new FullBright(),
                 ClientSettings.INSTANCE, new MoreParticles(), new SmokeCrosshair(),
                 new NoDestroyEffects(), new Projectile(), new MinimizedBobbing(),

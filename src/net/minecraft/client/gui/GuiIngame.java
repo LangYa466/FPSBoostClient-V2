@@ -26,6 +26,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
+import net.minecraft.entity.boss.BossStatus;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
@@ -94,6 +95,32 @@ public class GuiIngame extends Gui
         this.titleFadeIn = 10;
         this.titleDisplayTime = 70;
         this.titleFadeOut = 20;
+    }
+
+    /**
+     * Renders dragon's (boss) health on the HUD
+     */
+    private void renderBossHealth() {
+        if (BossStatus.bossName != null && BossStatus.statusBarTime > 0) {
+            --BossStatus.statusBarTime;
+            ScaledResolution scaledresolution = new ScaledResolution(this.mc);
+            int i = scaledresolution.getScaledWidth();
+            int j = 182;
+            int k = i / 2 - j / 2;
+            int l = (int) (BossStatus.healthScale * (float) (j + 1));
+            int i1 = 12;
+            this.drawTexturedModalRect(k, i1, 0, 74, j, 5);
+            this.drawTexturedModalRect(k, i1, 0, 74, j, 5);
+
+            if (l > 0) {
+                this.drawTexturedModalRect(k, i1, 0, 79, l, 5);
+            }
+
+            String s = BossStatus.bossName;
+            this.getFontRenderer().drawStringWithShadow(s, (float) (i / 2 - this.getFontRenderer().getStringWidth(s) / 2), (float) (i1 - 10), 16777215);
+            GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
+            this.mc.getTextureManager().bindTexture(icons);
+        }
     }
 
     public void renderGameOverlay(float partialTicks)
@@ -167,7 +194,11 @@ public class GuiIngame extends Gui
         GlStateManager.enableAlpha();
         GlStateManager.tryBlendFuncSeparate(770, 771, 1, 0);
         this.mc.mcProfiler.startSection("bossHealth");
-        BossBar.INSTANCE.renderBossHealth();
+        if (BossBar.INSTANCE.enable) {
+            BossBar.INSTANCE.renderBossHealth();
+        } else {
+            renderBossHealth();
+        }
 
         this.mc.mcProfiler.endSection();
 
