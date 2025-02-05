@@ -1,7 +1,6 @@
 package net.fpsboost.util.font.impl;
 
 import net.fpsboost.Wrapper;
-import net.fpsboost.module.impl.NameProtect;
 import net.fpsboost.util.DrawTextHookManager;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.util.ResourceLocation;

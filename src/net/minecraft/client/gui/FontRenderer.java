@@ -8,11 +8,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
 import java.util.Random;
 
-import net.fpsboost.module.impl.NameProtect;
 import net.fpsboost.util.DrawTextHookManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
