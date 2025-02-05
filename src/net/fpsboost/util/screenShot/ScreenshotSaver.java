@@ -4,7 +4,7 @@ import javax.imageio.ImageIO;
 import java.io.File;
 import java.awt.image.BufferedImage;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.util.ChatComponentText;

@@ -1,6 +1,6 @@
 package net.fpsboost.util.texfix;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.Wrapper;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;

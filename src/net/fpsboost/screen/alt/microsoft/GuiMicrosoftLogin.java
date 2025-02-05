@@ -1,6 +1,6 @@
 package net.fpsboost.screen.alt.microsoft;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;

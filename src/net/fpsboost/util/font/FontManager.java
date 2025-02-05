@@ -1,6 +1,6 @@
 package net.fpsboost.util.font;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.util.font.impl.RapeMasterFontManager;
 import net.fpsboost.util.font.impl.UFontRenderer;

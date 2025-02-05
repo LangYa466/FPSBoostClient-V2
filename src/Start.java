@@ -2,13 +2,12 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.Client;
 import net.minecraft.client.main.Main;
 
 public class Start {
     public static void main(String[] args) throws IOException {
-        Logger.setLogLevel(Logger.LogLevel.DEBUG);
         // Jar运行目录
         File directory = new File("");
         Logger.debug("Current directory: {}",directory.getAbsolutePath());

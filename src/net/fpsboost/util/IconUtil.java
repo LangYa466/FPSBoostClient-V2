@@ -1,6 +1,6 @@
 package net.fpsboost.util;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;

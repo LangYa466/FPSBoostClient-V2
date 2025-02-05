@@ -1,6 +1,6 @@
 package net.fpsboost.socket;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
 import net.fpsboost.util.RankUtil;

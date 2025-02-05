@@ -1,6 +1,6 @@
 package net.fpsboost.element.impl;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.element.Element;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.util.RenderUtil;

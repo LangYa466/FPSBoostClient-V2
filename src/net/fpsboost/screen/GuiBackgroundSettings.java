@@ -1,6 +1,6 @@
 package net.fpsboost.screen;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import lombok.Getter;
 import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.gui.GuiButton;

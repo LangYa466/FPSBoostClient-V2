@@ -1,6 +1,6 @@
 package net.fpsboost.screen.alt;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.altimpl.MicrosoftAlt;

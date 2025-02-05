@@ -1,6 +1,6 @@
 package net.fpsboost.util.network;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.util.ResourceLocation;
 

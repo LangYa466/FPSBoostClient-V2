@@ -1,6 +1,6 @@
 package net.fpsboost.util.mousefix;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.Wrapper;
 import net.java.games.input.Controller;
 import net.java.games.input.Controller.Type;

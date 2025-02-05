@@ -1,5 +1,6 @@
 package net.fpsboost.module.impl;
 
+import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
 import net.minecraft.client.Minecraft;
 
@@ -42,6 +43,7 @@ public class Perspective extends Module {
 
 	@Override
 	public void onEnable() {
+		if (Wrapper.isNull()) return;
 		perspectiveToggled = true;
 		cameraYaw = mc.thePlayer.rotationYaw;
 		cameraPitch = mc.thePlayer.rotationPitch;

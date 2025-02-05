@@ -316,6 +316,7 @@ public class Minecraft implements IThreadListener {
         }
         catch (Throwable throwable)
         {
+            Client.openErrorLogsFile();
             CrashReport crashreport = CrashReport.makeCrashReport(throwable, "Initializing game");
             crashreport.makeCategory("Initialization");
             this.displayCrashReport(this.addGraphicsAndWorldToCrashReport(crashreport));
@@ -2708,7 +2709,7 @@ public class Minecraft implements IThreadListener {
                             @Override
                             public void onError(Exception e) {
                                 Minecraft.getMinecraft().thePlayer.addChatMessage(new ChatComponentText("Error taking screenshot: " + e.getMessage()));
-                                cn.langya.Logger.error("Failed to take screenshot: {}", e);
+                                net.fpsboost.util.Logger.error("Failed to take screenshot: {}", e);
                             }
                         });
 

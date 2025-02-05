@@ -3,7 +3,7 @@ package net.fpsboost.element.impl;
 import java.awt.*;
 import java.util.List;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import net.fpsboost.element.Element;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.util.font.FontManager;

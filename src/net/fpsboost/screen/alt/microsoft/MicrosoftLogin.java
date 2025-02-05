@@ -1,6 +1,6 @@
 package net.fpsboost.screen.alt.microsoft;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;

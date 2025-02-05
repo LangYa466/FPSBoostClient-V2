@@ -1,6 +1,6 @@
 package net.fpsboost.config;
 
-import cn.langya.Logger;
+import net.fpsboost.util.Logger;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonParser;
@@ -25,6 +25,7 @@ import java.util.List;
 public class ConfigManager implements Wrapper {
     private static final List<Config> configs = new ArrayList<>();
     public static final File dir = new File(mc.mcDataDir, Client.name);
+    public static final File logsDir = new File(dir, "logs");
     private static final Gson gson = new GsonBuilder().setPrettyPrinting().create();
     public static boolean isFirst;
 
@@ -36,6 +37,10 @@ public class ConfigManager implements Wrapper {
         if (!dir.exists()) {
             dir.mkdir();
             isFirst = true;
+        }
+
+        if (!logsDir.exists()) {
+            logsDir.mkdir();
         }
 
         configs.add(new ModuleConfig());
