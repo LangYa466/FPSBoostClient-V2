@@ -6,9 +6,6 @@ import net.fpsboost.module.Module;
 import net.fpsboost.util.RankUtil;
 
 import java.io.*;
-import java.net.*;
-import java.util.*;
-import java.util.concurrent.*;
 
 /**
  * @author LangYa466
@@ -16,13 +13,8 @@ import java.util.concurrent.*;
  */
 public class ClientIRC extends Module implements Wrapper {
     public static final ClientIRC INSTANCE = new ClientIRC();
-    private static Socket socket;
-    private static BufferedReader serverInput;
-    private static PrintWriter out;
-    private static final Set<String> userIgnList = ConcurrentHashMap.newKeySet();  // 使用线程安全的集合
+    private static SocketClient handler;
     private static boolean initiated = false;
-    private static int errorIndex;
-    private static final ExecutorService executorService = Executors.newSingleThreadExecutor();  // 使用线程池
 
     public ClientIRC() {
         super("ClientIRC", "客户端在线聊天");
@@ -40,99 +32,57 @@ public class ClientIRC extends Module implements Wrapper {
 
     @Override
     public void onWorldLoad() {
-        sendIgn();
+        handler.sendMessage("GET_USERS_REQUEST");
         RankUtil.getRanksAsync();
         super.onWorldLoad();
-    }
-
-    private static void send(String message) {
-        out.println(message);
     }
 
     public static void init() {
         if (initiated) return;
 
-        executorService.submit(() -> {
-            try {
-                initClient();
-
-                String message;
-                while ((message = serverInput.readLine()) != null) {
-                    Logger.debug(message);
-                    processMessage(message);
+        try {
+            handler = new SocketClient("103.79.187.250", 11452, new IRCHandler() {
+                @Override
+                public void onMessage(String message) {
+                    // 处理收到的消息
+                    Logger.debug("Server Message: " + message);
                 }
-            } catch (IOException e) {
-                Logger.error("发生错误: {}", e.getMessage());
-                handleConnectionError();
-            } finally {
-                closeResources();
-            }
-        });
 
-        Logger.info("链接服务器后端成功!");
+                @Override
+                public void onDisconnected(String message) {
+                    // 处理断开连接的情况
+                    Logger.warn("断开连接: " + message);
+                    SocketClient.transport = null;
+                }
+
+                @Override
+                public void onConnected() {
+                    // 处理连接成功的情况
+                    Logger.info("链接服务器后端成功!!");
+                }
+
+                @Override
+                public String getInGameUsername() {
+                    // 返回游戏中的用户名，这里返回一个默认值
+                    return mc.session.getUsername();
+                }
+
+                @Override
+                public String getUsername() {
+                    return mc.session.getUsername();
+                }
+            });
+
+            handler.sendMessage("GET_USERS_REQUEST");
+
+        } catch (IOException e) {
+            Logger.error(e);
+        }
+
         initiated = true;
     }
 
-    private static void initClient() throws IOException {
-        socket = new Socket("103.79.187.250", 11451);
-        serverInput = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        out = new PrintWriter(socket.getOutputStream(), true);
-    }
-
-    private static void handleConnectionError() {
-        errorIndex++;
-        if (errorIndex >= 10) {
-            Logger.error("错误次数超过限制，进程即将结束...");
-            System.exit(1);
-        }
-        try {
-            initClient();
-        } catch (IOException e) {
-            Logger.error("重新连接失败: {}", e.getMessage());
-        }
-    }
-
-    private static void closeResources() {
-        try {
-            if (serverInput != null) {
-                serverInput.close();
-            }
-            if (out != null) {
-                out.close();
-            }
-            if (socket != null && !socket.isClosed()) {
-                socket.close();
-            }
-        } catch (IOException e) {
-            Logger.error("关闭资源时发生错误: {}", e.getMessage());
-        }
-    }
-
-    private static void sendIgn() {
-        send(String.format(".addIGN %s", mc.session.getUsername()));
-    }
-
-    private static void processMessage(String message) {
-        if (message.startsWith(".addIGN")) {
-            processAddIgn(message);
-        } else {
-            Logger.warn("收到了未知的信息: {}", message);
-        }
-    }
-
-    private static void processAddIgn(String message) {
-        String[] parts = message.split("\\s+", 3);
-        if (parts.length == 2) {
-            String ign = parts[1];
-            if (userIgnList.contains(ign)) return;
-            userIgnList.add(ign);
-            Logger.debug("添加User IGN到list: {}", message);
-        } else {
-            Logger.warn("收到了非法的数据包: {}", message);
-        }
-    }
-
     public static boolean isUser(String ign) {
-        return userIgnList.contains(ign);
+        return handler.isUser(ign);
     }
 }
