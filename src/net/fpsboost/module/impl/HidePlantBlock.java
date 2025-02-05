@@ -61,6 +61,7 @@ public class HidePlantBlock extends Module {
     }
 
     private void info() {
+        if (Wrapper.isNull()) return;
         for (int i = 0; i < 5; i++) {
             MessageHandler.addMessage("关闭此功能后之前清除的不会回来", MessageHandler.MessageType.Warning);
         }
