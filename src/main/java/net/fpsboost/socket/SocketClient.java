@@ -61,14 +61,8 @@ public class SocketClient {
         }).start();  // 启动新线程
     }
 
-    // 获取所有用户与IGN映射
-    public void GetUsers() {
-        sendMessage("GET_USERS_REQUEST"); // 向服务器请求用户映射
-    }
-
     // 检查用户是否存在
     public boolean isUser(String ign) {
-        GetUsers();
         return userToIGNMap.containsValue(ign);
     }
 
