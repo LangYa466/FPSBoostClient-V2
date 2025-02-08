@@ -1,6 +1,6 @@
 # Project exclude paths
-/out/
-.idea
-jars
-OptimaMC-master.iml
-FPSBoostClient-V2.iml
+/target/
+/.idea/
+/build/
+/.gradle/
+libs
