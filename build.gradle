@@ -1,0 +1,75 @@
+
+repositories {
+    mavenCentral()
+    maven { url "https://libraries.minecraft.net/" }
+    maven { url "https://repo.marcloud.net/" }
+}
+
+apply plugin: 'java'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+}
+
+version = "1.8.9"
+description = "FPSBoost_V2"
+
+dependencies {
+    // Netty 别改 mc就要求这个版本
+    implementation 'io.netty:netty-all:4.0.23.Final'
+
+    // System related
+    implementation 'oshi:oshi-core:1.1'
+
+    // Command line
+    implementation 'net.sf.jopt-simple:jopt-simple:4.6'
+
+    implementation 'org.lwjgl:lwjgl:2.9.4-nightly'
+    implementation 'org.lwjgl:util:2.9.4-nightly'
+
+    // Apache HttpComponents
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'org.apache.httpcomponents:httpcore:4.3.2'
+
+    // JNA (Java Native Access)
+    implementation('net.java.dev.jna:jna:3.4.0')
+    implementation('net.java.dev.jna:platform:3.4.0') {
+        exclude group: 'net.java.dev.jna', module: 'jna'
+    }
+
+    // Logging - UPDATE TO LATEST VERSION
+    implementation 'org.apache.logging.log4j:log4j-api:2.0-beta9'
+    implementation 'org.apache.logging.log4j:log4j-core:2.17.1'
+
+    // Miscellaneous
+    implementation 'org.apache.commons:commons-compress:1.26.0'
+    implementation 'org.apache.commons:commons-lang3:3.3.2'
+    implementation 'commons-io:commons-io:2.14.0'
+    implementation 'commons-codec:commons-codec:1.13'
+    // 别改 mc就要求这个版本
+    implementation 'com.google.guava:guava:17.0'
+    implementation 'com.google.code.gson:gson:2.8.9'
+
+    // Sound Libraries
+    implementation 'com.paulscode.sound:libraryjavasound:20101123'
+    implementation 'com.paulscode.sound:codecwav:20101023'
+    implementation 'com.paulscode.sound:soundsystem:20120107'
+    implementation 'com.paulscode.sound:codecjorbis:20101023'
+    implementation 'com.paulscode.sound:librarylwjglopenal:20100824'
+
+    // Mojang
+    implementation 'com.mojang:realmsclient:1.7.59'
+    implementation 'com.mojang:icu4j-core-mojang:51.2'
+    implementation 'com.mojang:authlib:1.5.21'
+
+    // Twitch
+    implementation 'tv.twitch:twitch:6.5'
+
+    // Lombok
+    implementation 'org.projectlombok:lombok:1.18.36'
+    annotationProcessor 'org.projectlombok:lombok:1.18.36'
+
+    // jinput
+    implementation 'net.java.jinput:jinput:2.0.5'
+}
