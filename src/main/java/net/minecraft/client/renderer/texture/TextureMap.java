@@ -373,7 +373,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                 throw stitcherexception;
             }
 
-            logger.info("Created: {}x{} {}-atlas", Integer.valueOf(stitcher.getCurrentWidth()), Integer.valueOf(stitcher.getCurrentHeight()), this.basePath);
+            // logger.info("Created: {}x{} {}-atlas", Integer.valueOf(stitcher.getCurrentWidth()), Integer.valueOf(stitcher.getCurrentHeight()), this.basePath);
 
             if (Config.isShaders())
             {
