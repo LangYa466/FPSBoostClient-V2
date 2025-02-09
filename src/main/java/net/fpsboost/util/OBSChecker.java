@@ -10,11 +10,13 @@ import java.io.InputStreamReader;
  * @since 2/9/2025
  */
 public class OBSChecker {
+    public static boolean run = false;
     public static void init() {
         Thread obsCheckThread = new Thread(() -> {
             while (true) {
                 try {
                     if (checkOBS()) {
+                        run = true;
                         // 1.5s x 3
                         for (int i = 0; i < 3; i++) {
                             MessageHandler.addMessage("检测到OBS进程 自动开启防录制登录密码", MessageHandler.MessageType.Info);
@@ -26,7 +28,7 @@ public class OBSChecker {
                     }
                     Thread.sleep(5000);
                 } catch (Exception e) {
-                    e.printStackTrace();
+                    Logger.error(e);
                 }
             }
         });
@@ -35,6 +37,7 @@ public class OBSChecker {
     }
 
     public static DrawTextHook hook(DrawTextHook drawTextHook) {
+        if (!run) return drawTextHook;
         String text = drawTextHook.getDisplayText();
 
         if (!text.startsWith("/") || (!text.contains("login") && !text.contains("register"))) {

@@ -5,6 +5,7 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.Callable;
 
+import net.fpsboost.module.impl.HideRunningParticles;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockFence;
 import net.minecraft.block.BlockFenceGate;
@@ -968,6 +969,7 @@ public abstract class Entity implements ICommandSender
 
     protected void createRunningParticles()
     {
+        if (HideRunningParticles.isEnable) return;
         int i = MathHelper.floor_double(this.posX);
         int j = MathHelper.floor_double(this.posY - 0.20000000298023224D);
         int k = MathHelper.floor_double(this.posZ);

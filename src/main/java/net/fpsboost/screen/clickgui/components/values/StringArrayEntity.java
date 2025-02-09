@@ -3,6 +3,7 @@ package net.fpsboost.screen.clickgui.components.values;
 import net.fpsboost.screen.clickgui.utils.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.ModeValue;
 import net.minecraft.client.gui.FontRenderer;
@@ -60,7 +61,7 @@ public class StringArrayEntity extends ValueEntity {
             values.add(new StringButton(this, e));
         }
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e);
         }
     }
 

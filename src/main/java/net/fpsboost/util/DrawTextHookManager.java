@@ -15,7 +15,7 @@ public class DrawTextHookManager {
             OBSChecker.hook(drawTextHook);
             return drawTextHook;
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e);
         }
         return new DrawTextHook("Error");
     }

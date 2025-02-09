@@ -2,6 +2,7 @@ package net.fpsboost.util.shader;
 
 import net.fpsboost.Wrapper;
 import net.fpsboost.util.FileUtil;
+import net.fpsboost.util.Logger;
 import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.util.ResourceLocation;
 
@@ -88,7 +89,7 @@ public class ShaderUtil implements Wrapper {
 
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Logger.error(e);
         }
 
         glLinkProgram(program);

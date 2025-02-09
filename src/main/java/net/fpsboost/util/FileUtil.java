@@ -15,7 +15,7 @@ public class FileUtil {
                 stringBuilder.append(line).append('\n');
 
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e);
         }
         return stringBuilder.toString();
     }
