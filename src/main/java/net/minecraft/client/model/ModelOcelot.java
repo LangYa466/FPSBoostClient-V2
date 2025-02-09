@@ -6,17 +6,37 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityOcelot;
 import net.minecraft.util.MathHelper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModelOcelot extends ModelBase
 {
-    ModelRenderer ocelotBackLeftLeg;
-    ModelRenderer ocelotBackRightLeg;
-    ModelRenderer ocelotFrontLeftLeg;
-    ModelRenderer ocelotFrontRightLeg;
-    ModelRenderer ocelotTail;
-    ModelRenderer ocelotTail2;
-    ModelRenderer ocelotHead;
-    ModelRenderer ocelotBody;
+    public ModelRenderer ocelotBackLeftLeg;
+    public ModelRenderer ocelotBackRightLeg;
+    public ModelRenderer ocelotFrontLeftLeg;
+    public ModelRenderer ocelotFrontRightLeg;
+    public ModelRenderer ocelotTail;
+    public ModelRenderer ocelotTail2;
+    public ModelRenderer ocelotHead;
+    public ModelRenderer ocelotBody;
     int field_78163_i = 1;
+    private final Map<Integer, ModelRenderer> rendererMap = new HashMap<>();
+
+    public void init() {
+        // 映射索引到 ModelRenderer
+        rendererMap.put(0, ocelotBackLeftLeg);
+        rendererMap.put(1, ocelotBackRightLeg);
+        rendererMap.put(2, ocelotFrontLeftLeg);
+        rendererMap.put(3, ocelotFrontRightLeg);
+        rendererMap.put(4, ocelotTail);
+        rendererMap.put(5, ocelotTail2);
+        rendererMap.put(6, ocelotHead);
+        rendererMap.put(7, ocelotBody);
+    }
+
+    public ModelRenderer getRenderer(int modelPart) {
+        return rendererMap.get(modelPart);
+    }
 
     public ModelOcelot()
     {

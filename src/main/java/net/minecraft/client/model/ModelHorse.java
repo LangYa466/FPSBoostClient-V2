@@ -6,6 +6,9 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.util.MathHelper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModelHorse extends ModelBase
 {
     private final ModelRenderer head;
@@ -48,6 +51,55 @@ public class ModelHorse extends ModelBase
     private final ModelRenderer horseLeftRein;
     private final ModelRenderer horseRightRein;
 
+    private final Map<Integer, ModelRenderer> rendererMap = new HashMap<>();
+
+    public void init() {
+        // 将 ModelRenderer 对象映射到索引
+        rendererMap.put(0, head);
+        rendererMap.put(1, field_178711_b);
+        rendererMap.put(2, field_178712_c);
+        rendererMap.put(3, horseLeftEar);
+        rendererMap.put(4, horseRightEar);
+        rendererMap.put(5, muleLeftEar);
+        rendererMap.put(6, muleRightEar);
+        rendererMap.put(7, neck);
+        rendererMap.put(8, horseFaceRopes);
+        rendererMap.put(9, mane);
+        rendererMap.put(10, body);
+        rendererMap.put(11, tailBase);
+        rendererMap.put(12, tailMiddle);
+        rendererMap.put(13, tailTip);
+        rendererMap.put(14, backLeftLeg);
+        rendererMap.put(15, backLeftShin);
+        rendererMap.put(16, backLeftHoof);
+        rendererMap.put(17, backRightLeg);
+        rendererMap.put(18, backRightShin);
+        rendererMap.put(19, backRightHoof);
+        rendererMap.put(20, frontLeftLeg);
+        rendererMap.put(21, frontLeftShin);
+        rendererMap.put(22, frontLeftHoof);
+        rendererMap.put(23, frontRightLeg);
+        rendererMap.put(24, frontRightShin);
+        rendererMap.put(25, frontRightHoof);
+        rendererMap.put(26, muleLeftChest);
+        rendererMap.put(27, muleRightChest);
+        rendererMap.put(28, horseSaddleBottom);
+        rendererMap.put(29, horseSaddleFront);
+        rendererMap.put(30, horseSaddleBack);
+        rendererMap.put(31, horseLeftSaddleRope);
+        rendererMap.put(32, horseLeftSaddleMetal);
+        rendererMap.put(33, horseRightSaddleRope);
+        rendererMap.put(34, horseRightSaddleMetal);
+        rendererMap.put(35, horseLeftFaceMetal);
+        rendererMap.put(36, horseRightFaceMetal);
+        rendererMap.put(37, horseLeftRein);
+        rendererMap.put(38, horseRightRein);
+    }
+
+    public ModelRenderer getRenderer(int modelPart) {
+        return rendererMap.get(modelPart);
+    }
+    
     public ModelHorse()
     {
         this.textureWidth = 128;

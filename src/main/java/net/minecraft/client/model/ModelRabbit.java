@@ -6,22 +6,47 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityRabbit;
 import net.minecraft.util.MathHelper;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ModelRabbit extends ModelBase
 {
-    ModelRenderer rabbitLeftFoot;
-    ModelRenderer rabbitRightFoot;
-    ModelRenderer rabbitLeftThigh;
-    ModelRenderer rabbitRightThigh;
-    ModelRenderer rabbitBody;
-    ModelRenderer rabbitLeftArm;
-    ModelRenderer rabbitRightArm;
-    ModelRenderer rabbitHead;
-    ModelRenderer rabbitRightEar;
-    ModelRenderer rabbitLeftEar;
-    ModelRenderer rabbitTail;
-    ModelRenderer rabbitNose;
+    public ModelRenderer rabbitLeftFoot;
+    public ModelRenderer rabbitRightFoot;
+    public ModelRenderer rabbitLeftThigh;
+    public ModelRenderer rabbitRightThigh;
+    public ModelRenderer rabbitBody;
+    public ModelRenderer rabbitLeftArm;
+    public ModelRenderer rabbitRightArm;
+    public ModelRenderer rabbitHead;
+    public ModelRenderer rabbitRightEar;
+    public ModelRenderer rabbitLeftEar;
+    public ModelRenderer rabbitTail;
+    public ModelRenderer rabbitNose;
     private float field_178701_m = 0.0F;
     private final float field_178699_n = 0.0F;
+
+    private final Map<Integer, ModelRenderer> rendererMap = new HashMap<>();
+
+    public void init() {
+        // 将 ModelRenderer 对象映射到对应的索引
+        rendererMap.put(0, rabbitLeftFoot);
+        rendererMap.put(1, rabbitRightFoot);
+        rendererMap.put(2, rabbitLeftThigh);
+        rendererMap.put(3, rabbitRightThigh);
+        rendererMap.put(4, rabbitBody);
+        rendererMap.put(5, rabbitLeftArm);
+        rendererMap.put(6, rabbitRightArm);
+        rendererMap.put(7, rabbitHead);
+        rendererMap.put(8, rabbitRightEar);
+        rendererMap.put(9, rabbitLeftEar);
+        rendererMap.put(10, rabbitTail);
+        rendererMap.put(11, rabbitNose);
+    }
+
+    public ModelRenderer getRenderer(int modelPart) {
+        return rendererMap.get(modelPart);
+    }
 
     public ModelRabbit()
     {
@@ -89,6 +114,7 @@ public class ModelRabbit extends ModelBase
         this.rabbitNose.setRotationPoint(0.0F, 16.0F, -1.0F);
         this.rabbitNose.mirror = true;
         this.setRotationOffset(this.rabbitNose, 0.0F, 0.0F, 0.0F);
+        init();
     }
 
     private void setRotationOffset(ModelRenderer p_178691_1_, float p_178691_2_, float p_178691_3_, float p_178691_4_)

@@ -38,8 +38,8 @@ public class ModelAdapterRabbit extends ModelAdapter
 
             if (map.containsKey(modelPart))
             {
-                int i = map.get(modelPart).intValue();
-                return (ModelRenderer)Reflector.getFieldValue(modelrabbit, Reflector.ModelRabbit_renderers, i);
+                int i = map.get(modelPart);
+                return modelrabbit.getRenderer(i);
             }
             else
             {

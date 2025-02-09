@@ -18,15 +18,6 @@ import org.apache.logging.log4j.Logger;
 public class Reflector
 {
     private static final Logger LOGGER = LogManager.getLogger();
-    // 我会永远痛恨ReflectorFields 我有改ReflectorFields的时间都可以撸多少发了 刚刚改了一个感觉脑子要烧掉了
-    public static ReflectorClass ModelHorse = new ReflectorClass(ModelHorse.class);
-    public static ReflectorFields ModelHorse_ModelRenderers = new ReflectorFields(ModelHorse, ModelRenderer.class, 39);
-    public static ReflectorClass ModelOcelot = new ReflectorClass(ModelOcelot.class);
-    public static ReflectorFields ModelOcelot_ModelRenderers = new ReflectorFields(ModelOcelot, ModelRenderer.class, 8);
-    public static ReflectorClass ModelRabbit = new ReflectorClass(ModelRabbit.class);
-    public static ReflectorFields ModelRabbit_renderers = new ReflectorFields(ModelRabbit, ModelRenderer.class, 12);
-    public static ReflectorClass ModelSlime = new ReflectorClass(ModelSlime.class);
-    public static ReflectorFields ModelSlime_ModelRenderers = new ReflectorFields(ModelSlime, ModelRenderer.class, 4);
 
     public static void callVoid(ReflectorMethod refMethod, Object... params)
     {
