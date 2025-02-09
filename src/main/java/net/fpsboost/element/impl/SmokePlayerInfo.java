@@ -3,6 +3,7 @@ package net.fpsboost.element.impl;
 import net.fpsboost.Client;
 import net.fpsboost.element.Element;
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.util.PingUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.minecraft.client.Minecraft;
@@ -63,7 +64,7 @@ public class SmokePlayerInfo extends Element {
         List<String> info = new ArrayList<>();
         if (NickName.getValue()) info.add((ClientSettings.isChinese ? "<昵称> " : "<Username> ") + EnumChatFormatting.WHITE + mc.thePlayer.getName());
         if (FPS.getValue()) info.add((ClientSettings.isChinese ? "<帧数> " : "<FPS> ") + EnumChatFormatting.WHITE + Minecraft.getDebugFPS());
-        if (Ping.getValue()) info.add((ClientSettings.isChinese ? "<延迟> " : "<Ping> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? "N/A" : PingDisplay.getPing()));
+        if (Ping.getValue()) info.add((ClientSettings.isChinese ? "<延迟> " : "<Ping> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? "N/A" : PingUtil.getPing()));
         if (XYZ.getValue()) info.add((ClientSettings.isChinese ? "<坐标> " : "<XYZ> ") + EnumChatFormatting.WHITE + MathHelper.floor_double(mc.thePlayer.posX) + ", " + MathHelper.floor_double(mc.thePlayer.posY) + ", " + MathHelper.floor_double(mc.thePlayer.posZ));
         if (Directions.getValue()) info.add((ClientSettings.isChinese ? "<方向> " : "<Directions> ") + EnumChatFormatting.WHITE + getDirectionsName(directions[wrapAngleToDirection(mc.thePlayer.rotationYaw, directions.length)]));
         if (Server.getValue()) info.add((ClientSettings.isChinese ? "<服务器> " : "<Server> ") + EnumChatFormatting.WHITE + (mc.isSingleplayer() ? (ClientSettings.isChinese ? "单人世界" : "SingleWorld") : mc.getCurrentServerData().serverIP));

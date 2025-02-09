@@ -1,6 +1,7 @@
 package net.fpsboost.util;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class TimeUtil {
@@ -40,6 +41,12 @@ public class TimeUtil {
 
     public static String getCurrentTimeString() {
         return LocalDateTime.now().format(FORMATTER);
+    }
+
+    public static String getCurrentTimeStringHHMM() {
+        LocalTime now = LocalTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        return now.format(formatter);
     }
 }
 
