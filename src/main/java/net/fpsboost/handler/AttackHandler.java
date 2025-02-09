@@ -14,7 +14,6 @@ import net.minecraft.network.play.server.S19PacketEntityStatus;
  * @since 2024/9/9 18:51
  */
 public class AttackHandler implements Wrapper {
-
     public static Entity target = null;
     private static long sentAttackTime;
     private static long lastHitTime;

@@ -1,6 +1,9 @@
 package net.minecraft.client.renderer.entity;
 
 import net.fpsboost.module.impl.CustomModel;
+import net.fpsboost.module.impl.SkinLayers3D;
+import net.fpsboost.util.skinlayers3d.*;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.AbstractClientPlayer;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.model.ModelPlayer;
@@ -19,9 +22,11 @@ import net.minecraft.scoreboard.ScoreObjective;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
+public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer> implements PlayerEntityModelAccessor
 {
     private final boolean smallArms;
+    private HeadLayerFeatureRenderer headLayer;
+    private BodyLayerFeatureRenderer bodyLayer;
 
     public RenderPlayer(RenderManager renderManager)
     {
@@ -38,6 +43,9 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
         this.addLayer(new LayerDeadmau5Head(this));
         this.addLayer(new LayerCape(this));
         this.addLayer(new LayerCustomHead(this.getMainModel().bipedHead));
+
+        this.headLayer = new HeadLayerFeatureRenderer(this);
+        this.bodyLayer = new BodyLayerFeatureRenderer(this);
     }
 
     public ModelPlayer getMainModel()
@@ -63,6 +71,18 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
 
     private void setModelVisibilities(AbstractClientPlayer clientPlayer)
     {
+        if (SkinLayers3D.isEnable) {
+            ModelPlayer playerModel = getMainModel();
+            // not correct, but the correct way doesn't work cause 1.8 or whatever
+            if(!clientPlayer.isSpectator()) {
+                playerModel.bipedHeadwear.isHidden = false;
+                playerModel.bipedBodyWear.isHidden = false;
+                playerModel.bipedLeftArmwear.isHidden = false;
+                playerModel.bipedRightArmwear.isHidden = false;
+                playerModel.bipedLeftLegwear.isHidden = false;
+                playerModel.bipedRightLegwear.isHidden = false;
+            }
+        }
         ModelPlayer modelplayer = this.getMainModel();
 
         if (clientPlayer.isSpectator())
@@ -156,6 +176,7 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
 
     public void renderRightArm(AbstractClientPlayer clientPlayer)
     {
+
         float f = 1.0F;
         GlStateManager.color(f, f, f);
         ModelPlayer modelplayer = this.getMainModel();
@@ -202,5 +223,20 @@ public class RenderPlayer extends RendererLivingEntity<AbstractClientPlayer>
         {
             super.rotateCorpse(bat, p_77043_2_, p_77043_3_, partialTicks);
         }
+    }
+
+    @Override
+    public boolean hasThinArms() {
+        return this.smallArms;
+    }
+
+    @Override
+    public HeadLayerFeatureRenderer getHeadLayer() {
+        return this.headLayer;
+    }
+
+    @Override
+    public BodyLayerFeatureRenderer getBodyLayer() {
+        return this.bodyLayer;
     }
 }

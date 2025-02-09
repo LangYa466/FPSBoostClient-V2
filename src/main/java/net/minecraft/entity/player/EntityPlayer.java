@@ -6,6 +6,9 @@ import com.mojang.authlib.GameProfile;
 import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
+
+import lombok.Getter;
+import net.fpsboost.util.skinlayers3d.*;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockBed;
 import net.minecraft.block.BlockDirectional;
@@ -76,7 +79,7 @@ import net.minecraft.world.World;
 import net.minecraft.world.WorldSettings;
 
 @SuppressWarnings("incomplete-switch")
-public abstract class EntityPlayer extends EntityLivingBase
+public abstract class EntityPlayer extends EntityLivingBase implements PlayerSettings
 {
     public InventoryPlayer inventory = new InventoryPlayer(this);
     private InventoryEnderChest theInventoryEnderChest = new InventoryEnderChest();
@@ -107,7 +110,9 @@ public abstract class EntityPlayer extends EntityLivingBase
     public int experienceTotal;
     public float experience;
     private int xpSeed;
+    @Getter
     private ItemStack itemInUse;
+    @Getter
     private int itemInUseCount;
     protected float speedOnGround = 0.1F;
     protected float speedInAir = 0.02F;
@@ -115,6 +120,9 @@ public abstract class EntityPlayer extends EntityLivingBase
     private final GameProfile gameProfile;
     private boolean hasReducedDebug = false;
     public EntityFishHook fishEntity;
+
+    private CustomizableModelPart headLayer;
+    private CustomizableModelPart[] skinLayer;
 
     public EntityPlayer(World worldIn, GameProfile gameProfileIn)
     {
@@ -145,15 +153,22 @@ public abstract class EntityPlayer extends EntityLivingBase
         this.dataWatcher.addObject(10, Byte.valueOf((byte)0));
     }
 
-    public ItemStack getItemInUse()
-    {
-        return this.itemInUse;
+    public CustomizableModelPart[] getSkinLayers() {
+        return this.skinLayer;
     }
 
-    public int getItemInUseCount()
-    {
-        return this.itemInUseCount;
+    public void setupSkinLayers(CustomizableModelPart[] box) {
+        this.skinLayer = box;
     }
+
+    public CustomizableModelPart getHeadLayers() {
+        return this.headLayer;
+    }
+
+    public void setupHeadLayers(CustomizableModelPart box) {
+        this.headLayer = box;
+    }
+
 
     public boolean isUsingItem()
     {

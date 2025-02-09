@@ -34,7 +34,7 @@ public class TargetCircle extends Module {
     @Override
     public void onUpdate() {
         if (target == null) return;
-        if (target.getHealth() <= 0 || !mc.thePlayer.canEntityBeSeen(target) || target.worldObj != mc.theWorld) target = null;
+        if (target.getHealth() <= 0 || !mc.thePlayer.canEntityBeSeen(target) || target.worldObj != mc.theWorld || target.isDead || target.isInvisible()) target = null;
         super.onUpdate();
     }
 

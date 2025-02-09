@@ -37,7 +37,7 @@ public class Perspective extends Module {
 
 	@Override
 	public void onWorldLoad() {
-		setEnable(false);
+		enable = false;
 		super.onWorldLoad();
 	}
 

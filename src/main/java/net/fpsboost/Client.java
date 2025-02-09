@@ -10,6 +10,7 @@ import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
+import net.fpsboost.util.OBSChecker;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.util.texfix.TextureFix;
@@ -66,6 +67,7 @@ public class Client implements Wrapper {
         ClientIRC.init();
         FontManager.init();
         TextureFix.init();
+        OBSChecker.init();
     }
 
     private static void checkForUpdates() throws IOException {

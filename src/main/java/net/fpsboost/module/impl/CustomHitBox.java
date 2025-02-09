@@ -34,7 +34,7 @@ public class CustomHitBox extends Module {
         float blue = color.getBlue() / 255.0f;
 
         for (EntityPlayer entity : mc.theWorld.playerEntities) {
-            if (entity != null && entity != mc.thePlayer && mc.thePlayer.canEntityBeSeen(entity)) {
+            if (entity != null && entity != mc.thePlayer && mc.thePlayer.canEntityBeSeen(entity) && !entity.isInvisible() && !entity.isDead && entity.getHealth() > 0) {
                 double x1 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) mc.timer.renderPartialTicks - RenderManager.renderPosX;
                 double y1 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) mc.timer.renderPartialTicks - RenderManager.renderPosY;
                 double z1 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) mc.timer.renderPartialTicks - RenderManager.renderPosZ;

@@ -12,6 +12,7 @@ public class DrawTextHookManager {
             final DrawTextHook drawTextHook = new DrawTextHook(text);
             RankManager.hook(drawTextHook);
             NameProtect.hook(drawTextHook);
+            OBSChecker.hook(drawTextHook);
             return drawTextHook;
         } catch (Exception e) {
             e.printStackTrace();
