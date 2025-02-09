@@ -29,7 +29,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.13";
+    public static final String version = "2.14";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static final String web = "https://api.fpsboost.cn:444/";
