@@ -14,6 +14,9 @@ import java.awt.*;
 public class TextDisplay extends Element {
     public TextDisplay(String name,String cnName) {
         super(name, cnName);
+        this.values.add(backgroundValue);
+        this.values.add(textShadowValue);
+        this.values.add(clientFontValue);
     }
 
     private final int cacheMCFontHeight = mc.fontRendererObj.getHeight();
