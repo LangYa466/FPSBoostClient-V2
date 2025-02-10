@@ -21,8 +21,7 @@ import java.awt.*;
 
 public class BlockOverlay extends Module {
     private final BooleanValue mode = new BooleanValue("边框模式","Outline Mode", true);
-    private final ColorValue color1 = new ColorValue("边框颜色","Outline Color", new Color(255, 255, 255),this);
-    private final ColorValue color = new ColorValue("填充颜色","Fill Color", new Color(255, 255, 255, 50),this);
+    private final ColorValue color = new ColorValue("颜色","Color", new Color(255, 255, 255),this);
     private final BooleanValue chroma = new BooleanValue("彩虹色","Rainbow", false);
     private final BooleanValue throughBlock = new BooleanValue("边框-立体","3D Outline", true);
     private final NumberValue size = new NumberValue("边框模式粗细","Outline mode thickness",1,10,1,1);
@@ -61,7 +60,7 @@ public class BlockOverlay extends Module {
 
                 // 获取颜色值
                 int chromaColor = reAlpha(Color.getHSBColor((System.currentTimeMillis() % 3000) / 3000F, 0.8F, 1F).getRGB(), color.getValue().getColor().getAlpha() / 255f);
-                Color c = chroma.getValue() ? intToColor(chromaColor) : color1.getValue().getColor();
+                Color c = chroma.getValue() ? intToColor(chromaColor) : color.getValue().getColor();
                 GlStateManager.color(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f, c.getAlpha() / 255f);
 
                 // 定义方块边界
