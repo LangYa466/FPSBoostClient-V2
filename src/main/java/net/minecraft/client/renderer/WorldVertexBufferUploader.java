@@ -1,23 +1,19 @@
 package net.minecraft.client.renderer;
 
-import java.nio.ByteBuffer;
-import java.util.List;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import net.minecraft.client.renderer.vertex.VertexFormatElement;
 import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 import net.optifine.shaders.SVertexBuilder;
 import org.lwjgl.opengl.GL11;
 
-public class WorldVertexBufferUploader
-{
+import java.nio.ByteBuffer;
+import java.util.List;
+
+public class WorldVertexBufferUploader {
     @SuppressWarnings("incomplete-switch")
-    public void draw(WorldRenderer p_181679_1_)
-    {
-        if (p_181679_1_.getVertexCount() > 0)
-        {
-            if (p_181679_1_.getDrawMode() == 7 && Config.isQuadsToTriangles())
-            {
+    public void draw(WorldRenderer p_181679_1_) {
+        if (p_181679_1_.getVertexCount() > 0) {
+            if (p_181679_1_.getDrawMode() == 7 && Config.isQuadsToTriangles()) {
                 p_181679_1_.quadsToTriangles();
             }
 
@@ -26,17 +22,15 @@ public class WorldVertexBufferUploader
             ByteBuffer bytebuffer = p_181679_1_.getByteBuffer();
             List<VertexFormatElement> list = vertexformat.getElements();
 
-            for (int j = 0; j < list.size(); ++j)
-            {
+            for (int j = 0; j < list.size(); ++j) {
                 VertexFormatElement vertexformatelement = list.get(j);
                 VertexFormatElement.EnumUsage vertexformatelement$enumusage = vertexformatelement.getUsage();
-                
+
                 int k = vertexformatelement.getType().getGlConstant();
                 int l = vertexformatelement.getIndex();
                 bytebuffer.position(vertexformat.getOffset(j));
 
-                switch (vertexformatelement$enumusage)
-                {
+                switch (vertexformatelement$enumusage) {
                     case POSITION:
                         GL11.glVertexPointer(vertexformatelement.getElementCount(), k, i, bytebuffer);
                         GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
@@ -60,30 +54,23 @@ public class WorldVertexBufferUploader
                 }
             }
 
-            if (p_181679_1_.isMultiTexture())
-            {
+            if (p_181679_1_.isMultiTexture()) {
                 p_181679_1_.drawMultiTexture();
-            }
-            else if (Config.isShaders())
-            {
+            } else if (Config.isShaders()) {
                 SVertexBuilder.drawArrays(p_181679_1_.getDrawMode(), 0, p_181679_1_.getVertexCount(), p_181679_1_);
-            }
-            else
-            {
+            } else {
                 GL11.glDrawArrays(p_181679_1_.getDrawMode(), 0, p_181679_1_.getVertexCount());
             }
 
             int j1 = 0;
 
-            for (int k1 = list.size(); j1 < k1; ++j1)
-            {
+            for (int k1 = list.size(); j1 < k1; ++j1) {
                 VertexFormatElement vertexformatelement1 = list.get(j1);
                 VertexFormatElement.EnumUsage vertexformatelement$enumusage1 = vertexformatelement1.getUsage();
-                
+
                 int i1 = vertexformatelement1.getIndex();
 
-                switch (vertexformatelement$enumusage1)
-                {
+                switch (vertexformatelement$enumusage1) {
                     case POSITION:
                         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
                         break;

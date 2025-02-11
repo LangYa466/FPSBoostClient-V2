@@ -6,9 +6,7 @@ import net.minecraft.client.model.ModelSign;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.tileentity.TileEntitySignRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.src.Config;
 import net.minecraft.tileentity.TileEntitySign;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterSign extends ModelAdapter {
     public ModelAdapterSign() {

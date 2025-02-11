@@ -7,8 +7,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderMinecart;
 import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterMinecart extends ModelAdapter {
     public ModelAdapterMinecart() {

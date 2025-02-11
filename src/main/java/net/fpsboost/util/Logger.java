@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
  * @author LangYa466
  * @since 2/6/2025
  */
-@SuppressWarnings({"StringConcatenationArgumentToLogCall","LoggingSimilarMessage"})
+@SuppressWarnings({"StringConcatenationArgumentToLogCall", "LoggingSimilarMessage"})
 public class Logger {
     public static final org.apache.logging.log4j.Logger logger = LogManager.getLogger("FPSBoost-Client");
     private static final String PREFIX = "[FPSBoost] ";

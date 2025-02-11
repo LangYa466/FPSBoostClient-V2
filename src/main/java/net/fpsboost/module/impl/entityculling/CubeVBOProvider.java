@@ -1,6 +1,7 @@
 package net.fpsboost.module.impl.entityculling;
 
-import net.minecraft.client.renderer.*;
+import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
@@ -15,7 +16,7 @@ public class CubeVBOProvider {
     private static final VertexFormat VERTEX_FORMAT = DefaultVertexFormats.POSITION;
     private static final int TEN_BITS = 0b1111111111;
 
-    private WorldRenderer worldRenderer = new WorldRenderer(14*3);
+    private WorldRenderer worldRenderer = new WorldRenderer(14 * 3);
 
     public static CubeVBOProvider getInstance() {
         return INSTANCE;
@@ -31,12 +32,12 @@ public class CubeVBOProvider {
     }
 
     public void renderVBO(float xSize, float ySize, float zSize) {
-        int xUnits = Math.round(xSize*10);
-        int yUnits = Math.round(ySize*10);
-        int zUnits = Math.round(zSize*10);
+        int xUnits = Math.round(xSize * 10);
+        int yUnits = Math.round(ySize * 10);
+        int zUnits = Math.round(zSize * 10);
 
         VertexBuffer buffer = getVBO(xUnits, yUnits, zUnits);
-        if(lastVBO != buffer) {
+        if (lastVBO != buffer) {
             buffer.bindBuffer();
 
             OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
@@ -48,7 +49,7 @@ public class CubeVBOProvider {
     }
 
     public void clearVBOs() {
-        for(VertexBuffer buffer : vbos.values()) {
+        for (VertexBuffer buffer : vbos.values()) {
             buffer.deleteGlBuffers();
         }
         vbos.clear();
@@ -63,7 +64,7 @@ public class CubeVBOProvider {
         int vboId = getVBOId(xUnits, yUnits, zUnits);
 
         VertexBuffer buffer;
-        if(vbos.containsKey(vboId)) {
+        if (vbos.containsKey(vboId)) {
             buffer = vbos.get(vboId);
         } else {
             renderAABB(worldRenderer, xUnits, yUnits, zUnits);
@@ -79,20 +80,20 @@ public class CubeVBOProvider {
 
     private void renderAABB(WorldRenderer worldRenderer, int xUnits, int yUnits, int zUnits) {
         worldRenderer.begin(GL_DRAW_MODE, VERTEX_FORMAT);
-        worldRenderer.pos(0, yUnits/10f, zUnits/10f).endVertex();
-        worldRenderer.pos(xUnits/10f, yUnits/10f, zUnits/10f).endVertex();
-        worldRenderer.pos(0, 0, zUnits/10f).endVertex();
-        worldRenderer.pos(xUnits/10f, 0, zUnits/10f).endVertex();
-        worldRenderer.pos(xUnits/10f, 0, 0).endVertex();
-        worldRenderer.pos(xUnits/10f, yUnits/10f, zUnits/10f).endVertex();
-        worldRenderer.pos(xUnits/10f, yUnits/10f, 0).endVertex();
-        worldRenderer.pos(0, yUnits/10f, zUnits/10f).endVertex();
-        worldRenderer.pos(0, yUnits/10f, 0).endVertex();
-        worldRenderer.pos(0, 0, zUnits/10f).endVertex();
+        worldRenderer.pos(0, yUnits / 10f, zUnits / 10f).endVertex();
+        worldRenderer.pos(xUnits / 10f, yUnits / 10f, zUnits / 10f).endVertex();
+        worldRenderer.pos(0, 0, zUnits / 10f).endVertex();
+        worldRenderer.pos(xUnits / 10f, 0, zUnits / 10f).endVertex();
+        worldRenderer.pos(xUnits / 10f, 0, 0).endVertex();
+        worldRenderer.pos(xUnits / 10f, yUnits / 10f, zUnits / 10f).endVertex();
+        worldRenderer.pos(xUnits / 10f, yUnits / 10f, 0).endVertex();
+        worldRenderer.pos(0, yUnits / 10f, zUnits / 10f).endVertex();
+        worldRenderer.pos(0, yUnits / 10f, 0).endVertex();
+        worldRenderer.pos(0, 0, zUnits / 10f).endVertex();
         worldRenderer.pos(0, 0, 0).endVertex();
-        worldRenderer.pos(xUnits/10f, 0, 0).endVertex();
-        worldRenderer.pos(0, yUnits/10f, 0).endVertex();
-        worldRenderer.pos(xUnits/10f, yUnits/10f, 0).endVertex();
+        worldRenderer.pos(xUnits / 10f, 0, 0).endVertex();
+        worldRenderer.pos(0, yUnits / 10f, 0).endVertex();
+        worldRenderer.pos(xUnits / 10f, yUnits / 10f, 0).endVertex();
         worldRenderer.finishDrawing();
     }
 

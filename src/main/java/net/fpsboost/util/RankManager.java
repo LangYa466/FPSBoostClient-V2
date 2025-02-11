@@ -8,7 +8,7 @@ import net.minecraft.util.EnumChatFormatting;
  * @updateSince 2025/01/26
  * @since 2024/6/5 下午9:25
  */
-public class RankManager implements Wrapper  {
+public class RankManager implements Wrapper {
     public static final String PRIMARY_COLOR = EnumChatFormatting.RED.toString();
     public static final String SECONDARY_COLOR = EnumChatFormatting.GRAY.toString();
 

@@ -76,7 +76,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
     public void initGui() {
         super.initGui();
 
-        buttonList.add(new GuiButton(0,width / 2 - 100,height / 2 + 50,"返回"));
+        buttonList.add(new GuiButton(0, width / 2 - 100, height / 2 + 50, "返回"));
     }
 
     @Override
@@ -86,9 +86,9 @@ public class GuiMicrosoftLogin extends GuiScreen {
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (microsoftLogin == null) {
-            FontManager.client().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + "登录中...",width / 2.0f,height / 2.0f - 5f,-1);
+            FontManager.client().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + "登录中...", width / 2.0f, height / 2.0f - 5f, -1);
         } else {
-            FontManager.client().drawCenteredStringWithShadow(microsoftLogin.getStatus(),width / 2.0f,height / 2.0f - 5f,-1);
+            FontManager.client().drawCenteredStringWithShadow(microsoftLogin.getStatus(), width / 2.0f, height / 2.0f - 5f, -1);
         }
     }
 

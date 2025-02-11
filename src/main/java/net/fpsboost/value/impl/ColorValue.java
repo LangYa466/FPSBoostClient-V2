@@ -1,9 +1,9 @@
 package net.fpsboost.value.impl;
 
-import net.fpsboost.screen.clickgui.utils.HSBColor;
 import lombok.Getter;
 import lombok.Setter;
 import net.fpsboost.module.Module;
+import net.fpsboost.screen.clickgui.utils.HSBColor;
 import net.fpsboost.value.Value;
 
 import java.awt.*;
@@ -17,7 +17,7 @@ public class ColorValue extends Value<HSBColor> {
     Module module;
 
     public ColorValue(String cnName, String name, Color value, Module m) {
-        super(cnName,name,new HSBColor(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()));
+        super(cnName, name, new HSBColor(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()));
         module = m;
         init();
     }
@@ -36,7 +36,7 @@ public class ColorValue extends Value<HSBColor> {
                 (this.getName())
                         + ("彩虹速度"),
                 this.getName()
-                + ("RainbowSpeed"),
+                        + ("RainbowSpeed"),
                 3, 1, 10, 1);
         module.values.add(this.rainbow);
         module.values.add(this.rainbowSpeed);

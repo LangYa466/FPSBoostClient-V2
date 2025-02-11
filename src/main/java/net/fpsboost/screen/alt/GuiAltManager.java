@@ -1,12 +1,11 @@
 package net.fpsboost.screen.alt;
 
-import net.fpsboost.util.Logger;
-import net.fpsboost.config.ConfigManager;
+import com.mojang.authlib.exceptions.AuthenticationException;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.alt.altimpl.MicrosoftAlt;
 import net.fpsboost.screen.alt.microsoft.GuiMicrosoftLogin;
 import net.fpsboost.screen.alt.microsoft.MicrosoftLogin;
-import com.mojang.authlib.exceptions.AuthenticationException;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiButton;
@@ -38,7 +37,7 @@ public class GuiAltManager extends GuiScreen {
         if (ClientSettings.isChinese) {
             info = "您当前登录的账号: ";
             status = EnumChatFormatting.YELLOW + "等待切换中...";
-        }else {
+        } else {
             info = "Your account: ";
             status = EnumChatFormatting.GREEN + "Waiting...";
         }
@@ -195,7 +194,7 @@ public class GuiAltManager extends GuiScreen {
             this.buttonList.add(new GuiButton(0, this.width / 2 + 40, this.height - 48, 70, 20, "返回"));
             buttonList.add(buttonLogin = new GuiButton(2, -1145141919, -1145141919, 70, 20, "登录"));
             buttonList.add(buttonRemove = new GuiButton(3, -1145141919, -1145141919, 70, 20, "删除"));
-        }else {
+        } else {
             buttonList.add(new GuiButton(4, this.width / 2 - 120, this.height - 48, 70, 20, "Offline"));
             buttonList.add(new GuiButton(5, this.width / 2 - 40, this.height - 48, 70, 20, "Microsoft"));
             this.buttonList.add(new GuiButton(0, this.width / 2 + 40, this.height - 48, 70, 20, "Exit"));

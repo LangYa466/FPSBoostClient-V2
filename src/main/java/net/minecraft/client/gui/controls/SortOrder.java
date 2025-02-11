@@ -7,14 +7,15 @@ import java.util.Comparator;
 import java.util.List;
 
 public enum SortOrder {
-    NONE(entries -> { }),
+    NONE(entries -> {
+    }),
     AZ(entries -> {
         entries.sort(Comparator.comparing(entry -> ((GuiNewKeyBindingList.KeyEntry) entry).getKeybinding()
-            .getKeyDescription()));
+                .getKeyDescription()));
     }),
     ZA(entries -> {
         entries.sort(Comparator.comparing(entry -> ((GuiNewKeyBindingList.KeyEntry) entry).getKeybinding()
-            .getKeyDescription()).reversed());
+                .getKeyDescription()).reversed());
     });
 
     private final ISort sorter;

@@ -1,7 +1,7 @@
 package net.fpsboost.module.impl;
 
-import net.fpsboost.screen.clickgui.ClickGui;
 import net.fpsboost.module.Module;
+import net.fpsboost.screen.clickgui.ClickGui;
 import net.fpsboost.value.impl.ModeValue;
 import org.lwjgl.input.Keyboard;
 
@@ -11,11 +11,11 @@ import org.lwjgl.input.Keyboard;
  */
 public class ClickGUIModule extends Module {
     public ClickGUIModule() {
-        super("ClickGUI", "点击页面", "The Screen ClickGUI","你看见的这个页面", Keyboard.KEY_RSHIFT);
+        super("ClickGUI", "点击页面", "The Screen ClickGUI", "你看见的这个页面", Keyboard.KEY_RSHIFT);
     }
 
     public static ThemeType theme = ThemeType.Light;
-    private static final ModeValue themeModeValue = new ModeValue("主题模式","Theme Mode","浅色","浅色","暗色") {
+    private static final ModeValue themeModeValue = new ModeValue("主题模式", "Theme Mode", "浅色", "浅色", "暗色") {
         @Override
         public void setValue(String value) {
             if (value.contains("浅色")) {
@@ -26,6 +26,7 @@ public class ClickGUIModule extends Module {
             super.setValue(value);
         }
     };
+
     public enum ThemeType {
         Dark, Light
     }

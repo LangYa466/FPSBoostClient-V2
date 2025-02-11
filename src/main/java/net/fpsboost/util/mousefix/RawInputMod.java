@@ -1,7 +1,7 @@
 package net.fpsboost.util.mousefix;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.Wrapper;
+import net.fpsboost.util.Logger;
 import net.java.games.input.Controller;
 import net.java.games.input.Controller.Type;
 import net.java.games.input.ControllerEnvironment;
@@ -38,7 +38,7 @@ public class RawInputMod implements Wrapper {
                             RawInputMod.dy = 0;
                         }
                     }
-                    
+
                     // 防止CPU被榨干了
                     try {
                         Thread.sleep(1);

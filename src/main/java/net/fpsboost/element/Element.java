@@ -61,9 +61,11 @@ public class Element extends Module implements Wrapper {
         }
     }
 
-    public void init() { }
+    public void init() {
+    }
 
-    public void onDraw() {}
+    public void onDraw() {
+    }
 
     public void onClick(int mouseX, int mouseY, int button) {
         isHovering = HoveringUtil.isHovering(xPos, yPos, width * scale, height * scale, mouseX, mouseY);
@@ -81,13 +83,13 @@ public class Element extends Module implements Wrapper {
 
     public void setScale(float scale) {
 
-        if(scale > 5.0 || scale < 0.2) {
+        if (scale > 5.0 || scale < 0.2) {
 
-            if(scale > 5.0) {
+            if (scale > 5.0) {
                 this.scale = 5.0F;
             }
 
-            if(scale < 0.2) {
+            if (scale < 0.2) {
                 this.scale = 0.2F;
             }
 

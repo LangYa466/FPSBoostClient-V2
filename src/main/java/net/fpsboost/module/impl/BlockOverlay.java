@@ -3,7 +3,6 @@ package net.fpsboost.module.impl;
 import net.fpsboost.module.Module;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
-import net.fpsboost.value.impl.ModeValue;
 import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockStairs;
@@ -20,14 +19,14 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 public class BlockOverlay extends Module {
-    private final BooleanValue mode = new BooleanValue("边框模式","Outline Mode", true);
-    private final ColorValue color = new ColorValue("颜色","Color", new Color(255, 255, 255),this);
-    private final BooleanValue chroma = new BooleanValue("彩虹色","Rainbow", false);
-    private final BooleanValue throughBlock = new BooleanValue("边框-立体","3D Outline", true);
-    private final NumberValue size = new NumberValue("边框模式粗细","Outline mode thickness",1,10,1,1);
+    private final BooleanValue mode = new BooleanValue("边框模式", "Outline Mode", true);
+    private final ColorValue color = new ColorValue("颜色", "Color", new Color(255, 255, 255), this);
+    private final BooleanValue chroma = new BooleanValue("彩虹色", "Rainbow", false);
+    private final BooleanValue throughBlock = new BooleanValue("边框-立体", "3D Outline", true);
+    private final NumberValue size = new NumberValue("边框模式粗细", "Outline mode thickness", 1, 10, 1, 1);
 
     public BlockOverlay() {
-        super("BlockOverlay","方块边框","Display the block outline or fill","抄袭FpsMaster的");
+        super("BlockOverlay", "方块边框", "Display the block outline or fill", "抄袭FpsMaster的");
     }
 
     @Override

@@ -9,22 +9,17 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.tileentity.RenderEnderCrystal;
 import net.minecraft.entity.item.EntityEnderCrystal;
 import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
-public class ModelAdapterEnderCrystal extends ModelAdapter
-{
-    public ModelAdapterEnderCrystal()
-    {
+public class ModelAdapterEnderCrystal extends ModelAdapter {
+    public ModelAdapterEnderCrystal() {
         this("end_crystal");
     }
 
-    protected ModelAdapterEnderCrystal(String name)
-    {
+    protected ModelAdapterEnderCrystal(String name) {
         super(EntityEnderCrystal.class, name, 0.5F);
     }
 
-    public ModelBase makeModel()
-    {
+    public ModelBase makeModel() {
         return new ModelEnderCrystal(0.0F, true);
     }
 
@@ -47,24 +42,19 @@ public class ModelAdapterEnderCrystal extends ModelAdapter
         }
     }
 
-    public String[] getModelRendererNames()
-    {
-        return new String[] {"cube", "glass", "base"};
+    public String[] getModelRendererNames() {
+        return new String[]{"cube", "glass", "base"};
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         Render render = rendermanager.getEntityRenderMap().get(EntityEnderCrystal.class);
 
-        if (!(render instanceof RenderEnderCrystal))
-        {
+        if (!(render instanceof RenderEnderCrystal)) {
             Config.warn("Not an instance of RenderEnderCrystal: " + render);
             return null;
-        }
-        else
-        {
-            RenderEnderCrystal renderendercrystal = (RenderEnderCrystal)render;
+        } else {
+            RenderEnderCrystal renderendercrystal = (RenderEnderCrystal) render;
 
             renderendercrystal.modelEnderCrystal = modelBase;
             renderendercrystal.shadowSize = shadowSize;

@@ -5,8 +5,6 @@ import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.client.renderer.entity.RenderTntMinecart;
 import net.minecraft.entity.item.EntityMinecartTNT;
-import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterMinecartTnt extends ModelAdapterMinecart {
     public ModelAdapterMinecartTnt() {

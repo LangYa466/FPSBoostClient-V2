@@ -1,13 +1,12 @@
 package net.minecraft.client.renderer.vertex;
 
-import java.lang.reflect.Field;
 import net.minecraft.src.Config;
-import net.optifine.reflect.ReflectorClass;
 import net.optifine.reflect.ReflectorField;
 import net.optifine.shaders.SVertexFormat;
 
-public class DefaultVertexFormats
-{
+import java.lang.reflect.Field;
+
+public class DefaultVertexFormats {
     public static VertexFormat BLOCK = new VertexFormat();
     public static VertexFormat ITEM = new VertexFormat();
     private static final VertexFormat BLOCK_VANILLA = BLOCK;
@@ -29,46 +28,34 @@ public class DefaultVertexFormats
     public static final VertexFormatElement NORMAL_3B = new VertexFormatElement(0, VertexFormatElement.EnumType.BYTE, VertexFormatElement.EnumUsage.NORMAL, 3);
     public static final VertexFormatElement PADDING_1B = new VertexFormatElement(0, VertexFormatElement.EnumType.BYTE, VertexFormatElement.EnumUsage.PADDING, 1);
 
-    public static void updateVertexFormats()
-    {
-        if (Config.isShaders())
-        {
+    public static void updateVertexFormats() {
+        if (Config.isShaders()) {
             BLOCK = SVertexFormat.makeDefVertexFormatBlock();
             ITEM = SVertexFormat.makeDefVertexFormatItem();
 
-        }
-        else
-        {
+        } else {
             BLOCK = BLOCK_VANILLA;
             ITEM = ITEM_VANILLA;
         }
     }
 
-    public static Object getFieldValue(ReflectorField p_getFieldValue_0_)
-    {
-        try
-        {
+    public static Object getFieldValue(ReflectorField p_getFieldValue_0_) {
+        try {
             Field field = p_getFieldValue_0_.getTargetField();
 
-            if (field == null)
-            {
+            if (field == null) {
                 return null;
-            }
-            else
-            {
+            } else {
                 Object object = field.get(null);
                 return object;
             }
-        }
-        catch (Throwable throwable)
-        {
+        } catch (Throwable throwable) {
             throwable.printStackTrace();
             return null;
         }
     }
 
-    static
-    {
+    static {
         BLOCK.addElement(POSITION_3F);
         BLOCK.addElement(COLOR_4UB);
         BLOCK.addElement(TEX_2F);

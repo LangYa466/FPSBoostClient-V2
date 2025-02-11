@@ -1,13 +1,16 @@
 package net.fpsboost.module;
 
-import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.Wrapper;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
+import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.impl.*;
 import net.fpsboost.socket.ClientIRC;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 public class ModuleManager implements Wrapper {
     private static final LinkedHashMap<Class<?>, Module> moduleMap = new LinkedHashMap<>();
@@ -25,7 +28,7 @@ public class ModuleManager implements Wrapper {
                 HitColor.INSTANCE, new AttackEffects(), new SmoothGUIZoom(),
                 new RenderMyNameTag(), BetterEnchantment.INSTANCE, new BetterNameTag(),
                 new TargetCircle(), new ClickSounds(), new RectMode(), new CustomModel(),
-                new CustomWorldTime(),new CustomHitBox(), new BetterInventory(),
+                new CustomWorldTime(), new CustomHitBox(), new BetterInventory(),
                 new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE,
                 new HidePlantBlock(), new DragonWings(), new SkinLayers3D(),
                 new HideRunningParticles()

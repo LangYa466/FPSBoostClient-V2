@@ -18,11 +18,11 @@ import net.minecraft.util.EnumParticleTypes;
  * @since 2025/1/03
  */
 public class AttackEffects extends Module {
-    public static final ModeValue mode = new ModeValue("粒子模式","Mode", "血液", "雷电", "火焰", "爱心", "水滴", "血液");
-    private static final NumberValue amount = new NumberValue("粒子数量","Number", 2, 10, 0, 1);
-    
-    private static final BooleanValue deadLighting = new BooleanValue("死亡雷电","DeadLighting", true);
-    private static final BooleanValue lightingSoundValue = new BooleanValue("死亡的雷电的音效","LightingSound", true);
+    public static final ModeValue mode = new ModeValue("粒子模式", "Mode", "血液", "雷电", "火焰", "爱心", "水滴", "血液");
+    private static final NumberValue amount = new NumberValue("粒子数量", "Number", 2, 10, 0, 1);
+
+    private static final BooleanValue deadLighting = new BooleanValue("死亡雷电", "DeadLighting", true);
+    private static final BooleanValue lightingSoundValue = new BooleanValue("死亡的雷电的音效", "LightingSound", true);
     private static EntityLivingBase target;
 
     public AttackEffects() {
@@ -49,7 +49,7 @@ public class AttackEffects extends Module {
         mc.getNetHandler().handleSpawnGlobalEntity(new S2CPacketSpawnGlobalEntity(new EntityLightningBolt(mc.theWorld, target.posX, target.posY, target.posZ)));
         if (lightingSoundValue.getValue()) mc.thePlayer.playSound("entity.lightning.impact", 0.5f, 1f);
     }
-    
+
     @Override
     public void onUpdate() {
         if (Wrapper.isNull()) return;

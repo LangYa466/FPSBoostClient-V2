@@ -1,8 +1,8 @@
 package net.fpsboost.screen.clickgui.components;
 
-import net.fpsboost.screen.clickgui.utils.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.fpsboost.screen.clickgui.utils.*;
 import net.fpsboost.util.font.FontManager;
 
 import java.awt.*;

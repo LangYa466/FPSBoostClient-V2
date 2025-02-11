@@ -1,7 +1,8 @@
 package net.fpsboost.util.texfix;
 
-import java.util.ArrayList;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+
+import java.util.ArrayList;
 
 // LangYa466
 // recode in 2025/1/31

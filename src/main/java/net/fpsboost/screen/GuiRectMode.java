@@ -19,15 +19,15 @@ public class GuiRectMode extends GuiScreen {
     public void initGui() {
         int buttonX = this.width / 2 - 100;
         // buttonList.add(new GuiButton(1,buttonX,height / 2 - 20,80,20,"无瑕疵圆角(优化一般)"));
-        buttonList.add(new GuiButton(2,buttonX,height / 2 + 5,"直角"));
-        buttonList.add(new GuiButton(3,buttonX,height / 2 + 30,"有瑕疵圆角(优化好)"));
+        buttonList.add(new GuiButton(2, buttonX, height / 2 + 5, "直角"));
+        buttonList.add(new GuiButton(3, buttonX, height / 2 + 30, "有瑕疵圆角(优化好)"));
         super.initGui();
     }
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
         drawClientBackground();
-        FontManager.client(70).drawCenteredStringWithShadow("全局绘制矩形模式",width / 2F,height / 4F,-1);
+        FontManager.client(70).drawCenteredStringWithShadow("全局绘制矩形模式", width / 2F, height / 4F, -1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 
@@ -35,7 +35,7 @@ public class GuiRectMode extends GuiScreen {
     protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
         switch (button.id) {
             case 1:
-              //  RectMode.mode = 1;
+                //  RectMode.mode = 1;
                 break;
             case 2:
                 RectMode.mode = 0;

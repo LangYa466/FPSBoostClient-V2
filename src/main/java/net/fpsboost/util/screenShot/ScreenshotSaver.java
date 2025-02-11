@@ -1,17 +1,16 @@
 package net.fpsboost.util.screenShot;
 
-import javax.imageio.ImageIO;
-import java.io.File;
-import java.awt.image.BufferedImage;
-
 import net.fpsboost.util.Logger;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.event.ClickEvent;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.ChatComponentTranslation;
 import net.minecraft.util.IChatComponent;
-import net.minecraft.event.ClickEvent;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

@@ -13,7 +13,7 @@ public class ChatUtil implements Wrapper {
     public static void addMessageWithClient(String message) {
         if (mc.thePlayer == null) return;
         JsonObject object = new JsonObject();
-        object.addProperty("text",message);
+        object.addProperty("text", message);
         mc.thePlayer.addChatMessage(IChatComponent.Serializer.jsonToComponent(object.toString()));
     }
 }

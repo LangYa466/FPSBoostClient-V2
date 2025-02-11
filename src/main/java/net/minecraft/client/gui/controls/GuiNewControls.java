@@ -8,14 +8,16 @@ import net.minecraft.client.settings.KeyBinding;
 import net.minecraft.util.ResourceLocation;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Set;
 import java.util.function.Predicate;
 
 public class GuiNewControls extends GuiControls {
     private static final GameSettings.Options[] OPTIONS_ARR = new GameSettings.Options[]{
-        GameSettings.Options.INVERT_MOUSE,
-        GameSettings.Options.SENSITIVITY,
-        GameSettings.Options.TOUCHSCREEN
+            GameSettings.Options.INVERT_MOUSE,
+            GameSettings.Options.SENSITIVITY,
+            GameSettings.Options.TOUCHSCREEN
     };
 
     private final GuiScreen parentScreen;
@@ -53,18 +55,18 @@ public class GuiNewControls extends GuiControls {
         for (GameSettings.Options gameOption : OPTIONS_ARR) {
             if (gameOption.getEnumFloat()) {
                 this.buttonList.add(new GuiOptionSlider(
-                    gameOption.returnEnumOrdinal(),
-                    this.width / 2 - 155 + i % 2 * 160,
-                    18 + 24 * (i >> 1),
-                    gameOption
+                        gameOption.returnEnumOrdinal(),
+                        this.width / 2 - 155 + i % 2 * 160,
+                        18 + 24 * (i >> 1),
+                        gameOption
                 ));
             } else {
                 this.buttonList.add(new GuiOptionButton(
-                    gameOption.returnEnumOrdinal(),
-                    this.width / 2 - 155 + i % 2 * 160,
-                    18 + 24 * (i >> 1),
-                    gameOption,
-                    this.options.getKeyBinding(gameOption)
+                        gameOption.returnEnumOrdinal(),
+                        this.width / 2 - 155 + i % 2 * 160,
+                        18 + 24 * (i >> 1),
+                        gameOption,
+                        this.options.getKeyBinding(gameOption)
                 ));
             }
             ++i;
@@ -73,31 +75,31 @@ public class GuiNewControls extends GuiControls {
         this.keyBindingList = new GuiNewKeyBindingList(this, this.mc);
 
         this.buttonList.add(new GuiButton(
-            1001,
-            this.width / 2 - 155 + 160,
-            this.height - 29,
-            150,
-            20,
-            I18n.format("gui.done")
+                1001,
+                this.width / 2 - 155 + 160,
+                this.height - 29,
+                150,
+                20,
+                I18n.format("gui.done")
         ));
 
         this.buttonReset = new GuiButton(
-            1002,
-            this.width / 2 - 155,
-            this.height - 29,
-            150,
-            20,
-            I18n.format("controls.resetAll")
+                1002,
+                this.width / 2 - 155,
+                this.height - 29,
+                150,
+                20,
+                I18n.format("controls.resetAll")
         );
         this.buttonList.add(this.buttonReset);
 
         this.showButton = new GuiButton(
-            1003,
-            this.width / 2 - 155 + 160,
-            this.height - 29 - 24,
-            150,
-            20,
-            I18n.format("options.show") + ": " + I18n.format("options.show.all")
+                1003,
+                this.width / 2 - 155 + 160,
+                this.height - 29 - 24,
+                150,
+                20,
+                I18n.format("options.show") + ": " + I18n.format("options.show.all")
         );
         this.buttonList.add(this.showButton);
 
@@ -108,18 +110,18 @@ public class GuiNewControls extends GuiControls {
                 1007,
                 this.width / 2 - (155 / 2) - 20,
                 this.height - 27 - 50,
-                150/2 + 18,
+                150 / 2 + 18,
                 20,
                 I18n.format("options.search.name")
         ));
 
         this.sortOrderButton = new GuiButton(
-            1008,
-            this.width / 2 - 155 + 160,
-            this.height - 29 - 24 - 24,
-            150,
-            20,
-            I18n.format("options.sort") + ": " + I18n.format("options.sort.none")
+                1008,
+                this.width / 2 - 155 + 160,
+                this.height - 29 - 24 - 24,
+                150,
+                20,
+                I18n.format("options.sort") + ": " + I18n.format("options.sort.none")
         );
         this.buttonList.add(this.sortOrderButton);
         this.sortOrder = SortOrder.NONE;
@@ -148,19 +150,19 @@ public class GuiNewControls extends GuiControls {
         switch (searchType) {
             case NAME:
                 filters = filters.and(keyEntry -> keyEntry.getKeyDesc()
-                    .toLowerCase()
-                    .contains(lastSearch.toLowerCase()));
+                        .toLowerCase()
+                        .contains(lastSearch.toLowerCase()));
                 break;
             case CATEGORY:
                 filters = filters.and(keyEntry -> I18n.format(keyEntry.getKeybinding().getKeyCategory())
-                    .toLowerCase()
-                    .contains(lastSearch.toLowerCase()));
+                        .toLowerCase()
+                        .contains(lastSearch.toLowerCase()));
                 break;
             case KEY:
                 filters = filters.and(keyEntry -> GameSettings.getKeyDisplayString(keyEntry.getKeybinding()
-                                                                                       .getKeyCode())
-                    .toLowerCase()
-                    .contains(lastSearch.toLowerCase()));
+                                .getKeyCode())
+                        .toLowerCase()
+                        .contains(lastSearch.toLowerCase()));
                 break;
         }
 
@@ -241,11 +243,11 @@ public class GuiNewControls extends GuiControls {
 
         String text = I18n.format("options.search");
         drawCenteredString(
-            fontRendererObj,
-            text,
-            this.width / 2 - (155 / 2) - (fontRendererObj.getStringWidth(text)),
-            this.height - 29 - 42,
-            16777215
+                fontRendererObj,
+                text,
+                this.width / 2 - (155 / 2) - (fontRendererObj.getStringWidth(text)),
+                this.height - 29 - 42,
+                16777215
         );
     }
 

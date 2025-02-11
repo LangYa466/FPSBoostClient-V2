@@ -17,11 +17,11 @@ import java.util.ArrayList;
 
 public class PotionDisplay extends Element {
 
-    private final BooleanValue betterFont = new BooleanValue("更好的字体","BetterFont",true);
-    private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
-    private final ColorValue color = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80), this);
-    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色","Potion Name Text Color", Color.white, this);
-    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色","Potion Duration Text Color", Color.white, this);
+    private final BooleanValue betterFont = new BooleanValue("更好的字体", "BetterFont", true);
+    private final BooleanValue backgroundValue = new BooleanValue("背景", "Background", true);
+    private final ColorValue color = new ColorValue("背景颜色", "Background Color", new Color(0, 0, 0, 80), this);
+    private final ColorValue textColorValue = new ColorValue("药水名字文本颜色", "Potion Name Text Color", Color.white, this);
+    private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色", "Potion Duration Text Color", Color.white, this);
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 
     public PotionDisplay() {
@@ -33,7 +33,8 @@ public class PotionDisplay extends Element {
         ArrayList<PotionEffect> collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
 
         FontRenderer fr;
-        if (betterFont.getValue()) fr = FontManager.client(); else fr = mc.fontRendererObj;
+        if (betterFont.getValue()) fr = FontManager.client();
+        else fr = mc.fontRendererObj;
 
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {

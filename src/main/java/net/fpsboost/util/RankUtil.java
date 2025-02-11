@@ -1,6 +1,5 @@
 package net.fpsboost.util;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.Client;
 import net.fpsboost.util.network.WebUtil;
 

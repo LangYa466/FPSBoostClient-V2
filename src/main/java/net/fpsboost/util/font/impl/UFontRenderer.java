@@ -72,11 +72,11 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
     }
 
     public String trimString(String text, float width, boolean more, boolean reverse) {
-        String realText = reverse? new StringBuilder(text).reverse().toString() : text;
+        String realText = reverse ? new StringBuilder(text).reverse().toString() : text;
         StringBuilder stringbuilder = new StringBuilder();
         for (char c : realText.toCharArray()) {
             if (getStringWidth(stringbuilder.toString() + c) < width)
-                stringbuilder.insert(reverse? 0 : stringbuilder.length(), c);
+                stringbuilder.insert(reverse ? 0 : stringbuilder.length(), c);
             else
                 break;
         }
@@ -84,11 +84,11 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
             if (!stringbuilder.toString().equals(text)) {
                 int extraWidth = getStringWidth("...");
                 do {
-                    stringbuilder.deleteCharAt(reverse? 0 : stringbuilder.length() - 1);
+                    stringbuilder.deleteCharAt(reverse ? 0 : stringbuilder.length() - 1);
                 } while (getStringWidth(stringbuilder.toString()) > width - extraWidth && stringbuilder.length() > 0);
             }
         }
-        return (more && reverse && !stringbuilder.toString().equals(text)? "..." : "") + stringbuilder + (more && !reverse && !stringbuilder.toString().equals(text)? "..." : "");
+        return (more && reverse && !stringbuilder.toString().equals(text) ? "..." : "") + stringbuilder + (more && !reverse && !stringbuilder.toString().equals(text) ? "..." : "");
     }
 
     /**
@@ -105,6 +105,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
 
     /**
      * Automatically 换行
+     *
      * @return Actual rows that are rendered.
      */
     public float drawTrimString(String text, float x, float y, float maxWidth, int maxRows, float gap, int color) {
@@ -114,7 +115,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
             String toRender = trimString(text, maxWidth, row == maxRows, false);
             text = text.replace(toRender.replace("...", ""), "");
             drawString(toRender, x, currentY, color);
-            currentY += toRender.isEmpty()? 0 : getHeight() + gap;
+            currentY += toRender.isEmpty() ? 0 : getHeight() + gap;
             row++;
         }
         return currentY;
@@ -171,7 +172,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
     }
 
     public void drawCenteredStringWithShadow(String text, float x, float y, int color) {
-        drawCenteredString(text,x,y,color,true);
+        drawCenteredString(text, x, y, color, true);
     }
 
     public void drawCenteredStringH(String text, float x, float y, int color) {
@@ -225,7 +226,7 @@ public class UFontRenderer extends FontRenderer implements Wrapper {
                 left = 0;
             }
 
-            return (float)((right - left + 1) / 2 + 1);
+            return (float) ((right - left + 1) / 2 + 1);
         }
 
         return 0.0F;

@@ -11,8 +11,6 @@ import net.fpsboost.value.impl.ColorValue;
 import net.fpsboost.value.impl.ModeValue;
 import net.fpsboost.value.impl.NumberValue;
 
-import java.util.stream.Collectors;
-
 /**
  * @author LangYa
  * @since 2024/9/3 18:21
@@ -42,13 +40,13 @@ public class ModuleConfig extends Config {
         JsonObject valuesObject = new JsonObject();
         module.values.forEach(value -> {
             if (value instanceof NumberValue) {
-                valuesObject.addProperty(value.name, ((NumberValue)value).getValue());
+                valuesObject.addProperty(value.name, ((NumberValue) value).getValue());
             } else if (value instanceof BooleanValue) {
-                valuesObject.addProperty(value.name, ((BooleanValue)value).getValue());
+                valuesObject.addProperty(value.name, ((BooleanValue) value).getValue());
             } else if (value instanceof ModeValue) {
-                valuesObject.addProperty(value.name, ((ModeValue)value).getValue());
+                valuesObject.addProperty(value.name, ((ModeValue) value).getValue());
             } else if (value instanceof ColorValue) {
-                valuesObject.addProperty(value.name, ((ColorValue)value).getValue().toString());
+                valuesObject.addProperty(value.name, ((ColorValue) value).getValue().toString());
             }
         });
         return valuesObject;
@@ -84,13 +82,13 @@ public class ModuleConfig extends Config {
 
     private void setValue(Value<?> value, JsonElement theValue) {
         if (value instanceof NumberValue) {
-            ((NumberValue)value).setValue(theValue.getAsNumber().doubleValue());
+            ((NumberValue) value).setValue(theValue.getAsNumber().doubleValue());
         } else if (value instanceof BooleanValue) {
-            ((BooleanValue)value).setValue(theValue.getAsBoolean());
+            ((BooleanValue) value).setValue(theValue.getAsBoolean());
         } else if (value instanceof ModeValue) {
-            ((ModeValue)value).setValue(theValue.getAsString());
+            ((ModeValue) value).setValue(theValue.getAsString());
         } else if (value instanceof ColorValue) {
-            ((ColorValue)value).setValue2(theValue.getAsString());
+            ((ColorValue) value).setValue2(theValue.getAsString());
         }
     }
 }

@@ -1,7 +1,6 @@
 package net.fpsboost.util.skinlayers3d;
 
-public interface PlayerSettings
-{
+public interface PlayerSettings {
     CustomizableModelPart getHeadLayers();
 
     void setupHeadLayers(final CustomizableModelPart p0);

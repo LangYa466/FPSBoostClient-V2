@@ -15,7 +15,7 @@ public class SmokeCrosshair extends Module {
     static double cord;
     int curDynamicValues = 0;
     int DynamicValues = 0;
-    public ColorValue color = new ColorValue("颜色","color", Color.white, this);
+    public ColorValue color = new ColorValue("颜色", "color", Color.white, this);
     public static BooleanValue dot = new BooleanValue("点", "Dot", true);
     public static NumberValue size = new NumberValue("大小", "size", 0.0, 50.0, 0.0, 0.1);
     public static NumberValue gap = new NumberValue("间隔", "gap", 0.0, 50.0, 0.0, 0.1);
@@ -28,7 +28,7 @@ public class SmokeCrosshair extends Module {
 
     // 构造函数，初始化模块的属性
     public SmokeCrosshair() {
-        super("Crosshair","自定义准星");
+        super("Crosshair", "自定义准星");
         cnDescription = "我抄袭Smoke客户端的";
         description = "Skid form SmokeClient";
     }
@@ -131,7 +131,7 @@ public class SmokeCrosshair extends Module {
     }
 
     // 处理鼠标事件的方法
-    public static void onMouse(int buttonID,boolean buttonState) {
+    public static void onMouse(int buttonID, boolean buttonState) {
         if (buttonID == 0 && buttonState) {
             setAnimations(aerodynamicGapValue());
         }

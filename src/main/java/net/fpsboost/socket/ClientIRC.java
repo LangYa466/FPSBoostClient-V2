@@ -1,11 +1,11 @@
 package net.fpsboost.socket;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.RankUtil;
 
-import java.io.*;
+import java.io.IOException;
 
 /**
  * @author LangYa466

@@ -1,8 +1,8 @@
 package net.fpsboost.screen.clickgui.components.values;
 
-import net.fpsboost.screen.clickgui.utils.*;
 import lombok.Getter;
 import lombok.Setter;
+import net.fpsboost.screen.clickgui.utils.*;
 import net.fpsboost.util.Logger;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.ModeValue;
@@ -42,24 +42,24 @@ public class StringArrayEntity extends ValueEntity {
         try {
 
 
-        this.animation = new Translate(30
-                + 2, 10);
-        this.isOpen = false;
-        this.scissors = new Scissor(0, 0, 0, 0);
-        this.clickarea = new ClickEntity(0, 0, 0, 0, MouseBounds.CallType.Expand, () -> {
-        }, () -> {
-        }, () -> this.clickable = true, () -> {
-        }, () -> this.clickable = false);
-        this.rect = new ClickableRect(0, 0, 0, 0, this.getColor(23), Rect.RenderType.Expand, () -> {
-            if (!this.isClickable()) return;
-            this.isOpen = !this.isOpen;
-        }, () -> {
-        }, () -> this.rect.setColor(this.getColor(24)), () -> {
-        }, () -> this.rect.setColor(this.getColor(23)));
-        this.values = new ArrayList<>();
-        for (String e : this.getValue().modes) {
-            values.add(new StringButton(this, e));
-        }
+            this.animation = new Translate(30
+                    + 2, 10);
+            this.isOpen = false;
+            this.scissors = new Scissor(0, 0, 0, 0);
+            this.clickarea = new ClickEntity(0, 0, 0, 0, MouseBounds.CallType.Expand, () -> {
+            }, () -> {
+            }, () -> this.clickable = true, () -> {
+            }, () -> this.clickable = false);
+            this.rect = new ClickableRect(0, 0, 0, 0, this.getColor(23), Rect.RenderType.Expand, () -> {
+                if (!this.isClickable()) return;
+                this.isOpen = !this.isOpen;
+            }, () -> {
+            }, () -> this.rect.setColor(this.getColor(24)), () -> {
+            }, () -> this.rect.setColor(this.getColor(23)));
+            this.values = new ArrayList<>();
+            for (String e : this.getValue().modes) {
+                values.add(new StringButton(this, e));
+            }
         } catch (Exception e) {
             Logger.error(e);
         }

@@ -1,10 +1,10 @@
 package net.minecraft.inventory;
 
-import java.util.List;
 import net.minecraft.item.ItemStack;
 
-public interface ICrafting
-{
+import java.util.List;
+
+public interface ICrafting {
     void updateCraftingInventory(Container containerToSend, List<ItemStack> itemsList);
 
     void sendSlotContents(Container containerToSend, int slotInd, ItemStack stack);

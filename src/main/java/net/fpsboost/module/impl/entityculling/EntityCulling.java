@@ -11,11 +11,16 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.chunk.Chunk;
-import org.lwjgl.opengl.*;
+import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
+import org.lwjgl.opengl.GL33;
 import org.lwjgl.util.vector.Vector3f;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
@@ -34,8 +39,8 @@ public class EntityCulling {
         poolType.clear();
         visibleRaycastMap.clear();
 
-        for(OcclusionQuery query : glQueries.values()) {
-            if(query.queryId != -1) {
+        for (OcclusionQuery query : glQueries.values()) {
+            if (query.queryId != -1) {
                 GL15.glDeleteQueries(query.queryId);
             }
         }
@@ -64,14 +69,14 @@ public class EntityCulling {
         OcclusionResult lastResult = OcclusionResult.PASSED;
 
         public void setResult(OcclusionResult result) {
-            if(this.result != OcclusionResult.WAITING) {
+            if (this.result != OcclusionResult.WAITING) {
                 this.lastResult = this.result;
             }
             this.result = result;
         }
 
         public boolean getOccluded() {
-            if(result == OcclusionResult.WAITING) {
+            if (result == OcclusionResult.WAITING) {
                 return lastResult == OcclusionResult.FAILED;
             } else {
                 return result == OcclusionResult.FAILED;
@@ -114,8 +119,8 @@ public class EntityCulling {
 
         Set<Entity> entities = new HashSet<>(poolType.keySet());
 
-        for(Entity entity : entities) {
-            if(entity == Minecraft.getMinecraft().thePlayer) continue;
+        for (Entity entity : entities) {
+            if (entity == Minecraft.getMinecraft().thePlayer) continue;
             updateShouldRenderEntity(entity);
         }
 
@@ -136,10 +141,10 @@ public class EntityCulling {
     public void updateShouldRenderEntity(Entity entity) {
         PoolType type = poolType.get(entity);
 
-        if(type == PoolType.GENESIS) {
+        if (type == PoolType.GENESIS) {
             boolean shouldRender = shouldRenderGenesis(entity);
 
-            if(shouldRender) {
+            if (shouldRender) {
                 poolType.remove(entity);
                 occludedEntities.remove(entity);
             } else {
@@ -153,29 +158,29 @@ public class EntityCulling {
 
         OcclusionQuery test = glQueries.get(entity);
 
-        if(test == null) {
+        if (test == null) {
             test = new OcclusionQuery();
             glQueries.put(entity, test);
         }
 
-        if(currentTimeMillis - test.testTime < 25) {
+        if (currentTimeMillis - test.testTime < 25) {
             return !test.getOccluded();
         }
 
-        if(test.queryId == -1) {
+        if (test.queryId == -1) {
             test.queryId = GL15.glGenQueries();
         }
 
-        if(test.result != OcclusionResult.WAITING) {
+        if (test.result != OcclusionResult.WAITING) {
             GL15.glBeginQuery(GL33.GL_ANY_SAMPLES_PASSED, test.queryId);
 
             AxisAlignedBB bb = entity.getEntityBoundingBox().expand(0.1f, 0.1f, 0.1f);
 
             GlStateManager.pushMatrix();
             GlStateManager.translate(bb.minX, bb.minY, bb.minZ);
-            float xSize = (float)(bb.maxX - bb.minX);
-            float ySize = (float)(bb.maxY - bb.minY);
-            float zSize = (float)(bb.maxZ - bb.minZ);
+            float xSize = (float) (bb.maxX - bb.minX);
+            float ySize = (float) (bb.maxY - bb.minY);
+            float zSize = (float) (bb.maxZ - bb.minZ);
             CubeVBOProvider.getInstance().renderVBO(xSize, ySize, zSize);
             GlStateManager.popMatrix();
 
@@ -184,12 +189,12 @@ public class EntityCulling {
 
         boolean available = GL15.glGetQueryObjecti(test.queryId, GL15.GL_QUERY_RESULT_AVAILABLE) == GL11.GL_TRUE;
 
-        if(!available) {
+        if (!available) {
             test.setResult(OcclusionResult.WAITING);
             test.testTime = currentTimeMillis;
         } else {
             int queryResult = GL15.glGetQueryObjecti(test.queryId, GL15.GL_QUERY_RESULT);
-            if(queryResult != GL11.GL_FALSE) {
+            if (queryResult != GL11.GL_FALSE) {
                 test.setResult(OcclusionResult.PASSED);
             } else {
                 test.setResult(OcclusionResult.FAILED);
@@ -214,7 +219,7 @@ public class EntityCulling {
     }
 
     public void removeEntity(int entityId, Entity entity) {
-        if(entity == null) return;
+        if (entity == null) return;
 
         visibleRaycastLock.writeLock().lock();
         try {
@@ -227,7 +232,7 @@ public class EntityCulling {
         poolType.remove(entity);
 
         OcclusionQuery query = glQueries.remove(entity);
-        if(query != null && query.queryId != -1) {
+        if (query != null && query.queryId != -1) {
             GL15.glDeleteQueries(query.queryId);
         }
     }
@@ -236,16 +241,16 @@ public class EntityCulling {
         RAYCAST_EXECUTOR_SERVICE.schedule(this::runRaycastCheck, 50, TimeUnit.MILLISECONDS);
 
         WorldClient world = Minecraft.getMinecraft().theWorld;
-        if(world == null || visibleRaycastMap.isEmpty()) {
+        if (world == null || visibleRaycastMap.isEmpty()) {
             return;
         }
 
         try {
             int visibleSize = visibleRaycastMap.size();
-            int iterateAmount = (int)Math.ceil(visibleSize/20f);
+            int iterateAmount = (int) Math.ceil(visibleSize / 20f);
 
-            for(int i=0; i<iterateAmount; i++) {
-                if(currentRaycastIndex >= visibleRaycastMap.size()) currentRaycastIndex = 0;
+            for (int i = 0; i < iterateAmount; i++) {
+                if (currentRaycastIndex >= visibleRaycastMap.size()) currentRaycastIndex = 0;
 
                 Entity entity;
                 visibleRaycastLock.readLock().lock();
@@ -255,21 +260,21 @@ public class EntityCulling {
                     visibleRaycastLock.readLock().unlock();
                 }
 
-                if(entity == null || poolType.containsKey(entity)) {
+                if (entity == null || poolType.containsKey(entity)) {
                     currentRaycastIndex++;
                     continue;
                 }
 
                 boolean visibleRaycast = checkVisibleRaycast(entity);
 
-                if(!visibleRaycast) {
+                if (!visibleRaycast) {
                     poolType.put(entity, PoolType.GENESIS);
                 } else {
                     currentRaycastIndex++;
                 }
 
             }
-        } catch(Exception e) {
+        } catch (Exception e) {
             Logger.error(e);
         }
     }
@@ -278,25 +283,25 @@ public class EntityCulling {
         EntityPlayerSP player = Minecraft.getMinecraft().thePlayer;
         WorldClient world = Minecraft.getMinecraft().theWorld;
 
-        if(player == null || world == null) return true;
+        if (player == null || world == null) return true;
 
         AxisAlignedBB bb = entity.getEntityBoundingBox();
 
-        Vector3f mid = new Vector3f((float)(bb.minX+bb.maxX)/2f, (float)(bb.minY+bb.maxY)/2f, (float)(bb.minZ+bb.maxZ)/2f);
-        Vector3f raycastPos = new Vector3f((float)player.posX, (float)player.posY+player.getEyeHeight(), (float)player.posZ);
+        Vector3f mid = new Vector3f((float) (bb.minX + bb.maxX) / 2f, (float) (bb.minY + bb.maxY) / 2f, (float) (bb.minZ + bb.maxZ) / 2f);
+        Vector3f raycastPos = new Vector3f((float) player.posX, (float) player.posY + player.getEyeHeight(), (float) player.posZ);
 
         Vector3f playerToMid = Vector3f.sub(mid, raycastPos, null);
 
         float distance = playerToMid.length();
 
-        if(distance > 64) return false;
+        if (distance > 64) return false;
 
         Vector3f playerToMidStep = new Vector3f(playerToMid.x / distance * RAYCAST_STEP,
                 playerToMid.y / distance * RAYCAST_STEP, playerToMid.z / distance * RAYCAST_STEP);
 
         int chunkKey = -1;
         Chunk chunk = null;
-        for(int i=0; i<=Math.floor(distance / RAYCAST_STEP); i++) {
+        for (int i = 0; i <= Math.floor(distance / RAYCAST_STEP); i++) {
             Vector3f.add(raycastPos, playerToMidStep, raycastPos);
 
             int floorX = MathHelper.floor_float(raycastPos.x);
@@ -308,13 +313,13 @@ public class EntityCulling {
 
             int thisChunkKey = (chunkX & 0b11) | ((chunkZ & 0b11) << 2);
 
-            if(chunkKey != thisChunkKey) {
+            if (chunkKey != thisChunkKey) {
                 chunk = world.getChunkFromChunkCoords(chunkX, chunkZ);
                 chunkKey = thisChunkKey;
             }
 
-            if(chunk != null) {
-                if(world.getBlockState(new BlockPos(floorX, floorY, floorZ)).getBlock().getMaterial() != Material.air) {
+            if (chunk != null) {
+                if (world.getBlockState(new BlockPos(floorX, floorY, floorZ)).getBlock().getMaterial() != Material.air) {
                     return false;
                 }
             }

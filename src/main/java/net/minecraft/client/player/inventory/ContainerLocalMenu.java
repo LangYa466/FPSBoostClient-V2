@@ -1,8 +1,6 @@
 package net.minecraft.client.player.inventory;
 
 import com.google.common.collect.Maps;
-import java.util.Map;
-
 import lombok.Getter;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -12,6 +10,8 @@ import net.minecraft.util.IChatComponent;
 import net.minecraft.world.ILockableContainer;
 import net.minecraft.world.LockCode;
 
+import java.util.Map;
+
 /**
  * ContainerLocalMenu 是一个用于本地菜单的容器类，继承自 InventoryBasic，并实现 ILockableContainer 接口。
  * 该类用于存储与本地菜单相关的字段，并提供对锁定状态和锁定码的管理。
@@ -20,7 +20,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * -- GETTER --
-     *  获取GUI的唯一标识符。
+     * 获取GUI的唯一标识符。
      *
      * @return GUI ID
      */ // 返回GUI标识符
@@ -30,8 +30,9 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 构造方法，初始化容器。
-     * @param id GUI的唯一标识符
-     * @param title 菜单的标题
+     *
+     * @param id        GUI的唯一标识符
+     * @param title     菜单的标题
      * @param slotCount 插槽数量
      */
     public ContainerLocalMenu(String id, IChatComponent title, int slotCount) {
@@ -41,6 +42,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 获取指定ID的字段值。
+     *
      * @param id 字段ID
      * @return 字段的值
      */
@@ -50,7 +52,8 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 设置指定ID的字段值。
-     * @param id 字段ID
+     *
+     * @param id    字段ID
      * @param value 字段值
      */
     public void setField(int id, int value) {
@@ -59,6 +62,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 获取字段数量。
+     *
      * @return 字段的数量
      */
     public int getFieldCount() {
@@ -67,6 +71,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 检查容器是否被锁定。
+     *
      * @return 如果容器被锁定，返回true；否则返回false
      */
     public boolean isLocked() {
@@ -75,6 +80,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 设置锁定码（目前未实现）。
+     *
      * @param code 锁定码
      */
     public void setLockCode(LockCode code) {
@@ -83,6 +89,7 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 获取当前的锁定码。
+     *
      * @return 返回空锁定码
      */
     public LockCode getLockCode() {
@@ -91,8 +98,9 @@ public class ContainerLocalMenu extends InventoryBasic implements ILockableConta
 
     /**
      * 创建容器（此方法尚未实现）。
+     *
      * @param playerInventory 玩家背包
-     * @param playerIn 玩家实体
+     * @param playerIn        玩家实体
      * @return 容器对象
      * @throws UnsupportedOperationException 方法尚未实现
      */

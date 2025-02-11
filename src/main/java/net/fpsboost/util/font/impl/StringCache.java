@@ -412,7 +412,7 @@ public class StringCache {
     public int renderString(String str, float startX, float startY, int initialColor, boolean shadowFlag) {
         if (str.isEmpty() || str == null) return 0;
         GlStateManager.disableBlend();
-        
+
         // 文字位置整数化，如果有小数可能会出现一些显示问题 不知道为什么
         startX = (float) (Math.round(startX * 10) / 10.0);
         startY = (float) (Math.round(startY * 10) / 10.0);

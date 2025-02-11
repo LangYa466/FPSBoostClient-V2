@@ -9,7 +9,7 @@ import net.fpsboost.value.Value;
 public class BooleanValue extends Value<Boolean> {
 
     public BooleanValue(String cnName, String name, Boolean value) {
-        super(cnName,name, value);
+        super(cnName, name, value);
     }
 
     public void toggle() {

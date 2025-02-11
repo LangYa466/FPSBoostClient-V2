@@ -1,7 +1,6 @@
 package net.fpsboost.util.skinlayers3d;
 
-public interface PlayerEntityModelAccessor
-{
+public interface PlayerEntityModelAccessor {
     boolean hasThinArms();
 
     HeadLayerFeatureRenderer getHeadLayer();

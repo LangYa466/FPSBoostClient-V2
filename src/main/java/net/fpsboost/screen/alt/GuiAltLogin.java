@@ -31,21 +31,21 @@ public abstract class GuiAltLogin extends GuiScreen {
                 this.mc.displayGuiScreen(this.previousScreen);
                 break;
             case 1145:
-                this.onLogin(StringUtils.randomString(StringUtils.ALPHA_POOL,10), "");
+                this.onLogin(StringUtils.randomString(StringUtils.ALPHA_POOL, 10), "");
         }
         return null;
     }
 
-    public abstract void onLogin(String account,String password);
+    public abstract void onLogin(String account, String password);
 
     public void drawScreen(int x, int y, float z) {
         this.drawDefaultBackground();
         drawBackground(0);
         this.username.drawTextBox();
-        FontManager.client().drawCenteredStringWithShadow("离线登录", (float)(this.width / 2), 20.0F, -1);
+        FontManager.client().drawCenteredStringWithShadow("离线登录", (float) (this.width / 2), 20.0F, -1);
         FontManager.client().drawCenteredStringWithShadow(status, (float) (this.width / 2), (this.height / 4 + 24) + 38, -1);
         if (this.username.getText().isEmpty() && !this.username.isFocused()) {
-            FontManager.client().drawStringWithShadow("用户名", (float)(this.width / 2 - 96), (this.height / 4 + 24) + 72 - 4, -7829368);
+            FontManager.client().drawStringWithShadow("用户名", (float) (this.width / 2 - 96), (this.height / 4 + 24) + 72 - 4, -7829368);
         }
 
         super.drawScreen(x, y, z);

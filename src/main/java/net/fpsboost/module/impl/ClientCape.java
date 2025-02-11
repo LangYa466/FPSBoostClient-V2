@@ -1,8 +1,6 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
-import net.fpsboost.util.CapeUtil;
-import net.fpsboost.util.ClientInputGUI;
 
 /**
  * @author LangYa

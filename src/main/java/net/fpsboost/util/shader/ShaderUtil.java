@@ -176,6 +176,7 @@ public class ShaderUtil implements Wrapper {
         glVertex2f(x + width, y);
         glEnd();
     }
+
     public static void drawQuads() {
         ScaledResolution sr = new ScaledResolution(mc);
         float width = (float) sr.getScaledWidth_double();
@@ -219,6 +220,7 @@ public class ShaderUtil implements Wrapper {
 
         return shader;
     }
+
     private String clickgui = "#define M_PI 3.1415926535897932384626433832795\n" +
             "#define M_TWO_PI (2.0 * M_PI)\n" +
             "\n" +
@@ -670,7 +672,7 @@ public class ShaderUtil implements Wrapper {
             "    vec2 st = gl_TexCoord[0].st;\n" +
             "    vec2 halfSize = rectSize * .5;\n" +
             "    \n" +
-            "   // use the bottom leftColor as the alpha\n"+
+            "   // use the bottom leftColor as the alpha\n" +
             "    float smoothedAlpha =  (1.0-smoothstep(0.0, 2., roundSDF(halfSize - (gl_TexCoord[0].st * rectSize), halfSize - radius - 1., radius)));\n" +
             "    vec4 gradient = createGradient(st, color1, color2, color3, color4);" +
             "    gl_FragColor = vec4(gradient.rgb, gradient.a * smoothedAlpha);\n" +

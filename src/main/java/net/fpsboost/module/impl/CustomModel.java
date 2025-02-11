@@ -23,10 +23,10 @@ public class CustomModel extends Module {
     public static final CustomModel INSTANCE = new CustomModel();
     public static boolean enabled = false;
 
-    public static final ModeValue model = new ModeValue("模型","Model","Among Us", "Among Us", "Rabbit");
-    private static final ModeValue mogusColorMode = new ModeValue("Among Us颜色模式", "Among Us Color" ,"自定义", "随机", "彩虹", "自定义");
-    private static final ColorValue amongusColor = new ColorValue("Among Us 自定义颜色", "", Color.RED,INSTANCE);
-    private static final NumberValue rainbowSpeed = new NumberValue("彩虹速度","Rainbow Speed", 15, 2, 30, 1);
+    public static final ModeValue model = new ModeValue("模型", "Model", "Among Us", "Among Us", "Rabbit");
+    private static final ModeValue mogusColorMode = new ModeValue("Among Us颜色模式", "Among Us Color", "自定义", "随机", "彩虹", "自定义");
+    private static final ColorValue amongusColor = new ColorValue("Among Us 自定义颜色", "", Color.RED, INSTANCE);
+    private static final NumberValue rainbowSpeed = new NumberValue("彩虹速度", "Rainbow Speed", 15, 2, 30, 1);
 
     public CustomModel() {
         super("Custom Model", "自定义模型");
@@ -73,7 +73,7 @@ public class CustomModel extends Module {
                 color = amongusColor.getValue().getColor();
                 break;
             case "彩虹":
-                color = ColorUtil.rainbow(rainbowSpeed.getValue().intValue(),entity.ticksExisted);
+                color = ColorUtil.rainbow(rainbowSpeed.getValue().intValue(), entity.ticksExisted);
                 break;
         }
 

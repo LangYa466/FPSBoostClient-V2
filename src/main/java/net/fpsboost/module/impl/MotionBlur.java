@@ -18,7 +18,7 @@ public class MotionBlur extends Module {
 
     private Framebuffer blurBufferMain;
     private Framebuffer blurBufferInto;
-    private final NumberValue multiplier = new NumberValue("Multiplier", "模糊度数" , 2, 10, 0, 0.5F);
+    private final NumberValue multiplier = new NumberValue("Multiplier", "模糊度数", 2, 10, 0, 0.5F);
 
     public MotionBlur() {
         super("MotionBlur", "动态模糊");

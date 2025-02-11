@@ -10,6 +10,7 @@ public class RenderMyNameTag extends Module {
     public RenderMyNameTag() {
         super("RenderMyNameTag", "渲染自己的名称");
     }
+
     public static boolean isEnable;
 
     @Override

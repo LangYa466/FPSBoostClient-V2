@@ -14,8 +14,7 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Set;
 
-public class HeadLayerFeatureRenderer implements LayerRenderer<AbstractClientPlayer>
-{
+public class HeadLayerFeatureRenderer implements LayerRenderer<AbstractClientPlayer> {
     private final Set<Item> hideHeadLayers;
     private final boolean thinArms;
     private static final Minecraft mc = Minecraft.getMinecraft();
@@ -23,7 +22,7 @@ public class HeadLayerFeatureRenderer implements LayerRenderer<AbstractClientPla
 
     public HeadLayerFeatureRenderer(RenderPlayer playerRenderer) {
         this.hideHeadLayers = Sets.newHashSet(Items.skull);
-        this.thinArms = ((PlayerEntityModelAccessor)playerRenderer).hasThinArms();
+        this.thinArms = ((PlayerEntityModelAccessor) playerRenderer).hasThinArms();
         this.playerRenderer = playerRenderer;
     }
 

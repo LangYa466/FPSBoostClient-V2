@@ -2,8 +2,7 @@ package net.minecraft.client.resources;
 
 import lombok.Getter;
 
-public class Language implements Comparable<Language>
-{
+public class Language implements Comparable<Language> {
     @Getter
     private final String languageCode;
     private final String region;
@@ -11,31 +10,26 @@ public class Language implements Comparable<Language>
     @Getter
     private final boolean bidirectional;
 
-    public Language(String languageCodeIn, String regionIn, String nameIn, boolean bidirectionalIn)
-    {
+    public Language(String languageCodeIn, String regionIn, String nameIn, boolean bidirectionalIn) {
         this.languageCode = languageCodeIn;
         this.region = regionIn;
         this.name = nameIn;
         this.bidirectional = bidirectionalIn;
     }
 
-    public String toString()
-    {
+    public String toString() {
         return String.format("%s (%s)", this.name, this.region);
     }
 
-    public boolean equals(Object p_equals_1_)
-    {
+    public boolean equals(Object p_equals_1_) {
         return this == p_equals_1_ || (p_equals_1_ instanceof Language && this.languageCode.equals(((Language) p_equals_1_).languageCode));
     }
 
-    public int hashCode()
-    {
+    public int hashCode() {
         return this.languageCode.hashCode();
     }
 
-    public int compareTo(Language p_compareTo_1_)
-    {
+    public int compareTo(Language p_compareTo_1_) {
         return this.languageCode.compareTo(p_compareTo_1_.languageCode);
     }
 }

@@ -5,8 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-public class CustomizableCubeListBuilder
-{
+public class CustomizableCubeListBuilder {
     @Getter
     private final List<CustomizableCube> cubes;
     private int xTexOffs;

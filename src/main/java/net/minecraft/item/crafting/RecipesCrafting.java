@@ -1,24 +1,13 @@
 package net.minecraft.item.crafting;
 
-import net.minecraft.block.BlockDirt;
-import net.minecraft.block.BlockPrismarine;
-import net.minecraft.block.BlockQuartz;
-import net.minecraft.block.BlockRedSandstone;
-import net.minecraft.block.BlockSand;
-import net.minecraft.block.BlockSandStone;
-import net.minecraft.block.BlockStone;
-import net.minecraft.block.BlockStoneBrick;
-import net.minecraft.block.BlockStoneSlab;
-import net.minecraft.block.BlockStoneSlabNew;
+import net.minecraft.block.*;
 import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumDyeColor;
 import net.minecraft.item.ItemStack;
 
-public class RecipesCrafting
-{
-    public void addRecipes(CraftingManager p_77589_1_)
-    {
+public class RecipesCrafting {
+    public void addRecipes(CraftingManager p_77589_1_) {
         p_77589_1_.addRecipe(new ItemStack(Blocks.chest), "###", "# #", "###", '#', Blocks.planks);
         p_77589_1_.addRecipe(new ItemStack(Blocks.trapped_chest), "#-", '#', Blocks.chest, '-', Blocks.tripwire_hook);
         p_77589_1_.addRecipe(new ItemStack(Blocks.ender_chest), "###", "#E#", "###", '#', Blocks.obsidian, 'E', Items.ender_eye);

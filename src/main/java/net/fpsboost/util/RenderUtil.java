@@ -28,24 +28,24 @@ public class RenderUtil implements Wrapper {
         switch (mode) {
             // 直角
             case 0: {
-                Gui.drawRect(x,y,x + width,y + height,rgba);
+                Gui.drawRect(x, y, x + width, y + height, rgba);
                 break;
             }
             // 无瑕疵圆角(优化一般)
             case 1: {
-                new RoundedRect(x,y,width,height,radius,rgba,RoundedRect.RenderType.Expand).draw();
+                new RoundedRect(x, y, width, height, radius, rgba, RoundedRect.RenderType.Expand).draw();
                 break;
             }
             // 有瑕疵圆角(优化好)
             case 2: {
-                new RoundedRect(x,y,width,height,radius,rgba,RoundedRect.RenderType.Expand).draw();
+                new RoundedRect(x, y, width, height, radius, rgba, RoundedRect.RenderType.Expand).draw();
                 break;
             }
         }
     }
 
     public static void drawRect(int x, int y, int width, int height, int color) {
-        drawRect(x,y,width,height,new Color(color, true));
+        drawRect(x, y, width, height, new Color(color, true));
     }
 
     public static void drawOutline(int x, int y, int width, int height, int color) {
@@ -58,25 +58,25 @@ public class RenderUtil implements Wrapper {
     }
 
 
-    public static void drawRectWithOutline(int x,int y,int width,int height,int color,int outlineColor) {
-        Gui.drawRect(x,y,x + width,y + height,color);
-        drawOutline(x,y,width,height,outlineColor);
+    public static void drawRectWithOutline(int x, int y, int width, int height, int color, int outlineColor) {
+        Gui.drawRect(x, y, x + width, y + height, color);
+        drawOutline(x, y, width, height, outlineColor);
     }
 
     public static int drawCenterString(String text, int x, int y, int color) {
-        return mc.fontRendererObj.drawString(text,(x - getStringWidth(text) / 2),y,color);
+        return mc.fontRendererObj.drawString(text, (x - getStringWidth(text) / 2), y, color);
     }
 
     public static int drawString(String text, int x, int y, int color) {
-        return mc.fontRendererObj.drawString(text,x,y,color);
+        return mc.fontRendererObj.drawString(text, x, y, color);
     }
 
-    public static int drawString(String text, int x, int y, int color,boolean textShadow) {
-        return mc.fontRendererObj.drawString(text,x,y,color,textShadow);
+    public static int drawString(String text, int x, int y, int color, boolean textShadow) {
+        return mc.fontRendererObj.drawString(text, x, y, color, textShadow);
     }
 
     public static int drawString(String text, int x, int y, Color color) {
-       return drawString(text,x,y,color.getRGB());
+        return drawString(text, x, y, color.getRGB());
     }
 
     public static int drawText(String text, int x, int y, boolean bg, int bgColor, int textColor, boolean textShadow, boolean clientFont) {
@@ -101,24 +101,25 @@ public class RenderUtil implements Wrapper {
 
         return width1;
     }
-    public static int drawText(String text, int x, int y, boolean bg, int bgColor,int textColor,boolean textShadow) {
-        return drawText(text,x,y,bg,bgColor,textColor,textShadow,false);
+
+    public static int drawText(String text, int x, int y, boolean bg, int bgColor, int textColor, boolean textShadow) {
+        return drawText(text, x, y, bg, bgColor, textColor, textShadow, false);
     }
 
-    public static int drawStringWithOutline(String text, int x, int y, int bgColor,int color) {
+    public static int drawStringWithOutline(String text, int x, int y, int bgColor, int color) {
         int width = getStringWidth(text);
         int height = mc.fontRendererObj.getHeight();
-        RenderUtil.drawOutline(x, y, width + 4,height,bgColor);
-        RenderUtil.drawString(text,x + 2, y, color);
+        RenderUtil.drawOutline(x, y, width + 4, height, bgColor);
+        RenderUtil.drawString(text, x + 2, y, color);
         return width + 4;
     }
 
     public static int drawStringWithShadow(String text, int x, int y, int color) {
-        return mc.fontRendererObj.drawStringWithShadow(text,x,y,color);
+        return mc.fontRendererObj.drawStringWithShadow(text, x, y, color);
     }
 
     public static int drawStringWithShadow(String text, int x, int y, Color color) {
-        return drawStringWithShadow(text,x,y,color.getRGB());
+        return drawStringWithShadow(text, x, y, color.getRGB());
     }
 
     public static int getStringWidth(String text) {
@@ -129,8 +130,8 @@ public class RenderUtil implements Wrapper {
         GlStateManager.resetColor();
     }
 
-    public static Color reAlpha(Color color,int alpha) {
-        return new Color(color.getRed(),color.getGreen(),color.getBlue(),alpha);
+    public static Color reAlpha(Color color, int alpha) {
+        return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
     }
 
     public static void drawImage(ResourceLocation texture, float x, float y, int width, int height) {

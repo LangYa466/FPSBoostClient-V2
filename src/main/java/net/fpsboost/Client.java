@@ -1,6 +1,5 @@
 package net.fpsboost;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
@@ -10,6 +9,7 @@ import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.OBSChecker;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.util.network.WebUtil;
@@ -59,7 +59,7 @@ public class Client implements Wrapper {
         Logger.info(String.format("总启动耗时：%.1f秒", elapsedTime / 1000.0));
 
         // Display the language settings screen
-        if (!isDev)  mc.displayGuiScreen(new GuiI18n());
+        if (!isDev) mc.displayGuiScreen(new GuiI18n());
         guimainMenu = new GuiMainMenu();
     }
 
@@ -78,7 +78,7 @@ public class Client implements Wrapper {
     private static void checkForUpdates() throws IOException {
         String latestVersion = Objects.requireNonNull(WebUtil.getNoCache(web + "versionwithv2.txt")).trim();
         Logger.info((!ClientSettings.isChinese ? "The latest version of FPSBoost is: " + latestVersion : "后端最新版本: " + latestVersion));
-        Logger.info("当前客户端版本: {}",version);
+        Logger.info("当前客户端版本: {}", version);
         isOldVersion = !version.contains(latestVersion);
         if (isOldVersion && isWindows()) {
             showNotification("已打开自动更新程序!!");
@@ -88,6 +88,7 @@ public class Client implements Wrapper {
             System.exit(0);
         }
     }
+
     public static void showNotification(String message) {
         showNotification(message, TrayIcon.MessageType.INFO);
     }
@@ -133,13 +134,13 @@ public class Client implements Wrapper {
     public static void openErrorLogsFile() {
         if (isWindows()) {
             File logsDir = new File("logs");
-            File logFile = new File("logs","latest.log");
+            File logFile = new File("logs", "latest.log");
             try {
                 showNotification("打开错误日志成功 有错误可以把文件发群里!!");
                 Desktop.getDesktop().open(logsDir);
                 Desktop.getDesktop().open(logFile);
             } catch (IOException e) {
-                Logger.error("打开错误日志失败: {}",e.getMessage());
+                Logger.error("打开错误日志失败: {}", e.getMessage());
                 showNotification(String.format("打开错误目录失败(请手动打开%s)!!", logsDir.getAbsolutePath()));
             }
         }

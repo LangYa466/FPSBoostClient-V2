@@ -1,13 +1,16 @@
 package net.fpsboost.value;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
+import net.fpsboost.util.Logger;
 import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author LangYa

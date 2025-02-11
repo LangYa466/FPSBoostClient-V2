@@ -6,8 +6,7 @@ import net.minecraft.client.renderer.Tessellator;
 
 import java.util.List;
 
-public class CustomizableModelPart
-{
+public class CustomizableModelPart {
     public float x;
     public float y;
     public float z;

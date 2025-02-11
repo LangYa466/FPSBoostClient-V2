@@ -1,14 +1,14 @@
 package net.minecraft.client.gui;
 
-import java.io.IOException;
-import java.util.List;
-
 import net.fpsboost.module.impl.ClientSettings;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.util.ResourceLocation;
+
+import java.io.IOException;
+import java.util.List;
 
 public class GuiDisconnected extends GuiScreen {
     private final String reason;
@@ -23,7 +23,8 @@ public class GuiDisconnected extends GuiScreen {
         this.message = chatComp != null ? chatComp : new ChatComponentText("Disconnected from the server."); // Fallback message
     }
 
-    protected void keyTyped(char typedChar, int keyCode) throws IOException {}
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+    }
 
     public void initGui() {
         this.buttonList.clear();

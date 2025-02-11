@@ -7,8 +7,6 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderBoat;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.item.EntityBoat;
-import net.minecraft.src.Config;
-import net.optifine.reflect.Reflector;
 
 public class ModelAdapterBoat extends ModelAdapter {
     public ModelAdapterBoat() {

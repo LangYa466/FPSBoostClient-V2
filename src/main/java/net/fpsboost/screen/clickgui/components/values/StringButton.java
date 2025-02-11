@@ -1,10 +1,10 @@
 package net.fpsboost.screen.clickgui.components.values;
 
+import lombok.Getter;
+import lombok.Setter;
 import net.fpsboost.screen.clickgui.utils.ClickableRect;
 import net.fpsboost.screen.clickgui.utils.Rect;
 import net.fpsboost.screen.clickgui.utils.UIComponent;
-import lombok.Getter;
-import lombok.Setter;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.FontRenderer;
 

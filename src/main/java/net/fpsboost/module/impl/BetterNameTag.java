@@ -12,8 +12,8 @@ public class BetterNameTag extends Module {
         super("BetterNameTag", "更好的名称栏");
     }
 
-    public static final BooleanValue textShadow = new BooleanValue("字体阴影","TextShadow",true);
-    public static final BooleanValue hideRect = new BooleanValue("隐藏背景","HideBg",true);
+    public static final BooleanValue textShadow = new BooleanValue("字体阴影", "TextShadow", true);
+    public static final BooleanValue hideRect = new BooleanValue("隐藏背景", "HideBg", true);
 
     //如果直接在mc里面的方法里面直接获取会浪费性能
     public static boolean isEnable;
@@ -22,6 +22,7 @@ public class BetterNameTag extends Module {
     public void onEnable() {
         isEnable = true;
     }
+
     @Override
     public void onDisable() {
         isEnable = false;

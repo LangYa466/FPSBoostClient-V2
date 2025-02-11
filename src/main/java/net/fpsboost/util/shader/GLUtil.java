@@ -14,15 +14,18 @@ public class GLUtil {
         GlStateManager.enableBlend();
         GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     }
+
     public static void setupRendering(int mode, Runnable runnable) {
         glBegin(mode);
         runnable.run();
         glEnd();
     }
+
     public static void enableDepth() {
         GL11.glDepthMask(true);
         glEnable(2929);
     }
+
     public static void disableCaps() {
         for (int cap : enabledCaps) glDisable(cap);
     }
@@ -31,6 +34,7 @@ public class GLUtil {
         for (int cap : caps) glEnable(cap);
         enabledCaps = caps;
     }
+
     public static void enableTexture2D() {
         glEnable(3553);
     }
@@ -43,10 +47,12 @@ public class GLUtil {
         glEnable(3042);
         GL11.glBlendFunc(770, 771);
     }
+
     public static void disableDepth() {
         GL11.glDepthMask(false);
         glDisable(2929);
     }
+
     public static void disableBlending() {
         glDisable(3042);
     }
@@ -54,7 +60,8 @@ public class GLUtil {
     public static void endBlend() {
         GlStateManager.disableBlend();
     }
-    public static void render(int mode, Runnable render){
+
+    public static void render(int mode, Runnable render) {
         glBegin(mode);
         render.run();
         glEnd();
@@ -68,15 +75,18 @@ public class GLUtil {
         glEnable(GL_TEXTURE_2D);
         GlStateManager.disableBlend();
     }
+
     public static void setup2DRendering() {
         setup2DRendering(true);
     }
+
     public static void setup2DRendering(boolean blend) {
         if (blend) {
             startBlend();
         }
         GlStateManager.disableTexture2D();
     }
+
     public static void end2DRendering() {
         GlStateManager.enableTexture2D();
         endBlend();

@@ -1,7 +1,7 @@
 package net.fpsboost.screen;
 
-import net.fpsboost.util.Logger;
 import lombok.Getter;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.network.WebUtil;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiMainMenu;

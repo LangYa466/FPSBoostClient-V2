@@ -5,9 +5,9 @@ import java.util.concurrent.ThreadLocalRandom;
 public final class StringUtils {
     public static final String ALPHA_POOL = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_";
 
-    public static String replace(String s,Object... o) {
+    public static String replace(String s, Object... o) {
         for (int i = 0; i < o.length; i++) {
-            s = s.replace(build("{",i,"}"),o[i].toString());
+            s = s.replace(build("{", i, "}"), o[i].toString());
         }
 
         return s;
@@ -47,7 +47,7 @@ public final class StringUtils {
         final StringBuilder builder = new StringBuilder();
 
         for (int i = 0; i < length; i++) {
-            builder.append(pool.charAt(ThreadLocalRandom.current().nextInt(0,pool.length())));
+            builder.append(pool.charAt(ThreadLocalRandom.current().nextInt(0, pool.length())));
         }
 
         return builder.toString();

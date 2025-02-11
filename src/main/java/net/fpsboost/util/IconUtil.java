@@ -1,6 +1,5 @@
 package net.fpsboost.util;
 
-import net.fpsboost.util.Logger;
 import net.minecraft.util.ResourceLocation;
 
 import javax.imageio.ImageIO;
@@ -17,7 +16,7 @@ public class IconUtil {
 
     public static ByteBuffer[] getFavicon() {
         try {
-            return new ByteBuffer[] {
+            return new ByteBuffer[]{
                     readImageToBuffer(IconUtil.class.getResourceAsStream("/assets/minecraft/client/icons/icon_16x16.png")),
                     readImageToBuffer(IconUtil.class.getResourceAsStream("/assets/minecraft/client/icons/icon_32x32.png"))
             };

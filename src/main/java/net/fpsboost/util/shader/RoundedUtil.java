@@ -25,9 +25,11 @@ public class RoundedUtil {
     public static void drawGradientRoundLR(float x, float y, float width, float height, float radius, Color color1, Color color2) {
         drawGradientRound(x, y, width, height, radius, color1, color2, color2, color1);
     }
+
     public static void drawGradientHorizontal(float x, float y, float width, float height, float radius, Color left, Color right) {
         drawGradientRound(x, y, width, height, radius, left, left, right, right);
     }
+
     public static void drawCircle(float x, float y, float radius, float progress, int change, Color color, float smoothness) {
         GLUtil.startBlend();
         float borderThickness = 1;
@@ -46,6 +48,7 @@ public class RoundedUtil {
         circleShader.unload();
         GLUtil.endBlend();
     }
+
     public static void drawGradientVertical(float x, float y, float width, float height, float radius, Color top, Color bottom) {
         drawGradientRound(x, y, width, height, radius, bottom, top, bottom, top);
     }
@@ -74,6 +77,7 @@ public class RoundedUtil {
         roundedGradientShader.unload();
         GLUtil.endBlend();
     }
+
     public static void drawRound(float x, float y, float width, float height, float radius, boolean blur, Color color) {
         RenderUtil.resetColor();
         GLUtil.startBlend();
@@ -89,6 +93,7 @@ public class RoundedUtil {
         roundedShader.unload();
         GLUtil.endBlend();
     }
+
     public static void drawRoundOutline(float x, float y, float width, float height, float radius, float outlineThickness, Color color, Color outlineColor) {
         RenderUtil.resetColor();
         GLUtil.startBlend();

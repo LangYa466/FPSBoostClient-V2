@@ -7,17 +7,13 @@ import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.client.renderer.entity.RenderDragon;
 import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.boss.EntityDragon;
-import net.optifine.reflect.Reflector;
 
-public class ModelAdapterDragon extends ModelAdapter
-{
-    public ModelAdapterDragon()
-    {
+public class ModelAdapterDragon extends ModelAdapter {
+    public ModelAdapterDragon() {
         super(EntityDragon.class, "dragon", 0.5F);
     }
 
-    public ModelBase makeModel()
-    {
+    public ModelBase makeModel() {
         return new ModelDragon(0.0F);
     }
 
@@ -58,13 +54,11 @@ public class ModelAdapterDragon extends ModelAdapter
     }
 
 
-    public String[] getModelRendererNames()
-    {
-        return new String[] {"head", "spine", "jaw", "body", "rear_leg", "front_leg", "rear_leg_tip", "front_leg_tip", "rear_foot", "front_foot", "wing", "wing_tip"};
+    public String[] getModelRendererNames() {
+        return new String[]{"head", "spine", "jaw", "body", "rear_leg", "front_leg", "rear_leg_tip", "front_leg_tip", "rear_foot", "front_foot", "wing", "wing_tip"};
     }
 
-    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize)
-    {
+    public IEntityRenderer makeEntityRender(ModelBase modelBase, float shadowSize) {
         RenderManager rendermanager = Minecraft.getMinecraft().getRenderManager();
         RenderDragon renderdragon = new RenderDragon(rendermanager);
         renderdragon.mainModel = modelBase;

@@ -1,6 +1,5 @@
 package net.fpsboost.util;
 
-import net.fpsboost.screen.clickgui.ClickGui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.GuiTextField;
@@ -14,7 +13,7 @@ import java.io.IOException;
  */
 public class ClientInputGUI extends GuiScreen {
     private String defaultText = "";
-    public int x,y;
+    public int x, y;
     public String text;
     public int width = 100;
     public int height = 20;

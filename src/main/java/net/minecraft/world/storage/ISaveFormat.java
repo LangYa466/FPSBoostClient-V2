@@ -1,11 +1,11 @@
 package net.minecraft.world.storage;
 
-import java.util.List;
 import net.minecraft.client.AnvilConverterException;
 import net.minecraft.util.IProgressUpdate;
 
-public interface ISaveFormat
-{
+import java.util.List;
+
+public interface ISaveFormat {
     String getName();
 
     ISaveHandler getSaveLoader(String saveName, boolean storePlayerdata);

@@ -3,8 +3,7 @@ package net.fpsboost.util.skinlayers3d;
 import net.minecraft.util.Vec3i;
 import org.lwjgl.util.vector.Vector3f;
 
-public enum Direction
-{
+public enum Direction {
     DOWN(new Vec3i(0, -1, 0)),
     UP(new Vec3i(0, 1, 0)),
     NORTH(new Vec3i(0, 0, -1)),
@@ -31,6 +30,6 @@ public enum Direction
     }
 
     public Vector3f step() {
-        return new Vector3f((float)this.getStepX(), (float)this.getStepY(), (float)this.getStepZ());
+        return new Vector3f((float) this.getStepX(), (float) this.getStepY(), (float) this.getStepZ());
     }
 }

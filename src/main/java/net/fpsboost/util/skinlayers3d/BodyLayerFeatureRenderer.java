@@ -13,15 +13,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class BodyLayerFeatureRenderer implements LayerRenderer<AbstractClientPlayer>
-{
+public class BodyLayerFeatureRenderer implements LayerRenderer<AbstractClientPlayer> {
     private final boolean thinArms;
     private static final Minecraft mc = Minecraft.getMinecraft();
     private final List<Layer> bodyLayers;
 
     public BodyLayerFeatureRenderer(RenderPlayer playerRenderer) {
         this.bodyLayers = new ArrayList<>();
-        this.thinArms = ((PlayerEntityModelAccessor)playerRenderer).hasThinArms();
+        this.thinArms = ((PlayerEntityModelAccessor) playerRenderer).hasThinArms();
         this.bodyLayers.add(new Layer(0, false, EnumPlayerModelParts.LEFT_PANTS_LEG, Shape.LEGS, () -> playerRenderer.getMainModel().bipedLeftLeg));
         this.bodyLayers.add(new Layer(1, false, EnumPlayerModelParts.RIGHT_PANTS_LEG, Shape.LEGS, () -> playerRenderer.getMainModel().bipedRightLeg));
         this.bodyLayers.add(new Layer(2, false, EnumPlayerModelParts.LEFT_SLEEVE, this.thinArms ? Shape.ARMS_SLIM : Shape.ARMS, () -> playerRenderer.getMainModel().bipedLeftArm));
@@ -40,7 +39,7 @@ public class BodyLayerFeatureRenderer implements LayerRenderer<AbstractClientPla
                 SkinLayers3D.renderDistance.getValue().intValue() * SkinLayers3D.renderDistance.getValue().intValue()) {
             return;
         }
-        if (((PlayerSettings) player).getSkinLayers() == null && !this.setupModel(player, (PlayerSettings)player)) {
+        if (((PlayerSettings) player).getSkinLayers() == null && !this.setupModel(player, (PlayerSettings) player)) {
             return;
         }
         this.renderLayers(player, ((PlayerSettings) player).getSkinLayers());
@@ -71,14 +70,12 @@ public class BodyLayerFeatureRenderer implements LayerRenderer<AbstractClientPla
                 layer.vanillaGetter.get().postRender(0.0625f);
                 if (layer.shape == Shape.ARMS) {
                     layers[layer.layersId].x = 15.968f;
-                }
-                else if (layer.shape == Shape.ARMS_SLIM) {
+                } else if (layer.shape == Shape.ARMS_SLIM) {
                     layers[layer.layersId].x = 7.984f;
                 }
                 if (layer.shape == Shape.BODY) {
                     widthScaling = SkinLayers3D.bodyVoxelSize.getValue().floatValue();
-                }
-                else {
+                } else {
                     widthScaling = SkinLayers3D.baseVoxelSize.getValue().floatValue();
                 }
                 if (layer.mirrored) {
@@ -98,8 +95,7 @@ public class BodyLayerFeatureRenderer implements LayerRenderer<AbstractClientPla
         return false;
     }
 
-    static class Layer
-    {
+    static class Layer {
         public final int layersId;
         public final boolean mirrored;
         public final EnumPlayerModelParts modelPart;

@@ -16,11 +16,11 @@ public class BetterEnchantment extends Module {
     public static final BetterEnchantment INSTANCE = new BetterEnchantment();
 
     public BetterEnchantment() {
-        super("BetterEnchantment","更好的附魔");
+        super("BetterEnchantment", "更好的附魔");
     }
 
-    public static final BooleanValue disable = new BooleanValue("关闭附魔效果","Disable Enchantment Effect",false);
-    public final ColorValue color = new ColorValue("自定义颜色","Custom Color",new Color(-8372020),this);
+    public static final BooleanValue disable = new BooleanValue("关闭附魔效果", "Disable Enchantment Effect", false);
+    public final ColorValue color = new ColorValue("自定义颜色", "Custom Color", new Color(-8372020), this);
 
     //如果直接在mc里面的方法里面直接获取会浪费性能
     public static boolean isEnable;
@@ -29,6 +29,7 @@ public class BetterEnchantment extends Module {
     public void onEnable() {
         isEnable = true;
     }
+
     @Override
     public void onDisable() {
         isEnable = false;

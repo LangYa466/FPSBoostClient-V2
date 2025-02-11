@@ -6,8 +6,6 @@ import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
 
-import java.awt.*;
-
 public class ModelPlayer extends ModelBiped {
     public ModelRenderer bipedLeftArmwear;
     public ModelRenderer bipedRightArmwear;

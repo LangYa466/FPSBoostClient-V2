@@ -1,18 +1,21 @@
 package net.fpsboost.util.font;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.config.ConfigManager;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.font.impl.RapeMasterFontManager;
 import net.fpsboost.util.font.impl.UFontRenderer;
 import net.minecraft.client.gui.FontRenderer;
 
 import java.awt.*;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.util.HashMap;
 
 /**
- @author LangYa466
+ * @author LangYa466
  **/
 public class FontManager {
     private static final HashMap<Integer, FontRenderer> fontMap = new HashMap<>();
@@ -20,7 +23,7 @@ public class FontManager {
 
     // 默认字体
     private static final String fontName = "汉仪雅黑";
-    private static final File fontFile = new File(ConfigManager.dir,"client.ttf");
+    private static final File fontFile = new File(ConfigManager.dir, "client.ttf");
 
     public static void init() {
         InputStream is = FontManager.class.getResourceAsStream("/assets/minecraft/client/fonts/default.ttf");
@@ -65,7 +68,7 @@ public class FontManager {
             font = Font.createFont(Font.TRUETYPE_FONT, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {
-            Logger.error("Failed to load font: " + fontName + ", using default font.\n Error: {}",ex.getMessage());
+            Logger.error("Failed to load font: " + fontName + ", using default font.\n Error: {}", ex.getMessage());
             font = new Font("Arial", Font.PLAIN, size); // 使用默认字体作为后备
         }
         return font;
@@ -78,7 +81,7 @@ public class FontManager {
             font = Font.createFont(0, is);
             font = font.deriveFont(Font.PLAIN, size);
         } catch (Exception ex) {
-            Logger.error("Failed to load font: " + fontName + ", using default font. Error: {}",ex.getMessage());
+            Logger.error("Failed to load font: " + fontName + ", using default font. Error: {}", ex.getMessage());
             font = new Font("Arial", Font.PLAIN, size);
         }
         return font;
@@ -91,10 +94,10 @@ public class FontManager {
         return newRenderer;
     }
 
-    private static FontRenderer getRenderer2(String name,int size) {
-        String key = String.format("%s-%s",name,size);
+    private static FontRenderer getRenderer2(String name, int size) {
+        String key = String.format("%s-%s", name, size);
         if (iconFontMap.containsKey(key)) return iconFontMap.get(key);
-        FontRenderer newRenderer = new RapeMasterFontManager(getFont(name,size),size);
+        FontRenderer newRenderer = new RapeMasterFontManager(getFont(name, size), size);
         iconFontMap.put(key, newRenderer);
         return newRenderer;
     }
@@ -109,14 +112,14 @@ public class FontManager {
     }
 
     public static FontRenderer logo(int size) {
-        return getRenderer2("logo",size);
+        return getRenderer2("logo", size);
     }
 
     public static FontRenderer arial(int size) {
-        return getRenderer2("arial",size);
+        return getRenderer2("arial", size);
     }
 
     public static FontRenderer arialBold(int size) {
-        return getRenderer2("arial",size);
+        return getRenderer2("arial", size);
     }
 }

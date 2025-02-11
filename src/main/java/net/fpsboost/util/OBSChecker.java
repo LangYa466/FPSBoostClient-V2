@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
  */
 public class OBSChecker {
     public static boolean run = false;
+
     public static void init() {
         Thread obsCheckThread = new Thread(() -> {
             while (true) {
@@ -58,7 +59,7 @@ public class OBSChecker {
         try {
             String line;
             Process process;
-            
+
             // Windows 平台使用 tasklist
             if (System.getProperty("os.name").toLowerCase().contains("win")) {
                 process = Runtime.getRuntime().exec("tasklist");

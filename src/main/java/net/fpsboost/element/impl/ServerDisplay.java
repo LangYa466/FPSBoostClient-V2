@@ -1,7 +1,7 @@
 package net.fpsboost.element.impl;
 
-import net.fpsboost.util.Logger;
 import net.fpsboost.element.Element;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.RenderUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
@@ -23,16 +23,17 @@ public class ServerDisplay extends Element {
         super("ServerDisplay", "服务器显示");
     }
 
-    private final BooleanValue backgroundValue = new BooleanValue("背景","Background",true);
-    private final BooleanValue textShadowValue = new BooleanValue("字体阴影","Text Shadow",true);
-    private final BooleanValue clientFontValue = new BooleanValue("更好的字体","Better Font",true);
-    private final ColorValue bgColorValue = new ColorValue("背景颜色","Background Color",new Color(0,0,0,80),this);
-    private final ColorValue textColorValue = new ColorValue("文本颜色","Text Color",Color.white,this);
+    private final BooleanValue backgroundValue = new BooleanValue("背景", "Background", true);
+    private final BooleanValue textShadowValue = new BooleanValue("字体阴影", "Text Shadow", true);
+    private final BooleanValue clientFontValue = new BooleanValue("更好的字体", "Better Font", true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色", "Background Color", new Color(0, 0, 0, 80), this);
+    private final ColorValue textColorValue = new ColorValue("文本颜色", "Text Color", Color.white, this);
 
     @Override
     public void onDraw() {
         FontRenderer fr;
-        if (clientFontValue.getValue()) fr = FontManager.client(); else fr = mc.fontRendererObj;
+        if (clientFontValue.getValue()) fr = FontManager.client();
+        else fr = mc.fontRendererObj;
         ServerData serverData = mc.getCurrentServerData();
         boolean integratedServerRunning = mc.isIntegratedServerRunning();
         String text = integratedServerRunning ? "SinglePlayer" : serverData.serverIP;

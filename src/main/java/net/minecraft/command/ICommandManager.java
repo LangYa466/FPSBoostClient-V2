@@ -1,11 +1,11 @@
 package net.minecraft.command;
 
-import java.util.List;
-import java.util.Map;
 import net.minecraft.util.BlockPos;
 
-public interface ICommandManager
-{
+import java.util.List;
+import java.util.Map;
+
+public interface ICommandManager {
     int executeCommand(ICommandSender sender, String rawCommand);
 
     List<String> getTabCompletionOptions(ICommandSender sender, String input, BlockPos pos);

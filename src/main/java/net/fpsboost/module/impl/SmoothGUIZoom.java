@@ -14,8 +14,8 @@ public class SmoothGUIZoom extends Module {
         super("Smooth GUI Zoom", "丝滑C键");
     }
 
-    public static final NumberValue speedValue = new NumberValue("动画速度","Speed", 0.4F, 1F, 0.1F, 0.1F);
-    private final BooleanValue smoothMouseValue = new BooleanValue("丝滑鼠标","SmoothMouse",true);
+    public static final NumberValue speedValue = new NumberValue("动画速度", "Speed", 0.4F, 1F, 0.1F, 0.1F);
+    private final BooleanValue smoothMouseValue = new BooleanValue("丝滑鼠标", "SmoothMouse", true);
 
     public static boolean isEnable;
     public static boolean isKeyDown;

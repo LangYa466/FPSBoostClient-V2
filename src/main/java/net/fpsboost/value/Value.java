@@ -14,7 +14,7 @@ public class Value<T> {
     private T value;
     public boolean isHide = false;
 
-    public Value(String cnName,String name, T value) {
+    public Value(String cnName, String name, T value) {
         this.name = name;
         this.cnName = cnName;
         this.value = value;
@@ -25,13 +25,15 @@ public class Value<T> {
         onEditValue();
     }
 
-    public void onEditValue() { }
+    public void onEditValue() {
+    }
 
     public void setHide(boolean hide) {
         this.isHide = hide;
     }
 
     public String getName() {
-        if (ClientSettings.isChinese) return cnName; else return name;
+        if (ClientSettings.isChinese) return cnName;
+        else return name;
     }
 }

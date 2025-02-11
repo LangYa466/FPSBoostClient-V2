@@ -1,6 +1,5 @@
 package net.fpsboost.screen.alt.microsoft;
 
-import net.fpsboost.util.Logger;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -9,6 +8,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import lombok.Getter;
 import lombok.Setter;
+import net.fpsboost.util.Logger;
 import net.minecraft.util.EnumChatFormatting;
 import org.lwjgl.Sys;
 

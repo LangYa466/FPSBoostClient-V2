@@ -26,7 +26,7 @@ public class TimeUtil {
     }
 
     public boolean hasTimeElapsed(double time) {
-        return this.hasTimeElapsed((long)time);
+        return this.hasTimeElapsed((long) time);
     }
 
     public long getTime() {

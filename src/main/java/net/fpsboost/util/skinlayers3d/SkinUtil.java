@@ -9,10 +9,9 @@ import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.resources.DefaultPlayerSkin;
 import net.minecraft.util.ResourceLocation;
 
-public class SkinUtil
-{
+public class SkinUtil {
     public static boolean hasCustomSkin(final AbstractClientPlayer player) {
-        return !DefaultPlayerSkin.getDefaultSkin(player.getUniqueID()).equals((Object)player.getLocationSkin());
+        return !DefaultPlayerSkin.getDefaultSkin(player.getUniqueID()).equals((Object) player.getLocationSkin());
     }
 
     private static NativeImage getSkinTexture(final AbstractClientPlayer player) {
@@ -39,12 +38,11 @@ public class SkinUtil
         if (skin == null) {
             return false;
         }
-        final CustomizableModelPart[] layers = { SolidPixelWrapper.wrapBox(skin, 4, 12, 4, 0, 48, true, 0.0f), SolidPixelWrapper.wrapBox(skin, 4, 12, 4, 0, 32, true, 0.0f), null, null, null };
+        final CustomizableModelPart[] layers = {SolidPixelWrapper.wrapBox(skin, 4, 12, 4, 0, 48, true, 0.0f), SolidPixelWrapper.wrapBox(skin, 4, 12, 4, 0, 32, true, 0.0f), null, null, null};
         if (thinArms) {
             layers[2] = SolidPixelWrapper.wrapBox(skin, 3, 12, 4, 48, 48, true, -2.5f);
             layers[3] = SolidPixelWrapper.wrapBox(skin, 3, 12, 4, 40, 32, true, -2.5f);
-        }
-        else {
+        } else {
             layers[2] = SolidPixelWrapper.wrapBox(skin, 4, 12, 4, 48, 48, true, -2.5f);
             layers[3] = SolidPixelWrapper.wrapBox(skin, 4, 12, 4, 40, 32, true, -2.5f);
         }

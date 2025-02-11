@@ -18,7 +18,7 @@ public class RectMode extends Module {
     public static int mode = 0;
     private boolean init;
 
-    public static final ModeValue modeValue = new ModeValue("模式","Mode","无瑕疵圆角(优化一般)","无瑕疵圆角(优化一般)","有瑕疵圆角(优化好)","直角") {
+    public static final ModeValue modeValue = new ModeValue("模式", "Mode", "无瑕疵圆角(优化一般)", "无瑕疵圆角(优化一般)", "有瑕疵圆角(优化好)", "直角") {
         @Override
         public void setValue(String value) {
             super.setValue(value);
@@ -27,11 +27,12 @@ public class RectMode extends Module {
                     mode = 0;
                     break;
                 case "有瑕疵圆角(优化好)":
-                default: mode = 2;
+                default:
+                    mode = 2;
             }
         }
     };
-    public static final NumberValue radiusValue = new NumberValue("圆角值(越高越圆)","Radius",2,10,1,1) {
+    public static final NumberValue radiusValue = new NumberValue("圆角值(越高越圆)", "Radius", 2, 10, 1, 1) {
         @Override
         public void setValue(Double value) {
             radius = value.intValue();

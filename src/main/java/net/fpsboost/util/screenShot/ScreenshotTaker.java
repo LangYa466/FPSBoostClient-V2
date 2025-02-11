@@ -1,13 +1,13 @@
 package net.fpsboost.util.screenShot;
 
 import net.fpsboost.Wrapper;
-import net.minecraft.client.shader.Framebuffer;
-import net.minecraft.client.renderer.texture.TextureUtil;
 import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.util.IChatComponent;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.BufferUtils;
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.texture.TextureUtil;
+import net.minecraft.client.shader.Framebuffer;
+import net.minecraft.util.IChatComponent;
+import org.lwjgl.BufferUtils;
+import org.lwjgl.opengl.GL11;
 
 import java.nio.IntBuffer;
 import java.util.concurrent.ExecutorService;
@@ -25,6 +25,7 @@ public class ScreenshotTaker implements Wrapper {
 
     public interface ScreenshotCallback {
         void onComplete(IChatComponent icc);
+
         void onError(Exception e);
     }
 

@@ -30,7 +30,7 @@ public class ToggleCommand extends Command {
                 .findFirst();
 
         if (moduleOpt.isPresent()) {
-           moduleOpt.get().toggle();
+            moduleOpt.get().toggle();
         } else {
             ChatUtil.addMessageWithClient("找不到有这个名字的模块");
         }

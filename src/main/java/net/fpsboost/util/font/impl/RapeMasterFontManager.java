@@ -64,7 +64,7 @@ public class RapeMasterFontManager extends FontRenderer {
     private final int textureWidth;
     private final int textureHeight;
 
-    public RapeMasterFontManager(Font font,float size) {
+    public RapeMasterFontManager(Font font, float size) {
         super(Minecraft.getMinecraft().gameSettings, new ResourceLocation("textures/font/ascii.png"),
                 Minecraft.getMinecraft().getTextureManager(), false);
         this.font = font;

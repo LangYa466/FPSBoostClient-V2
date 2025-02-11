@@ -19,9 +19,10 @@ public class Module implements Wrapper {
     public boolean enable;
     public int keyCode;
 
-    public ArrayList<Value<?>> values = new ArrayList<>();;
+    public ArrayList<Value<?>> values = new ArrayList<>();
+    ;
 
-    public Module(String name,String cnName,String description,String cnDescription,int keyCode) {
+    public Module(String name, String cnName, String description, String cnDescription, int keyCode) {
         this.name = name;
         this.cnName = cnName;
         this.cnDescription = cnDescription;
@@ -29,22 +30,25 @@ public class Module implements Wrapper {
         this.keyCode = keyCode;
     }
 
-    public Module(String name,String cnName,String description,String cnDescription) {
+    public Module(String name, String cnName, String description, String cnDescription) {
         this.name = name;
         this.cnName = cnName;
         this.cnDescription = cnDescription;
         this.description = description;
     }
 
-    public Module(String name,String cnName) {
+    public Module(String name, String cnName) {
         this.name = name;
         this.cnName = cnName;
         this.cnDescription = "";
         this.description = "";
     }
 
-    public void onEnable() { }
-    public void onDisable() { }
+    public void onEnable() {
+    }
+
+    public void onDisable() {
+    }
 
     public void toggle() {
         setEnable(!enable);
@@ -53,7 +57,8 @@ public class Module implements Wrapper {
     public void setEnable(boolean enable) {
         setEnable(enable, false);
     }
-    public void setEnable(boolean enable,boolean silent) {
+
+    public void setEnable(boolean enable, boolean silent) {
         this.enable = enable;
         if (enable) {
             onEnable();
@@ -62,14 +67,22 @@ public class Module implements Wrapper {
         }
 
         if (silent) {
-            if (mc.thePlayer != null) MessageHandler.addMessage(String.format("%s %s", getDisplayName(), enable ? "已开启" : "已关闭"), MessageHandler.MessageType.Info);
+            if (mc.thePlayer != null)
+                MessageHandler.addMessage(String.format("%s %s", getDisplayName(), enable ? "已开启" : "已关闭"), MessageHandler.MessageType.Info);
         }
     }
 
-    public void onRender2D() { }
-    public void onUpdate() { }
-    public void onRender3D() { }
-    public void onWorldLoad() { }
+    public void onRender2D() {
+    }
+
+    public void onUpdate() {
+    }
+
+    public void onRender3D() {
+    }
+
+    public void onWorldLoad() {
+    }
 
     public boolean isEnabled() {
         return enable;

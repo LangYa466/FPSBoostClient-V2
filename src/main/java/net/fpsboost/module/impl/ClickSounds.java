@@ -8,13 +8,13 @@ import org.apache.commons.lang3.RandomUtils;
 
 public final class ClickSounds extends Module {
     public ClickSounds() {
-        super("模拟点击音效","模拟点击音效");
-        this.cnDescription ="让你每次按下鼠标都能模拟特殊鼠标声音";
+        super("模拟点击音效", "模拟点击音效");
+        this.cnDescription = "让你每次按下鼠标都能模拟特殊鼠标声音";
     }
 
-    private static final ModeValue sound = new ModeValue("模式", "Standard","Standard","Double","Alan");
-    private static final NumberValue volume = new NumberValue("音量","Volume", 0.5, 2, 0.1, 0.1);
-    private static final NumberValue variation = new NumberValue("时长","Variation", 5, 100, 0, 1);
+    private static final ModeValue sound = new ModeValue("模式", "Standard", "Standard", "Double", "Alan");
+    private static final NumberValue volume = new NumberValue("音量", "Volume", 0.5, 2, 0.1, 0.1);
+    private static final NumberValue variation = new NumberValue("时长", "Variation", 5, 100, 0, 1);
 
     //如果直接在mc里面的方法里面直接获取会浪费性能
     public static boolean isEnable;

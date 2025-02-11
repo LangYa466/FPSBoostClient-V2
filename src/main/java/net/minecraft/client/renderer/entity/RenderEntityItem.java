@@ -1,8 +1,5 @@
 package net.minecraft.client.renderer.entity;
 
-import java.util.Random;
-
-import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ItemPhysic;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.block.model.ItemCameraTransforms;
@@ -15,40 +12,36 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.ResourceLocation;
 
-public class RenderEntityItem extends Render<EntityItem>
-{
+import java.util.Random;
+
+public class RenderEntityItem extends Render<EntityItem> {
     private final RenderItem itemRenderer;
     private final Random field_177079_e = new Random();
 
-    public RenderEntityItem(RenderManager renderManagerIn, RenderItem p_i46167_2_)
-    {
+    public RenderEntityItem(RenderManager renderManagerIn, RenderItem p_i46167_2_) {
         super(renderManagerIn);
         this.itemRenderer = p_i46167_2_;
         this.shadowSize = 0.15F;
         this.shadowOpaque = 0.75F;
     }
 
-    private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_)
-    {
+    private int func_177077_a(EntityItem itemIn, double p_177077_2_, double p_177077_4_, double p_177077_6_, float p_177077_8_, IBakedModel p_177077_9_) {
         ItemStack itemstack = itemIn.getEntityItem();
         Item item = itemstack.getItem();
 
-        if (item == null)
-        {
+        if (item == null) {
             return 0;
-        }
-        else
-        {
+        } else {
             boolean flag = p_177077_9_.isGui3d();
             int i = this.func_177078_a(itemstack);
-            float f1 = MathHelper.sin(((float)itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
+            float f1 = MathHelper.sin(((float) itemIn.getAge() + p_177077_8_) / 10.0F + itemIn.hoverStart) * 0.1F + 0.1F;
             float f2 = p_177077_9_.getItemCameraTransforms().getTransform(ItemCameraTransforms.TransformType.GROUND).scale.y;
 
             if (ItemPhysic.isEnable) {
                 if (!(item instanceof ItemBlock)) {
                     GlStateManager.translate(p_177077_2_, p_177077_4_ + 0.1F, p_177077_6_);
                 } else {
-                    GlStateManager.translate(p_177077_2_,p_177077_4_ + 0.2F,p_177077_6_);
+                    GlStateManager.translate(p_177077_2_, p_177077_4_ + 0.2F, p_177077_6_);
                 }
 
                 float pitch = itemIn.onGround ? 90 : itemIn.rotationPitch;
@@ -58,19 +51,17 @@ public class RenderEntityItem extends Render<EntityItem>
                 GlStateManager.rotate(itemIn.rotationYaw, 0, 0, 1);
 
             } else {
-                GlStateManager.translate((float)p_177077_2_, (float)p_177077_4_ + f1 + 0.25F * f2, (float)p_177077_6_);
+                GlStateManager.translate((float) p_177077_2_, (float) p_177077_4_ + f1 + 0.25F * f2, (float) p_177077_6_);
 
-                if (flag || this.renderManager.options != null)
-                {
-                    float f3 = (((float)itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float)Math.PI);
+                if (flag || this.renderManager.options != null) {
+                    float f3 = (((float) itemIn.getAge() + p_177077_8_) / 20.0F + itemIn.hoverStart) * (180F / (float) Math.PI);
                     GlStateManager.rotate(f3, 0.0F, 1.0F, 0.0F);
                 }
 
-                if (!flag)
-                {
-                    float f6 = -0.0F * (float)(i - 1) * 0.5F;
-                    float f4 = -0.0F * (float)(i - 1) * 0.5F;
-                    float f5 = -0.046875F * (float)(i - 1) * 0.5F;
+                if (!flag) {
+                    float f6 = -0.0F * (float) (i - 1) * 0.5F;
+                    float f4 = -0.0F * (float) (i - 1) * 0.5F;
+                    float f5 = -0.046875F * (float) (i - 1) * 0.5F;
                     GlStateManager.translate(f6, f4, f5);
                 }
             }
@@ -80,24 +71,16 @@ public class RenderEntityItem extends Render<EntityItem>
         }
     }
 
-    private int func_177078_a(ItemStack stack)
-    {
+    private int func_177078_a(ItemStack stack) {
         int i = 1;
 
-        if (stack.stackSize > 48)
-        {
+        if (stack.stackSize > 48) {
             i = 5;
-        }
-        else if (stack.stackSize > 32)
-        {
+        } else if (stack.stackSize > 32) {
             i = 4;
-        }
-        else if (stack.stackSize > 16)
-        {
+        } else if (stack.stackSize > 16) {
             i = 3;
-        }
-        else if (stack.stackSize > 1)
-        {
+        } else if (stack.stackSize > 1) {
             i = 2;
         }
 
@@ -107,14 +90,12 @@ public class RenderEntityItem extends Render<EntityItem>
     /**
      * Renders the desired {@code T} type Entity.
      */
-    public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks)
-    {
+    public void doRender(EntityItem entity, double x, double y, double z, float entityYaw, float partialTicks) {
         ItemStack itemstack = entity.getEntityItem();
         this.field_177079_e.setSeed(187L);
         boolean flag = false;
 
-        if (this.bindEntityTexture(entity))
-        {
+        if (this.bindEntityTexture(entity)) {
             this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).setBlurMipmap(false, false);
             flag = true;
         }
@@ -127,14 +108,11 @@ public class RenderEntityItem extends Render<EntityItem>
         IBakedModel ibakedmodel = this.itemRenderer.getItemModelMesher().getItemModel(itemstack);
         int i = this.func_177077_a(entity, x, y, z, partialTicks, ibakedmodel);
 
-        for (int j = 0; j < i; ++j)
-        {
-            if (ibakedmodel.isGui3d())
-            {
+        for (int j = 0; j < i; ++j) {
+            if (ibakedmodel.isGui3d()) {
                 GlStateManager.pushMatrix();
 
-                if (j > 0)
-                {
+                if (j > 0) {
                     float f = (this.field_177079_e.nextFloat() * 2.0F - 1.0F) * 0.15F;
                     float f1 = (this.field_177079_e.nextFloat() * 2.0F - 1.0F) * 0.15F;
                     float f2 = (this.field_177079_e.nextFloat() * 2.0F - 1.0F) * 0.15F;
@@ -145,9 +123,7 @@ public class RenderEntityItem extends Render<EntityItem>
                 ibakedmodel.getItemCameraTransforms().applyTransform(ItemCameraTransforms.TransformType.GROUND);
                 this.itemRenderer.renderItem(itemstack, ibakedmodel);
                 GlStateManager.popMatrix();
-            }
-            else
-            {
+            } else {
                 GlStateManager.pushMatrix();
                 ibakedmodel.getItemCameraTransforms().applyTransform(ItemCameraTransforms.TransformType.GROUND);
                 this.itemRenderer.renderItem(itemstack, ibakedmodel);
@@ -164,8 +140,7 @@ public class RenderEntityItem extends Render<EntityItem>
         GlStateManager.disableBlend();
         this.bindEntityTexture(entity);
 
-        if (flag)
-        {
+        if (flag) {
             this.renderManager.renderEngine.getTexture(this.getEntityTexture(entity)).restoreLastBlurMipmap();
         }
 
@@ -175,8 +150,7 @@ public class RenderEntityItem extends Render<EntityItem>
     /**
      * Returns the location of an entity's texture. Doesn't seem to be called unless you call Render.bindEntityTexture.
      */
-    protected ResourceLocation getEntityTexture(EntityItem entity)
-    {
+    protected ResourceLocation getEntityTexture(EntityItem entity) {
         return TextureMap.locationBlocksTexture;
     }
 }

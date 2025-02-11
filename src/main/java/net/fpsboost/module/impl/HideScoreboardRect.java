@@ -9,8 +9,9 @@ import net.fpsboost.value.impl.BooleanValue;
  */
 public class HideScoreboardRect extends Module {
     public static final BooleanValue rednumber = new BooleanValue("红字数字", "RedNumber", false);
+
     public HideScoreboardRect() {
-        super("HideScoreboardRect", "记分板背景隐藏","Disable the background of the scoreboard", "隐藏记分板的背景");
+        super("HideScoreboardRect", "记分板背景隐藏", "Disable the background of the scoreboard", "隐藏记分板的背景");
     }
 
     //如果直接在mc里面的方法里面直接获取会浪费性能

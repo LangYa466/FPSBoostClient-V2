@@ -18,6 +18,7 @@ public class BetterInventory extends Module {
     public void onEnable() {
         isEnable = true;
     }
+
     @Override
     public void onDisable() {
         isEnable = false;

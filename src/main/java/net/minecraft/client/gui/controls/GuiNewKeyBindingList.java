@@ -12,7 +12,6 @@ import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 public class GuiNewKeyBindingList extends GuiKeyBindingList {
@@ -54,7 +53,7 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
                 allEntries.add(new KeyEntry(keybinding));
             }
         }
-        
+
         listEntries = allEntries;
     }
 
@@ -71,7 +70,7 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
     public List<IGuiListEntry> getAllEntries() {
         return allEntries;
     }
-    
+
     @Override
     protected int getScrollBarX() {
         return super.getScrollBarX() + 15 + 20;
@@ -105,10 +104,10 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
         @Override
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
             mc.fontRendererObj.drawString(
-                this.labelText,
-                mc.currentScreen.width / 2 - this.labelWidth / 2,
-                y + slotHeight - mc.fontRendererObj.getHeight() - 1,
-                16777215
+                    this.labelText,
+                    mc.currentScreen.width / 2 - this.labelWidth / 2,
+                    y + slotHeight - mc.fontRendererObj.getHeight() - 1,
+                    16777215
             );
         }
 
@@ -150,10 +149,10 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
         public void drawEntry(int slotIndex, int x, int y, int listWidth, int slotHeight, int mouseX, int mouseY, boolean isSelected) {
             boolean flag = controlsScreen.buttonId == this.keybinding;
             mc.fontRendererObj.drawString(
-                this.keyDesc,
-                x + 90 - maxListLabelWidth,
-                y + slotHeight / 2 - mc.fontRendererObj.getHeight() / 2,
-                16777215
+                    this.keyDesc,
+                    x + 90 - maxListLabelWidth,
+                    y + slotHeight / 2 - mc.fontRendererObj.getHeight() / 2,
+                    16777215
             );
             this.btnResetKeyBinding.xPosition = x + 190 + 20;
             this.btnResetKeyBinding.yPosition = y;
@@ -182,7 +181,7 @@ public class GuiNewKeyBindingList extends GuiKeyBindingList {
             }
 
             this.btnChangeKeyBinding.drawButton(mc, mouseX, mouseY);
-            
+
             if (mouseY >= y && mouseY <= y + slotHeight) {
                 mc.fontRendererObj.drawString(I18n.format(keybinding.getKeyCategory()), mouseX + 10, mouseY, 0xFFFFFF);
             }

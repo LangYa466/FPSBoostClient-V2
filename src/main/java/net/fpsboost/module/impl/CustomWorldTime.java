@@ -14,7 +14,7 @@ public class CustomWorldTime extends Module {
         super("CustomWorldTime", "自定义世界时间");
     }
 
-    private final NumberValue time = new NumberValue("时间","Time", 14000, 0, 24000, 100);
+    private final NumberValue time = new NumberValue("时间", "Time", 14000, 0, 24000, 100);
 
     public static boolean isEnable;
 
@@ -22,6 +22,7 @@ public class CustomWorldTime extends Module {
     public void onEnable() {
         isEnable = true;
     }
+
     @Override
     public void onDisable() {
         isEnable = false;

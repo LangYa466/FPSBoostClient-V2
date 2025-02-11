@@ -5,14 +5,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class SolidPixelWrapper
-{
-    private static final int[][] offsets = new int[][] { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } };
-    private static final Direction[] hiddenDirN = new Direction[] { Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN };
-    private static final Direction[] hiddenDirS = new Direction[] { Direction.EAST, Direction.WEST, Direction.UP, Direction.DOWN };
-    private static final Direction[] hiddenDirW = new Direction[] { Direction.SOUTH, Direction.NORTH, Direction.UP, Direction.DOWN };
-    private static final Direction[] hiddenDirE = new Direction[] { Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN };
-    private static final Direction[] hiddenDirUD = new Direction[] { Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH };
+public class SolidPixelWrapper {
+    private static final int[][] offsets = new int[][]{{0, 1}, {0, -1}, {1, 0}, {-1, 0}};
+    private static final Direction[] hiddenDirN = new Direction[]{Direction.WEST, Direction.EAST, Direction.UP, Direction.DOWN};
+    private static final Direction[] hiddenDirS = new Direction[]{Direction.EAST, Direction.WEST, Direction.UP, Direction.DOWN};
+    private static final Direction[] hiddenDirW = new Direction[]{Direction.SOUTH, Direction.NORTH, Direction.UP, Direction.DOWN};
+    private static final Direction[] hiddenDirE = new Direction[]{Direction.NORTH, Direction.SOUTH, Direction.UP, Direction.DOWN};
+    private static final Direction[] hiddenDirUD = new Direction[]{Direction.EAST, Direction.WEST, Direction.NORTH, Direction.SOUTH};
 
     public static CustomizableModelPart wrapBox(final NativeImage natImage, final int width, final int height, final int depth, final int textureU, final int textureV, final boolean topPivot, final float rotationOffset) {
         final List<CustomizableCube> cubes = new ArrayList<CustomizableCube>();

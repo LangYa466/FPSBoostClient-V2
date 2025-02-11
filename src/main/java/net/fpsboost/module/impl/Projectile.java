@@ -10,7 +10,6 @@ import net.minecraft.client.renderer.entity.RenderManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.*;
-import net.minecraft.item.*;
 import net.minecraft.util.*;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.glu.Cylinder;
@@ -22,16 +21,17 @@ import java.util.List;
 
 public class Projectile extends Module {
     public Projectile() {
-        super("Projectile","投掷物预测");
+        super("Projectile", "投掷物预测");
     }
 
-    private final BooleanValue displayThePlayer = new BooleanValue("显示自己的","Display the player",true);
-    private final BooleanValue displayOtherPlayer = new BooleanValue("显示其他玩家的","Display other player",true);
+    private final BooleanValue displayThePlayer = new BooleanValue("显示自己的", "Display the player", true);
+    private final BooleanValue displayOtherPlayer = new BooleanValue("显示其他玩家的", "Display other player", true);
 
     @Override
     public void onRender3D() {
         if (displayThePlayer.getValue()) draw(mc.thePlayer);
-        if (displayOtherPlayer.getValue()) mc.theWorld.playerEntities.stream().filter(entity -> entity.isDead || !mc.thePlayer.canEntityBeSeen(entity) || mc.thePlayer.getDistanceToEntity(entity) > 39.99).forEach(this::draw);
+        if (displayOtherPlayer.getValue())
+            mc.theWorld.playerEntities.stream().filter(entity -> entity.isDead || !mc.thePlayer.canEntityBeSeen(entity) || mc.thePlayer.getDistanceToEntity(entity) > 39.99).forEach(this::draw);
     }
 
     private void draw(EntityPlayer entityPlayer) {
@@ -208,7 +208,7 @@ public class Projectile extends Module {
         c.draw(0.5F, 0.5F, 0F, 256, 27);
     }
 
-    private List<Entity> getEntitiesWithinAABB(AxisAlignedBB axisalignedBB,EntityPlayer entityPlayer) {
+    private List<Entity> getEntitiesWithinAABB(AxisAlignedBB axisalignedBB, EntityPlayer entityPlayer) {
         ArrayList<Entity> list = new ArrayList<>();
         int chunkMinX = MathHelper.floor_double((axisalignedBB.minX - 2.0D) / 16.0D);
         int chunkMaxX = MathHelper.floor_double((axisalignedBB.maxX + 2.0D) / 16.0D);

@@ -4,8 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import java.nio.ByteBuffer;
 
-public final class NativeImage implements AutoCloseable
-{
+public final class NativeImage implements AutoCloseable {
     private final Format format;
     private final int width;
     private final int height;
@@ -112,8 +111,7 @@ public final class NativeImage implements AutoCloseable
         return (i & 0xFF) << 24 | (j & 0xFF) << 16 | (k & 0xFF) << 8 | (l & 0xFF) << 0;
     }
 
-    public enum InternalGlFormat
-    {
+    public enum InternalGlFormat {
         RGBA(6408),
         RGB(6407),
         RG(33319),
@@ -130,8 +128,7 @@ public final class NativeImage implements AutoCloseable
         }
     }
 
-    public enum Format
-    {
+    public enum Format {
         RGBA(4, 6408, true, true, true, false, true, 0, 8, 16, 255, 24, true),
         RGB(3, 6407, true, true, true, false, false, 0, 8, 16, 255, 255, true),
         LUMINANCE_ALPHA(2, 33319, false, false, false, true, true, 255, 255, 255, 0, 8, true),

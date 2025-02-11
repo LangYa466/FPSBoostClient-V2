@@ -1,6 +1,5 @@
 package net.fpsboost.screen.clickgui.components.values;
 
-import net.fpsboost.screen.clickgui.ClickGui;
 import net.fpsboost.screen.clickgui.utils.ClickEntity;
 import net.fpsboost.screen.clickgui.utils.MouseBounds;
 import net.fpsboost.util.ClientInputGUI;
@@ -17,6 +16,7 @@ public class TextEntity extends ValueEntity {
     public TextEntity(TextValue value) {
         super(value);
     }
+
     private ClickEntity rect;
 
     @Override

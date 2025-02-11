@@ -5,7 +5,7 @@ public class ClickableRect extends ClickEntity {
 
     public ClickableRect(double x, double y, double x1, double y1, int color,
                          Rect.RenderType type, Runnable click, Runnable hold, Runnable focus, Runnable release, Runnable onBlur) {
-        super(x, y, x1, y1, getCallType(type), click, hold, focus, release,onBlur);
+        super(x, y, x1, y1, getCallType(type), click, hold, focus, release, onBlur);
         this.rect = new Rect(x, y, x1, y1, color, type);
     }
 

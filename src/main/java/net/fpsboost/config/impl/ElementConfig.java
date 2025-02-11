@@ -2,10 +2,7 @@ package net.fpsboost.config.impl;
 
 import com.google.gson.JsonObject;
 import net.fpsboost.config.Config;
-import net.fpsboost.element.Element;
 import net.fpsboost.element.ElementManager;
-
-import java.util.stream.Collectors;
 
 /**
  * @author LangYa

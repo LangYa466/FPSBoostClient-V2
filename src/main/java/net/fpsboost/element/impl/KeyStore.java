@@ -8,7 +8,6 @@ import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.item.ItemAppleGold;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
@@ -23,13 +22,13 @@ public class KeyStore extends Element {
         super("KeyStore", "按键显示");
     }
 
-    private final BooleanValue backgroundValue = new BooleanValue("背景","Background", true);
-    private final ColorValue bgColorValue = new ColorValue("背景颜色","Background Color", new Color(0, 0, 0, 80),this);
-    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色","Pressed Background Color", new Color(255, 255, 255, 80), this);
-    private final BooleanValue pressBgAnimationValue = new BooleanValue("按下时背景动画","Pressed Background Animation",true);
-    private final ColorValue textColorValue = new ColorValue("文本颜色","Text Color", Color.white, this);
-    private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色","Pressed Text Color", Color.black, this);
-    private final BooleanValue clientFontValue = new BooleanValue("更好的字体","Better Font",true);
+    private final BooleanValue backgroundValue = new BooleanValue("背景", "Background", true);
+    private final ColorValue bgColorValue = new ColorValue("背景颜色", "Background Color", new Color(0, 0, 0, 80), this);
+    private final ColorValue pressBgColorValue = new ColorValue("按下时背景颜色", "Pressed Background Color", new Color(255, 255, 255, 80), this);
+    private final BooleanValue pressBgAnimationValue = new BooleanValue("按下时背景动画", "Pressed Background Animation", true);
+    private final ColorValue textColorValue = new ColorValue("文本颜色", "Text Color", Color.white, this);
+    private final ColorValue pressTextColorValue = new ColorValue("按下时文本颜色", "Pressed Text Color", Color.black, this);
+    private final BooleanValue clientFontValue = new BooleanValue("更好的字体", "Better Font", true);
 
     @Override
     public void onDraw() {

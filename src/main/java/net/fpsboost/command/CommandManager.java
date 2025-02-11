@@ -1,6 +1,7 @@
 package net.fpsboost.command;
 
-import net.fpsboost.command.impl.*;
+import net.fpsboost.command.impl.BindCommand;
+import net.fpsboost.command.impl.ToggleCommand;
 
 import java.util.ArrayList;
 import java.util.Arrays;

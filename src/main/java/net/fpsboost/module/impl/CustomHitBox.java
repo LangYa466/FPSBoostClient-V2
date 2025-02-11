@@ -1,7 +1,6 @@
 package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
-import net.fpsboost.screen.clickgui.utils.HSBColor;
 import net.fpsboost.value.impl.ColorValue;
 import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.client.renderer.GlStateManager;
@@ -23,8 +22,9 @@ public class CustomHitBox extends Module {
     public CustomHitBox() {
         super("CustomHitBox", "自定义碰撞箱");
     }
-    private final ColorValue colorValue = new ColorValue("颜色","Color", new Color(255, 255, 255, 50),this);
-    private final NumberValue size = new NumberValue("边框粗细","Outline thickness",2,10,1,1);
+
+    private final ColorValue colorValue = new ColorValue("颜色", "Color", new Color(255, 255, 255, 50), this);
+    private final NumberValue size = new NumberValue("边框粗细", "Outline thickness", 2, 10, 1, 1);
 
     @Override
     public void onRender3D() {

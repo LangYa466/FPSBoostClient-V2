@@ -4,6 +4,12 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.properties.PropertyMap.Serializer;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
+import net.minecraft.client.Minecraft;
+import net.minecraft.util.Session;
+
 import java.io.File;
 import java.net.Authenticator;
 import java.net.InetSocketAddress;
@@ -11,14 +17,10 @@ import java.net.PasswordAuthentication;
 import java.net.Proxy;
 import java.net.Proxy.Type;
 import java.util.List;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import joptsimple.OptionSpec;
-import net.minecraft.client.Minecraft;
-import net.minecraft.util.Session;
 
 public class Main {
     public static long initTime = 0l;
+
     public static void main(String[] p_main_0_) {
         initTime = System.currentTimeMillis();
         System.setProperty("java.net.preferIPv4Stack", "true");
@@ -49,34 +51,26 @@ public class Main {
         OptionSet optionset = optionparser.parse(p_main_0_);
         List<String> list = optionset.valuesOf(optionspec19);
 
-        if (!list.isEmpty())
-        {
+        if (!list.isEmpty()) {
             System.out.println("Completely ignored arguments: " + list);
         }
 
         String s = optionset.valueOf(optionspec5);
         Proxy proxy = Proxy.NO_PROXY;
 
-        if (s != null)
-        {
-            try
-            {
+        if (s != null) {
+            try {
                 proxy = new Proxy(Type.SOCKS, new InetSocketAddress(s, optionset.valueOf(optionspec6).intValue()));
-            }
-            catch (Exception var46)
-            {
+            } catch (Exception var46) {
             }
         }
 
         final String s1 = optionset.valueOf(optionspec7);
         final String s2 = optionset.valueOf(optionspec8);
 
-        if (!proxy.equals(Proxy.NO_PROXY) && isNullOrEmpty(s1) && isNullOrEmpty(s2))
-        {
-            Authenticator.setDefault(new Authenticator()
-            {
-                protected PasswordAuthentication getPasswordAuthentication()
-                {
+        if (!proxy.equals(Proxy.NO_PROXY) && isNullOrEmpty(s1) && isNullOrEmpty(s2)) {
+            Authenticator.setDefault(new Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(s1, s2.toCharArray());
                 }
             });
@@ -99,10 +93,8 @@ public class Main {
         Integer integer = optionset.valueOf(optionspec1);
         Session session = new Session(optionspec9.value(optionset), s4, optionspec11.value(optionset), optionspec18.value(optionset));
         GameConfiguration gameconfiguration = new GameConfiguration(new GameConfiguration.UserInformation(session, propertymap, propertymap1, proxy), new GameConfiguration.DisplayInformation(i, j, flag, flag1), new GameConfiguration.FolderInformation(file1, file3, file2, s5), new GameConfiguration.GameInformation(s3), new GameConfiguration.ServerInformation(s6, integer.intValue()));
-        Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread")
-        {
-            public void run()
-            {
+        Runtime.getRuntime().addShutdownHook(new Thread("Client Shutdown Thread") {
+            public void run() {
                 Minecraft.stopIntegratedServer();
             }
         });
@@ -110,8 +102,7 @@ public class Main {
         (new Minecraft(gameconfiguration)).run();
     }
 
-    private static boolean isNullOrEmpty(String str)
-    {
+    private static boolean isNullOrEmpty(String str) {
         return str != null && !str.isEmpty();
     }
 }

@@ -8,7 +8,7 @@ import net.fpsboost.screen.alt.Alt;
 public class MicrosoftAlt extends Alt {
     private final String refreshToken;
 
-    public MicrosoftAlt(String userName,String refreshToken) {
+    public MicrosoftAlt(String userName, String refreshToken) {
         super(userName, AccountEnum.MICROSOFT);
         this.refreshToken = refreshToken;
     }
