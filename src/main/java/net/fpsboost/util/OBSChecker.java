@@ -25,7 +25,6 @@ public class OBSChecker {
                         // 10s x1
                         MessageHandler.addMessage("检测到OBS进程 自动开启防录制登录密码", MessageHandler.MessageType.Info, 10000);
                         System.out.println("OBS is running. Exiting(OBSCheck Thread)...");
-                        System.exit(0);
                     }
                     Thread.sleep(5000);
                 } catch (Exception e) {
