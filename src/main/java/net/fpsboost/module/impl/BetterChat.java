@@ -36,6 +36,7 @@ public class BetterChat extends Module {
 
     public static final BooleanValue hideRect = new BooleanValue("隐藏背景", "Hide Rect", true);
     public static final BooleanValue animation = new BooleanValue("动画", "Animation", true);
+    public static final BooleanValue textShadow = new BooleanValue("文字阴影", "TextShadow", false);
 
 
     //如果直接在mc里面的方法里面直接获取会浪费性能

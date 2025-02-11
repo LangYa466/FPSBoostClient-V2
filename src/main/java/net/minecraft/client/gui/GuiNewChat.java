@@ -101,7 +101,8 @@ public class GuiNewChat extends Gui {
                             if (l1 > 3) {
                                 int i2 = 0;
                                 int j2 = -i1 * 11;
-                                if (BetterChat.isEnable) {
+                                boolean isEnable = BetterChat.isEnable;
+                                if (isEnable) {
                                     if (!BetterChat.hideRect.getValue())
                                         drawRect(i2, j2 - 11, i2 + l + 4, j2, l1 / 2 << 24);
                                 } else {
@@ -109,10 +110,11 @@ public class GuiNewChat extends Gui {
                                 }
                                 String s = chatline.getChatComponent().getFormattedText();
                                 GlStateManager.enableBlend();
-                                if (BetterChat.isEnable && BetterChat.animation.getValue() && i1 <= newLines) {
-                                    this.mc.fontRendererObj.drawStringWithShadow(s, 0.0f, (float) (j2 - 8), 16777215 + ((int) ((float) l1 * percent) << 24));
+                                boolean textShadow = isEnable ? BetterChat.textShadow.getValue() : false;
+                                if (isEnable && BetterChat.animation.getValue() && i1 <= newLines) {
+                                    this.mc.fontRendererObj.drawStringWithShadow(s, 0.0f, (float) (j2 - 8), 16777215 + ((int) ((float) l1 * percent) << 24), textShadow);
                                 } else {
-                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24));
+                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24), textShadow);
                                 }
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();

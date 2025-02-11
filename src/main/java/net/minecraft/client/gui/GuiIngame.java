@@ -537,13 +537,15 @@ public class GuiIngame extends Gui {
                 this.getFontRenderer().drawString(s2, l - this.getFontRenderer().getStringWidth(s2), k, 553648127);
             }
 
+            boolean textShadow = hideScoreboard ? HideScoreboardRect.textShadow.getValue() : false;
+
             if (j == collection.size()) {
                 String s3 = objective.getDisplayName();
                 if (!hideScoreboard) {
                     drawRect(l1 - 2, k - this.getFontRenderer().getHeight() - 1, l, k - 1, 1610612736);
                     drawRect(l1 - 2, k - 1, l, k, 1342177280);
                 }
-                this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().getHeight(), 553648127);
+                this.getFontRenderer().drawString(s3, l1 + i / 2 - this.getFontRenderer().getStringWidth(s3) / 2, k - this.getFontRenderer().getHeight(), 553648127, textShadow);
             }
         }
     }
