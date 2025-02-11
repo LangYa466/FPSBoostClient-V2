@@ -38,7 +38,7 @@ public class ReflectorConstructor implements IResolvable {
                         this.targetConstructor.setAccessible(true);
                     }
                 } catch (Throwable throwable) {
-                    throwable.printStackTrace();
+                    Log.error(throwable.getMessage());
                 }
 
                 return this.targetConstructor;

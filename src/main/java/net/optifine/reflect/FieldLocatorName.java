@@ -30,7 +30,7 @@ public class FieldLocatorName implements IFieldLocator {
                 securityexception.printStackTrace();
                 return null;
             } catch (Throwable throwable) {
-                throwable.printStackTrace();
+                Log.error(throwable.getMessage());
                 return null;
             }
         }

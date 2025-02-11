@@ -1,6 +1,7 @@
 package net.minecraft.client.renderer.vertex;
 
 import net.minecraft.src.Config;
+import net.optifine.Log;
 import net.optifine.reflect.ReflectorField;
 import net.optifine.shaders.SVertexFormat;
 
@@ -50,7 +51,7 @@ public class DefaultVertexFormats {
                 return object;
             }
         } catch (Throwable throwable) {
-            throwable.printStackTrace();
+            Log.error(throwable.getMessage());
             return null;
         }
     }

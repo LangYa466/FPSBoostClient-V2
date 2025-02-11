@@ -72,7 +72,7 @@ public class ReflectorMethod implements IResolvable {
                         return this.targetMethod;
                     }
                 } catch (Throwable throwable) {
-                    throwable.printStackTrace();
+                    Log.error(throwable.getMessage());
                     return null;
                 }
             }

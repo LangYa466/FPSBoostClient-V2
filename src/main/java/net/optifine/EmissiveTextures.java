@@ -121,7 +121,7 @@ public class EmissiveTextures {
                 active = suffixEmissive != null;
             } catch (FileNotFoundException var4) {
             } catch (IOException ioexception) {
-                ioexception.printStackTrace();
+                Log.error(ioexception.getMessage());
             }
         }
     }

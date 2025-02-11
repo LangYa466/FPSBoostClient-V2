@@ -382,7 +382,7 @@ public class TextureMap extends AbstractTexture implements ITickableTextureObjec
                             TextureUtil.uploadTextureMipmap(textureatlassprite6.getFrameTextureData(0), textureatlassprite6.getIconWidth(), textureatlassprite6.getIconHeight(), textureatlassprite6.getOriginX(), textureatlassprite6.getOriginY(), flag1, flag);
                         } catch (Exception exception) {
                             Config.dbg("Error uploading sprite single: " + textureatlassprite6 + ", parent: " + textureatlassprite5);
-                            exception.printStackTrace();
+                            Log.error(exception.getMessage());
                         }
                     }
                 }

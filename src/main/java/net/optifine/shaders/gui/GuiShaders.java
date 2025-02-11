@@ -8,6 +8,7 @@ import net.minecraft.client.settings.GameSettings;
 import net.minecraft.src.Config;
 import net.minecraft.util.ResourceLocation;
 import net.optifine.Lang;
+import net.optifine.Log;
 import net.optifine.gui.GuiScreenOF;
 import net.optifine.gui.TooltipManager;
 import net.optifine.gui.TooltipProviderEnumShaderOptions;
@@ -162,7 +163,7 @@ public class GuiShaders extends GuiScreenOF {
                                 Object object = oclass.getMethod("getDesktop", new Class[0]).invoke(null);
                                 oclass.getMethod("browse", new Class[]{URI.class}).invoke(object, new URI("http://optifine.net/shaderPacks"));
                             } catch (Throwable throwable) {
-                                throwable.printStackTrace();
+                                Log.error(throwable.getMessage());
                             }
 
                         case 204:

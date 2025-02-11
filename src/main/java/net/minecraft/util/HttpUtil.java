@@ -5,6 +5,7 @@ import com.google.common.util.concurrent.ListeningExecutorService;
 import com.google.common.util.concurrent.MoreExecutors;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import net.minecraft.server.MinecraftServer;
+import net.optifine.Log;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -191,7 +192,7 @@ public class HttpUtil {
                             p_180192_4_.setDoneWorking();
                         }
                     } catch (Throwable throwable) {
-                        throwable.printStackTrace();
+                        Log.error(throwable.getMessage());
 
                         if (httpurlconnection != null) {
                             InputStream inputstream1 = httpurlconnection.getErrorStream();
