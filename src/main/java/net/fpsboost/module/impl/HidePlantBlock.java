@@ -44,12 +44,6 @@ public class HidePlantBlock extends Module {
         super.onRender3D();
     }
 
-    @Override
-    public void onWorldLoad() {
-        info();
-        super.onWorldLoad();
-    }
-
     public static Block getBlock(final BlockPos blockPos) {
         return mc.theWorld.getBlockState(blockPos).getBlock();
     }

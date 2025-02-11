@@ -16,6 +16,7 @@ import net.fpsboost.util.network.WebUtil;
 import net.fpsboost.util.texfix.TextureFix;
 import net.fpsboost.value.ValueManager;
 import net.minecraft.client.gui.GuiMainMenu;
+import net.minecraft.client.main.Main;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -52,6 +53,10 @@ public class Client implements Wrapper {
         if (!isDev) {
             checkForUpdates();
         }
+
+        long elapsedTime = System.currentTimeMillis() - Main.initTime;
+        // 1000.0是为了强制转换成double 改了报错(怪format)
+        Logger.info(String.format("总启动耗时：%.1f秒", elapsedTime / 1000.0));
 
         // Display the language settings screen
         if (!isDev)  mc.displayGuiScreen(new GuiI18n());

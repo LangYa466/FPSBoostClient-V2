@@ -4,11 +4,10 @@ import net.fpsboost.util.Logger;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
+import sun.misc.Unsafe;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collection;
+import java.util.*;
 
 /**
  * @author LangYa
@@ -16,32 +15,61 @@ import java.util.Collection;
  */
 public class ValueManager {
 
+    private static final Unsafe UNSAFE = getUnsafe();
+    private static final Map<Class<?>, List<FieldOffset>> valueFieldCache = new HashMap<>();
+
     public static void init() {
         ModuleManager.modules.forEach(ValueManager::addValues);
         ElementManager.elements.forEach(ValueManager::addValues);
     }
 
     private static void addValues(Module module) {
-        // 临时列表，避免多次操作 module.values
-        List<Value<?>> valueList = new ArrayList<>();
-        for (Field field : module.getClass().getDeclaredFields()) {
-            if (!Value.class.isAssignableFrom(field.getType())) continue; // 过滤非 Value 类型字段
+        // 获取或缓存字段偏移量
+        List<FieldOffset> fields = valueFieldCache.computeIfAbsent(module.getClass(), ValueManager::findValueFields);
+
+        List<Value<?>> valueList = new ArrayList<>(fields.size());
+        for (FieldOffset field : fields) {
             try {
-                field.setAccessible(true);
-                Value<?> value = (Value<?>) field.get(module); // 确保类型安全
+                Value<?> value = (Value<?>) UNSAFE.getObject(module, field.offset);
                 if (value != null) valueList.add(value);
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 Logger.error("Failed to register value for module [{}]: {}", module.name, e.getMessage());
             }
         }
-        // 批量添加值，减少多次操作
-        addValuesToModule(module, valueList);
-        // 666忘记释放了 原来我在内存堆了屎
-        valueList.clear();
+        module.values.addAll(valueList);
     }
 
-    // 通过 Collection<? extends Value<?>> 类型安全地批量添加值
-    private static void addValuesToModule(Module module, List<Value<?>> values) {
-        module.values.addAll(values); // 添加所有的值
+    private static List<FieldOffset> findValueFields(Class<?> clazz) {
+        List<FieldOffset> fields = new ArrayList<>();
+        for (Field field : clazz.getDeclaredFields()) {
+            if (Value.class.isAssignableFrom(field.getType())) {
+                try {
+                    long offset = UNSAFE.objectFieldOffset(field);
+                    fields.add(new FieldOffset(field, offset));
+                } catch (Exception ignored) {
+                }
+            }
+        }
+        return fields;
+    }
+
+    private static Unsafe getUnsafe() {
+        try {
+            Field f = Unsafe.class.getDeclaredField("theUnsafe");
+            f.setAccessible(true);
+            return (Unsafe) f.get(null);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to get Unsafe instance", e);
+        }
+    }
+
+    private static class FieldOffset {
+        final Field field;
+        final long offset;
+
+        FieldOffset(Field field, long offset) {
+            this.field = field;
+            this.offset = offset;
+        }
     }
 }

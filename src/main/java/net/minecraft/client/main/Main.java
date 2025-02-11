@@ -18,7 +18,9 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.util.Session;
 
 public class Main {
+    public static long initTime = 0l;
     public static void main(String[] p_main_0_) {
+        initTime = System.currentTimeMillis();
         System.setProperty("java.net.preferIPv4Stack", "true");
         OptionParser optionparser = new OptionParser();
         optionparser.allowsUnrecognizedOptions();
