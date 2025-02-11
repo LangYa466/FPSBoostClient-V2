@@ -3,11 +3,9 @@ package net.fpsboost.util;
 import net.fpsboost.Client;
 import net.fpsboost.util.network.WebUtil;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 
 /**
  * @author LangYa466
@@ -15,60 +13,62 @@ import java.util.stream.Collectors;
  */
 public class RankUtil {
 
-    public static Map<String, String> ranks = new HashMap<>();
-    public static boolean hasError = false; // 错误标志
+    public static final Map<String, String> ranks = new HashMap<>();
+    private static volatile boolean hasError = false; // 使用 volatile 以保证线程可见性
 
     /**
      * 异步获取排名数据
      */
     public static void getRanksAsync() {
         if (hasError) return;
-        CompletableFuture.runAsync(() -> {
-            // 异步获取Web请求数据并处理
-            String web = WebUtil.get(Client.web + "rank.txt");
 
+        CompletableFuture.runAsync(() -> {
+            String web = WebUtil.get(Client.web + "rank.txt");
             if (web == null || web.isEmpty()) {
                 Logger.error("Failed to get rank data from server.");
                 hasError = true;
                 return;
             }
 
-            try {
-                Map<String, String> parsedRanks = parseStrings(web);
-                if (parsedRanks != null) ranks = parsedRanks;
-            } catch (Exception e) {
-                Logger.error("Error while parsing rank data: " + e.getMessage());
-                hasError = true;
+            Map<String, String> parsedRanks = parseStrings(web);
+            if (!parsedRanks.isEmpty()) {
+                synchronized (ranks) { // 避免多个线程同时修改
+                    ranks.clear();
+                    ranks.putAll(parsedRanks);
+                }
+                Logger.debug("Updated rank data: " + ranks.size() + " entries.");
+            } else {
+                Logger.warn("Parsed rank data is empty.");
             }
-
-            Logger.debug(ranks.toString());
-        }).exceptionally(ex -> {
-            Logger.error(ex.getMessage());
-            hasError = true;
-            return null;
         });
     }
 
     /**
-     * 获取排名，注意这里是同步调用，会阻塞直到获取到结果
+     * 获取排名（同步调用）
      *
      * @param ign 玩家名称
      * @return 玩家排名
      */
     public static String getRank(String ign) {
-        return ranks.getOrDefault(ign, "Unknown");
+        synchronized (ranks) { // 保证线程安全
+            return ranks.getOrDefault(ign, "Unknown");
+        }
     }
 
     /**
-     * 使用换行符（\n）分割输入字符串，并返回Map
+     * 解析排名数据
      *
      * @param input 输入字符串
      * @return 解析后的排名数据Map
      */
-    public static Map<String, String> parseStrings(String input) {
-        return Arrays.stream(input.split("\n"))  // 使用 split("\n") 分割输入字符串
-                .map(line -> line.split("-"))
-                .filter(parts -> parts.length == 2)  // 过滤无效数据
-                .collect(Collectors.toMap(parts -> parts[0], parts -> parts[1]));
+    private static Map<String, String> parseStrings(String input) {
+        Map<String, String> parsedRanks = new HashMap<>();
+        for (String line : input.split("\n")) {
+            int index = line.indexOf('-');
+            if (index > 0 && index < line.length() - 1) {
+                parsedRanks.put(line.substring(0, index), line.substring(index + 1));
+            }
+        }
+        return parsedRanks;
     }
 }
