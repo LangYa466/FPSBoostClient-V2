@@ -12,9 +12,9 @@ import java.awt.*;
 @Setter
 public class ColorValue extends Value<HSBColor> {
 
-    BooleanValue rainbow;
-    NumberValue rainbowSpeed;
-    Module module;
+    private BooleanValue rainbow;
+    private NumberValue rainbowSpeed;
+    private Module module;
 
     public ColorValue(String cnName, String name, Color value, Module m) {
         super(cnName, name, new HSBColor(value.getRed(), value.getGreen(), value.getBlue(), value.getAlpha()));
