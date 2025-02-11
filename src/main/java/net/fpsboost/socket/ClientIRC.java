@@ -13,7 +13,7 @@ import java.io.*;
  */
 public class ClientIRC extends Module implements Wrapper {
     public static final ClientIRC INSTANCE = new ClientIRC();
-    private static SocketClient handler;
+    public static SocketClient handler;
     private static boolean initiated = false;
 
     public ClientIRC() {

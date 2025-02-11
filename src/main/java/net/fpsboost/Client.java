@@ -125,8 +125,9 @@ public class Client implements Wrapper {
         }
     }
 
-    public static void stopClient() {
+    public static void stopClient() throws IOException {
         ConfigManager.saveAllConfig();
+        ClientIRC.handler.close();
     }
 
     public static void openErrorLogsFile() {

@@ -892,7 +892,11 @@ public class Minecraft implements IThreadListener {
         try
         {
             logger.info("Stopping!");
-            Client.stopClient();
+            try {
+                Client.stopClient();
+            } catch (IOException e) {
+                logger.error(e);
+            }
 
             try
             {
