@@ -24,8 +24,9 @@ public class ModuleConfig extends Config {
     @Override
     public JsonObject saveConfig() {
         JsonObject object = new JsonObject();
-        ModuleManager.getAllModules().forEach(module -> {
+        ModuleManager.modules.forEach(module -> {
             JsonObject moduleObject = new JsonObject();
+
             moduleObject.addProperty("enable", module.enable);
             moduleObject.addProperty("key", module.keyCode);
 
@@ -54,7 +55,7 @@ public class ModuleConfig extends Config {
 
     @Override
     public void loadConfig(JsonObject object) {
-        ModuleManager.getAllModules().forEach(module -> {
+        ModuleManager.modules.forEach(module -> {
             JsonObject moduleObject = object.getAsJsonObject(module.name);
             if (moduleObject != null) {
                 loadModuleConfig(module, moduleObject);

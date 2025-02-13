@@ -53,12 +53,6 @@ public class ModuleManager implements Wrapper {
         }
     }
 
-    public static List<Module> getAllModules() {
-        List<Module> allModules = new ArrayList<>(modules);
-        allModules.addAll(ElementManager.elements); // 快速追加元素模块
-        return allModules;
-    }
-
     public static boolean isEnabled(Class<?> moduleClass) {
         Module module = moduleMap.get(moduleClass);
         return module != null && module.enable;

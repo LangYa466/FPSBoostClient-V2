@@ -9,7 +9,7 @@ import org.apache.commons.lang3.RandomUtils;
 public final class ClickSounds extends Module {
     public ClickSounds() {
         super("模拟点击音效", "模拟点击音效");
-        this.cnDescription = "让你每次按下鼠标都能模拟特殊鼠标声音";
+        this.cnDescription = "让你按下鼠标都能模拟鼠标声音";
     }
 
     private static final ModeValue sound = new ModeValue("模式", "Standard", "Standard", "Double", "Alan");

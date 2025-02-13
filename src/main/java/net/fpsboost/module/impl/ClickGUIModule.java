@@ -2,6 +2,7 @@ package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
 import net.fpsboost.screen.clickgui.ClickGui;
+import net.fpsboost.screen.newClickGUI.NewClickGUIScreen;
 import net.fpsboost.value.impl.ModeValue;
 import org.lwjgl.input.Keyboard;
 
@@ -31,9 +32,15 @@ public class ClickGUIModule extends Module {
         Dark, Light
     }
 
+    private final boolean isTest = false;
+
     @Override
     public void onEnable() {
-        mc.displayGuiScreen(ClickGui.INSTANCE);
+        if (isTest) {
+            mc.displayGuiScreen(NewClickGUIScreen.INSTANCE);
+        } else {
+            mc.displayGuiScreen(ClickGui.INSTANCE);
+        }
         enable = false;
     }
 }

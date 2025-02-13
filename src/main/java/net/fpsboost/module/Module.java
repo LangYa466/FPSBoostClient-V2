@@ -20,7 +20,6 @@ public class Module implements Wrapper {
     public int keyCode;
 
     public ArrayList<Value<?>> values = new ArrayList<>();
-    ;
 
     public Module(String name, String cnName, String description, String cnDescription, int keyCode) {
         this.name = name;

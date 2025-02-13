@@ -60,6 +60,7 @@ public class MotionBlur extends Module {
 
     public void renderOverlay() {
         if (!enable) return;
+        if (Config.isFastRender()) mc.gameSettings.ofFastRender = false;
         if (mc.thePlayer == null || mc.thePlayer.ticksExisted < 20) return;
         if (mc.currentScreen == null) {
             if (OpenGlHelper.isFramebufferEnabled()) {
