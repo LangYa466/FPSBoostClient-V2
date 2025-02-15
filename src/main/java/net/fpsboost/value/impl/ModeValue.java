@@ -8,7 +8,7 @@ import net.fpsboost.value.Value;
  */
 public class ModeValue extends Value<String> {
 
-    public String[] modes;
+    public final String[] modes;
 
     public ModeValue(String cnName, String name, String value, String... modes) {
         super(cnName, name, value);
@@ -24,12 +24,14 @@ public class ModeValue extends Value<String> {
     }
 
     public String getNextValue() {
+        if (modes.length == 0) return getValue(); // 确保不会返回 null
+
         for (int i = 0; i < modes.length; i++) {
             if (modes[i].equals(this.getValue())) {
-                return modes[(i + 1) % modes.length];
+                return (i + 1 < modes.length) ? modes[i + 1] : modes[0]; // 如果超出范围，返回 modes[0]
             }
         }
-        return null;
+        return modes[0]; // 找不到当前值，默认返回第一个模式
     }
 
     public void setPreviousValue() {
@@ -37,15 +39,20 @@ public class ModeValue extends Value<String> {
     }
 
     public String getPreviousValue() {
+        if (modes.length == 0) return getValue(); // 确保不会返回 null
+
         for (int i = 0; i < modes.length; i++) {
             if (modes[i].equals(this.getValue())) {
-                int previousIndex = i - 1;
-                if (previousIndex < 0) {
-                    previousIndex = modes.length - 1;
-                }
-                return modes[previousIndex];
+                return (i - 1 >= 0) ? modes[i - 1] : modes[modes.length - 1]; // 如果超出范围，返回 modes[modes.length - 1]
             }
         }
-        return null;
+        return modes[modes.length - 1]; // 找不到当前值，默认返回最后一个模式
+    }
+
+    @Override
+    public String getValue() {
+        String value = super.getValue();
+        if (value == null) return "Null(Error)";
+        return value;
     }
 }
