@@ -9,18 +9,21 @@ import net.fpsboost.screen.clickgui.utils.Translate;
 import net.fpsboost.util.HoveringUtil;
 import net.fpsboost.util.font.FontManager;
 import net.fpsboost.value.Value;
-import net.fpsboost.value.impl.*;
-import net.minecraft.client.gui.GuiScreen;
+import net.fpsboost.value.impl.BooleanValue;
+import net.fpsboost.value.impl.ColorValue;
+import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * @author LangYa466
- * @since 2025/2/13
+ * @since 2/13/2025
  */
 public class NewClickGUIScreen extends GuiScreen {
     public static final NewClickGUIScreen INSTANCE = new NewClickGUIScreen();
@@ -28,54 +31,98 @@ public class NewClickGUIScreen extends GuiScreen {
     private double scrollY = 0;
     private final int moduleHeight = 20;
     private final int padding = 5;
-    private final int viewHeight = 200;
     private final FontRenderer fontRenderer = FontManager.client();
     private int guiWidth = 200;
-    private int guiHeight = 250; // 增加高度，给分类按钮留空间
-    private int startX, startY;
+    private int guiHeight = 250; // 给分类按钮和搜索框留空间
 
-    // 拖动窗口相关
-    private boolean dragging = false;
-    private int dragX, dragY;
+    // 使用 DragWindow 管理主窗口拖拽
+    private DragWindow mainWindow;
+    // 使用 DragWindow 管理 Values 面板拖拽
+    private DragWindow valuesPanelWindow;
 
     // 选中的分类
     private boolean isCategoryOne = true;
 
     // 模块 Values 面板相关变量
     private Module activeModuleValues = null;
-    private boolean draggingValues = false;
-    private int valuesDragOffsetX, valuesDragOffsetY;
-    private int valuesPanelX, valuesPanelY;
-    private final int valuesPanelWidth = 150;
-    private final int valuesPanelHeight = 100;
     private boolean init;
+
+    // 用于记录上次绘制时自适应面板的宽度，便于点击区域计算
+    private int lastAdaptivePanelWidth = 0;
+
+    // 自定义搜索框
+    private SearchBox searchBox;
+
+    // 滚动条拖动状态与鼠标点击偏移量
+    private boolean draggingSlider = false;
+    private int sliderDragOffset = 0;
+
+    // ColorPickerWindow，当点击 ColorValue 的颜色显示区块时打开
+    private ColorPickerWindow colorPickerWindow = null;
 
     @Override
     public void initGui() {
         if (init) return;
-        startX = (width - guiWidth) / 2;
-        startY = (height - guiHeight) / 2;
+        int startX = (width - guiWidth) / 2;
+        int startY = (height - guiHeight) / 2;
+        mainWindow = new DragWindow(startX, startY, guiWidth, guiHeight);
+        // 初始化自定义搜索框，放置在主窗口内（相对于主窗口左上角）
+        searchBox = new SearchBox(startX + 10, startY + 40, guiWidth - 20, 20, fontRenderer);
         init = true;
         super.initGui();
     }
 
+    /**
+     * 根据搜索框内容过滤模块列表
+     */
+    private List<Module> getFilteredModules() {
+        List<? extends Module> rawModules = isCategoryOne ? ModuleManager.modules : ElementManager.elements;
+        List<Module> filtered = new ArrayList<>();
+        String query = searchBox != null ? searchBox.getText().toLowerCase() : "";
+        for (Module m : rawModules) {
+            if (query.isEmpty() || m.cnName.toLowerCase().contains(query) || m.cnDescription.toLowerCase().contains(query)) {
+                filtered.add(m);
+            }
+        }
+        return filtered;
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        if (dragging) {
-            startX = mouseX - dragX;
-            startY = mouseY - dragY;
+        // 如果有 ColorPicker 窗口，则优先处理其拖拽与绘制
+        if (colorPickerWindow != null) {
+            colorPickerWindow.drag(mouseX, mouseY);
         }
-        // 更新 Values 面板拖动时的位置
-        if (activeModuleValues != null && draggingValues) {
-            valuesPanelX = mouseX - valuesDragOffsetX;
-            valuesPanelY = mouseY - valuesDragOffsetY;
+        // 主窗口拖拽处理
+        if (mainWindow != null) {
+            mainWindow.drag(mouseX, mouseY);
+        }
+        // 更新 Values 面板拖拽时的位置
+        if (activeModuleValues != null && valuesPanelWindow != null) {
+            valuesPanelWindow.drag(mouseX, mouseY);
+        }
+
+        // 滚动条拖拽
+        if (draggingSlider) {
+            List<Module> filteredModules = getFilteredModules();
+            int modulesViewHeight = guiHeight - 60;
+            int totalContentHeight = (moduleHeight + padding) * filteredModules.size();
+            int maxScroll = Math.max(0, totalContentHeight - modulesViewHeight);
+            float sliderPositionRatio = getSliderPositionRatio(mouseY, modulesViewHeight, totalContentHeight);
+            scrollY = -sliderPositionRatio * maxScroll;
         }
 
         translate.interpolate(0, scrollY, 0.2f);
         double offsetY = translate.getY();
 
-        // 获取当前要显示的模块列表
-        List<? extends Module> currentModules = isCategoryOne ? ModuleManager.modules : ElementManager.elements;
+        int startX = mainWindow.getX();
+        int startY = mainWindow.getY();
+
+        // 更新搜索框位置，确保跟随主窗口拖动
+        if (searchBox != null) {
+            searchBox.setPosition(startX + 10, startY + 40);
+            searchBox.setWidth(guiWidth - 20);
+        }
 
         // 绘制窗口背景
         drawRect(startX, startY, startX + guiWidth, startY + guiHeight, 0xCC000000);
@@ -91,12 +138,24 @@ public class NewClickGUIScreen extends GuiScreen {
         fontRenderer.drawStringWithShadow("辅助功能", startX + 10, startY + 26, isCategoryOne ? 0xFFFFFFFF : 0x999999);
         fontRenderer.drawStringWithShadow("GUI功能", startX + categoryBtnWidth + 10, startY + 26, isCategoryOne ? 0x999999 : 0xFFFFFFFF);
 
-        // 开启裁剪，限制滑动区域
-        GL11.glEnable(GL11.GL_SCISSOR_TEST);
-        new Scissor(startX, startY + 40, guiWidth, viewHeight).doScissor();
+        // 绘制自定义搜索框
+        if (searchBox != null) {
+            searchBox.draw();
+        }
 
-        int currentY = startY + 50; // 模块从分类按钮下方开始绘制
-        for (Module module : currentModules) {
+        // 定义模块列表区域的起始位置和高度（不包含标题、分类按钮和搜索框区域）
+        int moduleListStartY = startY + 60;
+        int modulesViewHeight = guiHeight - 60;
+
+        // 获取过滤后的模块列表
+        List<Module> filteredModules = getFilteredModules();
+
+        // 开启裁剪，限制滚动区域（仅模块列表区域）
+        GL11.glEnable(GL11.GL_SCISSOR_TEST);
+        new Scissor(startX, moduleListStartY, guiWidth, modulesViewHeight).doScissor();
+
+        int currentY = moduleListStartY + 5; // 添加上边距
+        for (Module module : filteredModules) {
             boolean hovered = HoveringUtil.isHovering(startX + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY);
             int color = module.enable ? 0x8800FF00 : 0x88FF0000;
             if (hovered) color = 0x99FFFFFF;
@@ -114,95 +173,84 @@ public class NewClickGUIScreen extends GuiScreen {
         // 关闭裁剪
         GL11.glDisable(GL11.GL_SCISSOR_TEST);
 
-        // 绘制模块 Values 面板（如果已打开）
+        // 绘制右侧滚动条（仅当模块列表超出可视区域时显示）
+        int totalContentHeight = (moduleHeight + padding) * filteredModules.size();
+        int maxScroll = Math.max(0, totalContentHeight - modulesViewHeight);
+        if (totalContentHeight > modulesViewHeight && maxScroll > 0) {
+            int scrollbarWidth = 6;
+            // 定义滚动条区域，放在主窗口右边，离边缘2像素
+            int scrollbarX = startX + guiWidth - scrollbarWidth - 2;
+
+            // 绘制滚动条背景（深灰色）
+            drawRect(scrollbarX, moduleListStartY, scrollbarX + scrollbarWidth, moduleListStartY + modulesViewHeight, 0xFF555555);
+
+            // 计算滑块高度与位置（保证最小高度为10像素）
+            float viewRatio = (float) modulesViewHeight / totalContentHeight;
+            int sliderHeight = Math.max((int) (modulesViewHeight * viewRatio), 10);
+            float sliderPositionRatio = (float) (-scrollY) / maxScroll;
+            int sliderY = moduleListStartY + (int) ((modulesViewHeight - sliderHeight) * sliderPositionRatio);
+
+            // 绘制滑块（浅灰色）
+            drawRect(scrollbarX, sliderY, scrollbarX + scrollbarWidth, sliderY + sliderHeight, 0xFFAAAAAA);
+        }
+
         // 绘制模块 Values 面板（如果已打开）
         if (activeModuleValues != null) {
-            // 定义标题栏高度、内边距和行高参数
             int headerHeight = 20;
             int paddingTop = 5;
             int paddingBottom = 5;
-            // 根据字体高度加上额外空间确定行高，保证“+”和“-”按钮能够完整显示
             int rowHeight = Math.max(15, fontRenderer.getHeight() + 4);
 
-            // 计算标题栏文字宽度
             String headerText = "设置: " + activeModuleValues.cnName;
             int headerTextWidth = fontRenderer.getStringWidth(headerText);
-            // 计算关闭按钮所需宽度并预留一定间距
             int closeButtonWidth = fontRenderer.getStringWidth("X") + 10;
 
-            // -------------------------------
-            // 预先计算每一行内容所需的最大宽度
-            // -------------------------------
             int computedMaxValueWidth = 0;
             for (Value<?> valueObj : activeModuleValues.values) {
-                // 从左侧5像素空白开始
                 int lineWidth = 5;
-                // 加上值名称及后面的间隔
                 int nameWidth = fontRenderer.getStringWidth(valueObj.cnName);
                 lineWidth += nameWidth + 5;
-                // 根据不同类型添加后续控件的宽度
                 if (valueObj instanceof BooleanValue) {
-                    BooleanValue boolValue = (BooleanValue) valueObj;
-                    String stateText = boolValue.getValue() ? "开启" : "关闭";
+                    String stateText = ((BooleanValue) valueObj).getValue() ? "开启(按我修改)" : "关闭(按我修改)";
                     int stateTextWidth = fontRenderer.getStringWidth(stateText);
-                    lineWidth += stateTextWidth + 5; // 再加右侧间距
-                } else if (valueObj instanceof NumberValue) {
-                    NumberValue numValue = (NumberValue) valueObj;
-                    String numText = String.valueOf(numValue.getValue());
-                    int numTextWidth = fontRenderer.getStringWidth(numText);
-                    String minusSymbol = "-";
-                    int btnWidth = fontRenderer.getStringWidth(minusSymbol);
-                    // 数值行宽 = 左边空白+名称+间隔 + 数值文本 + 左侧按钮间距（10）+ 按钮宽度 + 右侧间距（5）
-                    lineWidth += numTextWidth + 10 + btnWidth + 5;
-                } else if (valueObj instanceof ModeValue) {
-                    ModeValue modeValue = (ModeValue) valueObj;
-                    String modeText = modeValue.getValue();
-                    int modeTextWidth = fontRenderer.getStringWidth(modeText);
-                    // 定义左右箭头，用于切换模式
-                    String leftArrow = "<";
-                    String rightArrow = ">";
-                    int leftArrowWidth = fontRenderer.getStringWidth(leftArrow);
-                    int rightArrowWidth = fontRenderer.getStringWidth(rightArrow);
-                    // 行宽 = 左箭头 + 间隔 + 模式文本 + 间隔 + 右箭头 + 间距
-                    lineWidth += leftArrowWidth + 5 + modeTextWidth + 5 + rightArrowWidth + 5;
-                } else if (valueObj instanceof TextValue) {
-                    TextValue textValue = (TextValue) valueObj;
-                    String text = textValue.getValue();
-                    int textWidth = fontRenderer.getStringWidth(text);
-                    lineWidth += textWidth + 5;
+                    lineWidth += stateTextWidth + 5;
                 } else if (valueObj instanceof ColorValue) {
-                    ColorValue colorValue = (ColorValue) valueObj;
-                    // 为颜色值预留：颜色小块（20像素宽）+ 间隔+ 十六进制文本
                     int boxWidth = 20;
-                    String hexColor = "0x" + Integer.toHexString(colorValue.getValueC()).toUpperCase();
+                    String hexColor = "0x" + Integer.toHexString(((ColorValue) valueObj).getValueC()).toUpperCase();
                     int hexTextWidth = fontRenderer.getStringWidth(hexColor);
                     lineWidth += boxWidth + 5 + hexTextWidth + 5;
+                } else if (valueObj instanceof NumberValue) {
+                    NumberValue numberValue = (NumberValue) valueObj;
+                    String valueText = String.format("%.2f", numberValue.getValue());
+                    int btnWidth = fontRenderer.getStringWidth("[-]") + 4;
+                    int valueTextWidth = fontRenderer.getStringWidth(valueText);
+                    // 计算：减按钮 + 间隔 + 数值文本 + 间隔 + 加按钮 + 间隔
+                    lineWidth += btnWidth + 5 + valueTextWidth + 5 + btnWidth + 5;
                 }
                 computedMaxValueWidth = Math.max(computedMaxValueWidth, lineWidth);
             }
 
-            // 面板宽度至少需要容纳标题和关闭按钮，或内容区域的最大宽度，左右各预留5像素
             int calculatedWidth = Math.max(headerTextWidth + closeButtonWidth + 10, computedMaxValueWidth);
-            int adaptivePanelWidth = Math.max(100, calculatedWidth);
+            lastAdaptivePanelWidth = Math.max(100, calculatedWidth);
 
-            // 根据值的数量计算内容区域高度
             int valuesCount = activeModuleValues.values != null ? activeModuleValues.values.size() : 0;
             int contentHeight = valuesCount * rowHeight;
             int adaptivePanelHeight = Math.max(100, headerHeight + paddingTop + contentHeight + paddingBottom);
 
-            // 绘制面板背景和标题栏背景
-            drawRect(valuesPanelX, valuesPanelY, valuesPanelX + adaptivePanelWidth, valuesPanelY + adaptivePanelHeight, 0xCC000000);
-            drawRect(valuesPanelX, valuesPanelY, valuesPanelX + adaptivePanelWidth, valuesPanelY + headerHeight, 0xFF222222);
+            if (valuesPanelWindow == null) {
+                valuesPanelWindow = new DragWindow(startX + guiWidth + 10, startY, lastAdaptivePanelWidth, adaptivePanelHeight);
+            }
+            drawRect(valuesPanelWindow.getX(), valuesPanelWindow.getY(), valuesPanelWindow.getX() + lastAdaptivePanelWidth, valuesPanelWindow.getY() + adaptivePanelHeight, 0xCC000000);
+            drawRect(valuesPanelWindow.getX(), valuesPanelWindow.getY(), valuesPanelWindow.getX() + lastAdaptivePanelWidth, valuesPanelWindow.getY() + headerHeight, 0xFF222222);
 
-            // 绘制标题文字和关闭按钮
-            fontRenderer.drawStringWithShadow(headerText, valuesPanelX + 5, valuesPanelY + 5, 0xFFFFFFFF);
+            fontRenderer.drawStringWithShadow(headerText, valuesPanelWindow.getX() + 5, valuesPanelWindow.getY() + 5, 0xFFFFFFFF);
             fontRenderer.drawStringWithShadow(
                     "X",
-                    valuesPanelX + adaptivePanelWidth - 15,
-                    valuesPanelY + 5,
+                    valuesPanelWindow.getX() + lastAdaptivePanelWidth - 15,
+                    valuesPanelWindow.getY() + 5,
                     HoveringUtil.isHovering(
-                            valuesPanelX + adaptivePanelWidth - 15,
-                            valuesPanelY + 5,
+                            valuesPanelWindow.getX() + lastAdaptivePanelWidth - 15,
+                            valuesPanelWindow.getY() + 5,
                             fontRenderer.getStringWidth("X"),
                             fontRenderer.getHeight(),
                             mouseX,
@@ -210,81 +258,80 @@ public class NewClickGUIScreen extends GuiScreen {
                     ) ? 0xFFFFFF00 : 0xFFFF0000
             );
 
-            // -------------------------------
-            // 绘制每一行的值
-            // -------------------------------
-            int valueY = valuesPanelY + headerHeight + paddingTop;
+            int valueY = valuesPanelWindow.getY() + headerHeight + paddingTop;
             for (Value<?> valueObj : activeModuleValues.values) {
-                // 绘制当前行背景
-                drawRect(valuesPanelX, valueY, valuesPanelX + adaptivePanelWidth, valueY + rowHeight, 0xFF111111);
+                drawRect(valuesPanelWindow.getX(), valueY, valuesPanelWindow.getX() + lastAdaptivePanelWidth, valueY + rowHeight, 0xFF111111);
                 int textY = valueY + (rowHeight - fontRenderer.getHeight()) / 2;
-                // 绘制值的名称
-                fontRenderer.drawStringWithShadow(valueObj.cnName, valuesPanelX + 5, textY, 0xFFFFFFFF);
+                fontRenderer.drawStringWithShadow(valueObj.cnName, valuesPanelWindow.getX() + 5, textY, 0xFFFFFFFF);
 
-                // 计算名称的宽度，后续控件绘制从名称后开始
                 int nameWidth = fontRenderer.getStringWidth(valueObj.cnName);
-                int offsetX = valuesPanelX + 5 + nameWidth + 5; // 名称+5像素间隔
+                int offsetX = valuesPanelWindow.getX() + 5 + nameWidth + 5;
 
                 if (valueObj instanceof BooleanValue) {
                     BooleanValue boolValue = (BooleanValue) valueObj;
-                    String stateText = boolValue.getValue() ? "开启" : "关闭";
+                    String stateText = boolValue.getValue() ? "开启(按我修改)" : "关闭(按我修改)";
                     fontRenderer.drawStringWithShadow(stateText, offsetX, textY, boolValue.getValue() ? 0xFF00FF00 : 0xFFFF0000);
-                } else if (valueObj instanceof NumberValue) {
-                    NumberValue numValue = (NumberValue) valueObj;
-                    String numText = String.valueOf(numValue.getValue());
-                    int numTextWidth = fontRenderer.getStringWidth(numText);
-                    String minusSymbol = "-";
-                    String plusSymbol = "+";
-                    int btnWidth = fontRenderer.getStringWidth(minusSymbol);
-                    // 确保 offsetX 至少有足够空间展示“-”按钮
-                    int minOffsetX = valuesPanelX + btnWidth + 10;
-                    int currentOffsetX = Math.max(offsetX, minOffsetX);
-                    // 绘制数字文本从 currentOffsetX 开始
-                    fontRenderer.drawStringWithShadow(numText, currentOffsetX, textY, 0xFFFFFFFF);
-                    // 绘制“-”按钮在左侧，"+”按钮在右侧
-                    int minusX = currentOffsetX - btnWidth - 10;
-                    int plusX  = currentOffsetX + numTextWidth + 10;
-                    fontRenderer.drawStringWithShadow(minusSymbol, minusX, textY, 0xFFFFFFFF);
-                    fontRenderer.drawStringWithShadow(plusSymbol, plusX, textY, 0xFFFFFFFF);
-                } else if (valueObj instanceof ModeValue) {
-                    ModeValue modeValue = (ModeValue) valueObj;
-                    String modeText = modeValue.getValue();
-                    int modeTextWidth = fontRenderer.getStringWidth(modeText);
-                    String leftArrow = "<";
-                    String rightArrow = ">";
-                    int leftArrowWidth = fontRenderer.getStringWidth(leftArrow);
-                    // 绘制左箭头
-                    fontRenderer.drawStringWithShadow(leftArrow, offsetX, textY, 0xFFFFFFFF);
-                    // 绘制模式文本
-                    int modeTextX = offsetX + leftArrowWidth + 5;
-                    fontRenderer.drawStringWithShadow(modeText, modeTextX, textY, 0xFFFFFFFF);
-                    // 绘制右箭头
-                    int rightArrowX = modeTextX + modeTextWidth + 5;
-                    fontRenderer.drawStringWithShadow(rightArrow, rightArrowX, textY, 0xFFFFFFFF);
-                } else if (valueObj instanceof TextValue) {
-                    TextValue textValue = (TextValue) valueObj;
-                    String text = textValue.getValue();
-                    fontRenderer.drawStringWithShadow(text, offsetX, textY, 0xFFFFFFFF);
                 } else if (valueObj instanceof ColorValue) {
                     ColorValue colorValue = (ColorValue) valueObj;
-                    // 获取颜色的整型值（含Alpha）
                     int colorInt = colorValue.getValueC();
-                    // 定义颜色小块的尺寸
                     int boxWidth = 20;
                     int boxHeight = fontRenderer.getHeight();
-                    // 绘制颜色块
+                    // 绘制颜色显示区块
                     drawRect(offsetX, textY, offsetX + boxWidth, textY + boxHeight, colorInt);
-                    // 绘制颜色块边框（黑色）
-                    drawRect(offsetX, textY, offsetX + boxWidth, textY + boxHeight, 0xFF000000);
-                    // 绘制颜色的十六进制字符串表示
+                    // 边框
+                    drawRect(offsetX, textY, offsetX + boxWidth, textY + 1, 0xFF000000);
+                    drawRect(offsetX, textY, offsetX + 1, textY + boxHeight, 0xFF000000);
+                    drawRect(offsetX + boxWidth - 1, textY, offsetX + boxWidth, textY + boxHeight, 0xFF000000);
+                    drawRect(offsetX, textY + boxHeight - 1, offsetX + boxWidth, textY + boxHeight, 0xFF000000);
+                    // 同时绘制16进制颜色值
                     String hexColor = "0x" + Integer.toHexString(colorInt).toUpperCase();
                     fontRenderer.drawStringWithShadow(hexColor, offsetX + boxWidth + 5, textY, 0xFFFFFFFF);
+                } else if (valueObj instanceof NumberValue) {
+                    NumberValue numberValue = (NumberValue) valueObj;
+                    String valueText = String.format("%.2f", numberValue.getValue());
+                    int btnWidth = fontRenderer.getStringWidth("[-]") + 4;
+                    int btnHeight = fontRenderer.getHeight() + 3;
+                    // 绘制减号按钮
+                    drawRect(offsetX, textY, offsetX + btnWidth, textY + btnHeight, 0xFF444444);
+                    fontRenderer.drawStringWithShadow("[-]", offsetX + 2, textY, 0xFFFFFFFF);
+                    // 绘制当前数值
+                    int valueTextWidth = fontRenderer.getStringWidth(valueText);
+                    int valueX = offsetX + btnWidth + 5;
+                    fontRenderer.drawStringWithShadow(valueText, valueX, textY, 0xFFFFFFFF);
+                    // 绘制加号按钮
+                    int plusX = valueX + valueTextWidth + 5;
+                    drawRect(plusX, textY, plusX + btnWidth, textY + btnHeight, 0xFF444444);
+                    fontRenderer.drawStringWithShadow("[+]", plusX + 2, textY, 0xFFFFFFFF);
                 }
                 valueY += rowHeight;
             }
         }
 
+        // 如果 ColorPicker 窗口存在，则绘制在最上层
+        if (colorPickerWindow != null) {
+            colorPickerWindow.drawScreen(mouseX, mouseY, partialTicks);
+            if (colorPickerWindow.isClosed()) {
+                colorPickerWindow = null;
+            }
+        }
+
         super.drawScreen(mouseX, mouseY, partialTicks);
+    }
+
+    private float getSliderPositionRatio(int mouseY, int modulesViewHeight, int totalContentHeight) {
+        int moduleListStartY = mainWindow.getY() + 60;
+        float viewRatio = (float) modulesViewHeight / totalContentHeight;
+        int sliderHeight = Math.max((int) (modulesViewHeight * viewRatio), 10);
+        int sliderNewY = mouseY - sliderDragOffset;
+        // 限制 sliderNewY 不超出模块列表区域
+        if (sliderNewY < moduleListStartY) {
+            sliderNewY = moduleListStartY;
+        }
+        if (sliderNewY > moduleListStartY + modulesViewHeight - sliderHeight) {
+            sliderNewY = moduleListStartY + modulesViewHeight - sliderHeight;
+        }
+        float sliderPositionRatio = (float) (sliderNewY - moduleListStartY) / (modulesViewHeight - sliderHeight);
+        return sliderPositionRatio;
     }
 
     @Override
@@ -292,8 +339,10 @@ public class NewClickGUIScreen extends GuiScreen {
         int delta = Mouse.getEventDWheel();
         if (delta != 0) {
             scrollY += (delta > 0 ? 20 : -20);
-            List<? extends Module> currentModules = isCategoryOne ? ModuleManager.modules : ElementManager.elements;
-            int maxScroll = Math.max(0, (moduleHeight + padding) * currentModules.size() - viewHeight);
+            List<Module> filteredModules = getFilteredModules();
+            int modulesViewHeight = guiHeight - 60;
+            int totalContentHeight = (moduleHeight + padding) * filteredModules.size();
+            int maxScroll = Math.max(0, totalContentHeight - modulesViewHeight);
             if (scrollY > 0) scrollY = 0;
             if (scrollY < -maxScroll) scrollY = -maxScroll;
         }
@@ -302,49 +351,79 @@ public class NewClickGUIScreen extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        // 处理 Values 面板的拖动与关闭（左键点击面板标题栏区域）
-        if (mouseButton == 0 && activeModuleValues != null
-                && HoveringUtil.isHovering(valuesPanelX, valuesPanelY, valuesPanelWidth, 20, mouseX, mouseY)) {
-            // 检测是否点击了关闭按钮（面板右上角区域）
-            if (HoveringUtil.isHovering(valuesPanelX + valuesPanelWidth - 20, valuesPanelY, 20, 20, mouseX, mouseY)) {
-                activeModuleValues = null;
+        // 如果 ColorPicker 窗口存在，则先转发鼠标点击给它
+        if (colorPickerWindow != null) {
+            if (colorPickerWindow.mouseClicked(mouseX, mouseY, mouseButton)) {
                 return;
             }
-            draggingValues = true;
-            valuesDragOffsetX = mouseX - valuesPanelX;
-            valuesDragOffsetY = mouseY - valuesPanelY;
+        }
+
+        // 优先处理搜索框点击
+        if (mouseButton == 0 && searchBox != null && searchBox.mouseClicked(mouseX, mouseY)) {
+            return;
+        }
+
+        // 检测是否点击滚动条滑块区域（优先处理）
+        if (mouseButton == 0) {
+            List<Module> filteredModules = getFilteredModules();
+            int totalContentHeight = (moduleHeight + padding) * filteredModules.size();
+            int modulesViewHeight = guiHeight - 60;
+            int maxScroll = Math.max(0, totalContentHeight - modulesViewHeight);
+            if (totalContentHeight > modulesViewHeight && maxScroll > 0) {
+                int startX = mainWindow.getX();
+                int moduleListStartY = mainWindow.getY() + 60;
+                int scrollbarWidth = 6;
+                int scrollbarX = startX + guiWidth - scrollbarWidth - 2;
+                float viewRatio = (float) modulesViewHeight / totalContentHeight;
+                int sliderHeight = Math.max((int) (modulesViewHeight * viewRatio), 10);
+                float sliderPositionRatio = (float) (-scrollY) / maxScroll;
+                int sliderY = moduleListStartY + (int) ((modulesViewHeight - sliderHeight) * sliderPositionRatio);
+                if (HoveringUtil.isHovering(scrollbarX, sliderY, scrollbarWidth, sliderHeight, mouseX, mouseY)) {
+                    draggingSlider = true;
+                    sliderDragOffset = mouseY - sliderY;
+                    return;
+                }
+            }
+        }
+
+        // 处理 Values 面板标题区域拖动与关闭
+        if (mouseButton == 0 && activeModuleValues != null && valuesPanelWindow != null
+                && HoveringUtil.isHovering(valuesPanelWindow.getX(), valuesPanelWindow.getY(), lastAdaptivePanelWidth, 20, mouseX, mouseY)) {
+            // 判断是否点击关闭按钮
+            if (HoveringUtil.isHovering(valuesPanelWindow.getX() + lastAdaptivePanelWidth - 20, valuesPanelWindow.getY(), 20, 20, mouseX, mouseY)) {
+                activeModuleValues = null;
+                valuesPanelWindow = null;
+                return;
+            }
+            valuesPanelWindow.startDrag(mouseX, mouseY);
             return;
         }
 
         if (mouseButton == 0) {
-            // 判断是否点击标题栏（整个窗口顶部区域）
-            if (HoveringUtil.isHovering(startX, startY, guiWidth, 20, mouseX, mouseY)) {
-                dragging = true;
-                dragX = mouseX - startX;
-                dragY = mouseY - startY;
+            // 检查窗口拖动
+            if (HoveringUtil.isHovering(mainWindow.getX(), mainWindow.getY(), guiWidth, 20, mouseX, mouseY)) {
+                mainWindow.startDrag(mouseX, mouseY);
                 return;
             }
-
-            // 判断是否点击分类按钮
+            // 分类按钮
             int categoryBtnWidth = guiWidth / 2;
-            if (HoveringUtil.isHovering(startX, startY + 20, categoryBtnWidth, 20, mouseX, mouseY)) {
+            if (HoveringUtil.isHovering(mainWindow.getX(), mainWindow.getY() + 20, categoryBtnWidth, 20, mouseX, mouseY)) {
                 isCategoryOne = true;
-                scrollY = 0; // 重置滚动
+                scrollY = 0;
                 return;
             }
-            if (HoveringUtil.isHovering(startX + categoryBtnWidth, startY + 20, categoryBtnWidth, 20, mouseX, mouseY)) {
+            if (HoveringUtil.isHovering(mainWindow.getX() + categoryBtnWidth, mainWindow.getY() + 20, categoryBtnWidth, 20, mouseX, mouseY)) {
                 isCategoryOne = false;
-                scrollY = 0; // 重置滚动
+                scrollY = 0;
                 return;
             }
-
-            // 获取当前分类的模块列表，处理左键点击切换模块开关
-            List<? extends Module> currentModules = isCategoryOne ? ModuleManager.modules : ElementManager.elements;
+            // 模块列表点击（左键切换开关）
+            int moduleListStartY = mainWindow.getY() + 60;
             double offsetY = translate.getY();
-            int currentY = startY + 50; // 从分类按钮下方开始
-
-            for (Module module : currentModules) {
-                if (HoveringUtil.isHovering(startX + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY)) {
+            int currentY = moduleListStartY + 5;
+            List<Module> filteredModules = getFilteredModules();
+            for (Module module : filteredModules) {
+                if (HoveringUtil.isHovering(mainWindow.getX() + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY)) {
                     module.toggle();
                     return;
                 }
@@ -352,21 +431,70 @@ public class NewClickGUIScreen extends GuiScreen {
             }
         }
 
-        // 右键点击模块时打开对应模块的 Values 面板
+        // 右键打开 Values 面板
         if (mouseButton == 1) {
-            List<? extends Module> currentModules = isCategoryOne ? ModuleManager.modules : ElementManager.elements;
+            int moduleListStartY = mainWindow.getY() + 60;
             double offsetY = translate.getY();
-            int currentY = startY + 50; // 模块列表起始位置
-
-            for (Module module : currentModules) {
-                if (HoveringUtil.isHovering(startX + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY)) {
+            int currentY = moduleListStartY + 5;
+            List<Module> filteredModules = getFilteredModules();
+            for (Module module : filteredModules) {
+                if (HoveringUtil.isHovering(mainWindow.getX() + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY)) {
                     activeModuleValues = module;
-                    // 初始化 Values 面板位置（可根据需要调整）
-                    valuesPanelX = startX + guiWidth + 10;
-                    valuesPanelY = startY;
+                    // 当右键打开 Values 面板时，初始化其拖拽窗口
+                    valuesPanelWindow = new DragWindow(mainWindow.getX() + guiWidth + 10, mainWindow.getY(), lastAdaptivePanelWidth, 100);
                     return;
                 }
                 currentY += moduleHeight + padding;
+            }
+        }
+
+        // 处理 Values 面板中各个 value 的点击事件
+        if (mouseButton == 0 && activeModuleValues != null && valuesPanelWindow != null) {
+            int headerHeight = 20;
+            int paddingTop = 5;
+            int rowHeight = Math.max(15, fontRenderer.getHeight() + 4);
+            if (mouseY >= valuesPanelWindow.getY() + headerHeight) {
+                int rowIndex = (mouseY - valuesPanelWindow.getY() - headerHeight - paddingTop) / rowHeight;
+                if (rowIndex >= 0 && rowIndex < activeModuleValues.values.size()) {
+                    Value<?> valueObj = activeModuleValues.values.get(rowIndex);
+                    int rowY = valuesPanelWindow.getY() + headerHeight + paddingTop + rowIndex * rowHeight;
+                    int textY = rowY + (rowHeight - fontRenderer.getHeight()) / 2;
+                    int nameWidth = fontRenderer.getStringWidth(valueObj.cnName);
+                    int offsetX = valuesPanelWindow.getX() + 5 + nameWidth + 5;
+                    if (valueObj instanceof BooleanValue) {
+                        BooleanValue boolValue = (BooleanValue) valueObj;
+                        String stateText = boolValue.getValue() ? "开启(按我修改)" : "关闭(按我修改)";
+                        int stateTextWidth = fontRenderer.getStringWidth(stateText);
+                        if (HoveringUtil.isHovering(offsetX, textY, stateTextWidth, fontRenderer.getHeight(), mouseX, mouseY)) {
+                            boolValue.toggle();
+                            return;
+                        }
+                    } else if (valueObj instanceof ColorValue) {
+                        // 如果点击了颜色显示区块，则打开 ColorPicker 窗口
+                        ColorValue colorValue = (ColorValue) valueObj;
+                        int boxWidth = 20;
+                        int boxHeight = fontRenderer.getHeight();
+                        if (HoveringUtil.isHovering(offsetX, textY, boxWidth, boxHeight, mouseX, mouseY)) {
+                            colorPickerWindow = new ColorPickerWindow(colorValue, mainWindow.getX() + guiWidth + 50, mainWindow.getY());
+                            return;
+                        }
+                    } else if (valueObj instanceof NumberValue) {
+                        NumberValue numberValue = (NumberValue) valueObj;
+                        int btnWidth = fontRenderer.getStringWidth("[-]") + 4;
+                        int btnHeight = fontRenderer.getHeight() + 3;
+                        String valueText = String.format("%.2f", numberValue.getValue());
+                        int valueTextWidth = fontRenderer.getStringWidth(valueText);
+                        // 计算加号按钮区域：offsetX + (减按钮宽度 + 间隔 + 数值文本宽度 + 间隔)
+                        int plusX = offsetX + btnWidth + 5 + valueTextWidth + 5;
+                        if (HoveringUtil.isHovering(offsetX, textY, btnWidth, btnHeight, mouseX, mouseY)) {
+                            numberValue.setValue(numberValue.getValue() - numberValue.incValue);
+                            return;
+                        } else if (HoveringUtil.isHovering(plusX, textY, btnWidth, btnHeight, mouseX, mouseY)) {
+                            numberValue.setValue(numberValue.getValue() + numberValue.incValue);
+                            return;
+                        }
+                    }
+                }
             }
         }
         super.mouseClicked(mouseX, mouseY, mouseButton);
@@ -374,10 +502,26 @@ public class NewClickGUIScreen extends GuiScreen {
 
     @Override
     protected void mouseReleased(int mouseX, int mouseY, int state) {
+        if (colorPickerWindow != null) {
+            colorPickerWindow.mouseReleased(mouseX, mouseY, state);
+        }
         if (state == 0) {
-            dragging = false;
-            draggingValues = false;
+            if (mainWindow != null) {
+                mainWindow.stopDrag();
+            }
+            if (valuesPanelWindow != null) {
+                valuesPanelWindow.stopDrag();
+            }
+            draggingSlider = false;
         }
         super.mouseReleased(mouseX, mouseY, state);
+    }
+
+    @Override
+    protected void keyTyped(char typedChar, int keyCode) throws IOException {
+        if (searchBox != null) {
+            searchBox.keyTyped(typedChar, keyCode);
+        }
+        super.keyTyped(typedChar, keyCode);
     }
 }

@@ -2,6 +2,8 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Predicate;
 import com.google.common.base.Predicates;
+import lombok.Getter;
+import lombok.Setter;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
@@ -14,7 +16,9 @@ public class GuiTextField extends Gui {
     private final FontRenderer fontRendererInstance;
     public int xPosition;
     public int yPosition;
-    private final int width;
+    @Setter
+    private int width;
+    @Getter
     private final int height;
     private String text = "";
     private int maxStringLength = 32;

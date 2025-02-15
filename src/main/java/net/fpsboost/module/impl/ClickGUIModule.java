@@ -32,7 +32,7 @@ public class ClickGUIModule extends Module {
         Dark, Light
     }
 
-    private final boolean isTest = false;
+    private final boolean isTest = true;
 
     @Override
     public void onEnable() {

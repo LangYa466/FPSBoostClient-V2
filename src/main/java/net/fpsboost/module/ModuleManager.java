@@ -1,7 +1,6 @@
 package net.fpsboost.module;
 
 import net.fpsboost.Wrapper;
-import net.fpsboost.element.ElementManager;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.impl.*;
@@ -11,10 +10,11 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ModuleManager implements Wrapper {
     private static final LinkedHashMap<Class<?>, Module> moduleMap = new LinkedHashMap<>();
-    public static List<Module> modules = new ArrayList<>();
+    public static List<Module> modules = new CopyOnWriteArrayList<>();
 
     public static void init() {
         // 批量添加模块
