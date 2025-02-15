@@ -12,6 +12,7 @@ import net.fpsboost.value.Value;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.fpsboost.value.impl.NumberValue;
+import net.fpsboost.value.impl.ModeValue;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
 import org.lwjgl.input.Mouse;
@@ -226,6 +227,15 @@ public class NewClickGUIScreen extends GuiScreen {
                     int valueTextWidth = fontRenderer.getStringWidth(valueText);
                     // 计算：减按钮 + 间隔 + 数值文本 + 间隔 + 加按钮 + 间隔
                     lineWidth += btnWidth + 5 + valueTextWidth + 5 + btnWidth + 5;
+                } else if (valueObj instanceof ModeValue) {
+                    ModeValue modeValue = (ModeValue) valueObj;
+                    String modeText = modeValue.getValue();
+                    int modeTextWidth = fontRenderer.getStringWidth(modeText);
+                    int gap = 5;
+                    int arrowPadding = 4;
+                    int arrowWidth = fontRenderer.getStringWidth("<") + 2 * arrowPadding;
+                    // 计算：模式文本 + gap + 左箭头按钮 + gap + 右箭头按钮 + gap
+                    lineWidth += modeTextWidth + gap + arrowWidth + gap + arrowWidth + gap;
                 }
                 computedMaxValueWidth = Math.max(computedMaxValueWidth, lineWidth);
             }
@@ -302,6 +312,29 @@ public class NewClickGUIScreen extends GuiScreen {
                     int plusX = valueX + valueTextWidth + 5;
                     drawRect(plusX, textY, plusX + btnWidth, textY + btnHeight, 0xFF444444);
                     fontRenderer.drawStringWithShadow("[+]", plusX + 2, textY, 0xFFFFFFFF);
+                } else if (valueObj instanceof ModeValue) {
+                    // 绘制模式值：显示当前模式文本，后面附加“<”和“>”两个按钮
+                    ModeValue modeValue = (ModeValue) valueObj;
+                    String modeText = modeValue.getValue();
+                    int modeTextWidth = fontRenderer.getStringWidth(modeText);
+                    int modeTextHeight = fontRenderer.getHeight();
+                    // 绘制模式文本
+                    fontRenderer.drawStringWithShadow(modeText, offsetX, textY, 0xFFFFFFFF);
+
+                    int gap = 5;
+                    int arrowPadding = 4;
+                    int arrowWidth = fontRenderer.getStringWidth("<") + 2 * arrowPadding;
+                    int arrowHeight = modeTextHeight + 4;
+
+                    // 左箭头按钮（点击后切换到上一个模式）
+                    int leftButtonX = offsetX + modeTextWidth + gap;
+                    drawRect(leftButtonX, textY, leftButtonX + arrowWidth, textY + arrowHeight, 0xFF444444);
+                    fontRenderer.drawStringWithShadow("<", leftButtonX + arrowPadding, textY + 2, 0xFFFFFFFF);
+
+                    // 右箭头按钮（点击后切换到下一个模式）
+                    int rightButtonX = leftButtonX + arrowWidth + gap;
+                    drawRect(rightButtonX, textY, rightButtonX + arrowWidth, textY + arrowHeight, 0xFF444444);
+                    fontRenderer.drawStringWithShadow(">", rightButtonX + arrowPadding, textY + 2, 0xFFFFFFFF);
                 }
                 valueY += rowHeight;
             }
@@ -330,8 +363,7 @@ public class NewClickGUIScreen extends GuiScreen {
         if (sliderNewY > moduleListStartY + modulesViewHeight - sliderHeight) {
             sliderNewY = moduleListStartY + modulesViewHeight - sliderHeight;
         }
-        float sliderPositionRatio = (float) (sliderNewY - moduleListStartY) / (modulesViewHeight - sliderHeight);
-        return sliderPositionRatio;
+        return (float) (sliderNewY - moduleListStartY) / (modulesViewHeight - sliderHeight);
     }
 
     @Override
@@ -491,6 +523,25 @@ public class NewClickGUIScreen extends GuiScreen {
                             return;
                         } else if (HoveringUtil.isHovering(plusX, textY, btnWidth, btnHeight, mouseX, mouseY)) {
                             numberValue.setValue(numberValue.getValue() + numberValue.incValue);
+                            return;
+                        }
+                    } else if (valueObj instanceof ModeValue) {
+                        // 处理模式值的点击事件，检测左箭头和右箭头按钮区域
+                        ModeValue modeValue = (ModeValue) valueObj;
+                        String modeText = modeValue.getValue();
+                        int modeTextWidth = fontRenderer.getStringWidth(modeText);
+                        int modeTextHeight = fontRenderer.getHeight();
+                        int gap = 5;
+                        int arrowPadding = 4;
+                        int arrowWidth = fontRenderer.getStringWidth("<") + 2 * arrowPadding;
+                        int arrowHeight = modeTextHeight + 4;
+                        int leftButtonX = offsetX + modeTextWidth + gap;
+                        int rightButtonX = leftButtonX + arrowWidth + gap;
+                        if (HoveringUtil.isHovering(leftButtonX, textY, arrowWidth, arrowHeight, mouseX, mouseY)) {
+                            modeValue.setPreviousValue();
+                            return;
+                        } else if (HoveringUtil.isHovering(rightButtonX, textY, arrowWidth, arrowHeight, mouseX, mouseY)) {
+                            modeValue.setNextValue();
                             return;
                         }
                     }

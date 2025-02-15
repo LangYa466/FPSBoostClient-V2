@@ -4,9 +4,7 @@ import net.fpsboost.util.Logger;
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.shader.Framebuffer;
 import net.minecraft.event.ClickEvent;
-import net.minecraft.util.ChatComponentText;
-import net.minecraft.util.ChatComponentTranslation;
-import net.minecraft.util.IChatComponent;
+import net.minecraft.util.*;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -53,13 +51,14 @@ public class ScreenshotSaver {
         File screenshotFile = new File(screenshotDir, captureTime + ".png");
         try {
             ImageIO.write(bufferedImage, "png", screenshotFile);
-            IChatComponent component = new ChatComponentText(screenshotFile.getName());
-            component.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.OPEN_FILE, screenshotFile.getAbsolutePath()));
-            component.getChatStyle().setUnderlined(true);
-            return new ChatComponentTranslation("screenshot.success", component);
+            return new ChatComponentText(EnumChatFormatting.UNDERLINE + "保存截图" + EnumChatFormatting.RESET + " ")
+                    .appendSibling(new ChatComponentText("[打开] ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD).setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, ".screenshot open " + screenshotFile.getName())))
+                            .appendSibling(new ChatComponentText("[复制] ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLUE).setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, ".screenshot copy " + screenshotFile.getName())))
+                                    .appendSibling(new ChatComponentText("[删除]").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED).setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, ".screenshot del " + screenshotFile.getName()))))));
         } catch (Exception e) {
             Logger.error("Failed to save screenshot: " + e.getMessage());
             return new ChatComponentTranslation("screenshot.failure", e.getMessage());
         }
+
     }
 }

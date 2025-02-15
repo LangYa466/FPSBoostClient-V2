@@ -31,4 +31,21 @@ public class ModeValue extends Value<String> {
         }
         return null;
     }
+
+    public void setPreviousValue() {
+        setValue(getPreviousValue());
+    }
+
+    public String getPreviousValue() {
+        for (int i = 0; i < modes.length; i++) {
+            if (modes[i].equals(this.getValue())) {
+                int previousIndex = i - 1;
+                if (previousIndex < 0) {
+                    previousIndex = modes.length - 1;
+                }
+                return modes[previousIndex];
+            }
+        }
+        return null;
+    }
 }

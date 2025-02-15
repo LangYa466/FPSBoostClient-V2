@@ -33,6 +33,7 @@ public class Client implements Wrapper {
     public static final String version = "2.22";
     public static boolean isOldVersion;
     public static boolean isDev = false;
+    public static boolean checkVersion = true;
     public static final String web = "https://api.fpsboost.cn:444/";
     public static GuiMainMenu guimainMenu;
 
@@ -50,9 +51,8 @@ public class Client implements Wrapper {
         }
 
         // Version check
-        if (!isDev) {
-            checkForUpdates();
-        }
+        if (isDev) checkVersion = false;
+        if (checkVersion) checkForUpdates();
 
         long elapsedTime = System.currentTimeMillis() - Main.initTime;
         // 1000.0是为了强制转换成double 改了报错(怪format)

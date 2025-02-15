@@ -328,7 +328,7 @@ public class ItemRenderer {
                         case BLOCK:
                             if (OldAnimation.isEnabled && OldAnimation.blockHit.getValue()) {
                                 this.transformFirstPersonItem(f, f1);
-                                GlStateManager.translate(0, 0.3, 0);
+                                GlStateManager.translate(0, OldAnimation.abY.getValue(), 0);
                             } else {
                                 this.transformFirstPersonItem(f, 0.0F);
                             }

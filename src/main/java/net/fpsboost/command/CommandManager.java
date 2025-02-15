@@ -1,6 +1,7 @@
 package net.fpsboost.command;
 
 import net.fpsboost.command.impl.BindCommand;
+import net.fpsboost.command.impl.ScreenshotCommand;
 import net.fpsboost.command.impl.ToggleCommand;
 
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class CommandManager {
     public static final ArrayList<Command> commands = new ArrayList<>();
 
     public static void init() {
-        addCommands(new BindCommand(), new ToggleCommand());
+        addCommands(new BindCommand(), new ToggleCommand(), new ScreenshotCommand());
     }
 
     private static void addCommands(Command... commands) {
