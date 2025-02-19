@@ -7,18 +7,15 @@ import net.fpsboost.module.impl.*;
 import net.fpsboost.socket.ClientIRC;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ModuleManager implements Wrapper {
-    private static final LinkedHashMap<Class<?>, Module> moduleMap = new LinkedHashMap<>();
-    public static List<Module> modules = new CopyOnWriteArrayList<>();
+    public static final List<Module> modules = new ArrayList<>();
 
     public static void init() {
-        // 批量添加模块
-        addModules(
+        modules.addAll(Arrays.asList(
                 new ClickGUIModule(), new Sprint(), new OldAnimation(), new NameProtect(),
                 new BetterChat(), new NoMissHitDelay(), new HideScoreboardRect(),
                 BossBar.INSTANCE, new BlockOverlay(), new ItemPhysic(), MotionBlur.INSTANCE,
@@ -32,14 +29,13 @@ public class ModuleManager implements Wrapper {
                 new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE,
                 new HidePlantBlock(), new DragonWings(), new SkinLayers3D(),
                 new HideRunningParticles()
-        );
+        ));
 
         // 特殊模块设置
         if (!ClientIRC.INSTANCE.enable) ClientIRC.INSTANCE.toggle();
         ClientSettings.INSTANCE.enable = true;
 
-        // 初始化模块列表（仅排序一次）
-        modules = new ArrayList<>(moduleMap.values());
+        // 排序
         sortModules();
     }
 
@@ -47,48 +43,33 @@ public class ModuleManager implements Wrapper {
         modules.sort(Comparator.comparing(Module::getDisplayName));
     }
 
-    private static void addModules(Module... newModules) {
-        for (Module module : newModules) {
-            moduleMap.put(module.getClass(), module);
-        }
-    }
-
     public static boolean isEnabled(Class<?> moduleClass) {
-        Module module = moduleMap.get(moduleClass);
-        return module != null && module.enable;
+        return modules.stream().anyMatch(module -> module.getClass() == moduleClass && module.enable);
     }
 
     public static void moduleRender2D() {
         MessageHandler.onRender2D();
-        for (Module module : modules) {
-            if (module.enable) module.onRender2D();
-        }
+        modules.stream().filter(module -> module.enable).forEach(Module::onRender2D);
     }
 
     public static void moduleRender3D() {
-        for (Module module : modules) {
-            if (module.enable) module.onRender3D();
-        }
+        modules.stream().filter(module -> module.enable).forEach(Module::onRender3D);
     }
 
     public static void moduleUpdate() {
-        for (Module module : modules) {
-            if (module.enable) module.onUpdate();
-        }
+        modules.stream().filter(module -> module.enable).forEach(Module::onUpdate);
         AttackHandler.onUpdate();
     }
 
     public static void moduleWorldLoad() {
-        for (Module module : modules) {
-            if (module.enable) module.onWorldLoad();
-        }
+        modules.stream().filter(module -> module.enable).forEach(Module::onWorldLoad);
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
         for (Module module : modules) {
             if (inputKeyCode == module.keyCode) {
                 module.toggle();
-                break; // 一旦找到目标模块，立即终止循环 之前有个臭傻逼说我不break 我草他吗的 没遇见过BUG吗、、
+                break; // 只需触发一个模块
             }
         }
     }

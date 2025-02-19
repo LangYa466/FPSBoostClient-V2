@@ -27,12 +27,12 @@ public class CommandManager {
         String[] args = message.split(" ");
         String commandName = args[0].replace(".", "");
 
-        Optional<Command> command = commands.stream()
-                .filter(c -> c.name.equals(commandName))
-                .findFirst();
-
-        command.ifPresent(c -> c.run(args));
-
-        return command.isPresent();
+        for (Command command : commands) {
+            if (command.name.equals(commandName)) {
+                command.run(args);
+                return true;
+            }
+        }
+        return false;
     }
 }

@@ -1,32 +1,40 @@
 package net.fpsboost.module.impl.entityculling;
 
 import net.minecraft.client.renderer.OpenGlHelper;
+import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
-import net.minecraft.client.renderer.vertex.VertexBuffer;
 import net.minecraft.client.renderer.vertex.VertexFormat;
+import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.opengl.GL15;
 
+import java.nio.ByteBuffer;
 import java.util.HashMap;
+import java.util.Map;
 
+/**
+ * @author LangYa
+ * @since 2025/02/19
+ */
 public class CubeVBOProvider {
 
     private static final CubeVBOProvider INSTANCE = new CubeVBOProvider();
     private static final int GL_DRAW_MODE = GL11.GL_TRIANGLE_STRIP;
     private static final VertexFormat VERTEX_FORMAT = DefaultVertexFormats.POSITION;
-    private static final int TEN_BITS = 0b1111111111;
+    private static final int TEN_BITS = 0b1111111111; // 10-bit masking for ID
 
-    private WorldRenderer worldRenderer = new WorldRenderer(14 * 3);
+    private final Map<Integer, Integer> vbos = new HashMap<>();
+    private int lastVBO = -1;
+
+    private CubeVBOProvider() {}
 
     public static CubeVBOProvider getInstance() {
         return INSTANCE;
     }
 
-    private HashMap<Integer, VertexBuffer> vbos = new HashMap<>();
-    private VertexBuffer lastVBO = null;
-
     public void resetVBO() {
-        lastVBO = null;
+        lastVBO = -1;
         GL11.glDisableClientState(GL11.GL_VERTEX_ARRAY);
         OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, 0);
     }
@@ -36,65 +44,73 @@ public class CubeVBOProvider {
         int yUnits = Math.round(ySize * 10);
         int zUnits = Math.round(zSize * 10);
 
-        VertexBuffer buffer = getVBO(xUnits, yUnits, zUnits);
-        if (lastVBO != buffer) {
-            buffer.bindBuffer();
+        int vboId = getVBO(xUnits, yUnits, zUnits);
+        if (lastVBO != vboId) {
+            OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, vboId);
 
-            OpenGlHelper.setClientActiveTexture(OpenGlHelper.defaultTexUnit);
             GL11.glEnableClientState(GL11.GL_VERTEX_ARRAY);
             GL11.glVertexPointer(3, GL11.GL_FLOAT, 12, 0L);
+            lastVBO = vboId;
         }
 
-        buffer.drawArrays(GL_DRAW_MODE);
+        GL11.glDrawArrays(GL_DRAW_MODE, 0, 14);
     }
 
     public void clearVBOs() {
-        for (VertexBuffer buffer : vbos.values()) {
-            buffer.deleteGlBuffers();
+        for (int vboId : vbos.values()) {
+            OpenGlHelper.glDeleteBuffers(vboId);
         }
         vbos.clear();
-        lastVBO = null;
+        lastVBO = -1;
     }
 
     private int getVBOId(int xUnits, int yUnits, int zUnits) {
-        return (xUnits & TEN_BITS) | ((yUnits & TEN_BITS) << 10) | ((zUnits & TEN_BITS) << 10);
+        return (xUnits & TEN_BITS) | ((yUnits & TEN_BITS) << 10) | ((zUnits & TEN_BITS) << 20);
     }
 
-    private VertexBuffer getVBO(int xUnits, int yUnits, int zUnits) {
+    private int getVBO(int xUnits, int yUnits, int zUnits) {
         int vboId = getVBOId(xUnits, yUnits, zUnits);
 
-        VertexBuffer buffer;
         if (vbos.containsKey(vboId)) {
-            buffer = vbos.get(vboId);
-        } else {
-            renderAABB(worldRenderer, xUnits, yUnits, zUnits);
-
-            buffer = new VertexBuffer(VERTEX_FORMAT);
-            buffer.bufferData(worldRenderer.getByteBuffer());
-
-            vbos.put(vboId, buffer);
+            return vbos.get(vboId);
         }
 
-        return buffer;
+        int bufferId = OpenGlHelper.glGenBuffers();
+        OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, bufferId);
+
+        ByteBuffer vertexData = renderAABB(xUnits, yUnits, zUnits);
+        OpenGlHelper.glBufferData(OpenGlHelper.GL_ARRAY_BUFFER, vertexData, GL15.GL_STATIC_DRAW);
+
+        vbos.put(vboId, bufferId);
+        return bufferId;
     }
 
-    private void renderAABB(WorldRenderer worldRenderer, int xUnits, int yUnits, int zUnits) {
-        worldRenderer.begin(GL_DRAW_MODE, VERTEX_FORMAT);
-        worldRenderer.pos(0, yUnits / 10f, zUnits / 10f).endVertex();
-        worldRenderer.pos(xUnits / 10f, yUnits / 10f, zUnits / 10f).endVertex();
-        worldRenderer.pos(0, 0, zUnits / 10f).endVertex();
-        worldRenderer.pos(xUnits / 10f, 0, zUnits / 10f).endVertex();
-        worldRenderer.pos(xUnits / 10f, 0, 0).endVertex();
-        worldRenderer.pos(xUnits / 10f, yUnits / 10f, zUnits / 10f).endVertex();
-        worldRenderer.pos(xUnits / 10f, yUnits / 10f, 0).endVertex();
-        worldRenderer.pos(0, yUnits / 10f, zUnits / 10f).endVertex();
-        worldRenderer.pos(0, yUnits / 10f, 0).endVertex();
-        worldRenderer.pos(0, 0, zUnits / 10f).endVertex();
-        worldRenderer.pos(0, 0, 0).endVertex();
-        worldRenderer.pos(xUnits / 10f, 0, 0).endVertex();
-        worldRenderer.pos(0, yUnits / 10f, 0).endVertex();
-        worldRenderer.pos(xUnits / 10f, yUnits / 10f, 0).endVertex();
-        worldRenderer.finishDrawing();
-    }
+    private ByteBuffer renderAABB(int xUnits, int yUnits, int zUnits) {
+        WorldRenderer bufferBuilder = Tessellator.getInstance().getWorldRenderer();
+        bufferBuilder.begin(GL_DRAW_MODE, VERTEX_FORMAT);
 
+        float x = xUnits / 10.0f;
+        float y = yUnits / 10.0f;
+        float z = zUnits / 10.0f;
+
+        bufferBuilder.pos(0, y, z).endVertex();
+        bufferBuilder.pos(x, y, z).endVertex();
+        bufferBuilder.pos(0, 0, z).endVertex();
+        bufferBuilder.pos(x, 0, z).endVertex();
+        bufferBuilder.pos(x, 0, 0).endVertex();
+        bufferBuilder.pos(x, y, z).endVertex();
+        bufferBuilder.pos(x, y, 0).endVertex();
+        bufferBuilder.pos(0, y, z).endVertex();
+        bufferBuilder.pos(0, y, 0).endVertex();
+        bufferBuilder.pos(0, 0, z).endVertex();
+        bufferBuilder.pos(0, 0, 0).endVertex();
+        bufferBuilder.pos(x, 0, 0).endVertex();
+        bufferBuilder.pos(0, y, 0).endVertex();
+        bufferBuilder.pos(x, y, 0).endVertex();
+
+        ByteBuffer byteBuffer = BufferUtils.createByteBuffer(bufferBuilder.getByteBuffer().remaining());
+        byteBuffer.put(bufferBuilder.getByteBuffer());
+        byteBuffer.flip();
+        return byteBuffer;
+    }
 }
