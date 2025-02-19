@@ -105,20 +105,16 @@ public class ConfigManager implements Wrapper {
      * 加载所有配置文件
      */
     public static void loadAllConfig() {
-        executor.execute(() -> {
-            configs.forEach(it -> loadConfig(it.name));
-            logConfigAction("全部配置", "成功加载全部配置", "Successfully loaded all configs");
-        });
+        configs.forEach(it -> loadConfig(it.name));
+        logConfigAction("全部配置", "成功加载全部配置", "Successfully loaded all configs");
     }
 
     /**
      * 保存所有配置文件
      */
     public static void saveAllConfig() {
-        executor.execute(() -> {
-            configs.forEach(it -> saveConfig(it.name));
-            logConfigAction("全部配置", "成功保存全部配置", "Successfully saved all configs");
-        });
+        configs.forEach(it -> saveConfig(it.name));
+        logConfigAction("全部配置", "成功保存全部配置", "Successfully saved all configs");
     }
 
     /**
