@@ -58,25 +58,23 @@ public class ConfigManager implements Wrapper {
      * @param name 配置文件名称
      */
     public static void loadConfig(String name) {
-        executor.execute(() -> {
-            File file = new File(dir, name);
-            JsonParser jsonParser = new JsonParser();
-            if (file.exists()) {
-                for (Config config : configs) {
-                    if (!config.name.equals(name)) continue;
-                    try {
-                        config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
-                        logConfigAction(name, "加载客户端配置", "Loading client config");
-                    } catch (FileNotFoundException e) {
-                        logConfigError(name, e);
-                    }
-                    break;
+        File file = new File(dir, name);
+        JsonParser jsonParser = new JsonParser();
+        if (file.exists()) {
+            for (Config config : configs) {
+                if (!config.name.equals(name)) continue;
+                try {
+                    config.loadConfig(jsonParser.parse(new FileReader(file)).getAsJsonObject());
+                    logConfigAction(name, "加载客户端配置", "Loading client config");
+                } catch (FileNotFoundException e) {
+                    logConfigError(name, e);
                 }
-            } else {
-                Logger.warn("Config " + name + " doesn't exist, creating a new one...");
-                saveConfig(name);
+                break;
             }
-        });
+        } else {
+            Logger.warn("Config " + name + " doesn't exist, creating a new one...");
+            saveConfig(name);
+        }
     }
 
     /**

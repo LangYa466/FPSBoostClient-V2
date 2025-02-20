@@ -6,13 +6,13 @@ import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.impl.*;
 import net.fpsboost.socket.ClientIRC;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ModuleManager implements Wrapper {
-    public static final List<Module> modules = new ArrayList<>();
+    public static final List<Module> modules = new CopyOnWriteArrayList<>();
 
     public static void init() {
         modules.addAll(Arrays.asList(

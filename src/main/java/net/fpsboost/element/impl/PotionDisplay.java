@@ -7,6 +7,7 @@ import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.Gui;
+import net.minecraft.client.gui.GuiChat;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
@@ -35,6 +36,12 @@ public class PotionDisplay extends Element {
         FontRenderer fr;
         if (betterFont.getValue()) fr = FontManager.client();
         else fr = mc.fontRendererObj;
+
+        if (collection.isEmpty() && mc.currentScreen instanceof GuiChat) {
+            mc.thePlayer.addPotionEffect(new PotionEffect(Potion.example.getId(), -1, -1));
+        } else if (!(mc.currentScreen instanceof GuiChat)) {
+            mc.thePlayer.removePotionEffect(Potion.example.getId());
+        }
 
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {

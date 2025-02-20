@@ -1,5 +1,6 @@
 package net.fpsboost.config.impl;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fpsboost.config.Config;
 import net.fpsboost.element.ElementManager;
@@ -22,6 +23,7 @@ public class ElementConfig extends Config {
             hudObject.addProperty("x", hud.xPos);
             hudObject.addProperty("y", hud.yPos);
             hudObject.addProperty("scale", hud.scale);
+            hudObject.addProperty("enable", hud.enable);
             object.add(hud.name, hudObject);
         });
         return object;
@@ -35,6 +37,10 @@ public class ElementConfig extends Config {
                 hud.xPos = hudObject.get("x").getAsInt();
                 hud.yPos = hudObject.get("y").getAsInt();
                 hud.scale = hudObject.get("scale").getAsInt();
+                JsonElement enableElement = hudObject.get("enable");
+                boolean asBoolean = enableElement != null && enableElement.isJsonPrimitive() && enableElement.getAsBoolean();
+
+                hud.setEnable(asBoolean, true);
             }
         });
     }

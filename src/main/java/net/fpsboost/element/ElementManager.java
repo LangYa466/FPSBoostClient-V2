@@ -14,6 +14,7 @@ import net.minecraft.client.Minecraft;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 /**
@@ -21,7 +22,7 @@ import java.util.function.Supplier;
  * @since 2024/8/30 22:38
  */
 public class ElementManager implements Wrapper {
-    public static final List<Element> elements = new ArrayList<>(16); // 预分配容量
+    public static final List<Element> elements = new CopyOnWriteArrayList<>();
     public static volatile boolean dragging; // 保证多线程可见性
 
     private static void addDynamicTextDisplayElement(String name, String cnName, Supplier<String> textSupplier) {

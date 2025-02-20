@@ -6,19 +6,23 @@ import net.minecraft.client.renderer.WorldRenderer;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.renderer.vertex.VertexFormat;
 import org.lwjgl.BufferUtils;
-import org.lwjgl.opengl.ARBBufferStorage;
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.opengl.GL15;
-import org.lwjgl.opengl.GL30;
-import org.lwjgl.opengl.GLContext;
+import org.lwjgl.opengl.*;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
+ * CubeVBOProvider - 修改后采用持久映射(Persistent Mapping)实现
+ *
+ * 修改说明：
+ * 1. 使用了 GL_MAP_PERSISTENT_BIT 和 GL_MAP_COHERENT_BIT 标志，确保 VBO 一经映射后始终保持映射状态，
+ *    不再每次写入数据后解除映射。
+ * 2. 新增了一个 Map 用于保存每个 VBO 的持久映射 ByteBuffer，以便后续可以直接更新数据（如果需要）。
+ * 3. 在 clearVBOs() 方法中，对持久映射的 VBO 先解除映射，再删除缓冲区（这一步可选，根据使用场景）。
+ *
  * @author LangYa466
- * @since recode 2/19/2025
+ * @since recode 2/19/2025 (modified for persistent mapping)
  */
 public class CubeVBOProvider {
     private static final CubeVBOProvider INSTANCE = new CubeVBOProvider();
@@ -27,6 +31,9 @@ public class CubeVBOProvider {
     private static final int TEN_BITS = 0b1111111111; // 10位掩码
 
     private final Map<Integer, Integer> vbos = new HashMap<>();
+    // 新增：保存持久映射的 ByteBuffer 指针，key 为 VBO ID
+    private final Map<Integer, ByteBuffer> persistentMappedBuffers = new HashMap<>();
+
     private int lastVBO = -1;
 
     private CubeVBOProvider() {}
@@ -59,9 +66,15 @@ public class CubeVBOProvider {
 
     public void clearVBOs() {
         for (int vboId : vbos.values()) {
+            // 如果存在持久映射的 Buffer，则解除映射（根据需要，可选择是否解除映射）
+            if (persistentMappedBuffers.containsKey(vboId)) {
+                OpenGlHelper.glBindBuffer(OpenGlHelper.GL_ARRAY_BUFFER, vboId);
+                GL15.glUnmapBuffer(GL15.GL_ARRAY_BUFFER);
+            }
             OpenGlHelper.glDeleteBuffers(vboId);
         }
         vbos.clear();
+        persistentMappedBuffers.clear();
         lastVBO = -1;
     }
 
@@ -83,29 +96,30 @@ public class CubeVBOProvider {
         ByteBuffer vertexData = renderAABB(xUnits, yUnits, zUnits);
         int size = vertexData.capacity();
 
-        // 分配 VBO 内存：如果支持 GL_ARB_buffer_storage 则使用 glBufferStorage（不可变存储），否则使用 glBufferData
+
         if (GLContext.getCapabilities().GL_ARB_buffer_storage) {
-            ARBBufferStorage.glBufferStorage(GL15.GL_ARRAY_BUFFER, size,
-                    GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_FLUSH_EXPLICIT_BIT);
-        } else {
-            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, size, GL15.GL_STATIC_DRAW);
-        }
+            // 持久映射常量
+            int persistentFlags = GL30.GL_MAP_WRITE_BIT | GL44.GL_MAP_PERSISTENT_BIT | GL44.GL_MAP_COHERENT_BIT;
+            ARBBufferStorage.glBufferStorage(GL15.GL_ARRAY_BUFFER, size, persistentFlags);
 
-        // 映射 VBO 内存，注意传入额外的 null 参数满足 5 个参数版本的 glMapBufferRange
-        ByteBuffer mappedBuffer = GL30.glMapBufferRange(GL15.GL_ARRAY_BUFFER, 0L, (long) size,
-                GL30.GL_MAP_WRITE_BIT | GL30.GL_MAP_FLUSH_EXPLICIT_BIT, null);
-
-        if (mappedBuffer != null) {
-            // 写入顶点数据到映射缓冲区
+            ByteBuffer mappedBuffer = GL30.glMapBufferRange(GL15.GL_ARRAY_BUFFER, 0L, (long) size, persistentFlags, null);
+            if (mappedBuffer == null) {
+                throw new RuntimeException("Failed to map persistent buffer for VBO");
+            }
             mappedBuffer.put(vertexData);
-            // flip() 重置映射缓冲区的指针，使 limit = 写入的数据量
             mappedBuffer.flip();
-            // 显式刷新映射区域，确保数据及时提交到显存
-            int flushSize = mappedBuffer.remaining();
-            GL30.glFlushMappedBufferRange(GL15.GL_ARRAY_BUFFER, 0, flushSize);
-            GL15.glUnmapBuffer(GL15.GL_ARRAY_BUFFER);
+            persistentMappedBuffers.put(bufferId, mappedBuffer);
         } else {
-            throw new RuntimeException("Failed to map buffer for VBO");
+            // 回退方案
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, size, GL15.GL_STATIC_DRAW);
+            ByteBuffer tempBuffer = GL30.glMapBufferRange(GL15.GL_ARRAY_BUFFER, 0L, (long) size, GL30.GL_MAP_WRITE_BIT, null);
+            if (tempBuffer != null) {
+                tempBuffer.put(vertexData);
+                tempBuffer.flip();
+                GL15.glUnmapBuffer(GL15.GL_ARRAY_BUFFER);
+            } else {
+                throw new RuntimeException("Failed to map buffer for VBO");
+            }
         }
 
         vbos.put(vboKey, bufferId);
