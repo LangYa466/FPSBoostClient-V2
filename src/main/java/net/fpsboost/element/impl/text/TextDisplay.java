@@ -6,14 +6,18 @@ import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ColorValue;
 
 import java.awt.*;
+import java.util.function.Supplier;
 
 /**
  * @author LangYa466
  * @since 2/9/2025
  */
 public class TextDisplay extends Element {
-    public TextDisplay(String name, String cnName) {
+    private final Supplier<String> textSupplier;
+
+    public TextDisplay(String name, String cnName, Supplier<String> textSupplier) {
         super(name, cnName);
+        this.textSupplier = textSupplier;
         this.values.add(backgroundValue);
         this.values.add(textShadowValue);
         this.values.add(clientFontValue);
@@ -25,13 +29,13 @@ public class TextDisplay extends Element {
     private final ColorValue bgColorValue = new ColorValue("背景颜色", "Background Color", new Color(0, 0, 0, 80), this);
     private final ColorValue textColorValue = new ColorValue("文本颜色", "Text Color", Color.white, this);
 
-    public String getText() {
-        return "Null";
+    public Supplier<String> getText() {
+        return textSupplier;
     }
 
     @Override
     public void onDraw() {
-        width = RenderUtil.drawText(getText(), 0, 0, backgroundValue.getValue(), bgColorValue.getValueC(), textColorValue.getValueC(), textShadowValue.getValue(), clientFontValue.getValue());
+        width = RenderUtil.drawText(getText().get(), 0, 0, backgroundValue.getValue(), bgColorValue.getValueC(), textColorValue.getValueC(), textShadowValue.getValue(), clientFontValue.getValue());
     }
 
     @Override

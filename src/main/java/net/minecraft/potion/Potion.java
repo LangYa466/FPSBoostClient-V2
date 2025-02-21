@@ -9,6 +9,7 @@ import net.minecraft.entity.ai.attributes.BaseAttributeMap;
 import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.ai.attributes.IAttributeInstance;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.StringUtils;
@@ -53,6 +54,7 @@ public class Potion {
     public static final Potion field_180144_E = null;
     public static final Potion field_180145_F = null;
     public static final Potion field_180146_G = null;
+    public static final Potion example = (new Potion(28, null, true, 100)).setPotionName("药水显示");
     public final int id;
     private final Map<IAttribute, AttributeModifier> attributeModifierMap = Maps.newHashMap();
     private final boolean isBadEffect;

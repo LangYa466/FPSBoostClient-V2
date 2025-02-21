@@ -1,6 +1,7 @@
 package net.fpsboost.screen.newClickGUI;
 
 import lombok.val;
+import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
@@ -86,6 +87,12 @@ public class NewClickGUIScreen extends GuiScreen {
             }
         }
         return filtered;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        ConfigManager.saveConfig("Module.json");
+        super.onGuiClosed();
     }
 
     @Override

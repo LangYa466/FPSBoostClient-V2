@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.221";
+    public static final String version = "2.23";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static boolean checkVersion = true;
@@ -84,6 +84,8 @@ public class Client implements Wrapper {
             showNotification("已打开自动更新程序!!");
             File autoUpdateJarFile = new File("versions\\FPSBoost_V2\\AutoUpdate.jar");
             Logger.info("Auto-update jar file: " + autoUpdateJarFile.getAbsolutePath());
+
+            stopClient(); // 先释放资源
             Runtime.getRuntime().exec("java -jar " + autoUpdateJarFile.getAbsolutePath());
             System.exit(0);
         }
@@ -134,11 +136,22 @@ public class Client implements Wrapper {
     public static void openErrorLogsFile() {
         if (isWindows()) {
             File logsDir = new File("logs");
-            File logFile = new File("logs", "latest.log");
+            File logFile = new File(logsDir, "latest.log");
+
+            if (!logsDir.exists()) {
+                Logger.error("日志目录不存在: {}", logsDir.getAbsolutePath());
+                showNotification("日志目录不存在!!");
+                return;
+            }
+
             try {
                 showNotification("打开错误日志成功 有错误可以把文件发群里!!");
                 Desktop.getDesktop().open(logsDir);
-                Desktop.getDesktop().open(logFile);
+                if (logFile.exists()) {
+                    Desktop.getDesktop().open(logFile);
+                } else {
+                    Logger.warn("日志文件不存在: {}", logFile.getAbsolutePath());
+                }
             } catch (IOException e) {
                 Logger.error("打开错误日志失败: {}", e.getMessage());
                 showNotification(String.format("打开错误目录失败(请手动打开%s)!!", logsDir.getAbsolutePath()));

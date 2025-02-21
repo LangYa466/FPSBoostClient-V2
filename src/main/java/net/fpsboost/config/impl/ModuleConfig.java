@@ -55,12 +55,9 @@ public class ModuleConfig extends Config {
 
     @Override
     public void loadConfig(JsonObject object) {
-        ModuleManager.modules.forEach(module -> {
-            JsonObject moduleObject = object.getAsJsonObject(module.name);
-            if (moduleObject != null) {
-                loadModuleConfig(module, moduleObject);
-            }
-        });
+        ModuleManager.modules.stream()
+                .filter(module -> object.getAsJsonObject(module.name) != null)
+                .forEach(module -> loadModuleConfig(module, object.getAsJsonObject(module.name)));
     }
 
     private void loadModuleConfig(Module module, JsonObject moduleObject) {

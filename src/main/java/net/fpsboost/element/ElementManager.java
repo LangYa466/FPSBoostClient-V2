@@ -12,7 +12,9 @@ import net.fpsboost.util.TimeUtil;
 import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
 /**
@@ -20,36 +22,35 @@ import java.util.function.Supplier;
  * @since 2024/8/30 22:38
  */
 public class ElementManager implements Wrapper {
-    public static List<Element> elements = new ArrayList<>();
-    public static boolean dragging;
+    public static final List<Element> elements = new CopyOnWriteArrayList<>();
+    public static volatile boolean dragging; // 保证多线程可见性
 
     private static void addDynamicTextDisplayElement(String name, String cnName, Supplier<String> textSupplier) {
-        elements.add(new TextDisplay(name, cnName) {
-            @Override
-            public String getText() {
-                return textSupplier.get();
-            }
-        });
+        elements.add(new TextDisplay(name, cnName, textSupplier));
     }
 
     public static void init() {
-        elements.add(new KeyStore());
-        elements.add(new PotionDisplay());
-        elements.add(new ArmorDisplay());
-        elements.add(new SmokePlayerInfo());
-        elements.add(new ReachDisplay());
-        elements.add(PackDisplay.INSTANCE);
-        elements.add(new ServerDisplay());
+        // 批量添加静态元素
+        Collections.addAll(elements,
+                new KeyStore(),
+                new PotionDisplay(),
+                new ArmorDisplay(),
+                new SmokePlayerInfo(),
+                new ReachDisplay(),
+                PackDisplay.INSTANCE,
+                new ServerDisplay()
+        );
 
-        // 动态文本显示（使用 Supplier 直接绑定计算逻辑）
-        addDynamicTextDisplayElement("ComboDisplay", "Combo显示", () -> String.format("%s Combo", AttackHandler.currentCombo));
-        addDynamicTextDisplayElement("SpeedDisplay", "速度显示", () -> String.format("%s m/s", MoveUtil.getBPS()));
-        addDynamicTextDisplayElement("CPSDisplay", "CPS显示", () -> String.format("CPS: %s | %s", CpsUtil.getLeftCps(), CpsUtil.getRightCps()));
-        addDynamicTextDisplayElement("TimeDisplay", "时间显示", () -> String.format("时间: %s", TimeUtil.getCurrentTimeStringHHMM()));
-        addDynamicTextDisplayElement("PingDisplay", "延迟显示", () -> String.format("%s ms", PingUtil.getPing()));
-        addDynamicTextDisplayElement("FPSDisplay", "FPS显示", () -> String.format("%s FPS", Minecraft.getDebugFPS()));
-        addDynamicTextDisplayElement("SprintDisplay", "疾跑显示", () -> String.format("Sprint: %s", Sprint.isEnable ? "Toggled" : "Vanilla"));
+        // 批量添加动态文本显示元素
+        addDynamicTextDisplayElement("ComboDisplay", "Combo显示", () -> AttackHandler.currentCombo + " Combo");
+        addDynamicTextDisplayElement("SpeedDisplay", "速度显示", () -> MoveUtil.getBPS() + " m/s");
+        addDynamicTextDisplayElement("CPSDisplay", "CPS显示", () -> "CPS: " + CpsUtil.getLeftCps() + " | " + CpsUtil.getRightCps());
+        addDynamicTextDisplayElement("TimeDisplay", "时间显示", () -> "时间: " + TimeUtil.getCurrentTimeStringHHMM());
+        addDynamicTextDisplayElement("PingDisplay", "延迟显示", () -> PingUtil.getPing() + " ms");
+        addDynamicTextDisplayElement("FPSDisplay", "FPS显示", () -> Minecraft.getDebugFPS() + " FPS");
+        addDynamicTextDisplayElement("SprintDisplay", "疾跑显示", () -> "Sprint: " + (Sprint.isEnable ? "Toggled" : "Vanilla"));
 
+        // 初始化所有元素
         elements.forEach(Element::init);
     }
 }
