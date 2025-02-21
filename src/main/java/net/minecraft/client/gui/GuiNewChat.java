@@ -112,9 +112,9 @@ public class GuiNewChat extends Gui {
                                 GlStateManager.enableBlend();
                                 boolean textShadow = isEnable ? BetterChat.textShadow.getValue() : false;
                                 if (isEnable && BetterChat.animation.getValue() && i1 <= newLines) {
-                                    this.mc.fontRendererObj.drawStringWithShadow(s, 0.0f, (float) (j2 - 8), 16777215 + ((int) ((float) l1 * percent) << 24), textShadow);
+                                    this.mc.fontRendererObj.drawString(s, 0.0f, (float) (j2 - 8), 16777215 + ((int) ((float) l1 * percent) << 24), textShadow);
                                 } else {
-                                    this.mc.fontRendererObj.drawStringWithShadow(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24), textShadow);
+                                    this.mc.fontRendererObj.drawString(s, (float) i2, (float) (j2 - 8), 16777215 + (l1 << 24), textShadow);
                                 }
                                 GlStateManager.disableAlpha();
                                 GlStateManager.disableBlend();

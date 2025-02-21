@@ -143,6 +143,11 @@ public class ClickGui extends GuiScreen {
         }
     }
 
+    @Override
+    public void onGuiClosed() {
+        ConfigManager.saveAllConfig();
+        super.onGuiClosed();
+    }
 
     @Override
     public void keyTyped(char typedChar, int keyCode) throws IOException {
@@ -160,7 +165,6 @@ public class ClickGui extends GuiScreen {
         }
 
         if (keyCode == 1) {
-            ConfigManager.saveConfig("Module.json");
             this.hasClosed = true;
             this.onCommandBox = false;
         }
