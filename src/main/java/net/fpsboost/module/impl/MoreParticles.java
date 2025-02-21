@@ -4,7 +4,7 @@ import net.fpsboost.module.Module;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.NumberValue;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.EnumParticleTypes;
 
 public class MoreParticles extends Module {
@@ -31,7 +31,7 @@ public class MoreParticles extends Module {
 
     public static void onAttack(Entity entity) {
         if (!isEnable) return;
-        if (entity.isDead || !(entity instanceof EntityLiving) || ((EntityLiving) entity).getHealth() == 0) return;
+        if (entity.isDead || !(entity instanceof EntityLivingBase) || ((EntityLivingBase) entity).getHealth() == 0) return;
         for (int index = 0; index < crackSize.getValue().intValue(); ++index) {
             if (mode1.getValue()) mc.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT);
             if (mode2.getValue()) mc.effectRenderer.emitParticleAtEntity(entity, EnumParticleTypes.CRIT_MAGIC);
