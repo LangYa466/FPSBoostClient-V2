@@ -20,8 +20,8 @@ public class ElementConfig extends Config {
         JsonObject object = new JsonObject();
         ElementManager.elements.forEach(hud -> {
             JsonObject hudObject = new JsonObject();
-            hudObject.addProperty("x", hud.xPos);
-            hudObject.addProperty("y", hud.yPos);
+            hudObject.addProperty("posX", hud.xPos);
+            hudObject.addProperty("posY", hud.yPos);
             hudObject.addProperty("scale", hud.scale);
             hudObject.addProperty("enable", hud.enable);
             object.add(hud.name, hudObject);
@@ -34,8 +34,8 @@ public class ElementConfig extends Config {
         ElementManager.elements.forEach(hud -> {
             JsonObject hudObject = object.getAsJsonObject(hud.name);
             if (hudObject != null) {
-                hud.xPos = hudObject.get("x").getAsInt();
-                hud.yPos = hudObject.get("y").getAsInt();
+                hud.xPos = hudObject.get("posX").getAsInt();
+                hud.yPos = hudObject.get("posY").getAsInt();
                 hud.scale = hudObject.get("scale").getAsInt();
                 JsonElement enableElement = hudObject.get("enable");
                 boolean asBoolean = enableElement != null && enableElement.isJsonPrimitive() && enableElement.getAsBoolean();
