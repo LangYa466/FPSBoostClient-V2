@@ -28,6 +28,10 @@ public class ColorValue extends Value<HSBColor> {
         return valuesMap;
     }
 
+    public Value<?> getValue(String valueName) {
+        return module.values.stream().filter(value -> value.name.equals(valueName)).findFirst().orElse(null);
+    }
+
     // 优化设置值的方法
     public void setValue2(String input) {
         String[] split = input.split(":");
@@ -50,12 +54,10 @@ public class ColorValue extends Value<HSBColor> {
 
     @Override
     public HSBColor getValue() {
-        Map<String, Value<?>> valuesMap = getValuesMap();
-
         // 获取并处理彩虹效果
-        BooleanValue rainbowValue = (BooleanValue) valuesMap.get(rainbowValueName);
+        BooleanValue rainbowValue = (BooleanValue) getValue(rainbowValueName);
         if (rainbowValue != null && rainbowValue.getValue()) {
-            NumberValue rainbowSpeedValue = (NumberValue) valuesMap.get(rainbowSpeedValueName);
+            NumberValue rainbowSpeedValue = (NumberValue) getValue(rainbowSpeedValueName);
             if (rainbowSpeedValue != null) {
                 float speed = rainbowSpeedValue.getValue().floatValue();
                 float hue = System.currentTimeMillis() % (int) ((1 - speed / 15.0) * 2000);
