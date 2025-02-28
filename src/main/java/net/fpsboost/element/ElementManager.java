@@ -5,6 +5,7 @@ import net.fpsboost.element.impl.*;
 import net.fpsboost.element.impl.text.TextDisplay;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.Sprint;
+import net.fpsboost.screen.musicPlayer.LyricDisplay;
 import net.fpsboost.util.CpsUtil;
 import net.fpsboost.util.MoveUtil;
 import net.fpsboost.util.PingUtil;
@@ -38,7 +39,8 @@ public class ElementManager implements Wrapper {
                 new SmokePlayerInfo(),
                 new ReachDisplay(),
                 PackDisplay.INSTANCE,
-                new ServerDisplay()
+                new ServerDisplay(),
+                new LyricDisplay()
         );
 
         // 批量添加动态文本显示元素

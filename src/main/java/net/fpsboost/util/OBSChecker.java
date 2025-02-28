@@ -1,5 +1,6 @@
 package net.fpsboost.util;
 
+import net.fpsboost.Wrapper;
 import net.fpsboost.handler.MessageHandler;
 
 import java.io.BufferedReader;
@@ -9,8 +10,9 @@ import java.io.InputStreamReader;
  * @author LangYa466
  * @since 2/9/2025
  */
-public class OBSChecker {
+public class OBSChecker implements Wrapper {
     public static boolean run = false;
+    private static boolean add = false;
 
     public static void init() {
         Thread obsCheckThread = new Thread(() -> {
@@ -19,11 +21,7 @@ public class OBSChecker {
                     if (checkOBS()) {
                         run = true;
                         // 1.5s x 3
-                        for (int i = 0; i < 3; i++) {
-                            MessageHandler.addMessage("检测到OBS进程 自动开启防录制登录密码", MessageHandler.MessageType.Info);
-                        }
-                        // 10s x1
-                        MessageHandler.addMessage("检测到OBS进程 自动开启防录制登录密码", MessageHandler.MessageType.Info, 10000);
+                        add = true;
                     }
                     Thread.sleep(5000);
                 } catch (Exception e) {
@@ -50,6 +48,15 @@ public class OBSChecker {
         text = text.replaceAll("(?i)(register\\s*).*", "$1******");
 
         drawTextHook.setDisplayText(text);
+
+        if (add) {
+            for (int i = 0; i < 3; i++) {
+                MessageHandler.addMessage("检测到OBS进程 自动开启防录制登录密码", MessageHandler.MessageType.Info);
+            }
+            // 10s x1
+            MessageHandler.addMessage("检测到OBS进程 自动开启防录制登录密码", MessageHandler.MessageType.Info, 10000);
+            add = false;
+        }
         return drawTextHook;
     }
 

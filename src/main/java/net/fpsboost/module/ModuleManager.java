@@ -4,6 +4,7 @@ import net.fpsboost.Wrapper;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.impl.*;
+import net.fpsboost.screen.musicPlayer.MusicPlayerModule;
 import net.fpsboost.socket.ClientIRC;
 
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class ModuleManager implements Wrapper {
                 new CustomWorldTime(), new CustomHitBox(), new BetterInventory(),
                 new ChatCopy(), new GUIOpenAnimation(), Perspective.INSTANCE,
                 new HidePlantBlock(), new DragonWings(), new SkinLayers3D(),
-                new HideRunningParticles()
+                new HideRunningParticles(), new MusicPlayerModule()
         ));
 
         // 特殊模块设置

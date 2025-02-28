@@ -2,6 +2,9 @@ package net.fpsboost.util;
 
 import org.apache.logging.log4j.LogManager;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 /**
  * @author LangYa466
  * @since 2/6/2025
@@ -24,7 +27,10 @@ public class Logger {
     }
 
     public static void error(Exception e) {
-        logger.error(PREFIX + e);
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        e.printStackTrace(pw);
+        logger.error(PREFIX + sw.toString());
     }
 
     public static void debug(String message, Object... args) {
