@@ -36,6 +36,8 @@ public class CubeVBOProvider {
 
     private int lastVBO = -1;
 
+    private ByteBuffer tmpBuffer = BufferUtils.createByteBuffer(1024 * 1024 * 10); // 10MB
+
     private CubeVBOProvider() {}
 
     public static CubeVBOProvider getInstance() {
@@ -150,10 +152,11 @@ public class CubeVBOProvider {
         bufferBuilder.pos(x, y, 0).endVertex();
 
         // 将缓冲区数据复制到新的 ByteBuffer，并 flip() 以便后续写入映射缓冲区
-        ByteBuffer originalBuffer = bufferBuilder.getByteBuffer();
-        ByteBuffer byteBuffer = BufferUtils.createByteBuffer(originalBuffer.remaining());
-        byteBuffer.put(originalBuffer);
-        byteBuffer.flip();
-        return byteBuffer;
+        if (tmpBuffer.capacity() < bufferBuilder.getByteBuffer().capacity()) {
+            tmpBuffer = BufferUtils.createByteBuffer(bufferBuilder.getByteBuffer().capacity());
+        }
+        tmpBuffer.put(bufferBuilder.getByteBuffer());
+        tmpBuffer.flip();
+        return tmpBuffer;
     }
 }

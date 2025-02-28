@@ -72,6 +72,4 @@ dependencies {
 
     // jinput
     implementation 'net.java.jinput:jinput:2.0.5'
-
-    implementation 'org.bytedeco:javacv-platform:1.5.9'
 }
