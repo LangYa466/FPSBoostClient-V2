@@ -1,11 +1,7 @@
 package net.minecraft.client.renderer.vertex;
 
 import net.minecraft.src.Config;
-import net.optifine.Log;
-import net.optifine.reflect.ReflectorField;
 import net.optifine.shaders.SVertexFormat;
-
-import java.lang.reflect.Field;
 
 public class DefaultVertexFormats {
     public static VertexFormat BLOCK = new VertexFormat();
@@ -40,21 +36,6 @@ public class DefaultVertexFormats {
         }
     }
 
-    public static Object getFieldValue(ReflectorField p_getFieldValue_0_) {
-        try {
-            Field field = p_getFieldValue_0_.getTargetField();
-
-            if (field == null) {
-                return null;
-            } else {
-                Object object = field.get(null);
-                return object;
-            }
-        } catch (Throwable throwable) {
-            Log.error(throwable.getMessage());
-            return null;
-        }
-    }
 
     static {
         BLOCK.addElement(POSITION_3F);

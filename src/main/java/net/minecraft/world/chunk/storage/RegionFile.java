@@ -203,12 +203,16 @@ public class RegionFile {
 
     private void write(int sectorNumber, byte[] data, int length) throws IOException {
         synchronized (fileLock) {
-            this.dataFile.seek(sectorNumber * 4096L);
-            this.dataFile.writeInt(length + 1);
-            this.dataFile.writeByte(2);
-            this.dataFile.write(data, 0, length);
+            // 检查数据流是否已关闭
+            if (dataFile != null && dataFile.getChannel().isOpen()) {
+                this.dataFile.seek(sectorNumber * 4096L);
+                this.dataFile.writeInt(length + 1);
+                this.dataFile.writeByte(2);
+                this.dataFile.write(data, 0, length);
+            }
         }
     }
+
 
     private boolean outOfBounds(int x, int z) {
         return x < 0 || x >= 32 || z < 0 || z >= 32;

@@ -4,6 +4,7 @@ import com.ibm.icu.text.ArabicShaping;
 import com.ibm.icu.text.ArabicShapingException;
 import com.ibm.icu.text.Bidi;
 import net.fpsboost.util.DrawTextHookManager;
+import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.Tessellator;
@@ -56,8 +57,8 @@ public class FontRenderer implements IResourceManagerReloadListener {
     public ResourceLocation locationFontTextureBase;
     public float offsetBold = 1.0F;
     protected float[] charWidthFloat = new float[256];
-    private boolean blend = false;
-    private final GlBlendState oldBlendState = new GlBlendState();
+    protected boolean blend = false;
+    protected final GlBlendState oldBlendState = new GlBlendState();
 
     public FontRenderer(GameSettings gameSettingsIn, ResourceLocation location, TextureManager textureManagerIn, boolean unicode) {
         this.gameSettings = gameSettingsIn;
@@ -804,6 +805,7 @@ public class FontRenderer implements IResourceManagerReloadListener {
 
             if (Config.isCustomColors()) {
                 j = CustomColors.getTextColor(i, j);
+
             }
 
             return j;

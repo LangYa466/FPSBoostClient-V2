@@ -1,6 +1,7 @@
 package net.minecraft.util;
 
 import net.fpsboost.module.impl.ClientSettings;
+import net.fpsboost.util.Logger;
 import net.fpsboost.util.RivensMath;
 import net.optifine.util.MathUtils;
 
@@ -26,14 +27,102 @@ public class MathHelper {
     private static final double[] field_181164_e;
     private static final double[] field_181165_f;
 
-    public static float sin(float p_76126_0_) {
-        if (ClientSettings.clientMathFix) return RivensMath.sin(p_76126_0_);
-        return fastMath ? SIN_TABLE_FAST[(int) (p_76126_0_ * radToIndex) & 4095] : SIN_TABLE[(int) (p_76126_0_ * 10430.378F) & 65535];
+    // 新增选择算法的变量
+    public static boolean useRivensMathForSin = false; // 是否使用 RivensMath 进行 sin 计算
+    public static boolean useRivensMathForCos = false; // 是否使用 RivensMath 进行 cos 计算
+    public static boolean useFastMathForSin = false;   // 是否使用 FastMath 进行 sin 计算
+    public static boolean useFastMathForCos = false;   // 是否使用 FastMath 进行 cos 计算
+
+    static {
+        // 初始化 不然对RivensMath不公平
+        RivensMath.cos(1);
+        test();
+    }
+
+    public static float sin(float value) {
+        if (useFastMathForSin) {
+            return SIN_TABLE_FAST[(int) (value * radToIndex) & 4095];
+        } else if (useRivensMathForSin) {
+            return RivensMath.sin(value);
+        } else {
+            return SIN_TABLE[(int) (value * 10430.378F) & 65535];
+        }
     }
 
     public static float cos(float value) {
-        if (ClientSettings.clientMathFix) return RivensMath.cos(value);
-        return fastMath ? SIN_TABLE_FAST[(int) (value * radToIndex + 1024.0F) & 4095] : SIN_TABLE[(int) (value * 10430.378F + 16384.0F) & 65535];
+        if (useFastMathForCos) {
+            return SIN_TABLE_FAST[(int) (value * radToIndex + 1024.0F) & 4095];
+        } else if (useRivensMathForCos) {
+            return RivensMath.cos(value);
+        } else {
+            return SIN_TABLE[(int) (value * 10430.378F + 16384.0F) & 65535];
+        }
+    }
+
+    // 执行多次计算来增加计算量，判断是计算sin还是cos
+    public static long performCalculations(boolean isSin) {
+        float start = 0.0f;
+        float end = (float) (2 * Math.PI);
+        float step = 0.001f;
+
+        long startTime = System.currentTimeMillis();
+
+        for (long i = 0L; i < 100000L; i++) {
+            float value = start + (i % (int)((end - start) / step)) * step;
+            if (isSin) {
+                sin(value);
+            } else {
+                cos(value);
+            }
+        }
+
+        String str = isSin ? "sin" : "cos";
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+
+        Logger.info(str + " execution time: " + duration + " ms");
+        return duration;
+    }
+
+    private static void test() {
+        long sinRivensTime = performCalculations(true);
+        long cosRivensTime = performCalculations(false);
+
+        long sinFastMathTime = performCalculations(true);
+        long cosFastMathTime = performCalculations(false);
+
+        long sinRegularTime = performCalculations(true);
+        long cosRegularTime = performCalculations(false);
+
+        // 比较sin的结果并选择最快的算法
+        if (sinRivensTime <= sinFastMathTime && sinRivensTime <= sinRegularTime) {
+            Logger.info("RivensMath is the fastest for sin.");
+            useRivensMathForSin = true; // 选择 RivensMath
+        } else if (sinFastMathTime <= sinRivensTime && sinFastMathTime <= sinRegularTime) {
+            Logger.info("FastMath is the fastest for sin.");
+            useFastMathForSin = true; // 选择 FastMath
+        } else {
+            Logger.info("Regular Math is the fastest for sin.");
+            useRivensMathForSin = false;
+            useFastMathForSin = false; // 选择 Regular Math
+        }
+
+        // 比较cos的结果并选择最快的算法
+        if (cosRivensTime <= cosFastMathTime && cosRivensTime <= cosRegularTime) {
+            Logger.info("RivensMath is the fastest for cos.");
+            useRivensMathForCos = true; // 选择 RivensMath
+        } else if (cosFastMathTime <= cosRivensTime && cosFastMathTime <= cosRegularTime) {
+            Logger.info("FastMath is the fastest for cos.");
+            useFastMathForCos = true; // 选择 FastMath
+        } else {
+            Logger.info("Regular Math is the fastest for cos.");
+            useRivensMathForCos = false;
+            useFastMathForCos = false; // 选择 Regular Math
+        }
+
+        // 确保在选择后运行一次以确认选择的算法
+        Logger.info("Final choice for sin: " + (useRivensMathForSin ? "RivensMath" : (useFastMathForSin ? "FastMath" : "Regular Math")));
+        Logger.info("Final choice for cos: " + (useRivensMathForCos ? "RivensMath" : (useFastMathForCos ? "FastMath" : "Regular Math")));
     }
 
     public static float sqrt_float(float value) {

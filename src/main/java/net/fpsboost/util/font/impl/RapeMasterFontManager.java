@@ -206,16 +206,21 @@ public class RapeMasterFontManager extends FontRenderer {
         y *= 2;
         y -= 2;
         int offset = 0;
+        if ((color & -67108864) == 0) {
+            color |= -16777216;
+        }
         if (darken) {
-            color = (color & 0xFCFCFC) >> 2 | color & 0xFF000000; // 相当于给RGB每个通道除以4
+            color = (color & 16579836) >> 2 | color & -16777216;
         }
         float r, g, b, a;
-        r = (color >> 16 & 0xFF) / 255f;
-        g = (color >> 8 & 0xFF) / 255f;
-        b = (color & 0xFF) / 255f;
-        a = (color >> 24 & 0xFF) / 255f;
+        r = (color >> 16 & 0xFF) / 255.0f;
+        g = (color >> 8 & 0xFF) / 255.0f;
+        b = (color & 0xFF) / 255.0f;
+        a = (float) (color >> 24 & 255) / 255.0f;
         if (a == 0)
             a = 1;
+        this.enableAlpha();
+
         GlStateManager.color(r, g, b, a);
         glPushMatrix();
         glScaled(0.5, 0.5, 0.5);
@@ -228,9 +233,9 @@ public class RapeMasterFontManager extends FontRenderer {
                 if (color != -1) {
                     if (darken) color |= 0x10;
                     color = colorCode[color];
-                    r = (color >> 16 & 0xFF) / 255f;
-                    g = (color >> 8 & 0xFF) / 255f;
-                    b = (color & 0xFF) / 255f;
+                    r = (color >> 16 & 0xFF) / 255.0f;
+                    g = (color >> 8 & 0xFF) / 255.0f;
+                    b = (color & 0xFF) / 255.0f;
                     GlStateManager.color(r, g, b, a);
                 }
                 continue;

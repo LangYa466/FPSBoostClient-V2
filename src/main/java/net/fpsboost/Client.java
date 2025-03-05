@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.24";
+    public static final String version = "2.3";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static boolean checkVersion = true;
@@ -129,6 +129,7 @@ public class Client implements Wrapper {
     }
 
     public static void stopClient() throws IOException {
+        ModuleManager.shutdown();
         ConfigManager.saveAllConfig();
         ClientIRC.handler.close();
     }

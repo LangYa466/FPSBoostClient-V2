@@ -2,6 +2,7 @@ package net.fpsboost.module.impl;
 
 import net.fpsboost.Wrapper;
 import net.fpsboost.module.Module;
+import net.fpsboost.util.Logger;
 import net.fpsboost.value.impl.BooleanValue;
 import net.fpsboost.value.impl.ModeValue;
 import net.fpsboost.value.impl.NumberValue;
@@ -52,63 +53,67 @@ public class AttackEffects extends Module {
 
     @Override
     public void onUpdate() {
-        if (Wrapper.isNull()) return;
-        if (target != null && target.hurtTime >= 3 && mc.thePlayer.getDistance(target.posX, target.posY, target.posZ) < 10) {
-            if (mc.thePlayer.ticksExisted > 3) {
-                switch (mode.getValue().toLowerCase()) {
-                    case "血液":
-                        for (int i = 0; i < amount.getValue(); i++) {
-                            mc.theWorld.spawnParticle(
-                                    EnumParticleTypes.BLOCK_CRACK,
-                                    target.posX, target.posY + target.height - 0.75, target.posZ,
-                                    0.0, 0.0, 0.0,
-                                    Block.getStateId(Blocks.redstone_block.getDefaultState())
+        try {
+            if (Wrapper.isNull()) return;
+            if (target != null && target.hurtTime >= 3 && mc.thePlayer.getDistance(target.posX, target.posY, target.posZ) < 10) {
+                if (mc.thePlayer.ticksExisted > 3) {
+                    switch (mode.getValue().toLowerCase()) {
+                        case "血液":
+                            for (int i = 0; i < amount.getValue(); i++) {
+                                mc.theWorld.spawnParticle(
+                                        EnumParticleTypes.BLOCK_CRACK,
+                                        target.posX, target.posY + target.height - 0.75, target.posZ,
+                                        0.0, 0.0, 0.0,
+                                        Block.getStateId(Blocks.redstone_block.getDefaultState())
+                                );
+                            }
+                            break;
+                        case "雷电":
+                            mc.getNetHandler().handleSpawnGlobalEntity(
+                                    new S2CPacketSpawnGlobalEntity(
+                                            new EntityLightningBolt(
+                                                    mc.theWorld, target.posX, target.posY, target.posZ
+                                            )
+                                    )
                             );
-                        }
-                        break;
-                    case "雷电":
-                        mc.getNetHandler().handleSpawnGlobalEntity(
-                                new S2CPacketSpawnGlobalEntity(
-                                        new EntityLightningBolt(
-                                                mc.theWorld, target.posX, target.posY, target.posZ
-                                        )
-                                )
-                        );
-                        if (lightingSoundValue.getValue()) {
-                            mc.thePlayer.playSound("entity.lightning.impact", 0.5f, 1f);
-                        }
-                        break;
-                    case "烟雾":
-                        mc.effectRenderer.spawnEffectParticle(
-                                EnumParticleTypes.SMOKE_NORMAL.getParticleID(),
-                                target.posX, target.posY, target.posZ,
-                                target.posX, target.posY, target.posZ
-                        );
-                        break;
-                    case "水滴":
-                        mc.effectRenderer.spawnEffectParticle(
-                                EnumParticleTypes.WATER_DROP.getParticleID(),
-                                target.posX, target.posY, target.posZ,
-                                target.posX, target.posY, target.posZ
-                        );
-                        break;
-                    case "爱心":
-                        mc.effectRenderer.spawnEffectParticle(
-                                EnumParticleTypes.HEART.getParticleID(),
-                                target.posX, target.posY, target.posZ,
-                                target.posX, target.posY, target.posZ
-                        );
-                        break;
-                    case "火焰":
-                        mc.effectRenderer.spawnEffectParticle(
-                                EnumParticleTypes.LAVA.getParticleID(),
-                                target.posX, target.posY, target.posZ,
-                                target.posX, target.posY, target.posZ
-                        );
-                        break;
+                            if (lightingSoundValue.getValue()) {
+                                mc.thePlayer.playSound("entity.lightning.impact", 0.5f, 1f);
+                            }
+                            break;
+                        case "烟雾":
+                            mc.effectRenderer.spawnEffectParticle(
+                                    EnumParticleTypes.SMOKE_NORMAL.getParticleID(),
+                                    target.posX, target.posY, target.posZ,
+                                    target.posX, target.posY, target.posZ
+                            );
+                            break;
+                        case "水滴":
+                            mc.effectRenderer.spawnEffectParticle(
+                                    EnumParticleTypes.WATER_DROP.getParticleID(),
+                                    target.posX, target.posY, target.posZ,
+                                    target.posX, target.posY, target.posZ
+                            );
+                            break;
+                        case "爱心":
+                            mc.effectRenderer.spawnEffectParticle(
+                                    EnumParticleTypes.HEART.getParticleID(),
+                                    target.posX, target.posY, target.posZ,
+                                    target.posX, target.posY, target.posZ
+                            );
+                            break;
+                        case "火焰":
+                            mc.effectRenderer.spawnEffectParticle(
+                                    EnumParticleTypes.LAVA.getParticleID(),
+                                    target.posX, target.posY, target.posZ,
+                                    target.posX, target.posY, target.posZ
+                            );
+                            break;
+                    }
                 }
+                target = null;
             }
-            target = null;
+        } catch (Exception e) {
+            Logger.error(e);
         }
     }
 }
