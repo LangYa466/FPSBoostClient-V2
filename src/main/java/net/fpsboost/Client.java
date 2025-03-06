@@ -30,7 +30,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.3";
+    public static final String version = "2.31";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static boolean checkVersion = true;

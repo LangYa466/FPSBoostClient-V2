@@ -3,6 +3,7 @@ package net.fpsboost.config.impl;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.fpsboost.config.Config;
+import net.fpsboost.element.ElementManager;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.value.Value;
@@ -34,6 +35,15 @@ public class ModuleConfig extends Config {
             moduleObject.add("values", valuesObject);
             object.add(module.name, moduleObject);
         });
+        ElementManager.elements.forEach(module -> {
+            JsonObject moduleObject = new JsonObject();
+
+            moduleObject.addProperty("key", module.keyCode);
+
+            JsonObject valuesObject = getValueJsonObject(module);
+            moduleObject.add("values", valuesObject);
+            object.add(module.name, moduleObject);
+        });
         return object;
     }
 
@@ -58,12 +68,30 @@ public class ModuleConfig extends Config {
         ModuleManager.modules.stream()
                 .filter(module -> object.getAsJsonObject(module.name) != null)
                 .forEach(module -> loadModuleConfig(module, object.getAsJsonObject(module.name)));
+        ElementManager.elements.stream()
+                .filter(module -> object.getAsJsonObject(module.name) != null)
+                .forEach(module -> loadModuleConfig2(module, object.getAsJsonObject(module.name)));
     }
 
     private void loadModuleConfig(Module module, JsonObject moduleObject) {
         if (moduleObject.has("enable")) {
             module.setEnable(moduleObject.get("enable").getAsBoolean());
         }
+        if (moduleObject.has("key")) {
+            module.keyCode = moduleObject.get("key").getAsInt();
+        }
+        JsonObject valuesObject = moduleObject.getAsJsonObject("values");
+        if (valuesObject != null) {
+            module.values.forEach(value -> {
+                if (valuesObject.has(value.name)) {
+                    JsonElement theValue = valuesObject.get(value.name);
+                    setValue(value, theValue);
+                }
+            });
+        }
+    }
+
+    private void loadModuleConfig2(Module module, JsonObject moduleObject) {
         if (moduleObject.has("key")) {
             module.keyCode = moduleObject.get("key").getAsInt();
         }
