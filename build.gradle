@@ -118,7 +118,6 @@ tasks.register('obfuscateJar', JavaExec) {
         args += ['-libraryjars', jar.absolutePath]
     }
 
-
     doLast {
         def sourceFile = new File(buildDir, "libs/FPSBoost_V2/FPSBoost_V2.jar")
         def destinationDir = new File("C:/Users/Administrator/AppData/Roaming/.minecraft/versions/FPSBoost_V2/")
@@ -136,7 +135,6 @@ tasks.register('obfuscateJar', JavaExec) {
             tempFile.delete()
         }
         tempFile.createNewFile()
-
 
         sourceFile.withInputStream { input ->
             tempFile.withOutputStream { output ->
@@ -168,8 +166,6 @@ tasks.register('obfuscateJar', JavaExec) {
             }
         }
 
-
-
         Files.move(tempFile.toPath(), sourceFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
 
         copy {
@@ -179,12 +175,7 @@ tasks.register('obfuscateJar', JavaExec) {
 
         println "复制 JAR 到: ${destinationDir.absolutePath}"
     }
-
 }
-
-
-
-
 
 // 构建完成后自动执行混淆
 build.finalizedBy obfuscateJar
