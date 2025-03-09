@@ -57,7 +57,6 @@ public class ModuleManager implements Wrapper {
     public static void moduleRender2D() {
         MessageHandler.onRender2D();
         modules.stream().filter(module -> module.enable).forEach(Module::onRender2D);
-
     }
 
     // 渲染方法 - 3D渲染

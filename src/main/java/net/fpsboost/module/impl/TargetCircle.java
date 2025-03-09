@@ -2,6 +2,7 @@ package net.fpsboost.module.impl;
 
 import net.fpsboost.module.Module;
 import net.fpsboost.util.ColorUtil;
+import net.fpsboost.util.Logger;
 import net.fpsboost.value.impl.ColorValue;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.entity.Entity;
@@ -26,6 +27,7 @@ public class TargetCircle extends Module {
     }
 
     private static EntityPlayer target;
+    private boolean canLog = true;
 
     public static void onAttack(Entity entity) {
         if (entity instanceof EntityPlayer && !entity.isInvisibleToPlayer(mc.thePlayer)) target = (EntityPlayer) entity;
@@ -64,6 +66,12 @@ public class TargetCircle extends Module {
         // Calculate target position
         double d4 = target.width;
         double d5 = (double) target.height + 0.1;
+
+        if (canLog) {
+            Logger.info("[TargetCircle] Player Width/Height: {},{}",d4,d5);
+            canLog = false;
+        }
+
         double d6 = target.lastTickPosX + (target.posX - target.lastTickPosX) * (double) mc.timer.renderPartialTicks - mc.getRenderManager().viewerPosX;
         double d7 = target.lastTickPosY + (target.posY - target.lastTickPosY) * (double) mc.timer.renderPartialTicks - mc.getRenderManager().viewerPosY + d5 * d3;
         double d8 = target.lastTickPosZ + (target.posZ - target.lastTickPosZ) * (double) mc.timer.renderPartialTicks - mc.getRenderManager().viewerPosZ;

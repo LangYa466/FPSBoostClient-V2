@@ -51,6 +51,7 @@ public class ElementManager implements Wrapper {
         addDynamicTextDisplayElement("PingDisplay", "延迟显示", () -> PingUtil.getPing() + " ms");
         addDynamicTextDisplayElement("FPSDisplay", "FPS显示", () -> Minecraft.getDebugFPS() + " FPS");
         addDynamicTextDisplayElement("SprintDisplay", "疾跑显示", () -> "Sprint: " + (Sprint.isEnable ? "Toggled" : "Vanilla"));
+        addDynamicTextDisplayElement("PosYDisplay", "Y轴显示", () -> "Y: " + (int) mc.thePlayer.posY);
 
         // 初始化所有元素
         elements.forEach(Element::init);

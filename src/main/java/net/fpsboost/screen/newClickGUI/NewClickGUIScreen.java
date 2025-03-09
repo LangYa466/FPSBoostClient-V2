@@ -3,6 +3,7 @@ package net.fpsboost.screen.newClickGUI;
 import lombok.val;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
+import net.fpsboost.handler.MessageHandler;
 import net.fpsboost.module.Module;
 import net.fpsboost.module.ModuleManager;
 import net.fpsboost.screen.clickgui.utils.Scissor;
@@ -16,6 +17,7 @@ import net.fpsboost.value.impl.NumberValue;
 import net.fpsboost.value.impl.ModeValue;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.gui.GuiScreen;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
@@ -49,7 +51,7 @@ public class NewClickGUIScreen extends GuiScreen {
     private Module activeModuleValues = null;
     private boolean init;
 
-    // 用于记录上次绘制时自适应面板的宽度，便于点击区域计算
+    // 用于记录上次绘制时自适应面板的宽度 便于点击区域计算
     private int lastAdaptivePanelWidth = 0;
 
     // 自定义搜索框
@@ -59,8 +61,11 @@ public class NewClickGUIScreen extends GuiScreen {
     private boolean draggingSlider = false;
     private int sliderDragOffset = 0;
 
-    // ColorPickerWindow，当点击 ColorValue 的颜色显示区块时打开
+    // ColorPickerWindow 当点击 ColorValue 的颜色显示区块时打开
     private ColorPickerWindow colorPickerWindow = null;
+
+    // key bind
+    private Module onBindingModule = null;
 
     @Override
     public void initGui() {
@@ -68,7 +73,7 @@ public class NewClickGUIScreen extends GuiScreen {
         int startX = (width - guiWidth) / 2;
         int startY = (height - guiHeight) / 2;
         mainWindow = new DragWindow(startX, startY, guiWidth, guiHeight);
-        // 初始化自定义搜索框，放置在主窗口内（相对于主窗口左上角）
+        // 初始化自定义搜索框 放置在主窗口内（相对于主窗口左上角）
         searchBox = new SearchBox(startX + 10, startY + 40, guiWidth - 20, 20, fontRenderer);
         init = true;
         super.initGui();
@@ -97,7 +102,7 @@ public class NewClickGUIScreen extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        // 如果有 ColorPicker 窗口，则优先处理其拖拽与绘制
+        // 如果有 ColorPicker 窗口 则优先处理其拖拽与绘制
         if (colorPickerWindow != null) {
             colorPickerWindow.drag(mouseX, mouseY);
         }
@@ -109,10 +114,10 @@ public class NewClickGUIScreen extends GuiScreen {
         if (activeModuleValues != null && valuesPanelWindow != null) {
             valuesPanelWindow.drag(mouseX, mouseY);
         }
+        List<Module> filteredModules = getFilteredModules();
 
         // 滚动条拖拽
         if (draggingSlider) {
-            List<Module> filteredModules = getFilteredModules();
             int modulesViewHeight = guiHeight - 60;
             int totalContentHeight = (moduleHeight + padding) * filteredModules.size();
             int maxScroll = Math.max(0, totalContentHeight - modulesViewHeight);
@@ -126,7 +131,7 @@ public class NewClickGUIScreen extends GuiScreen {
         int startX = mainWindow.getX();
         int startY = mainWindow.getY();
 
-        // 更新搜索框位置，确保跟随主窗口拖动
+        // 更新搜索框位置 确保跟随主窗口拖动
         if (searchBox != null) {
             searchBox.setPosition(startX + 10, startY + 40);
             searchBox.setWidth(guiWidth - 20);
@@ -155,10 +160,7 @@ public class NewClickGUIScreen extends GuiScreen {
         int moduleListStartY = startY + 60;
         int modulesViewHeight = guiHeight - 60;
 
-        // 获取过滤后的模块列表
-        List<Module> filteredModules = getFilteredModules();
-
-        // 开启裁剪，限制滚动区域（仅模块列表区域）
+        // 开启裁剪 限制滚动区域（仅模块列表区域）
         GL11.glEnable(GL11.GL_SCISSOR_TEST);
         new Scissor(startX, moduleListStartY, guiWidth, modulesViewHeight).doScissor();
 
@@ -170,10 +172,14 @@ public class NewClickGUIScreen extends GuiScreen {
 
             drawRect(startX + 10, (int) (currentY + offsetY), startX + guiWidth - 10, (int) (currentY + offsetY + moduleHeight), color);
             val cnDescription = module.cnDescription;
-            if (cnDescription.isEmpty()) {
-                fontRenderer.drawStringWithShadow(module.cnName, startX + 15, (int) (currentY + offsetY + 6), -1);
+            String displayText = cnDescription.isEmpty() ? module.cnName : String.format("%s(%s)", module.cnName, cnDescription);
+
+            // 如果该模块正在绑定按键 则显示“绑定中...”
+            if (module == onBindingModule) {
+                displayText = module.cnName + " [绑定中...]";
+                fontRenderer.drawStringWithShadow(displayText, startX + 15, (int) (currentY + offsetY + 6), 0xFFFF00); // 黄色高亮
             } else {
-                fontRenderer.drawStringWithShadow(String.format("%s(%s)", module.cnName, cnDescription), startX + 15, (int) (currentY + offsetY + 6), -1);
+                fontRenderer.drawStringWithShadow(displayText, startX + 15, (int) (currentY + offsetY + 6), -1);
             }
             currentY += moduleHeight + padding;
         }
@@ -186,7 +192,7 @@ public class NewClickGUIScreen extends GuiScreen {
         int maxScroll = Math.max(0, totalContentHeight - modulesViewHeight);
         if (totalContentHeight > modulesViewHeight && maxScroll > 0) {
             int scrollbarWidth = 6;
-            // 定义滚动条区域，放在主窗口右边，离边缘2像素
+            // 定义滚动条区域 放在主窗口右边 离边缘2像素
             int scrollbarX = startX + guiWidth - scrollbarWidth - 2;
 
             // 绘制滚动条背景（深灰色）
@@ -320,7 +326,7 @@ public class NewClickGUIScreen extends GuiScreen {
                     drawRect(plusX, textY, plusX + btnWidth, textY + btnHeight, 0xFF444444);
                     fontRenderer.drawStringWithShadow("[+]", plusX + 2, textY, 0xFFFFFFFF);
                 } else if (valueObj instanceof ModeValue) {
-                    // 绘制模式值：显示当前模式文本，后面附加“<”和“>”两个按钮
+                    // 绘制模式值：显示当前模式文本 后面附加“<”和“>”两个按钮
                     ModeValue modeValue = (ModeValue) valueObj;
                     String modeText = modeValue.getValue();
                     int modeTextWidth = fontRenderer.getStringWidth(modeText);
@@ -347,7 +353,7 @@ public class NewClickGUIScreen extends GuiScreen {
             }
         }
 
-        // 如果 ColorPicker 窗口存在，则绘制在最上层
+        // 如果 ColorPicker 窗口存在 则绘制在最上层
         if (colorPickerWindow != null) {
             colorPickerWindow.drawScreen(mouseX, mouseY, partialTicks);
             if (colorPickerWindow.isClosed()) {
@@ -390,7 +396,7 @@ public class NewClickGUIScreen extends GuiScreen {
 
     @Override
     protected void mouseClicked(int mouseX, int mouseY, int mouseButton) throws IOException {
-        // 如果 ColorPicker 窗口存在，则先转发鼠标点击给它
+        // 如果 ColorPicker 窗口存在 则先转发鼠标点击给它
         if (colorPickerWindow != null) {
             if (colorPickerWindow.mouseClicked(mouseX, mouseY, mouseButton)) {
                 return;
@@ -423,6 +429,48 @@ public class NewClickGUIScreen extends GuiScreen {
                     return;
                 }
             }
+        }
+
+        // 处理模块列表的点击
+        // 别删花括号 我写了变量会重复名字
+        {
+            int moduleListStartY = mainWindow.getY() + 60;
+            double offsetY = translate.getY();
+            int currentY = moduleListStartY + 5;
+            List<Module> filteredModules = getFilteredModules();
+            for (Module module : filteredModules) {
+                if (HoveringUtil.isHovering(mainWindow.getX() + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY)) {
+                    if (mouseButton == 0) { // 左键切换开关
+                        module.toggle();
+                    } else {
+                        if (mouseButton == 2) {
+                            if (onBindingModule == module) {
+                                // 如果点击的是正在绑定的模块 则取消绑定模式
+                                onBindingModule = null;
+                                MessageHandler.addMessage(module.getDisplayName() + " 已取消按键绑定.", MessageHandler.MessageType.Info, 3000);
+                            } else if (onBindingModule == null) {
+                                // 如果当前没有绑定模块 则进入绑定模式
+                                onBindingModule = module;
+                                MessageHandler.addMessage(module.getDisplayName() + " 正在等待按键绑定（再次右键取消）.", MessageHandler.MessageType.Info, 3000);
+                            }
+                        } else {
+                            // 如果已经有其他模块在绑定中 打开 Values 面板
+                            activeModuleValues = module;
+                            valuesPanelWindow = new DragWindow(mainWindow.getX() + guiWidth + 10, mainWindow.getY(), lastAdaptivePanelWidth, 100);
+                        }
+                    }
+                    return;
+                }
+                currentY += moduleHeight + padding;
+            }
+        }
+
+        // 点击空白区域取消绑定模式
+        if (mouseButton == 0 && onBindingModule != null
+                && !HoveringUtil.isHovering(mainWindow.getX(), mainWindow.getY(), guiWidth, guiHeight, mouseX, mouseY)) {
+            MessageHandler.addMessage(onBindingModule.getDisplayName() + " 已取消按键绑定.", MessageHandler.MessageType.Info, 3000);
+            onBindingModule = null;
+            return;
         }
 
         // 处理 Values 面板标题区域拖动与关闭
@@ -479,7 +527,7 @@ public class NewClickGUIScreen extends GuiScreen {
             for (Module module : filteredModules) {
                 if (HoveringUtil.isHovering(mainWindow.getX() + 10, (float) (currentY + offsetY), guiWidth - 20, moduleHeight, mouseX, mouseY)) {
                     activeModuleValues = module;
-                    // 当右键打开 Values 面板时，初始化其拖拽窗口
+                    // 当右键打开 Values 面板时 初始化其拖拽窗口
                     valuesPanelWindow = new DragWindow(mainWindow.getX() + guiWidth + 10, mainWindow.getY(), lastAdaptivePanelWidth, 100);
                     return;
                 }
@@ -509,7 +557,7 @@ public class NewClickGUIScreen extends GuiScreen {
                             return;
                         }
                     } else if (valueObj instanceof ColorValue) {
-                        // 如果点击了颜色显示区块，则打开 ColorPicker 窗口
+                        // 如果点击了颜色显示区块 则打开 ColorPicker 窗口
                         ColorValue colorValue = (ColorValue) valueObj;
                         int boxWidth = 20;
                         int boxHeight = fontRenderer.getHeight();
@@ -533,7 +581,7 @@ public class NewClickGUIScreen extends GuiScreen {
                             return;
                         }
                     } else if (valueObj instanceof ModeValue) {
-                        // 处理模式值的点击事件，检测左箭头和右箭头按钮区域
+                        // 处理模式值的点击事件 检测左箭头和右箭头按钮区域
                         ModeValue modeValue = (ModeValue) valueObj;
                         String modeText = modeValue.getValue();
                         int modeTextWidth = fontRenderer.getStringWidth(modeText);
@@ -580,6 +628,27 @@ public class NewClickGUIScreen extends GuiScreen {
         if (searchBox != null) {
             searchBox.keyTyped(typedChar, keyCode);
         }
+        // 检查是否有模块绑定该按键
+        if (this.onBindingModule != null) {
+            if (keyCode == Keyboard.KEY_ESCAPE || keyCode == Keyboard.KEY_DELETE) {
+                this.onBindingModule.keyCode = 0;
+                MessageHandler.addMessage(this.onBindingModule.getDisplayName() + " 现在是未绑定的.", MessageHandler.MessageType.Info, 3000);
+            } else {
+                this.onBindingModule.keyCode = keyCode;
+                MessageHandler.addMessage(this.onBindingModule.getDisplayName()
+                        + " 现在绑定到 \"" + Keyboard.getKeyName(keyCode) + "\".", MessageHandler.MessageType.Info, 3000);
+            }
+            this.onBindingModule = null;
+            return;
+        }
+
+        for (Module module : ModuleManager.modules) {
+            if (module.keyCode == keyCode) {
+                module.toggle();
+                break;
+            }
+        }
+
         super.keyTyped(typedChar, keyCode);
     }
 }
