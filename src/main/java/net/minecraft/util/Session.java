@@ -59,7 +59,7 @@ public class Session {
         MOJANG("mojang");
 
         private static final Map<String, Session.Type> SESSION_TYPES = Maps.newHashMap();
-        private final String sessionType;
+        public final String sessionType;
 
         Type(String sessionTypeIn) {
             this.sessionType = sessionTypeIn;

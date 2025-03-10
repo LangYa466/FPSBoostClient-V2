@@ -8,6 +8,7 @@ import net.fpsboost.module.ModuleManager;
 import net.fpsboost.module.impl.ClientSettings;
 import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
+import net.fpsboost.screen.alt.AltManager;
 import net.fpsboost.socket.ClientIRC;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.Logger;
@@ -144,6 +145,7 @@ public class Client implements Wrapper {
         ModuleManager.shutdown();
         ConfigManager.saveAllConfig();
         ClientIRC.handler.close();
+        AltManager.Instance.saveAlts();
     }
 
     public static void openErrorLogsFile() {

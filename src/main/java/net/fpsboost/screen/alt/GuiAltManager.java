@@ -29,6 +29,7 @@ public class GuiAltManager extends GuiScreen {
 
     public GuiAltManager(GuiScreen parentScreen) {
         this.parentScreen = parentScreen;
+        AltManager.Instance.loadAlts();
     }
 
     @Override
@@ -48,8 +49,7 @@ public class GuiAltManager extends GuiScreen {
         } catch (NullPointerException ignored) {
         }
 
-        drawDefaultBackground();
-        drawBackground(0);
+        drawClientBackground();
         FontManager.client().drawCenteredStringWithShadow(EnumChatFormatting.YELLOW + info + mc.getSession().getUsername(), width / 2.0f, height / 2.0f - 10, -1);
         FontManager.client().drawCenteredStringWithShadow(status, width / 2.0f, height / 2.0f, -1);
 
@@ -58,24 +58,17 @@ public class GuiAltManager extends GuiScreen {
 
     @Override
     protected ResourceLocation actionPerformed(GuiButton button) throws IOException {
-        if (button.id == 0) {
+        if (button.id == 0) { // 返回按钮
             if (runningThread != null) {
                 runningThread.interrupt();
             }
-
             mc.displayGuiScreen(parentScreen);
-        } else if (button.id == 2) {
+        } else if (button.id == 2) { // 登录（针对选中的账户）
             if (selectAlt != null) {
                 final Thread thread = getThread();
-
                 setRunningThread(thread);
             }
-        } else if (button.id == 3) {
-            if (selectAlt != null) {
-                AltManager.Instance.getAltList().remove(selectAlt);
-                selectAlt = null;
-            }
-        } else if (button.id == 4) {
+        } else if (button.id == 4) { // 离线登录
             mc.displayGuiScreen(new GuiAltLogin(this) {
                 @Override
                 public void onLogin(String account, String password) {
@@ -106,6 +99,7 @@ public class GuiAltManager extends GuiScreen {
                                         } else {
                                             status = EnumChatFormatting.GREEN + "Logged in! " + ign;
                                         }
+                                        AltManager.Instance.saveAlts(); // 登录成功后自动保存
                                         break;
                                 }
                             } catch (AuthenticationException e) {
@@ -116,7 +110,6 @@ public class GuiAltManager extends GuiScreen {
                                     status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
                                 }
                             }
-
                             interrupt();
                         }
                     };
@@ -127,8 +120,10 @@ public class GuiAltManager extends GuiScreen {
                     setRunningThread(thread);
                 }
             });
-        } else if (button.id == 5) {
+        } else if (button.id == 5) { // 微软登录
             mc.displayGuiScreen(new GuiMicrosoftLogin(this));
+        } else if (button.id == 7) { // 查看登录过的账户
+            mc.displayGuiScreen(new GuiLoggedAccounts(this));
         }
         super.actionPerformed(button);
         return null;
@@ -143,12 +138,15 @@ public class GuiAltManager extends GuiScreen {
             }
             switch (selectAlt.getAccountType()) {
                 case OFFLINE:
-                    Minecraft.getMinecraft().session = new Session(selectAlt.getUserName(), "", "", "mojang");
+                    Session session1 = new Session(selectAlt.getUserName(), "", "", "mojang");
+                    mc.session = session1;
                     if (ClientSettings.isChinese) {
                         status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
                     } else {
                         status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
                     }
+                    AltManager.Instance.getAltList().add(session1);
+                    AltManager.Instance.saveAlts();
                     break;
                 case MICROSOFT: {
                     try {
@@ -156,12 +154,15 @@ public class GuiAltManager extends GuiScreen {
 
                         while (Minecraft.getMinecraft().running) {
                             if (microsoftLogin.logged) {
-                                mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
+                                Session session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
+                                mc.session = session;
                                 if (ClientSettings.isChinese) {
                                     status = EnumChatFormatting.GREEN + "登录成功! " + mc.session.getUsername();
                                 } else {
                                     status = EnumChatFormatting.GREEN + "Logged in! " + mc.session.getUsername();
                                 }
+                                AltManager.Instance.getAltList().add(session);
+                                AltManager.Instance.saveAlts();
                                 break;
                             }
                         }
@@ -173,9 +174,7 @@ public class GuiAltManager extends GuiScreen {
                             status = EnumChatFormatting.RED + "Login failed! " + e.getClass().getName() + ": " + e.getMessage();
                         }
                     }
-
                     microsoftLogin = null;
-
                     break;
                 }
             }
@@ -188,21 +187,20 @@ public class GuiAltManager extends GuiScreen {
 
     @Override
     public void initGui() {
+        // 调整按钮布局：离线登录、微软登录、查看账户、返回（自动保存无需按钮）
         if (ClientSettings.isChinese) {
-            buttonList.add(new GuiButton(4, this.width / 2 - 120, this.height - 48, 70, 20, "离线登录"));
-            buttonList.add(new GuiButton(5, this.width / 2 - 40, this.height - 48, 70, 20, "微软登录"));
-            this.buttonList.add(new GuiButton(0, this.width / 2 + 40, this.height - 48, 70, 20, "返回"));
+            buttonList.add(new GuiButton(4, this.width / 2 - 150, this.height - 48, 70, 20, "离线登录"));
+            buttonList.add(new GuiButton(5, this.width / 2 - 70, this.height - 48, 70, 20, "微软登录"));
+            buttonList.add(new GuiButton(7, this.width / 2 + 10, this.height - 48, 70, 20, "查看账户"));
+            buttonList.add(new GuiButton(0, this.width / 2 + 90, this.height - 48, 70, 20, "返回"));
             buttonList.add(buttonLogin = new GuiButton(2, -1145141919, -1145141919, 70, 20, "登录"));
-            buttonList.add(buttonRemove = new GuiButton(3, -1145141919, -1145141919, 70, 20, "删除"));
         } else {
-            buttonList.add(new GuiButton(4, this.width / 2 - 120, this.height - 48, 70, 20, "Offline"));
-            buttonList.add(new GuiButton(5, this.width / 2 - 40, this.height - 48, 70, 20, "Microsoft"));
-            this.buttonList.add(new GuiButton(0, this.width / 2 + 40, this.height - 48, 70, 20, "Exit"));
+            buttonList.add(new GuiButton(4, this.width / 2 - 150, this.height - 48, 70, 20, "Offline"));
+            buttonList.add(new GuiButton(5, this.width / 2 - 70, this.height - 48, 70, 20, "Microsoft"));
+            buttonList.add(new GuiButton(7, this.width / 2 + 10, this.height - 48, 70, 20, "View Accounts"));
+            buttonList.add(new GuiButton(0, this.width / 2 + 90, this.height - 48, 70, 20, "Exit"));
             buttonList.add(buttonLogin = new GuiButton(2, -1145141919, -1145141919, 70, 20, "Login"));
-            buttonList.add(buttonRemove = new GuiButton(3, -1145141919, -1145141919, 70, 20, "Remove"));
         }
-
-
         super.initGui();
     }
 
@@ -210,7 +208,13 @@ public class GuiAltManager extends GuiScreen {
         if (this.runningThread != null) {
             this.runningThread.interrupt();
         }
-
         this.runningThread = runningThread;
+    }
+
+    @Override
+    public void onGuiClosed() {
+        AltManager.Instance.saveAlts();
+        Logger.info("Alt size: {}",AltManager.Instance.getAltList().size());
+        super.onGuiClosed();
     }
 }

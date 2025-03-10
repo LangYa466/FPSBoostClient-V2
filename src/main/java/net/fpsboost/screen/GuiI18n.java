@@ -22,8 +22,8 @@ public class GuiI18n extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        FontManager.client(70).drawCenteredStringWithShadow("选择你得语言", width / 2F, height / 4F, -1);
         drawClientBackground();
+        FontManager.client(70).drawCenteredStringWithShadow("选择你的语言", width / 2F, height / 4F, -1);
         super.drawScreen(mouseX, mouseY, partialTicks);
     }
 

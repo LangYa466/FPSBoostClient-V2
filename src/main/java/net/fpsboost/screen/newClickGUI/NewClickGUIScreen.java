@@ -451,7 +451,7 @@ public class NewClickGUIScreen extends GuiScreen {
                             } else if (onBindingModule == null) {
                                 // 如果当前没有绑定模块 则进入绑定模式
                                 onBindingModule = module;
-                                MessageHandler.addMessage(module.getDisplayName() + " 正在等待按键绑定（再次右键取消）.", MessageHandler.MessageType.Info, 3000);
+                                MessageHandler.addMessage(module.getDisplayName() + " 正在等待按键绑定（再次中键取消）.", MessageHandler.MessageType.Info, 3000);
                             }
                         } else {
                             // 如果已经有其他模块在绑定中 打开 Values 面板

@@ -1,5 +1,6 @@
 package net.fpsboost.screen.alt.microsoft;
 
+import net.fpsboost.screen.alt.AltManager;
 import net.fpsboost.util.Logger;
 import net.fpsboost.util.font.FontManager;
 import net.minecraft.client.gui.GuiButton;
@@ -34,7 +35,10 @@ public class GuiMicrosoftLogin extends GuiScreen {
 
                             microsoftLogin.setStatus("登录成功! " + microsoftLogin.getUserName());
 
-                            mc.session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
+                            Session session = new Session(microsoftLogin.getUserName(), microsoftLogin.getUuid(), microsoftLogin.getAccessToken(), "mojang");
+                            mc.session = session;
+                            AltManager.Instance.getAltList().add(session);
+                            AltManager.Instance.saveAlts();
 
                             break;
                         }
@@ -81,8 +85,7 @@ public class GuiMicrosoftLogin extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        drawDefaultBackground();
-        drawBackground(0);
+        drawClientBackground();
         super.drawScreen(mouseX, mouseY, partialTicks);
 
         if (microsoftLogin == null) {

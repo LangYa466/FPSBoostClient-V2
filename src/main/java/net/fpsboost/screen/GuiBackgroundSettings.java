@@ -50,7 +50,7 @@ public class GuiBackgroundSettings extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
-        this.drawDefaultBackground();
+        this.drawClientBackground();
 
         // Draw title and instructions
         String title = cnMode ? "选项对话框" : "Online Mode";

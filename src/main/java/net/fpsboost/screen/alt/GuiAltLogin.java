@@ -39,8 +39,7 @@ public abstract class GuiAltLogin extends GuiScreen {
     public abstract void onLogin(String account, String password);
 
     public void drawScreen(int x, int y, float z) {
-        this.drawDefaultBackground();
-        drawBackground(0);
+        drawClientBackground();
         this.username.drawTextBox();
         FontManager.client().drawCenteredStringWithShadow("离线登录", (float) (this.width / 2), 20.0F, -1);
         FontManager.client().drawCenteredStringWithShadow(status, (float) (this.width / 2), (this.height / 4 + 24) + 38, -1);

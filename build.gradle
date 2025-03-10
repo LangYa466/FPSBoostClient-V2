@@ -1,7 +1,5 @@
 import java.nio.file.Files
 import java.nio.file.StandardCopyOption
-import java.nio.file.attribute.FileTime
-import java.text.SimpleDateFormat
 import java.util.zip.*
 
 apply plugin: 'java'
@@ -10,6 +8,7 @@ repositories {
     mavenCentral()
     maven { url "https://libraries.minecraft.net/" }
     maven { url "https://repo.marcloud.net/" }
+    maven { url "https://dl.google.com/dl/android/maven2/" }
 }
 
 java {
@@ -79,17 +78,8 @@ dependencies {
     implementation 'net.java.jinput:jinput:2.0.5'
 
     implementation fileTree(dir: 'libraries', include: ['*.jar'])
-
 }
 
-// 添加 ProGuard 配置
-configurations {
-    proguard
-}
-
-dependencies {
-    proguard 'net.sf.proguard:proguard-base:6.2.2'
-}
 
 def javaVersion = JavaVersion.current().majorVersion as int
 def libraryJarPath
@@ -106,79 +96,10 @@ if (!file(libraryJarPath).exists()) {
     throw new GradleException("Library JAR not found at: " + libraryJarPath)
 }
 
-tasks.register('obfuscateJar', JavaExec) {
-    main = '-jar'
-    args = [
-            'obf/proguard.jar',
-            '@obf/proguard.cfg',
-            '-injars', 'build/libs/' + project.name + '-' + version + '.jar',
-            '-outjars', 'build/libs/FPSBoost_V2/FPSBoost_V2.jar',
-            '-libraryjars', libraryJarPath
-    ]
+jar {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 
-    def libraries = configurations.runtimeClasspath.files
-    libraries.each { jar ->
-        args += ['-libraryjars', jar.absolutePath]
-    }
-
-    doLast {
-        def sourceFile = new File(buildDir, "libs/FPSBoost_V2/FPSBoost_V2.jar")
-        def destinationDir = new File("C:/Users/Administrator/AppData/Roaming/.minecraft/versions/FPSBoost_V2/")
-
-        if (!sourceFile.exists()) {
-            throw new GradleException("JAR 文件不存在: ${sourceFile.absolutePath}")
-        }
-
-        if (!destinationDir.exists()) {
-            destinationDir.mkdirs()
-        }
-
-        def tempFile = new File(sourceFile.parent, "temp.jar")
-        if (tempFile.exists()) {
-            tempFile.delete()
-        }
-        tempFile.createNewFile()
-
-        sourceFile.withInputStream { input ->
-            tempFile.withOutputStream { output ->
-                def zipIn = new ZipInputStream(new BufferedInputStream(input))
-                def zipOut = new ZipOutputStream(new BufferedOutputStream(output))
-                zipOut.setComment("FPSBoost_V2 \nWebsite: https://www.fpsboost.cn/")
-
-                def buffer = new byte[8192]
-                int len
-                ZipEntry entry
-
-                def foundingTime = 1305648000000
-
-                while ((entry = zipIn.getNextEntry()) != null) {
-                    def newEntry = new ZipEntry(entry.name)
-                    newEntry.setTime(foundingTime)
-                    zipOut.putNextEntry(newEntry)
-
-                    while ((len = zipIn.read(buffer)) != -1) {
-                        zipOut.write(buffer, 0, len)
-                    }
-
-                    zipOut.closeEntry()
-                }
-
-                zipOut.flush()
-                zipOut.close()
-                zipIn.close()
-            }
-        }
-
-        Files.move(tempFile.toPath(), sourceFile.toPath(), StandardCopyOption.REPLACE_EXISTING)
-
-        copy {
-            from sourceFile
-            into destinationDir
-        }
-
-        println "复制 JAR 到: ${destinationDir.absolutePath}"
+    from {
+        fileTree(dir: 'libraries', include: ['*.jar']).collect { zipTree(it) }
     }
 }
-
-// 构建完成后自动执行混淆
-build.finalizedBy obfuscateJar

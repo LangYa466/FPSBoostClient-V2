@@ -6,11 +6,9 @@ import net.fpsboost.element.impl.text.TextDisplay;
 import net.fpsboost.handler.AttackHandler;
 import net.fpsboost.module.impl.Sprint;
 import net.fpsboost.screen.musicPlayer.LyricDisplay;
-import net.fpsboost.util.CpsUtil;
-import net.fpsboost.util.MoveUtil;
-import net.fpsboost.util.PingUtil;
-import net.fpsboost.util.TimeUtil;
+import net.fpsboost.util.*;
 import net.minecraft.client.Minecraft;
+import net.minecraft.potion.Potion;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -52,6 +50,10 @@ public class ElementManager implements Wrapper {
         addDynamicTextDisplayElement("FPSDisplay", "FPS显示", () -> Minecraft.getDebugFPS() + " FPS");
         addDynamicTextDisplayElement("SprintDisplay", "疾跑显示", () -> "Sprint: " + (Sprint.isEnable ? "Toggled" : "Vanilla"));
         addDynamicTextDisplayElement("PosYDisplay", "Y轴显示", () -> "Y: " + (int) mc.thePlayer.posY);
+        addDynamicTextDisplayElement("PotionCountDisplay", "药水数量显示", () -> {
+            int amount = PotionUtil.getPotionsFromInv(Potion.heal);
+            return amount + " " + (amount <= 1 ? "pot" : "pots");
+        });
 
         // 初始化所有元素
         elements.forEach(Element::init);
