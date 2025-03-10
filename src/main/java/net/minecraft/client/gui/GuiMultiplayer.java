@@ -2,6 +2,7 @@ package net.minecraft.client.gui;
 
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import de.florianmichael.viamcp.ViaMCP;
 import net.minecraft.client.multiplayer.GuiConnecting;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.multiplayer.ServerList;
@@ -78,6 +79,7 @@ public class GuiMultiplayer extends GuiScreen implements GuiYesNoCallback {
         this.buttonList.add(new GuiButton(3, this.width / 2 + 4 + 50, this.height - 52, 100, 20, I18n.format("selectServer.add")));
         this.buttonList.add(new GuiButton(8, this.width / 2 + 2, this.height - 28, 74, 20, I18n.format("selectServer.refresh")));
         this.buttonList.add(new GuiButton(0, this.width / 2 + 80, this.height - 28, 74, 20, I18n.format("gui.cancel")));
+        this.buttonList.add(ViaMCP.INSTANCE.getAsyncVersionSlider());
         this.selectServer(this.serverListSelector.func_148193_k());
     }
 

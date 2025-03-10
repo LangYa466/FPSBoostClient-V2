@@ -3,6 +3,7 @@ package net.minecraft.world;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import de.florianmichael.viamcp.fixes.FixedSoundEngine;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -252,6 +253,7 @@ public abstract class World implements IBlockAccess {
     }
 
     public boolean destroyBlock(BlockPos pos, boolean dropBlock) {
+        /*
         IBlockState iblockstate = this.getBlockState(pos);
         Block block = iblockstate.getBlock();
 
@@ -266,6 +268,9 @@ public abstract class World implements IBlockAccess {
 
             return this.setBlockState(pos, Blocks.air.getDefaultState(), 3);
         }
+
+         */
+        return FixedSoundEngine.destroyBlock(this, pos, dropBlock);
     }
 
     public boolean setBlockState(BlockPos pos, IBlockState state) {

@@ -1,5 +1,6 @@
 package net.fpsboost;
 
+import de.florianmichael.viamcp.ViaMCP;
 import net.fpsboost.command.CommandManager;
 import net.fpsboost.config.ConfigManager;
 import net.fpsboost.element.ElementManager;
@@ -30,7 +31,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.31";
+    public static final String version = "2.32";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static boolean checkVersion = true;
@@ -73,6 +74,17 @@ public class Client implements Wrapper {
         FontManager.init();
         TextureFix.init();
         OBSChecker.init();
+
+        initViaMCP();
+    }
+
+    private static void initViaMCP() {
+        try {
+            ViaMCP.create();
+            ViaMCP.INSTANCE.initAsyncSlider();
+        } catch (Exception e) {
+            Logger.error(e);
+        }
     }
 
     private static void checkForUpdates() throws IOException {

@@ -11,6 +11,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.minecraft.MinecraftSessionService;
 import com.mojang.authlib.properties.PropertyMap;
 import com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService;
+import de.florianmichael.viamcp.fixes.AttackOrder;
 import lombok.Getter;
 import net.fpsboost.Client;
 import net.fpsboost.handler.AttackHandler;
@@ -1105,7 +1106,7 @@ public class Minecraft implements IThreadListener {
         //leftClickCounter = 0;
         if (this.leftClickCounter <= 0) {
             ClickSounds.onClick();
-            this.thePlayer.swingItem();
+            AttackOrder.sendConditionalSwing(this.objectMouseOver);
             if (this.objectMouseOver == null) {
                 logger.error("Null returned as 'hitResult', this shouldn't happen!");
 
@@ -1115,7 +1116,7 @@ public class Minecraft implements IThreadListener {
             } else {
                 switch (this.objectMouseOver.typeOfHit) {
                     case ENTITY:
-                        this.playerController.attackEntity(this.thePlayer, this.objectMouseOver.entityHit);
+                        AttackOrder.sendFixedAttack(this.thePlayer, this.objectMouseOver.entityHit);
                         break;
 
                     case BLOCK:

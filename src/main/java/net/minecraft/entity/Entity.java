@@ -1,5 +1,7 @@
 package net.minecraft.entity;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.fpsboost.module.impl.HideRunningParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
@@ -1389,7 +1391,11 @@ public abstract class Entity implements ICommandSender {
         }
     }
 
-    public float getCollisionBorderSize() {
+    public float getCollisionBorderSize()
+    {
+        if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+            return 0F;
+        }
         return 0.1F;
     }
 

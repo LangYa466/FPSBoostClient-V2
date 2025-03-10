@@ -1,5 +1,7 @@
 package net.minecraft.block;
 
+import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import de.florianmichael.vialoadingbase.ViaLoadingBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.properties.PropertyDirection;
 import net.minecraft.block.state.BlockState;
@@ -32,13 +34,18 @@ public class BlockLadder extends Block {
         return super.getSelectedBoundingBox(worldIn, pos);
     }
 
-    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos) {
+    public void setBlockBoundsBasedOnState(IBlockAccess worldIn, BlockPos pos)
+    {
         IBlockState iblockstate = worldIn.getBlockState(pos);
 
-        if (iblockstate.getBlock() == this) {
+        if (iblockstate.getBlock() == this)
+        {
             float f = 0.125F;
-
-            switch (iblockstate.getValue(FACING)) {
+            if (ViaLoadingBase.getInstance().getTargetVersion().newerThanOrEqualTo(ProtocolVersion.v1_12_2)) {
+                f = 0.1875f;
+            }
+            switch ((EnumFacing)iblockstate.getValue(FACING))
+            {
                 case NORTH:
                     this.setBlockBounds(0.0F, 0.0F, 1.0F - f, 1.0F, 1.0F, 1.0F);
                     break;
