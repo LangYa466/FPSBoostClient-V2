@@ -37,8 +37,16 @@ public class ClientSettings extends Module {
             super.setValue(value);
         }
     };
+    private final BooleanValue loadFix = new BooleanValue("世界加载优化(测试)", "World Load Fix(Test)", true) {
+        @Override
+        public void setValue(Boolean value) {
+            worldLoadFixFix = value;
+            super.setValue(value);
+        }
+    };
     private final RawInputMod rawInputMod = new RawInputMod();
     public static boolean clientMathFix = false;
+    public static boolean worldLoadFixFix = false;
 
     @Override
     public void onUpdate() {

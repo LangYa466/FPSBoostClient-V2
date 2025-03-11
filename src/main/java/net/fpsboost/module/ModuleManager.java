@@ -7,18 +7,13 @@ import net.fpsboost.module.impl.*;
 import net.fpsboost.screen.musicPlayer.MusicPlayerModule;
 import net.fpsboost.socket.ClientIRC;
 
-import javax.swing.*;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class ModuleManager implements Wrapper {
     public static final List<Module> modules = new CopyOnWriteArrayList<>();
-    private static final ExecutorService threadPool = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
     public static void init() {
         modules.addAll(Arrays.asList(
@@ -65,14 +60,12 @@ public class ModuleManager implements Wrapper {
     }
 
     public static void moduleUpdate() {
-        submitTask(() -> {
-            modules.stream().filter(module -> module.enable).forEach(Module::onUpdate);
-            AttackHandler.onUpdate();
-        });
+        modules.stream().filter(module -> module.enable).forEach(Module::onUpdate);
+        AttackHandler.onUpdate();
     }
 
     public static void moduleWorldLoad() {
-        submitTask(() -> modules.stream().filter(module -> module.enable).forEach(Module::onWorldLoad));
+        modules.stream().filter(module -> module.enable).forEach(Module::onWorldLoad);
     }
 
     public static void moduleKeyBind(int inputKeyCode) {
@@ -81,23 +74,6 @@ public class ModuleManager implements Wrapper {
                 module.toggle();
                 break; // 只需触发一个模块
             }
-        }
-    }
-
-    // 提交任务到线程池
-    private static void submitTask(Runnable task) {
-        threadPool.submit(task);
-    }
-
-    // 关闭线程池
-    public static void shutdown() {
-        threadPool.shutdown();
-        try {
-            if (!threadPool.awaitTermination(60, TimeUnit.SECONDS)) {
-                threadPool.shutdownNow();
-            }
-        } catch (InterruptedException e) {
-            threadPool.shutdownNow();
         }
     }
 }

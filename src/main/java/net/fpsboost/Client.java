@@ -144,7 +144,6 @@ public class Client implements Wrapper {
     }
 
     public static void stopClient() throws IOException {
-        ModuleManager.shutdown();
         ConfigManager.saveAllConfig();
         ClientIRC.handler.close();
         AltManager.Instance.saveAlts();

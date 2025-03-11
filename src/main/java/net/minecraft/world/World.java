@@ -4,6 +4,7 @@ import com.google.common.base.Predicate;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import de.florianmichael.viamcp.fixes.FixedSoundEngine;
+import net.fpsboost.module.impl.ClientSettings;
 import net.minecraft.block.*;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
@@ -2765,6 +2766,7 @@ public abstract class World implements IBlockAccess {
     }
 
     public boolean isSpawnChunk(int x, int z) {
+        if (ClientSettings.worldLoadFixFix) return false;
         BlockPos blockpos = this.getSpawnPoint();
         int i = x * 16 + 8 - blockpos.getX();
         int j = z * 16 + 8 - blockpos.getZ();
