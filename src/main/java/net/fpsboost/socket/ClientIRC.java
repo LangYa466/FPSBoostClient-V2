@@ -41,7 +41,7 @@ public class ClientIRC extends Module implements Wrapper {
         if (initiated) return;
 
         try {
-            handler = new SocketClient("103.79.187.250", 11452, new IRCHandler() {
+            handler = new SocketClient("113.45.185.125", 11451, new IRCHandler() {
                 @Override
                 public void onMessage(String message) {
                     // 处理收到的消息
