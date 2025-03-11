@@ -18,13 +18,13 @@ public class HidePlantBlock extends Module {
         super("HidePlantBlock", "隐藏植物方块");
     }
 
-    private final NumberValue radiusValue = new NumberValue("隐藏范围", "Radius", 16, 64, 2, 1);
+    private final NumberValue radiusValue = new NumberValue("隐藏范围(拉视距一样 不然卡)", "Radius", 16, 64, 2, 1);
 
     @Override
-    public void onRender3D() {
+    public void onUpdate() {
         int radius = radiusValue.getValue().intValue();
-        World world = mc.theWorld;
         if (Wrapper.isNull()) return;
+        World world = mc.theWorld;
 
         int px = (int) mc.thePlayer.posX;
         int py = (int) mc.thePlayer.posY;
@@ -41,7 +41,7 @@ public class HidePlantBlock extends Module {
                 }
             }
         }
-        super.onRender3D();
+        super.onUpdate();
     }
 
     public static Block getBlock(final BlockPos blockPos) {

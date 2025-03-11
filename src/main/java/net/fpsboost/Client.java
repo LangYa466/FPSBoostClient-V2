@@ -150,6 +150,7 @@ public class Client implements Wrapper {
     }
 
     public static void openErrorLogsFile() {
+        if (isDev) return;
         if (isWindows()) {
             File logsDir = new File("logs");
             File logFile = new File(logsDir, "latest.log");

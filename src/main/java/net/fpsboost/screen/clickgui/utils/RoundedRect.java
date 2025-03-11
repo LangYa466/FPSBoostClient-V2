@@ -2,9 +2,12 @@ package net.fpsboost.screen.clickgui.utils;
 
 import lombok.Getter;
 import lombok.Setter;
+import net.fpsboost.util.shader.RoundedUtil;
 import net.minecraft.client.renderer.GlStateManager;
 import net.minecraft.client.renderer.OpenGlHelper;
 import org.lwjgl.opengl.GL11;
+
+import java.awt.*;
 
 @Setter
 @Getter
@@ -46,7 +49,7 @@ public class RoundedRect extends RenderEntity {
     }
 
     private void drawRect2() {
-        this.drawFastRoundedRect(x, y, width, height, radius, color);
+        RoundedUtil.drawRound((float) x, (float) y, (float) width, (float) height, (float) radius, new Color(color));
     }
 
     private void drawFastRoundedRect(double x, double y, double width, double height, double radius, int color) {

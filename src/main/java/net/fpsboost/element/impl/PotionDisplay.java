@@ -25,35 +25,19 @@ public class PotionDisplay extends Element {
     private final ColorValue text2ColorValue = new ColorValue("药水时长文本颜色", "Potion Duration Text Color", Color.white, this);
     private final ResourceLocation res = new ResourceLocation("textures/gui/container/inventory.png");
 
+    private ArrayList<PotionEffect> collection;
+
+    private FontRenderer fr;
+
     public PotionDisplay() {
         super("PotionDisplay", "药水显示");
     }
 
     @Override
     public void onDraw() {
-        ArrayList<PotionEffect> collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
-
-        FontRenderer fr;
-        if (betterFont.getValue()) fr = FontManager.client();
-        else fr = mc.fontRendererObj;
-
-        if (collection.isEmpty() && mc.currentScreen instanceof GuiChat) {
-            mc.thePlayer.addPotionEffect(new PotionEffect(Potion.example.getId(), -1, -1));
-        } else if (!(mc.currentScreen instanceof GuiChat)) {
-            mc.thePlayer.removePotionEffect(Potion.example.getId());
-        }
-
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {
             RenderUtil.resetColor();
-
-            // 排序集合，按持续时间和放大器排序
-            collection.sort((o1, o2) -> {
-                String os1 = getAmplifierString(o1);
-                String os2 = getAmplifierString(o2);
-                return Integer.compare(fr.getStringWidth(Potion.getDurationString(o2) + os2),
-                        fr.getStringWidth(Potion.getDurationString(o1) + os1));
-            });
 
             // 我们定义一个初始 Y 坐标
             int initialY = 0;
@@ -98,6 +82,28 @@ public class PotionDisplay extends Element {
             }
         }
         super.onDraw();
+    }
+
+    @Override
+    public void onUpdate() {
+        if (betterFont.getValue()) fr = FontManager.client();
+        else fr = mc.fontRendererObj;
+        collection = new ArrayList<>(mc.thePlayer.getActivePotionEffects());
+
+        if (collection.isEmpty() && mc.currentScreen instanceof GuiChat) {
+            mc.thePlayer.addPotionEffect(new PotionEffect(Potion.example.getId(), -1, -1));
+        } else if (!(mc.currentScreen instanceof GuiChat)) {
+            mc.thePlayer.removePotionEffect(Potion.example.getId());
+        }
+        // 排序集合，按持续时间和放大器排序
+        collection.sort((o1, o2) -> {
+            String os1 = getAmplifierString(o1);
+            String os2 = getAmplifierString(o2);
+            return Integer.compare(fr.getStringWidth(Potion.getDurationString(o2) + os2),
+                    fr.getStringWidth(Potion.getDurationString(o1) + os1));
+        });
+
+        super.onUpdate();
     }
 
     // 辅助方法，用于获取放大器的字符串表示

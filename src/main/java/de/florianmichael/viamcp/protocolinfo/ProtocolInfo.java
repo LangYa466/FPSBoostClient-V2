@@ -19,10 +19,12 @@
 package de.florianmichael.viamcp.protocolinfo;
 
 import com.viaversion.viaversion.api.protocol.version.ProtocolVersion;
+import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Getter
 public class ProtocolInfo {
 
     public static ProtocolInfo R1_21_4 = new ProtocolInfo("The Garden Awakens", "December 3, 2024", ProtocolVersion.v1_21_4);
@@ -81,18 +83,6 @@ public class ProtocolInfo {
         this.name = name;
         this.releaseDate = releaseDate;
         this.protocolVersion = protocolVersion;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getReleaseDate() {
-        return releaseDate;
-    }
-
-    public ProtocolVersion getProtocolVersion() {
-        return protocolVersion;
     }
 
     public static ProtocolInfo fromProtocolVersion(final ProtocolVersion protocolVersion) {
