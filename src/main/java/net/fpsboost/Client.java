@@ -10,6 +10,7 @@ import net.fpsboost.screen.GuiI18n;
 import net.fpsboost.screen.GuiWelcome;
 import net.fpsboost.screen.alt.AltManager;
 import net.fpsboost.socket.ClientIRC;
+import net.fpsboost.util.EnumOptimizer;
 import net.fpsboost.util.IconUtil;
 import net.fpsboost.util.Logger;
 import net.fpsboost.util.OBSChecker;
@@ -66,6 +67,7 @@ public class Client implements Wrapper {
     }
 
     private static void initComponents() {
+        EnumOptimizer.init();
         ModuleManager.init();
         ElementManager.init();
         ValueManager.init();

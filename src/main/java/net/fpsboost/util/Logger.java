@@ -1,5 +1,6 @@
 package net.fpsboost.util;
 
+import net.fpsboost.Client;
 import org.apache.logging.log4j.LogManager;
 
 import java.io.PrintWriter;
@@ -34,6 +35,7 @@ public class Logger {
     }
 
     public static void debug(String message, Object... args) {
-        logger.debug(PREFIX + message, args);
+        if (!Client.isDev) return;
+        logger.info(PREFIX + message, args);
     }
 }
