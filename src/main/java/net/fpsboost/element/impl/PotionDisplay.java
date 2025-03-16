@@ -35,6 +35,7 @@ public class PotionDisplay extends Element {
 
     @Override
     public void onDraw() {
+        if (collection == null) return;
         height = (collection.size() * 30);
         if (!collection.isEmpty()) {
             RenderUtil.resetColor();
