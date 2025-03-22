@@ -35,9 +35,10 @@ public class PotionDisplay extends Element {
 
     @Override
     public void onDraw() {
+        if (collection == null) return;
+        height = (collection.size() * 30);
         if (!collection.isEmpty()) {
             RenderUtil.resetColor();
-            height = (collection.size() * 30);
 
             // 我们定义一个初始 Y 坐标
             int initialY = 0;
