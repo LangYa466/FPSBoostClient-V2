@@ -79,6 +79,11 @@ public class NewClickGUIScreen extends GuiScreen {
         super.initGui();
     }
 
+    @Override
+    public boolean doesGuiPauseGame() {
+        return false;
+    }
+
     /**
      * 根据搜索框内容过滤模块列表
      */
