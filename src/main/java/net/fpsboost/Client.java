@@ -33,7 +33,7 @@ import java.util.Objects;
  */
 public class Client implements Wrapper {
     public static final String name = "FPSBoost-V2";
-    public static final String version = "2.32";
+    public static final String version = "2.33";
     public static boolean isOldVersion;
     public static boolean isDev = false;
     public static boolean checkVersion = true;
@@ -52,10 +52,6 @@ public class Client implements Wrapper {
         if (ConfigManager.isFirst) {
             mc.displayGuiScreen(new GuiWelcome());
         }
-
-        // Version check
-        if (isDev) checkVersion = false;
-        if (checkVersion) checkForUpdates();
 
         long elapsedTime = System.currentTimeMillis() - Main.initTime;
         // 1000.0是为了强制转换成double 改了报错(怪format)

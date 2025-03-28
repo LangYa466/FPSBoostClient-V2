@@ -83,6 +83,7 @@ public class ClientIRC extends Module implements Wrapper {
     }
 
     public static boolean isUser(String ign) {
-        return handler.isUser(ign);
+        //         return handler.isUser(ign);
+        return false;
     }
 }

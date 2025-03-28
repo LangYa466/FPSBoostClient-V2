@@ -429,7 +429,7 @@ public class Minecraft implements IThreadListener {
 
     private void createDisplay() throws LWJGLException {
         Display.setResizable(true);
-        Display.setTitle(String.format("FPSBoost-V2 - %s || Minecraft 1.8.9", Client.version, Client.isDev ? " Dev" : " Release"));
+        Display.setTitle(String.format("FPSBoost-V2 - %s (最后一个版本 本端纯免费 有人收费那你就是被骗了) || Minecraft 1.8.9", Client.version, Client.isDev ? " Dev" : " Release"));
 
         try {
             Display.create((new PixelFormat()).withDepthBits(24));
